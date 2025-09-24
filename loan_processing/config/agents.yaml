@@ -1,6 +1,5 @@
-# Simplified Agent Configuration
-# This file defines agent persona mappings and MCP server configurations
-# for use with any agent framework
+# Agent Configuration
+# This file defines agent persona mappings and which MCP servers each agent uses
 
 # Agent personas - stored as markdown files
 agent_personas:
@@ -8,6 +7,7 @@ agent_personas:
     file: "intake-agent-persona.md"
     description: "Fast data completeness check and routing assignment"
     mcp_servers: []
+
   credit:
     file: "credit-agent-persona.md"
     description: "Evaluates creditworthiness and financial risk"
@@ -15,6 +15,7 @@ agent_personas:
       - "application_verification"
       - "financial_calculations"
       - "document_processing"
+
   income:
     file: "income-agent-persona.md"
     description: "Verifies employment and income information"
@@ -22,6 +23,7 @@ agent_personas:
       - "application_verification"
       - "document_processing"
       - "financial_calculations"
+
   risk:
     file: "risk-agent-persona.md"
     description: "Synthesizes all assessments and makes final lending decisions"
@@ -29,46 +31,15 @@ agent_personas:
       - "application_verification"
       - "financial_calculations"
       - "document_processing"
+
   orchestrator:
     file: "orchestrator-agent-persona.md"
     description: "Coordinates the loan processing workflow"
     mcp_servers: []
 
-# MCP Server Configuration
-mcp_servers:
-  application_verification:
-    url: "http://localhost:8010/sse"
-    description: "Handles identity, address, and employment verification"
-    tools:
-      - "verify_identity"
-      - "verify_address"
-      - "check_fraud_indicators"
-      - "verify_employment"
-      - "get_credit_report"
-      - "verify_bank_account"
-
-  document_processing:
-    url: "http://localhost:8011/sse"
-    description: "Processes and extracts data from documents"
-    tools:
-      - "extract_text_from_document"
-      - "classify_document_type"
-      - "validate_document_format"
-      - "extract_structured_data"
-      - "convert_document_format"
-
-  financial_calculations:
-    url: "http://localhost:8012/sse"
-    description: "Performs financial calculations and risk assessments"
-    tools:
-      - "calculate_debt_to_income"
-      - "calculate_loan_affordability"
-      - "calculate_credit_utilization"
-      - "calculate_risk_score"
-      - "calculate_amortization_schedule"
-
 # Configuration metadata
 metadata:
   version: "2.0.0"
   last_updated: "2024-09-24"
-  description: "Simplified agent configuration for Microsoft Agent Framework integration"
+  description: "Agent persona configuration for Microsoft Agent Framework integration"
+  mcp_servers_config: "mcp_servers.yaml"  # Reference to MCP servers config

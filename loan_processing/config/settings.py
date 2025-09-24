@@ -1,12 +1,15 @@
 """
 Simple configuration settings for MCP servers.
 
-This module provides basic configuration for the MCP (Model Context Protocol)
-servers that provide tools for loan processing business logic.
+This module provides configuration loading for MCP (Model Context Protocol)
+servers from mcp_servers.yaml with environment variable overrides.
 """
 
 import os
-from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, Any
+
+import yaml
 
 # Load environment variables if available
 try:
@@ -17,48 +20,69 @@ except ImportError:
     pass
 
 
-@dataclass
 class MCPServerConfig:
-    """Configuration for MCP server connections."""
+    """Configuration for MCP server connections loaded from YAML."""
 
-    # MCP server ports
-    application_verification_port: int = 8010
-    document_processing_port: int = 8011
-    financial_calculations_port: int = 8012
-
-    # Connection settings
-    host: str = "localhost"
-    connection_timeout: int = 30
+    def __init__(self, servers_config: Dict[str, Any]):
+        """Initialize with servers configuration dictionary."""
+        self.servers = servers_config
+        self.connection_timeout = int(os.getenv("MCP_CONNECTION_TIMEOUT", "30"))
 
     @classmethod
-    def from_env(cls) -> "MCPServerConfig":
-        """Load MCP server configuration from environment variables."""
-        return cls(
-            application_verification_port=int(os.getenv("MCP_APP_VERIFICATION_PORT", "8010")),
-            document_processing_port=int(os.getenv("MCP_DOCUMENT_PROCESSING_PORT", "8011")),
-            financial_calculations_port=int(os.getenv("MCP_FINANCIAL_CALCULATIONS_PORT", "8012")),
-            host=os.getenv("MCP_SERVER_HOST", "localhost"),
-            connection_timeout=int(os.getenv("MCP_CONNECTION_TIMEOUT", "30")),
-        )
+    def load_from_yaml(cls, config_path: Path = None) -> "MCPServerConfig":
+        """Load MCP server configuration from YAML file."""
+        if config_path is None:
+            config_path = Path(__file__).parent / "mcp_servers.yaml"
+
+        if not config_path.exists():
+            raise FileNotFoundError(f"MCP servers config not found: {config_path}")
+
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f)
+
+        servers = config.get("servers", {})
+
+        # Apply environment variable overrides
+        for server_name, server_config in servers.items():
+            # Override host if environment variable exists
+            env_host = os.getenv(f"MCP_{server_name.upper()}_HOST")
+            if env_host:
+                server_config["host"] = env_host
+
+            # Override port if environment variable exists
+            env_port = os.getenv(f"MCP_{server_name.upper()}_PORT")
+            if env_port:
+                server_config["port"] = int(env_port)
+                # Rebuild URL with new port
+                server_config["url"] = f"http://{server_config['host']}:{server_config['port']}/sse"
+
+        return cls(servers)
+
+    def get_server_config(self, server_name: str) -> Dict[str, Any]:
+        """Get configuration for a specific MCP server."""
+        if server_name not in self.servers:
+            raise ValueError(f"Unknown MCP server: {server_name}")
+
+        return self.servers[server_name]
 
     def get_server_url(self, server_name: str) -> str:
         """Get the full URL for an MCP server."""
-        port_map = {
-            "application_verification": self.application_verification_port,
-            "document_processing": self.document_processing_port,
-            "financial_calculations": self.financial_calculations_port,
-        }
+        server_config = self.get_server_config(server_name)
+        return server_config["url"]
 
-        port = port_map.get(server_name)
-        if not port:
-            raise ValueError(f"Unknown MCP server: {server_name}")
+    def get_available_servers(self) -> list:
+        """Get list of available MCP server names."""
+        return list(self.servers.keys())
 
-        return f"http://{self.host}:{port}/sse"
+    def get_server_tools(self, server_name: str) -> list:
+        """Get list of tools available on a specific server."""
+        server_config = self.get_server_config(server_name)
+        return server_config.get("tools", [])
 
 
 def get_mcp_config() -> MCPServerConfig:
-    """Get MCP server configuration."""
-    return MCPServerConfig.from_env()
+    """Get MCP server configuration from YAML file."""
+    return MCPServerConfig.load_from_yaml()
 
 
 __all__ = [

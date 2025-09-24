@@ -7,7 +7,6 @@ servers that provide tools for loan processing business logic.
 
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 # Load environment variables if available
 try:

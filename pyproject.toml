@@ -19,18 +19,19 @@ classifiers = [
 ]
 
 dependencies = [
-    # Core dependencies - always required
-    "python-dotenv>=1.0.0",
-    "pydantic>=2.5.0",
-    "httpx>=0.27.0",
-    "rich>=13.0.0", # For better console output
+    # Core business logic dependencies
+    "pydantic>=2.5.0", # Data model validation
+    "PyYAML>=6.0.0", # Configuration file parsing
+
+    # MCP server dependencies
     "mcp[cli]>=1.12.3", # Model Context Protocol for agent tools
-    "uvicorn>=0.35.0",
-    "requests>=2.32.4",
-    "PyYAML>=6.0.0", # For configuration file parsing
-    # Logging infrastructure (always available)
-    "structlog>=24.1.0", # Structured logging with processors
-    "opentelemetry-api>=1.20.0", # OTEL API for correlation tracking
+    "uvicorn>=0.35.0", # ASGI server for MCP servers
+    "httpx>=0.27.0", # HTTP client for external integrations
+    "requests>=2.32.4", # HTTP requests for MCP tools
+
+    # Optional dependencies
+    "python-dotenv>=1.0.0", # Environment configuration (optional)
+
     # Microsoft Agent Framework (to be added when available)
     # "microsoft-agent-framework>=1.0.0",
 ]

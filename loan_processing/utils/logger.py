@@ -1,46 +1,60 @@
 """
-Core logging functionality.
+Simple logging utility for loan processing system.
 
-This module provides the main logging interface with structured logging
-and optional Azure Application Insights integration.
+Provides basic Python logging configuration without complex dependencies.
+Perfect for business logic foundation that can work with any framework.
 """
 
-import os
+import logging
+import sys
+from typing import Optional
 
-import structlog
 
-
-def get_logger(name: str):
+def get_logger(name: str, level: Optional[str] = None) -> logging.Logger:
     """
-    Get a structured logger that works with or without Azure.
+    Get a simple, configured logger.
 
     Args:
         name: Logger name (typically __name__)
+        level: Optional log level override
 
     Returns:
         Configured logger instance
     """
-    from . import _ensure_configured
+    logger = logging.getLogger(name)
 
-    # Ensure logging is configured
-    _ensure_configured()
+    # Configure logger if not already configured
+    if not logger.handlers:
+        handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter(
+            fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
 
-    return structlog.get_logger(name)
+        # Set level from parameter or environment
+        log_level = level or 'INFO'
+        logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
+
+    return logger
 
 
-def get_logging_status():
+def configure_basic_logging(level: str = 'INFO') -> None:
     """
-    Return current logging configuration status.
+    Configure basic logging for the entire application.
 
-    Returns:
-        Dictionary with logging configuration details
+    Args:
+        level: Log level (DEBUG, INFO, WARNING, ERROR)
     """
-    from . import _azure_enabled
+    logging.basicConfig(
+        level=getattr(logging, level.upper(), logging.INFO),
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
 
-    return {
-        "console_logging": True,  # Always available
-        "azure_enabled": _azure_enabled,
-        "log_level": os.getenv("LOG_LEVEL", "INFO"),
-        "log_format": os.getenv("LOG_FORMAT", "console"),
-        "azure_connection_configured": bool(os.getenv("AZURE_MONITOR_CONNECTION_STRING")),
-    }
+
+__all__ = [
+    "get_logger",
+    "configure_basic_logging"
+]

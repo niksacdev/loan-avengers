@@ -1,34 +1,34 @@
 """
-Agent module for loan processing system using Microsoft Agent Framework.
+Agent personas for loan processing system.
 
-This module provides the agent infrastructure following the architectural
-patterns established in ADRs 002 and 005.
+This module contains only the agent persona definitions that can be used
+with any agent framework, particularly Microsoft Agent Framework.
 """
 
-from .base import (
-    LoanProcessingAgent,
-    AgentRegistry,
-    AgentError,
-    AgentTimeoutError,
-    MCPServerError
-)
+# Agent personas are stored as markdown files in agent-persona/ directory
+# These can be loaded by any agent framework implementation
 
-from .registry import (
-    AgentRegistryManager,
-    initialize_global_registry,
-    get_global_registry
-)
+AGENT_PERSONAS = {
+    "intake": "intake-agent-persona.md",
+    "credit": "credit-agent-persona.md",
+    "income": "income-agent-persona.md",
+    "risk": "risk-agent-persona.md",
+    "orchestrator": "orchestrator-agent-persona.md"
+}
+
+def get_persona_path(agent_type: str) -> str:
+    """Get the path to an agent persona file."""
+    if agent_type not in AGENT_PERSONAS:
+        raise ValueError(f"Unknown agent type: {agent_type}")
+
+    return f"loan_processing/agents/agent-persona/{AGENT_PERSONAS[agent_type]}"
+
+def get_available_agents() -> list:
+    """Get list of available agent types."""
+    return list(AGENT_PERSONAS.keys())
 
 __all__ = [
-    # Base agent classes and exceptions
-    "LoanProcessingAgent",
-    "AgentRegistry",
-    "AgentError",
-    "AgentTimeoutError",
-    "MCPServerError",
-
-    # Registry management
-    "AgentRegistryManager",
-    "initialize_global_registry",
-    "get_global_registry",
+    "AGENT_PERSONAS",
+    "get_persona_path",
+    "get_available_agents"
 ]

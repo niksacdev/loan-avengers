@@ -1,244 +1,274 @@
-# Multi-Agent Loan Processing System
+# Loan Processing Business Logic Foundation
 
-A comprehensive loan processing system using Microsoft Agent Framework that implements autonomous agents for credit assessment, income verification, and risk evaluation.
+A simplified, framework-agnostic loan processing system that provides core business logic, data models, and agent personas for integration with Microsoft Agent Framework or any other AI agent system.
 
-## 🏗️ Architecture Overview
+## 🎯 Philosophy: Business Logic First
 
-This system follows a **multi-agent strategic foundation** designed for progressive autonomy and future extensibility. The architecture is based on consolidated decisions from multiple ADR documents.
+This repository contains **only the essential business components** needed for loan processing:
 
-### Key Architectural Principles
+- ✅ **Business Data Models**: Validated loan applications, assessments, and decisions
+- ✅ **MCP Servers**: Tool integrations for external data (credit, documents, calculations)
+- ✅ **Agent Personas**: Specialized agent instructions for loan processing tasks
+- ✅ **Service Interfaces**: Abstract business service definitions
 
-- **Multi-Agent Strategic Foundation** (ADR-015): Agents gain intelligence as MCP servers expand
-- **Configuration-Driven Orchestration** (ADR-005): No hardcoded agent handoffs
-- **Agent Base Architecture** (ADR-002): Microsoft Agent Framework composition pattern
-- **Layered Configuration System** (ADR-007): Dependency injection with multiple providers
+**What's NOT included** (by design):
+- ❌ Agent framework implementations
+- ❌ Orchestration engines
+- ❌ Complex agent creation code
+- ❌ Provider abstractions
 
-### System Components
+## 🏗️ Architecture
 
+### Simple, Clean Structure
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                 Application Layer                           │
-├─────────────────────────────────────────────────────────────┤
-│              Orchestration Engine                           │
-│  Pattern Loader  │  Agent Registry  │  Context Management  │
-├─────────────────────────────────────────────────────────────┤
-│                    Agent Layer                              │
-│  Intake Agent  │  Credit Agent  │  Income Agent  │ Risk Agent │
-├─────────────────────────────────────────────────────────────┤
-│                     Tool Layer                              │
-│  MCP Servers: App Verification │ Document Processing │ Financial │
-├─────────────────────────────────────────────────────────────┤
-│                Business Services & Data Models             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.10+
-- Microsoft Agent Framework (when available)
-- MCP (Model Context Protocol) servers
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd loan-agent-workflow
-
-# Install dependencies
-pip install -e .
+loan_processing/
+├── models/                  # Business data models with Pydantic validation
+│   ├── application.py       # LoanApplication model
+│   ├── assessment.py        # Assessment result models
+│   └── decision.py          # LoanDecision model
+├── agents/
+│   └── agent-persona/       # Agent instruction files (markdown)
+│       ├── intake-agent-persona.md
+│       ├── credit-agent-persona.md
+│       ├── income-agent-persona.md
+│       ├── risk-agent-persona.md
+│       └── orchestrator-agent-persona.md
+├── tools/
+│   ├── mcp_servers/         # MCP server implementations
+│   │   ├── application_verification/
+│   │   ├── document_processing/
+│   │   └── financial_calculations/
+│   └── services/            # Business service interfaces
+├── config/
+│   └── agents.yaml          # Simple agent and MCP server configuration
+└── utils/                   # Shared utilities
 ```
 
-### Basic Usage
+## 🚀 Usage with Microsoft Agent Framework
 
+### 1. Load Agent Personas
 ```python
-from loan_processing.agents import initialize_global_registry, get_global_registry
-from loan_processing.orchestration import OrchestrationEngine
-from loan_processing.models import LoanApplication
+from loan_processing.agents import get_persona_path
 
-# Initialize agent registry
-await initialize_global_registry("loan_processing/config/agents.yaml")
+# Get persona file for framework integration
+credit_persona_path = get_persona_path("credit")
+with open(credit_persona_path, 'r') as f:
+    credit_instructions = f.read()
 
-# Create orchestration engine
-engine = OrchestrationEngine()
-await engine.load_patterns_from_directory("loan_processing/config/patterns/")
+# Use with Microsoft Agent Framework ChatClientAgent
+```
 
-# Create loan application
+### 2. Use Business Models
+```python
+from loan_processing.models import LoanApplication, LoanDecision
+
+# Create validated loan application
 application = LoanApplication(
     application_id="LN1234567890",
     applicant_name="John Doe",
-    # ... other fields
+    email="john.doe@example.com",
+    phone="+15551234567",
+    # ... other fields with automatic validation
 )
 
-# Process application
-decision = await engine.execute_pattern("sequential", application)
-print(f"Decision: {decision.decision} - {decision.decision_reason}")
+# Business logic is preserved with proper validation
+print(f"DTI Ratio: {application.debt_to_income_ratio}")
 ```
 
-## 🤖 Agent Types
+### 3. Access MCP Server Configurations
+```python
+import yaml
 
-### Intake Agent
-- **Purpose**: Data completeness check and routing assignment
-- **Tools**: None (fast triage)
-- **Output**: Validation status, routing decision, confidence score
+with open('loan_processing/config/agents.yaml', 'r') as f:
+    config = yaml.safe_load(f)
 
-### Credit Agent
+# Get MCP servers for credit agent
+credit_servers = config['agent_personas']['credit']['mcp_servers']
+# ['application_verification', 'financial_calculations', 'document_processing']
+```
+
+## 🤖 Available Agent Personas
+
+### Intake Agent (`intake-agent-persona.md`)
+- **Purpose**: Fast data completeness check and routing assignment
+- **Tools**: None (pure data validation)
+- **Output**: Validation status, routing decision
+
+### Credit Agent (`credit-agent-persona.md`)
 - **Purpose**: Credit risk assessment and scoring
 - **Tools**: Application verification, financial calculations, document processing
-- **Output**: Credit score, risk category, payment history, red flags
+- **Output**: Credit scores, risk categories, red flags
 
-### Income Agent
+### Income Agent (`income-agent-persona.md`)
 - **Purpose**: Income and employment verification
 - **Tools**: Application verification, document processing, financial calculations
 - **Output**: Verified income, employment status, stability scores
 
-### Risk Agent
+### Risk Agent (`risk-agent-persona.md`)
 - **Purpose**: Final decision synthesis and recommendations
-- **Tools**: All available MCP tools
-- **Output**: Final recommendation, approved terms, conditions, reasoning
+- **Tools**: All available tools
+- **Output**: Final recommendation, approved terms, conditions
 
-## 🔄 Orchestration Patterns
+### Orchestrator Agent (`orchestrator-agent-persona.md`)
+- **Purpose**: Workflow coordination and context management
+- **Tools**: None (pure coordination)
+- **Output**: Workflow status, agent handoffs
 
-### Sequential Pattern
-Agents execute in order with context passing between each stage:
-```
-Intake → Credit → Income → Risk → Decision
-```
+## 🛠️ MCP Tool Integration
 
-### Parallel Pattern
-Agents execute simultaneously after intake:
-```
-      ┌─ Credit ─┐
-Intake┤          ├─ Risk → Decision
-      └─ Income ─┘
-```
+The system includes three MCP servers for external tool integration:
 
-### Collaborative Pattern (Future)
-Agents communicate directly with each other based on assessment needs.
+### Application Verification Server
+- **Port**: 8010
+- **Tools**: Identity verification, employment checks, credit reports
+- **Usage**: Background data validation
 
-## 📁 Directory Structure
+### Document Processing Server
+- **Port**: 8011
+- **Tools**: OCR, document classification, data extraction
+- **Usage**: Process uploaded documents and forms
 
-```
-loan_processing/
-├── agents/
-│   ├── base.py              # Base agent classes (Microsoft Agent Framework)
-│   ├── registry.py          # Agent factory and management
-│   └── specialized/         # Specialized agent implementations (future)
-├── orchestration/
-│   ├── engine.py            # Dynamic pattern execution engine
-│   └── patterns/            # YAML workflow definitions
-├── models/                  # Preserved business data models
-│   ├── application.py       # Loan application model
-│   ├── assessment.py        # Assessment result models
-│   └── decision.py          # Final decision model
-├── tools/
-│   ├── mcp_servers/         # MCP server implementations
-│   └── services/            # Business service interfaces
-├── config/
-│   └── agents.yaml          # Agent configurations
-└── utils/                   # Shared utilities
-```
+### Financial Calculations Server
+- **Port**: 8012
+- **Tools**: DTI calculations, affordability analysis, risk scoring
+- **Usage**: Mathematical loan processing operations
 
-## ⚙️ Configuration
+## 💼 Business Logic Highlights
 
-### Agent Configuration (`config/agents.yaml`)
-```yaml
-agents:
-  credit:
-    name: "Credit Agent"
-    description: "Evaluates creditworthiness and financial risk"
-    mcp_servers: ["application_verification", "financial_calculations"]
-    capabilities: ["Credit scoring", "Risk categorization"]
-    output_format:
-      credit_score:
-        type: "integer"
-        range: [300, 850]
-```
+### Comprehensive Data Models
+- **LoanApplication**: Immutable application data with regex validation
+- **Assessment Models**: Structured results from each agent type
+- **LoanDecision**: Final decision with audit trail and reasoning
 
-### Pattern Configuration (`config/patterns/sequential.yaml`)
-```yaml
-name: "sequential_loan_processing"
-pattern_type: "sequential"
-agents:
-  - type: "intake"
-    timeout_seconds: 180
-handoff_rules:
-  - from: "intake"
-    to: "credit"
-    conditions:
-      - "validation_status == 'PASSED'"
+### Built-in Business Rules
+- Automatic DTI ratio calculations
+- Credit score validation (300-850 range)
+- Loan amount and term validation
+- Email and phone format validation
+
+### Security Features
+- Uses `applicant_id` (UUID) instead of SSN for privacy
+- Structured audit trails for compliance
+- Secure parameter handling in MCP servers
+
+## 🔧 Integration Examples
+
+### With Microsoft Agent Framework
+```python
+# Example framework integration
+from microsoft_agent_framework import ChatClientAgent
+from loan_processing.agents import get_persona_path
+from loan_processing.models import LoanApplication
+
+# Load agent persona
+with open(get_persona_path("credit"), 'r') as f:
+    persona = f.read()
+
+# Create agent with persona
+credit_agent = ChatClientAgent(
+    name="Credit Assessment Agent",
+    instructions=persona,
+    # Add MCP tools based on config
+)
+
+# Process application
+application = LoanApplication(...)
+result = await credit_agent.run(application.dict())
 ```
 
-## 🧪 Development
+### Standalone Business Logic
+```python
+from loan_processing.models import LoanApplication
+from decimal import Decimal
 
-### Key Preserved Components
-- **Business Logic**: All loan processing business rules preserved
-- **Data Models**: Complete Pydantic models with validation
-- **MCP Servers**: Tool integration for external data
-- **Service Interfaces**: Abstract business service definitions
+# Create application with automatic validation
+app = LoanApplication(
+    application_id="LN1234567890",
+    applicant_name="Jane Smith",
+    annual_income=Decimal("75000.00"),
+    loan_amount=Decimal("300000.00"),
+    existing_debt=Decimal("2500.00"),
+    # ... other fields
+)
 
-### Framework Migration Status
+# Business calculations work immediately
+print(f"Loan to Income Ratio: {app.loan_to_income_ratio:.2f}")
+print(f"Monthly DTI: {app.debt_to_income_ratio:.2f}")
+```
 
-- ✅ **Architecture Consolidation**: ADRs consolidated into single document
-- ✅ **OpenAI SDK Removal**: All OpenAI-specific code removed
-- ✅ **Agent Base Classes**: Framework-agnostic base implementations
-- ✅ **Configuration System**: Registry and orchestration patterns
-- 🔄 **Microsoft Agent Framework Integration**: Pending framework availability
-- 🔄 **Specialized Agent Implementations**: To be created with new framework
-- 🔄 **Test Suite**: To be regenerated for new architecture
+## 🧪 Development & Testing
 
-### Next Steps
+### Running MCP Servers
+```bash
+# Start application verification server
+python -m loan_processing.tools.mcp_servers.application_verification.server
 
-1. **Agent Implementation**: Create specialized agents using Microsoft Agent Framework
-2. **Framework Integration**: Integrate with ChatClientAgent patterns
-3. **Pattern Enhancement**: Add parallel and collaborative orchestration
-4. **Testing**: Comprehensive test suite for new architecture
-5. **Documentation**: Usage examples and integration guides
+# Start document processing server
+python -m loan_processing.tools.mcp_servers.document_processing.server
 
-## 🔍 Migration from v1.0
+# Start financial calculations server
+python -m loan_processing.tools.mcp_servers.financial_calculations.server
+```
 
-This repository represents a complete migration from OpenAI Agent SDK to Microsoft Agent Framework:
+### Testing Business Logic
+```bash
+# Install dependencies
+pip install -e .
 
-### What Was Preserved
-- ✅ All business logic and data models
-- ✅ MCP server implementations and business services
-- ✅ Configuration-driven orchestration patterns
-- ✅ Architectural decisions and principles
+# Test data models
+python -c "
+from loan_processing.models import LoanApplication
+from decimal import Decimal
+from datetime import datetime
 
-### What Was Removed
-- ❌ OpenAI Agent SDK dependencies
-- ❌ Provider-specific orchestration code
-- ❌ Legacy test suites (to be regenerated)
-- ❌ OpenAI-specific configuration and workflows
+app = LoanApplication(
+    application_id='LN1234567890',
+    applicant_name='Test User',
+    applicant_id='550e8400-e29b-41d4-a716-446655440000',
+    email='test@example.com',
+    phone='+15551234567',
+    date_of_birth=datetime(1990, 1, 1),
+    loan_amount=Decimal('250000.00'),
+    loan_purpose='home_purchase',
+    loan_term_months=360,
+    annual_income=Decimal('80000.00'),
+    employment_status='employed'
+)
 
-### What's New
-- 🆕 Consolidated architecture document (ARCHITECTURE.md)
-- 🆕 Framework-agnostic agent base classes
-- 🆕 Microsoft Agent Framework integration patterns
-- 🆕 Enhanced orchestration engine with YAML configuration
+print('✅ Business model validation works!')
+print(f'DTI Ratio: {app.debt_to_income_ratio}')
+print(f'Loan/Income Ratio: {app.loan_to_income_ratio:.2f}')
+"
+```
 
-## 📚 Documentation
+## 📈 Migration Benefits
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Comprehensive architecture guide
-- **[ADR Documents](docs/decisions/)**: Detailed architectural decisions (preserved for reference)
-- **Configuration Examples**: See `loan_processing/config/` directory
+### From Complex to Simple
+- **Before**: 6,680+ lines with orchestration complexity
+- **After**: Core business logic only, framework-agnostic
+- **Result**: Easy integration with any agent framework
 
-## 📄 License
+### Preserved Business Value
+- ✅ Complete loan processing business rules
+- ✅ Validated data models with proper constraints
+- ✅ MCP server implementations for real-world integration
+- ✅ Agent persona definitions from domain expertise
 
-MIT License - See [LICENSE](LICENSE) file for details.
+### Ready for Framework Integration
+- 🔄 Microsoft Agent Framework: Load personas directly
+- 🔄 OpenAI Assistants: Convert personas to instructions
+- 🔄 LangChain: Use as tool definitions and prompts
+- 🔄 AutoGen: Apply as agent system messages
 
-## 🤝 Contributing
+## 🎯 Next Steps
 
-This system is designed for progressive enhancement. Key areas for contribution:
+1. **Choose Your Framework**: Microsoft Agent Framework, OpenAI, LangChain, etc.
+2. **Load Agent Personas**: Use the markdown files as agent instructions
+3. **Integrate MCP Servers**: Connect the three tool servers to your agents
+4. **Build Workflow**: Create your own orchestration using the business models
 
-1. **Microsoft Agent Framework Integration**
-2. **Specialized Agent Implementations**
-3. **Enhanced MCP Server Ecosystem**
-4. **Advanced Orchestration Patterns**
-5. **Machine Learning Integration**
+The business logic is ready. The agent framework choice is yours.
 
 ---
 
-**Note**: This is a strategic multi-agent architecture designed to grow with increased MCP server capabilities and agent intelligence. The current implementation provides the foundation for future autonomous loan processing capabilities.
+**Philosophy**: Keep business logic separate from framework complexity. This foundation will work with any agent system, today and in the future.

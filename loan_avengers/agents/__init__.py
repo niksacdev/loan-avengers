@@ -22,7 +22,7 @@ def get_persona_path(agent_type: str) -> str:
     if agent_type not in AGENT_PERSONAS:
         raise ValueError(f"Unknown agent type: {agent_type}")
 
-    return f"loan_processing/agents/agent-persona/{AGENT_PERSONAS[agent_type]}"
+    return f"loan_avengers/agents/agent-persona/{AGENT_PERSONAS[agent_type]}"
 
 
 def get_available_agents() -> list:

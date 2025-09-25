@@ -14,8 +14,8 @@ This foundation can be used with any agent framework, particularly
 Microsoft Agent Framework with ChatClientAgent patterns.
 
 Usage:
-    from loan_processing.models import LoanApplication, LoanDecision
-    from loan_processing.agents import get_persona_path
+    from loan_avengers.models import LoanApplication, LoanDecision
+    from loan_avengers.agents import get_persona_path
 
     # Load agent persona for framework integration
     persona_path = get_persona_path("credit")

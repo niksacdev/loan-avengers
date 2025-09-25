@@ -38,9 +38,7 @@ mcp.settings.port = 8011
 # Initialize service implementation
 document_service = MCPDocumentProcessingService()
 
-logger.info(
-    "Document Processing MCP Server initialized", component="mcp_server", server_name="document_processing", port=8011
-)
+logger.info("Processing request")
 
 
 @mcp.tool()
@@ -55,12 +53,7 @@ async def extract_text_from_document(document_path: str, document_type: str = "a
     Returns:
         JSON string with extracted text and metadata
     """
-    logger.info(
-        "Document text extraction request",
-        document_path=document_path,
-        document_type=document_type,
-        component="mcp_server",
-    )
+    logger.info("Processing request")
     result = await document_service.extract_text_from_document(document_path, document_type)
     return str(result)
 
@@ -93,12 +86,7 @@ async def validate_document_format(document_path: str, expected_format: str) -> 
     Returns:
         JSON string with validation results
     """
-    logger.info(
-        "Document validation request",
-        document_path=document_path,
-        expected_format=expected_format,
-        component="mcp_server",
-    )
+    logger.info("Processing request")
     result = await document_service.validate_document_format(document_path, expected_format)
     return str(result)
 
@@ -133,9 +121,7 @@ async def convert_document_format(input_path: str, output_format: str) -> str:
     Returns:
         JSON string with conversion results and output path
     """
-    logger.info(
-        "Document conversion request", input_path=input_path, output_format=output_format, component="mcp_server"
-    )
+    logger.info("Processing request")
     result = await document_service.convert_document_format(input_path, output_format)
     return str(result)
 
@@ -163,12 +149,7 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Document Processing MCP Server",
-            transport="sse",
-            url="http://localhost:8011/sse",
-            component="mcp_server",
-        )
+        logger.info("Processing request")
     else:
         logger.info("Application server processing request")
 

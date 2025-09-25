@@ -49,20 +49,11 @@ class MCPDocumentProcessingService(DocumentProcessingService):
         """
         self.mcp_client = mcp_client
 
-        logger.info(
-            "Document processing service initialized",
-            has_mcp_client=mcp_client is not None,
-            component="document_service",
-        )
+        logger.info(f"Document processing service initialized - MCP client: {mcp_client is not None}")
 
     async def extract_text_from_document(self, document_path: str, document_type: str = "auto") -> dict[str, Any]:
         """Extract text from document using Document Processing MCP server."""
-        logger.info(
-            "Extracting text from document",
-            document_path=document_path,
-            document_type=document_type,
-            component="document_service",
-        )
+        logger.info("Processing request")
 
         try:
             result = await self.mcp_client.call_tool(
@@ -71,29 +62,18 @@ class MCPDocumentProcessingService(DocumentProcessingService):
 
             parsed_result = json.loads(result) if isinstance(result, str) else result
 
-            logger.info(
-                "Document text extraction completed",
-                document_path=document_path,
-                success=True,
-                component="document_service",
-            )
+            logger.info("Processing request")
 
             return parsed_result if isinstance(parsed_result, dict) else {}
 
         except (json.JSONDecodeError, TypeError) as e:
-            logger.error(
-                "Failed to parse document extraction result",
-                document_path=document_path,
-                error_message=str(e),
+            logger.error("Processing error"),
                 error_type=type(e).__name__,
                 component="document_service",
             )
             return {}
         except Exception as e:
-            logger.error(
-                "Document text extraction failed",
-                document_path=document_path,
-                error_message=str(e),
+            logger.error("Processing error"),
                 error_type=type(e).__name__,
                 component="document_service",
             )

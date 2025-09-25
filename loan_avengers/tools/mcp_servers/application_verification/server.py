@@ -102,12 +102,7 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Application Verification MCP Server",
-            transport="sse",
-            url="http://localhost:8010/sse",
-            component="mcp_server",
-        )
+        logger.info("Processing request")
     else:
         logger.info("Application server processing request")
 

@@ -44,7 +44,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
         # Note: application_id correlation available via correlation_context from caller
 
         if monthly_income <= 0:
-            logger.error("Invalid monthly income for DTI calculation", component="financial_service")
+            logger.error("Processing request")
             return {"error": "Monthly income must be greater than zero", "type": "calculation_error"}
 
         dti_ratio = (monthly_debt_payments / monthly_income) * 100
@@ -63,9 +63,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             qualification = "poor"
             risk_level = "very_high"
 
-        logger.info(
-            "DTI calculation completed",
-            dti_ratio=round(dti_ratio, 2),
+        logger.info("Processing request"),
             qualification=qualification,
             risk_level=risk_level,
             component="financial_service",
@@ -121,10 +119,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             affordability = "unaffordable"
             approval_probability = random.uniform(0.10, 0.40)
 
-        logger.info(
-            "Loan affordability calculation completed",
-            affordability_status=affordability,
-            approval_probability=round(approval_probability, 3),
+        logger.info("Processing request"),
             new_dti=round(new_dti, 2),
             monthly_payment=round(monthly_payment, 2),
             component="financial_service",

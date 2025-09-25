@@ -38,12 +38,7 @@ mcp.settings.port = 8012
 # Initialize service implementation
 financial_service = FinancialCalculationsServiceImpl()
 
-logger.info(
-    "Financial Calculations MCP Server initialized",
-    component="mcp_server",
-    server_name="financial_calculations",
-    port=8012,
-)
+logger.info("Financial Calculations MCP Server initialized on port 8012")
 
 
 @mcp.tool()
@@ -122,12 +117,7 @@ async def calculate_credit_utilization_ratio(total_credit_used: float, total_cre
     Returns:
         JSON string with utilization calculation
     """
-    logger.info(
-        "Credit utilization calculation request",
-        total_credit_used=total_credit_used,
-        total_credit_available=total_credit_available,
-        component="mcp_server",
-    )
+    logger.info("Processing request")
     result = await financial_service.calculate_credit_utilization_ratio(total_credit_used, total_credit_available)
     return json.dumps(result)
 
@@ -153,12 +143,7 @@ async def calculate_total_debt_service_ratio(
     Returns:
         JSON string with TDSR calculation
     """
-    logger.info(
-        "TDSR calculation request",
-        monthly_income=monthly_income,
-        total_monthly_debt=total_monthly_debt,
-        component="mcp_server",
-    )
+    logger.info("Processing request")
     result = await financial_service.calculate_total_debt_service_ratio(
         monthly_income, total_monthly_debt, property_taxes, insurance, hoa_fees
     )
@@ -188,12 +173,7 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Financial Calculations MCP Server",
-            transport="sse",
-            url="http://localhost:8012/sse",
-            component="mcp_server",
-        )
+        logger.info("Processing request")
     else:
         logger.info("Application server processing request")
 

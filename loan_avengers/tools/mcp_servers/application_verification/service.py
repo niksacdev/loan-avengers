@@ -46,14 +46,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
         risk_level = "low" if score >= 740 else "medium" if score >= 680 else "high"
         recommendation = "approve" if score >= 700 and utilization <= 0.3 else "review"
 
-        logger.info(
-            "Credit report generated",
-            applicant_id=applicant_id,
-            credit_score=score,
-            risk_level=risk_level,
-            recommendation=recommendation,
-            component="verification_service",
-        )
+        logger.info("Processing request")
 
         return {
             "applicant_id": applicant_id,
@@ -81,14 +74,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
 
         verification_status = "verified" if tenure_months >= 12 else "conditional"
 
-        logger.info(
-            "Employment verification completed",
-            applicant_id=applicant_id,
-            income=income,
-            tenure_months=tenure_months,
-            verification_status=verification_status,
-            component="verification_service",
-        )
+        logger.info("Processing request")
 
         return {
             "applicant_id": applicant_id,

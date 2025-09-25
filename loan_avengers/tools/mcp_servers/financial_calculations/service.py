@@ -63,11 +63,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             qualification = "poor"
             risk_level = "very_high"
 
-        logger.info("Processing request"),
-            qualification=qualification,
-            risk_level=risk_level,
-            component="financial_service",
-        )
+        logger.info(f"DTI calculation completed - qualification: {qualification}, risk: {risk_level}")
 
         return {
             "debt_to_income_ratio": round(dti_ratio, 2),
@@ -119,11 +115,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             affordability = "unaffordable"
             approval_probability = random.uniform(0.10, 0.40)
 
-        logger.info("Processing request"),
-            new_dti=round(new_dti, 2),
-            monthly_payment=round(monthly_payment, 2),
-            component="financial_service",
-        )
+        logger.info(f"Loan affordability calculated - DTI: {round(new_dti, 2)}%, payment: ${round(monthly_payment, 2)}")
 
         return {
             "loan_amount": loan_amount,

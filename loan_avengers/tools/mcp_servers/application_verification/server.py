@@ -46,7 +46,7 @@ async def retrieve_credit_report(applicant_id: str, full_name: str, address: str
 @mcp.tool()
 async def verify_employment(applicant_id: str, employer_name: str, position: str) -> str:
     """Return employment verification as JSON string."""
-    logger.info("Application server processing request")
+    logger.info(f"Employment verification request received for {employer_name} position: {position}")
     result = await service.verify_employment(applicant_id, employer_name, position)
     return json.dumps(result)
 
@@ -54,7 +54,7 @@ async def verify_employment(applicant_id: str, employer_name: str, position: str
 @mcp.tool()
 async def get_bank_account_data(account_number: str, routing_number: str) -> str:
     """Return bank account details and balance as JSON string."""
-    logger.info("Application server processing request")
+    logger.info(f"Bank account data request received for account ending in {account_number[-4:]}")
     result = await service.get_bank_account_data(account_number, routing_number)
     return json.dumps(result)
 
@@ -62,7 +62,7 @@ async def get_bank_account_data(account_number: str, routing_number: str) -> str
 @mcp.tool()
 async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
     """Return tax transcript summary as JSON string."""
-    logger.info("Application server processing request")
+    logger.info(f"Tax transcript data request received for tax year {tax_year}")
     result = await service.get_tax_transcript_data(applicant_id, tax_year)
     return json.dumps(result)
 
@@ -70,7 +70,7 @@ async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
 @mcp.tool()
 async def verify_asset_information(asset_type: str, asset_details_json: str) -> str:
     """Return asset verification results as JSON string."""
-    logger.info("Application server processing request")
+    logger.info(f"Asset verification request received for {asset_type} asset type")
     try:
         asset_details = json.loads(asset_details_json) if asset_details_json else {}
     except json.JSONDecodeError:
@@ -102,8 +102,8 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info("Processing request")
+        logger.info("Starting Application Verification MCP Server with SSE transport on http://localhost:8010/sse")
     else:
-        logger.info("Application server processing request")
+        logger.info("Starting Application Verification MCP Server with stdio transport")
 
     mcp.run(transport=transport)

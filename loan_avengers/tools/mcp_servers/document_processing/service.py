@@ -67,16 +67,10 @@ class MCPDocumentProcessingService(DocumentProcessingService):
             return parsed_result if isinstance(parsed_result, dict) else {}
 
         except (json.JSONDecodeError, TypeError) as e:
-            logger.error("Processing error"),
-                error_type=type(e).__name__,
-                component="document_service",
-            )
+            logger.error(f"Document text extraction failed with {type(e).__name__}: {str(e)}")
             return {}
         except Exception as e:
-            logger.error("Processing error"),
-                error_type=type(e).__name__,
-                component="document_service",
-            )
+            logger.error(f"Document text extraction failed with {type(e).__name__}: {str(e)}")
             return {}
 
     async def classify_document_type(self, document_content: str) -> dict[str, Any]:

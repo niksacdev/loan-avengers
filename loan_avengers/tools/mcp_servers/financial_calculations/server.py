@@ -173,8 +173,8 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info("Processing request")
+        logger.info("Starting Financial Calculations MCP Server with SSE transport on http://localhost:8012/sse")
     else:
-        logger.info("Application server processing request")
+        logger.info("Starting Financial Calculations MCP Server with stdio transport")
 
     mcp.run(transport=transport)

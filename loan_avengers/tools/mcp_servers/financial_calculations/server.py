@@ -25,8 +25,7 @@ from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import FinancialCalculationsServiceImpl  # noqa: E402
 
-# Initialize observability and logging
-Observability.initialize()
+# Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("financial_calculations_server")
 
 # Create MCP server
@@ -59,7 +58,7 @@ async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_pay
     Returns:
         JSON string with DTI calculation results
     """
-    logger.info("DTI calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_debt_to_income_ratio(monthly_income, monthly_debt_payments)
     return json.dumps(result)
 
@@ -81,7 +80,7 @@ async def calculate_loan_affordability(
     Returns:
         JSON string with affordability assessment
     """
-    logger.info("Loan affordability calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_loan_affordability(
         monthly_income, existing_debt, loan_amount, interest_rate, loan_term_months
     )
@@ -104,7 +103,7 @@ async def calculate_monthly_payment(
     Returns:
         JSON string with payment calculation
     """
-    logger.info("Monthly payment calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_monthly_payment(
         loan_amount, interest_rate, loan_term_months, payment_type
     )
@@ -196,6 +195,6 @@ if __name__ == "__main__":
             component="mcp_server",
         )
     else:
-        logger.info("Starting Financial Calculations MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Application server processing request")
 
     mcp.run(transport=transport)

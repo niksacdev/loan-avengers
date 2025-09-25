@@ -24,8 +24,7 @@ sys.path.insert(0, str(project_root))
 from loan_avengers.tools.services.financial_calculations import FinancialCalculationsService  # noqa: E402
 from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize observability and logging
-Observability.initialize()
+# Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("financial_calculations_service")
 
 

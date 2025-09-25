@@ -25,8 +25,7 @@ from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import MCPDocumentProcessingService  # noqa: E402
 
-# Initialize observability and logging
-Observability.initialize()
+# Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("document_processing_server")
 
 # Create MCP server
@@ -116,7 +115,7 @@ async def extract_structured_data(document_path: str, data_schema: str) -> str:
     Returns:
         JSON string with extracted structured data
     """
-    logger.info("Structured data extraction request", document_path=document_path, component="mcp_server")
+    logger.info("Application server processing request")
     schema_dict = json.loads(data_schema)
     result = await document_service.extract_structured_data(document_path, schema_dict)
     return str(result)
@@ -171,6 +170,6 @@ if __name__ == "__main__":
             component="mcp_server",
         )
     else:
-        logger.info("Starting Document Processing MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Application server processing request")
 
     mcp.run(transport=transport)

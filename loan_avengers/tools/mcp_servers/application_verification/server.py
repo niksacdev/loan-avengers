@@ -21,8 +21,7 @@ from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import ApplicationVerificationServiceImpl  # noqa: E402
 
-# Initialize observability and logging
-Observability.initialize()
+# Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("application_verification_server")
 
 # Create MCP server and configure optional SSE
@@ -33,18 +32,13 @@ mcp.settings.port = 8010
 # Initialize service implementation
 service = ApplicationVerificationServiceImpl()
 
-logger.info(
-    "Application Verification MCP Server initialized",
-    component="mcp_server",
-    server_name="application_verification",
-    port=8010,
-)
+logger.info("Application Verification MCP Server initialized on port 8010")
 
 
 @mcp.tool()
 async def retrieve_credit_report(applicant_id: str, full_name: str, address: str) -> str:
     """Return a credit report summary as JSON string."""
-    logger.info("Credit report request", applicant_id=applicant_id, component="mcp_server")
+    logger.info(f"Credit report request for applicant: {applicant_id}")
     result = await service.retrieve_credit_report(applicant_id, full_name, address)
     return json.dumps(result)
 
@@ -52,7 +46,7 @@ async def retrieve_credit_report(applicant_id: str, full_name: str, address: str
 @mcp.tool()
 async def verify_employment(applicant_id: str, employer_name: str, position: str) -> str:
     """Return employment verification as JSON string."""
-    logger.info("Employment verification request", applicant_id=applicant_id, component="mcp_server")
+    logger.info("Application server processing request")
     result = await service.verify_employment(applicant_id, employer_name, position)
     return json.dumps(result)
 
@@ -60,7 +54,7 @@ async def verify_employment(applicant_id: str, employer_name: str, position: str
 @mcp.tool()
 async def get_bank_account_data(account_number: str, routing_number: str) -> str:
     """Return bank account details and balance as JSON string."""
-    logger.info("Bank account data request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await service.get_bank_account_data(account_number, routing_number)
     return json.dumps(result)
 
@@ -68,7 +62,7 @@ async def get_bank_account_data(account_number: str, routing_number: str) -> str
 @mcp.tool()
 async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
     """Return tax transcript summary as JSON string."""
-    logger.info("Tax transcript request", applicant_id=applicant_id, tax_year=tax_year, component="mcp_server")
+    logger.info("Application server processing request")
     result = await service.get_tax_transcript_data(applicant_id, tax_year)
     return json.dumps(result)
 
@@ -76,7 +70,7 @@ async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
 @mcp.tool()
 async def verify_asset_information(asset_type: str, asset_details_json: str) -> str:
     """Return asset verification results as JSON string."""
-    logger.info("Asset verification request", asset_type=asset_type, component="mcp_server")
+    logger.info("Application server processing request")
     try:
         asset_details = json.loads(asset_details_json) if asset_details_json else {}
     except json.JSONDecodeError:
@@ -115,6 +109,6 @@ if __name__ == "__main__":
             component="mcp_server",
         )
     else:
-        logger.info("Starting Application Verification MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Application server processing request")
 
     mcp.run(transport=transport)

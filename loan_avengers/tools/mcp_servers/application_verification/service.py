@@ -25,8 +25,7 @@ sys.path.insert(0, str(project_root))
 from loan_avengers.tools.services.application_verification import ApplicationVerificationService  # noqa: E402
 from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize observability and logging
-Observability.initialize()
+# Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("application_verification_service")
 
 
@@ -37,7 +36,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
     """
 
     async def retrieve_credit_report(self, applicant_id: str, full_name: str, address: str) -> dict[str, Any]:
-        logger.info("Retrieving credit report", applicant_id=applicant_id, component="verification_service")
+        logger.info("Processing request")
 
         score = random.randint(620, 780)
         utilization = round(random.uniform(0.15, 0.45), 2)
@@ -74,7 +73,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
         }
 
     async def verify_employment(self, applicant_id: str, employer_name: str, position: str) -> dict[str, Any]:
-        logger.info("Verifying employment", applicant_id=applicant_id, component="verification_service")
+        logger.info("Processing request")
 
         income = random.randint(50000, 120000)
         tenure_months = random.randint(6, 60)

@@ -7,13 +7,14 @@ servers from mcp_servers.yaml with environment variable overrides.
 
 import os
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 
 import yaml
 
 # Load environment variables if available
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     # dotenv is optional
@@ -23,7 +24,7 @@ except ImportError:
 class MCPServerConfig:
     """Configuration for MCP server connections loaded from YAML."""
 
-    def __init__(self, servers_config: Dict[str, Any]):
+    def __init__(self, servers_config: dict[str, Any]):
         """Initialize with servers configuration dictionary."""
         self.servers = servers_config
         self.connection_timeout = int(os.getenv("MCP_CONNECTION_TIMEOUT", "30"))
@@ -37,7 +38,7 @@ class MCPServerConfig:
         if not config_path.exists():
             raise FileNotFoundError(f"MCP servers config not found: {config_path}")
 
-        with open(config_path, 'r') as f:
+        with open(config_path) as f:
             config = yaml.safe_load(f)
 
         servers = config.get("servers", {})
@@ -58,7 +59,7 @@ class MCPServerConfig:
 
         return cls(servers)
 
-    def get_server_config(self, server_name: str) -> Dict[str, Any]:
+    def get_server_config(self, server_name: str) -> dict[str, Any]:
         """Get configuration for a specific MCP server."""
         if server_name not in self.servers:
             raise ValueError(f"Unknown MCP server: {server_name}")
@@ -85,7 +86,4 @@ def get_mcp_config() -> MCPServerConfig:
     return MCPServerConfig.load_from_yaml()
 
 
-__all__ = [
-    "MCPServerConfig",
-    "get_mcp_config"
-]
+__all__ = ["MCPServerConfig", "get_mcp_config"]

@@ -4,25 +4,22 @@ Shared utilities for the loan processing business logic foundation.
 This module provides essential utilities for:
 - Configuration loading from YAML files
 - Agent persona loading from markdown files
-- Simple logging without complex dependencies
+- Agent Framework observability with Application Insights integration
 
-These utilities are framework-agnostic and can be used with any agent system.
+These utilities provide a clean foundation for multi-agent systems.
 """
 
 from .config_loader import ConfigurationLoader
+from .observability import Observability
 from .persona_loader import PersonaLoader, load_persona
-from .logger import get_logger, configure_basic_logging
 
 # Export public API
 __all__ = [
     # Configuration utilities
     "ConfigurationLoader",
-
     # Agent persona utilities
     "PersonaLoader",
     "load_persona",
-
-    # Simple logging
-    "get_logger",
-    "configure_basic_logging",
+    # Agent Framework observability
+    "Observability",
 ]

@@ -45,9 +45,9 @@ The system is designed to preserve all business logic while being
 framework-agnostic for easy integration with any agent system.
 """
 
-from loan_processing.models.application import LoanApplication
-from loan_processing.models.assessment import ComprehensiveAssessment
-from loan_processing.models.decision import LoanDecision
+from loan_avengers.models.application import LoanApplication
+from loan_avengers.models.assessment import ComprehensiveAssessment
+from loan_avengers.models.decision import LoanDecision
 
 # Export core models
 __all__ = [

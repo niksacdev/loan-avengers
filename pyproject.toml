@@ -1,9 +1,9 @@
 [project]
-name = "loan-agent-workflow"
+name = "loan-avengers"
 version = "0.1.0"
-description = "Multi-agent loan processing system using Microsoft Agent Framework"
+description = "🦸‍♂️ The Loan Avengers - A superhero squad that assembles to make dream loans happen!"
 authors = [
-    { name = "Microsoft Agent Framework Team", email = "agent-framework@microsoft.com" }
+    { name = "niksacdev", email = "niksac@microsoft.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,6 +19,9 @@ classifiers = [
 ]
 
 dependencies = [
+    # Microsoft Agent Framework with key integrations
+    "agent-framework[azure,foundry,viz]",
+
     # Core business logic dependencies
     "pydantic>=2.5.0", # Data model validation
     "PyYAML>=6.0.0", # Configuration file parsing
@@ -31,9 +34,6 @@ dependencies = [
 
     # Optional dependencies
     "python-dotenv>=1.0.0", # Environment configuration (optional)
-
-    # Microsoft Agent Framework (to be added when available)
-    # "microsoft-agent-framework>=1.0.0",
 ]
 
 [project.optional-dependencies]
@@ -60,6 +60,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv]
+prerelease = "if-necessary-or-explicit"
 dev-dependencies = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
@@ -68,6 +69,12 @@ dev-dependencies = [
     "ruff>=0.1.0",
     "mypy>=1.8.0",
 ]
+
+[tool.uv.sources]
+# Microsoft Agent Framework packages from GitHub (following official documentation format)
+"agent-framework" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/main" }
+"agent-framework-azure" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure" }
+"agent-framework-foundry" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/foundry" }
 
 [tool.ruff]
 line-length = 120
@@ -85,7 +92,7 @@ extend-select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["loan_processing"]
+known-first-party = ["loan_avengers"]
 known-third-party = ["agents"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -107,11 +114,11 @@ testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["loan_processing"]
+packages = ["loan_avengers"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "loan_processing",
+  "loan_avengers",
   "README.md",
   "LICENSE",
   "agent-persona",

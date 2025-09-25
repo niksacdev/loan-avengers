@@ -13,8 +13,9 @@ AGENT_PERSONAS = {
     "credit": "credit-agent-persona.md",
     "income": "income-agent-persona.md",
     "risk": "risk-agent-persona.md",
-    "orchestrator": "orchestrator-agent-persona.md"
+    "orchestrator": "orchestrator-agent-persona.md",
 }
+
 
 def get_persona_path(agent_type: str) -> str:
     """Get the path to an agent persona file."""
@@ -23,12 +24,10 @@ def get_persona_path(agent_type: str) -> str:
 
     return f"loan_processing/agents/agent-persona/{AGENT_PERSONAS[agent_type]}"
 
+
 def get_available_agents() -> list:
     """Get list of available agent types."""
     return list(AGENT_PERSONAS.keys())
 
-__all__ = [
-    "AGENT_PERSONAS",
-    "get_persona_path",
-    "get_available_agents"
-]
+
+__all__ = ["AGENT_PERSONAS", "get_persona_path", "get_available_agents"]

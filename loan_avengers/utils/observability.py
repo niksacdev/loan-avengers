@@ -69,7 +69,8 @@ class Observability:
         # Ensure observability is initialized
         cls.initialize()
 
-        # Agent Framework logger requires 'agent_framework' prefix
+        # Agent Framework logger requires 'agent_framework' prefix (verified requirement)
+        # Direct testing shows: get_logger('test') raises "Logger name must start with 'agent_framework'"
         framework_logger_name = f"agent_framework.{name}"
         return get_logger(framework_logger_name)
 

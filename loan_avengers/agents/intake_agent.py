@@ -118,7 +118,7 @@ Provide your assessment as valid JSON matching the required output format from y
                     encouragement_note="Technical hiccup detected - these eagle eyes will sort it out!",
                     next_step_preview="Getting this sharpened up for the Dream Team!",
                     animation_type="pulse",
-                    celebration_level="mild"
+                    celebration_level="mild",
                 )
 
             # Build comprehensive response with observability data
@@ -157,7 +157,7 @@ Provide your assessment as valid JSON matching the required output format from y
                 encouragement_note="Technical hiccup detected - but your data still has potential!",
                 next_step_preview="Sharpening focus to get this sorted for the Dream Team!",
                 animation_type="pulse",
-                celebration_level="mild"
+                celebration_level="mild",
             )
 
             # Return error response with same structure
@@ -169,8 +169,6 @@ Provide your assessment as valid JSON matching the required output format from y
                 "agent_name": "intake",
                 "application_id": application.application_id,
             }
-
-
 
 
 __all__ = ["IntakeAgent"]

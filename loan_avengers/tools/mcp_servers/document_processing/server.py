@@ -19,8 +19,9 @@ load_dotenv()
 project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
 from mcp.server.fastmcp import FastMCP  # noqa: E402
+
+from loan_avengers.utils import get_logger, log_execution  # noqa: E402
 
 from .service import MCPDocumentProcessingService  # noqa: E402
 

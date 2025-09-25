@@ -22,10 +22,11 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from loan_avengers.tools.services.document_processing import DocumentProcessingService  # noqa: E402
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("document_processing_service")
 
 
 class MCPDocumentProcessingService(DocumentProcessingService):
@@ -55,7 +56,6 @@ class MCPDocumentProcessingService(DocumentProcessingService):
             component="document_service",
         )
 
-    @log_execution(component="document_service", operation="extract_text_from_document")
     async def extract_text_from_document(self, document_path: str, document_type: str = "auto") -> dict[str, Any]:
         """Extract text from document using Document Processing MCP server."""
         logger.info(

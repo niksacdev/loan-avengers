@@ -23,10 +23,11 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from loan_avengers.tools.services.application_verification import ApplicationVerificationService  # noqa: E402
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("application_verification_service")
 
 
 class ApplicationVerificationServiceImpl(ApplicationVerificationService):
@@ -35,7 +36,6 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
     randomization to simulate real-world variability for demos.
     """
 
-    @log_execution(component="verification_service", operation="retrieve_credit_report")
     async def retrieve_credit_report(self, applicant_id: str, full_name: str, address: str) -> dict[str, Any]:
         logger.info("Retrieving credit report", applicant_id=applicant_id, component="verification_service")
 
@@ -73,7 +73,6 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
             "type": "credit_report",
         }
 
-    @log_execution(component="verification_service", operation="verify_employment")
     async def verify_employment(self, applicant_id: str, employer_name: str, position: str) -> dict[str, Any]:
         logger.info("Verifying employment", applicant_id=applicant_id, component="verification_service")
 

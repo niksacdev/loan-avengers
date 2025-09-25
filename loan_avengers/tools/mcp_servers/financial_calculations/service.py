@@ -22,10 +22,11 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from loan_avengers.tools.services.financial_calculations import FinancialCalculationsService  # noqa: E402
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("financial_calculations_service")
 
 
 class FinancialCalculationsServiceImpl(FinancialCalculationsService):
@@ -36,7 +37,6 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
     In production, this would connect to actual financial calculation engines.
     """
 
-    @log_execution(component="financial_service", operation="calculate_debt_to_income_ratio")
     async def calculate_debt_to_income_ratio(
         self, monthly_income: float, monthly_debt_payments: float
     ) -> dict[str, Any]:
@@ -83,7 +83,6 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             "type": "dti_calculation",
         }
 
-    @log_execution(component="financial_service", operation="calculate_loan_affordability")
     async def calculate_loan_affordability(
         self,
         monthly_income: float,
@@ -145,7 +144,6 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
             "type": "affordability_assessment",
         }
 
-    @log_execution(component="financial_service", operation="calculate_monthly_payment")
     async def calculate_monthly_payment(
         self,
         loan_amount: float,

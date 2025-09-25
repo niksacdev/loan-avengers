@@ -21,12 +21,13 @@ sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import FinancialCalculationsServiceImpl  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("financial_calculations_server")
 
 # Create MCP server
 mcp = FastMCP("financial-calculations")
@@ -47,7 +48,6 @@ logger.info(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_debt_to_income_ratio")
 async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_payments: float) -> str:
     """
     Calculate debt-to-income ratio for loan qualification.
@@ -65,7 +65,6 @@ async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_pay
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_loan_affordability")
 async def calculate_loan_affordability(
     monthly_income: float, existing_debt: float, loan_amount: float, interest_rate: float, loan_term_months: int
 ) -> str:
@@ -90,7 +89,6 @@ async def calculate_loan_affordability(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_monthly_payment")
 async def calculate_monthly_payment(
     loan_amount: float, interest_rate: float, loan_term_months: int, payment_type: str = "principal_and_interest"
 ) -> str:
@@ -114,7 +112,6 @@ async def calculate_monthly_payment(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_credit_utilization_ratio")
 async def calculate_credit_utilization_ratio(total_credit_used: float, total_credit_available: float) -> str:
     """
     Calculate credit utilization ratio.
@@ -137,7 +134,6 @@ async def calculate_credit_utilization_ratio(total_credit_used: float, total_cre
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_total_debt_service_ratio")
 async def calculate_total_debt_service_ratio(
     monthly_income: float,
     total_monthly_debt: float,

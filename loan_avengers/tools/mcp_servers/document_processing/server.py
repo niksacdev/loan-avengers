@@ -21,12 +21,13 @@ sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import MCPDocumentProcessingService  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("document_processing_server")
 
 # Create MCP server
 mcp = FastMCP("document-processing")
@@ -44,7 +45,6 @@ logger.info(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="extract_text_from_document")
 async def extract_text_from_document(document_path: str, document_type: str = "auto") -> str:
     """
     Extract text from uploaded documents using OCR.
@@ -67,7 +67,6 @@ async def extract_text_from_document(document_path: str, document_type: str = "a
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="classify_document_type")
 async def classify_document_type(document_content: str) -> str:
     """
     Classify document type based on content analysis.
@@ -84,7 +83,6 @@ async def classify_document_type(document_content: str) -> str:
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="validate_document_format")
 async def validate_document_format(document_path: str, expected_format: str) -> str:
     """
     Validate document format and authenticity.
@@ -107,7 +105,6 @@ async def validate_document_format(document_path: str, expected_format: str) -> 
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="extract_structured_data")
 async def extract_structured_data(document_path: str, data_schema: str) -> str:
     """
     Extract structured data from documents based on schema.
@@ -126,7 +123,6 @@ async def extract_structured_data(document_path: str, data_schema: str) -> str:
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="convert_document_format")
 async def convert_document_format(input_path: str, output_format: str) -> str:
     """
     Convert document to different format.

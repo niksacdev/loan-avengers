@@ -17,12 +17,13 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
-from loan_avengers.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import ApplicationVerificationServiceImpl  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize observability and logging
+Observability.initialize()
+logger = Observability.get_logger("application_verification_server")
 
 # Create MCP server and configure optional SSE
 mcp = FastMCP("application-verification")
@@ -41,7 +42,6 @@ logger.info(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="retrieve_credit_report")
 async def retrieve_credit_report(applicant_id: str, full_name: str, address: str) -> str:
     """Return a credit report summary as JSON string."""
     logger.info("Credit report request", applicant_id=applicant_id, component="mcp_server")
@@ -50,7 +50,6 @@ async def retrieve_credit_report(applicant_id: str, full_name: str, address: str
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="verify_employment")
 async def verify_employment(applicant_id: str, employer_name: str, position: str) -> str:
     """Return employment verification as JSON string."""
     logger.info("Employment verification request", applicant_id=applicant_id, component="mcp_server")
@@ -59,7 +58,6 @@ async def verify_employment(applicant_id: str, employer_name: str, position: str
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="get_bank_account_data")
 async def get_bank_account_data(account_number: str, routing_number: str) -> str:
     """Return bank account details and balance as JSON string."""
     logger.info("Bank account data request", component="mcp_server")
@@ -68,7 +66,6 @@ async def get_bank_account_data(account_number: str, routing_number: str) -> str
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="get_tax_transcript_data")
 async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
     """Return tax transcript summary as JSON string."""
     logger.info("Tax transcript request", applicant_id=applicant_id, tax_year=tax_year, component="mcp_server")
@@ -77,7 +74,6 @@ async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="verify_asset_information")
 async def verify_asset_information(asset_type: str, asset_details_json: str) -> str:
     """Return asset verification results as JSON string."""
     logger.info("Asset verification request", asset_type=asset_type, component="mcp_server")

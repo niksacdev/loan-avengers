@@ -1,6 +1,6 @@
-# Agent Integration Patterns
+# Loan Avengers Agent Patterns
 
-Domain-driven agent personas for autonomous loan processing business logic.
+Personality-driven agent personas with superhero themes for autonomous loan processing business logic.
 
 ## Overview
 

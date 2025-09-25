@@ -21,12 +21,12 @@ sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
-from loan_processing.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import FinancialCalculationsServiceImpl  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize logging (observability auto-initializes)
+logger = Observability.get_logger("financial_calculations_server")
 
 # Create MCP server
 mcp = FastMCP("financial-calculations")
@@ -38,16 +38,10 @@ mcp.settings.port = 8012
 # Initialize service implementation
 financial_service = FinancialCalculationsServiceImpl()
 
-logger.info(
-    "Financial Calculations MCP Server initialized",
-    component="mcp_server",
-    server_name="financial_calculations",
-    port=8012,
-)
+logger.info("Financial Calculations MCP Server initialized on port 8012")
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_debt_to_income_ratio")
 async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_payments: float) -> str:
     """
     Calculate debt-to-income ratio for loan qualification.
@@ -59,13 +53,12 @@ async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_pay
     Returns:
         JSON string with DTI calculation results
     """
-    logger.info("DTI calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_debt_to_income_ratio(monthly_income, monthly_debt_payments)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_loan_affordability")
 async def calculate_loan_affordability(
     monthly_income: float, existing_debt: float, loan_amount: float, interest_rate: float, loan_term_months: int
 ) -> str:
@@ -82,7 +75,7 @@ async def calculate_loan_affordability(
     Returns:
         JSON string with affordability assessment
     """
-    logger.info("Loan affordability calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_loan_affordability(
         monthly_income, existing_debt, loan_amount, interest_rate, loan_term_months
     )
@@ -90,7 +83,6 @@ async def calculate_loan_affordability(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_monthly_payment")
 async def calculate_monthly_payment(
     loan_amount: float, interest_rate: float, loan_term_months: int, payment_type: str = "principal_and_interest"
 ) -> str:
@@ -106,7 +98,7 @@ async def calculate_monthly_payment(
     Returns:
         JSON string with payment calculation
     """
-    logger.info("Monthly payment calculation request", component="mcp_server")
+    logger.info("Application server processing request")
     result = await financial_service.calculate_monthly_payment(
         loan_amount, interest_rate, loan_term_months, payment_type
     )
@@ -114,7 +106,6 @@ async def calculate_monthly_payment(
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_credit_utilization_ratio")
 async def calculate_credit_utilization_ratio(total_credit_used: float, total_credit_available: float) -> str:
     """
     Calculate credit utilization ratio.
@@ -126,18 +117,12 @@ async def calculate_credit_utilization_ratio(total_credit_used: float, total_cre
     Returns:
         JSON string with utilization calculation
     """
-    logger.info(
-        "Credit utilization calculation request",
-        total_credit_used=total_credit_used,
-        total_credit_available=total_credit_available,
-        component="mcp_server",
-    )
+    logger.info(f"Calculating credit utilization ratio - Used: ${total_credit_used}, Available: ${total_credit_available}")
     result = await financial_service.calculate_credit_utilization_ratio(total_credit_used, total_credit_available)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="calculate_total_debt_service_ratio")
 async def calculate_total_debt_service_ratio(
     monthly_income: float,
     total_monthly_debt: float,
@@ -158,12 +143,7 @@ async def calculate_total_debt_service_ratio(
     Returns:
         JSON string with TDSR calculation
     """
-    logger.info(
-        "TDSR calculation request",
-        monthly_income=monthly_income,
-        total_monthly_debt=total_monthly_debt,
-        component="mcp_server",
-    )
+    logger.info(f"Calculating total debt service ratio - Income: ${monthly_income}, Debt: ${total_monthly_debt}")
     result = await financial_service.calculate_total_debt_service_ratio(
         monthly_income, total_monthly_debt, property_taxes, insurance, hoa_fees
     )
@@ -193,13 +173,8 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Financial Calculations MCP Server",
-            transport="sse",
-            url="http://localhost:8012/sse",
-            component="mcp_server",
-        )
+        logger.info("Starting Financial Calculations MCP Server with SSE transport on http://localhost:8012/sse")
     else:
-        logger.info("Starting Financial Calculations MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Starting Financial Calculations MCP Server with stdio transport")
 
     mcp.run(transport=transport)

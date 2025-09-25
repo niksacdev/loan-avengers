@@ -21,12 +21,12 @@ sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
-from loan_processing.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import MCPDocumentProcessingService  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize logging (observability auto-initializes)
+logger = Observability.get_logger("document_processing_server")
 
 # Create MCP server
 mcp = FastMCP("document-processing")
@@ -38,13 +38,10 @@ mcp.settings.port = 8011
 # Initialize service implementation
 document_service = MCPDocumentProcessingService()
 
-logger.info(
-    "Document Processing MCP Server initialized", component="mcp_server", server_name="document_processing", port=8011
-)
+logger.info("Document Processing MCP Server initialized on port 8011")
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="extract_text_from_document")
 async def extract_text_from_document(document_path: str, document_type: str = "auto") -> str:
     """
     Extract text from uploaded documents using OCR.
@@ -56,18 +53,12 @@ async def extract_text_from_document(document_path: str, document_type: str = "a
     Returns:
         JSON string with extracted text and metadata
     """
-    logger.info(
-        "Document text extraction request",
-        document_path=document_path,
-        document_type=document_type,
-        component="mcp_server",
-    )
+    logger.info(f"Starting OCR text extraction for document: {document_path} (type: {document_type})")
     result = await document_service.extract_text_from_document(document_path, document_type)
     return str(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="classify_document_type")
 async def classify_document_type(document_content: str) -> str:
     """
     Classify document type based on content analysis.
@@ -78,13 +69,12 @@ async def classify_document_type(document_content: str) -> str:
     Returns:
         JSON string with document classification results
     """
-    logger.info("Document classification request", content_length=len(document_content), component="mcp_server")
+    logger.info(f"Document classification request - content length: {len(document_content)}")
     result = await document_service.classify_document_type(document_content)
     return str(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="validate_document_format")
 async def validate_document_format(document_path: str, expected_format: str) -> str:
     """
     Validate document format and authenticity.
@@ -96,18 +86,12 @@ async def validate_document_format(document_path: str, expected_format: str) -> 
     Returns:
         JSON string with validation results
     """
-    logger.info(
-        "Document validation request",
-        document_path=document_path,
-        expected_format=expected_format,
-        component="mcp_server",
-    )
+    logger.info("Starting document validation operation")
     result = await document_service.validate_document_format(document_path, expected_format)
     return str(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="extract_structured_data")
 async def extract_structured_data(document_path: str, data_schema: str) -> str:
     """
     Extract structured data from documents based on schema.
@@ -119,14 +103,13 @@ async def extract_structured_data(document_path: str, data_schema: str) -> str:
     Returns:
         JSON string with extracted structured data
     """
-    logger.info("Structured data extraction request", document_path=document_path, component="mcp_server")
+    logger.info("Application server processing request")
     schema_dict = json.loads(data_schema)
     result = await document_service.extract_structured_data(document_path, schema_dict)
     return str(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="convert_document_format")
 async def convert_document_format(input_path: str, output_format: str) -> str:
     """
     Convert document to different format.
@@ -138,9 +121,7 @@ async def convert_document_format(input_path: str, output_format: str) -> str:
     Returns:
         JSON string with conversion results and output path
     """
-    logger.info(
-        "Document conversion request", input_path=input_path, output_format=output_format, component="mcp_server"
-    )
+    logger.info("Starting document validation operation")
     result = await document_service.convert_document_format(input_path, output_format)
     return str(result)
 
@@ -168,13 +149,8 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Document Processing MCP Server",
-            transport="sse",
-            url="http://localhost:8011/sse",
-            component="mcp_server",
-        )
+        logger.info("Starting Document Processing MCP Server with SSE transport on http://localhost:8011/sse")
     else:
-        logger.info("Starting Document Processing MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Starting Document Processing MCP Server with stdio transport")
 
     mcp.run(transport=transport)

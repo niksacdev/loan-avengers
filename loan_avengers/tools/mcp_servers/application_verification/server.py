@@ -17,12 +17,12 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
-from loan_processing.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import ApplicationVerificationServiceImpl  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize logging (observability auto-initializes)
+logger = Observability.get_logger("application_verification_server")
 
 # Create MCP server and configure optional SSE
 mcp = FastMCP("application-verification")
@@ -32,55 +32,45 @@ mcp.settings.port = 8010
 # Initialize service implementation
 service = ApplicationVerificationServiceImpl()
 
-logger.info(
-    "Application Verification MCP Server initialized",
-    component="mcp_server",
-    server_name="application_verification",
-    port=8010,
-)
+logger.info("Application Verification MCP Server initialized on port 8010")
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="retrieve_credit_report")
 async def retrieve_credit_report(applicant_id: str, full_name: str, address: str) -> str:
     """Return a credit report summary as JSON string."""
-    logger.info("Credit report request", applicant_id=applicant_id, component="mcp_server")
+    logger.info(f"Credit report request for applicant: {applicant_id[:8]}***")
     result = await service.retrieve_credit_report(applicant_id, full_name, address)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="verify_employment")
 async def verify_employment(applicant_id: str, employer_name: str, position: str) -> str:
     """Return employment verification as JSON string."""
-    logger.info("Employment verification request", applicant_id=applicant_id, component="mcp_server")
+    logger.info(f"Employment verification request received for {employer_name} position: {position}")
     result = await service.verify_employment(applicant_id, employer_name, position)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="get_bank_account_data")
 async def get_bank_account_data(account_number: str, routing_number: str) -> str:
     """Return bank account details and balance as JSON string."""
-    logger.info("Bank account data request", component="mcp_server")
+    logger.info(f"Bank account data request received for account ending in {account_number[-4:]}")
     result = await service.get_bank_account_data(account_number, routing_number)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="get_tax_transcript_data")
 async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
     """Return tax transcript summary as JSON string."""
-    logger.info("Tax transcript request", applicant_id=applicant_id, tax_year=tax_year, component="mcp_server")
+    logger.info(f"Tax transcript data request received for tax year {tax_year}")
     result = await service.get_tax_transcript_data(applicant_id, tax_year)
     return json.dumps(result)
 
 
 @mcp.tool()
-@log_execution(component="mcp_server", operation="verify_asset_information")
 async def verify_asset_information(asset_type: str, asset_details_json: str) -> str:
     """Return asset verification results as JSON string."""
-    logger.info("Asset verification request", asset_type=asset_type, component="mcp_server")
+    logger.info(f"Asset verification request received for {asset_type} asset type")
     try:
         asset_details = json.loads(asset_details_json) if asset_details_json else {}
     except json.JSONDecodeError:
@@ -112,13 +102,8 @@ if __name__ == "__main__":
         transport = "stdio"  # Allow stdio override for development
 
     if transport == "sse":
-        logger.info(
-            "Starting Application Verification MCP Server",
-            transport="sse",
-            url="http://localhost:8010/sse",
-            component="mcp_server",
-        )
+        logger.info("Starting Application Verification MCP Server with SSE transport on http://localhost:8010/sse")
     else:
-        logger.info("Starting Application Verification MCP Server", transport="stdio", component="mcp_server")
+        logger.info("Starting Application Verification MCP Server with stdio transport")
 
     mcp.run(transport=transport)

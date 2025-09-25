@@ -22,11 +22,11 @@ load_dotenv()
 project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from loan_processing.tools.services.application_verification import ApplicationVerificationService  # noqa: E402
-from loan_processing.utils import get_logger, log_execution  # noqa: E402
+from loan_avengers.tools.services.application_verification import ApplicationVerificationService  # noqa: E402
+from loan_avengers.utils.observability import Observability  # noqa: E402
 
-# Initialize logging
-logger = get_logger(__name__)
+# Initialize logging (observability auto-initializes)
+logger = Observability.get_logger("application_verification_service")
 
 
 class ApplicationVerificationServiceImpl(ApplicationVerificationService):
@@ -35,9 +35,8 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
     randomization to simulate real-world variability for demos.
     """
 
-    @log_execution(component="verification_service", operation="retrieve_credit_report")
     async def retrieve_credit_report(self, applicant_id: str, full_name: str, address: str) -> dict[str, Any]:
-        logger.info("Retrieving credit report", applicant_id=applicant_id, component="verification_service")
+        logger.info(f"Retrieving credit report for {full_name} (ID: {applicant_id[:8]}***) at address: {address}")
 
         score = random.randint(620, 780)
         utilization = round(random.uniform(0.15, 0.45), 2)
@@ -47,14 +46,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
         risk_level = "low" if score >= 740 else "medium" if score >= 680 else "high"
         recommendation = "approve" if score >= 700 and utilization <= 0.3 else "review"
 
-        logger.info(
-            "Credit report generated",
-            applicant_id=applicant_id,
-            credit_score=score,
-            risk_level=risk_level,
-            recommendation=recommendation,
-            component="verification_service",
-        )
+        logger.info(f"Credit report analysis completed - Score: {score}, Risk: {risk_level}, Recommendation: {recommendation}")
 
         return {
             "applicant_id": applicant_id,
@@ -73,9 +65,8 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
             "type": "credit_report",
         }
 
-    @log_execution(component="verification_service", operation="verify_employment")
     async def verify_employment(self, applicant_id: str, employer_name: str, position: str) -> dict[str, Any]:
-        logger.info("Verifying employment", applicant_id=applicant_id, component="verification_service")
+        logger.info(f"Verifying employment for {position} at {employer_name} (ID: {applicant_id[:8]}***)")
 
         income = random.randint(50000, 120000)
         tenure_months = random.randint(6, 60)
@@ -83,14 +74,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
 
         verification_status = "verified" if tenure_months >= 12 else "conditional"
 
-        logger.info(
-            "Employment verification completed",
-            applicant_id=applicant_id,
-            income=income,
-            tenure_months=tenure_months,
-            verification_status=verification_status,
-            component="verification_service",
-        )
+        logger.info(f"Employment verification completed - Status: {verification_status}, Annual Income: ${income}, Tenure: {tenure_months} months")
 
         return {
             "applicant_id": applicant_id,

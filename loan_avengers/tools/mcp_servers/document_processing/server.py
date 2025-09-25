@@ -53,7 +53,7 @@ async def extract_text_from_document(document_path: str, document_type: str = "a
     Returns:
         JSON string with extracted text and metadata
     """
-    logger.info("Processing request")
+    logger.info(f"Starting OCR text extraction for document: {document_path} (type: {document_type})")
     result = await document_service.extract_text_from_document(document_path, document_type)
     return str(result)
 
@@ -86,7 +86,7 @@ async def validate_document_format(document_path: str, expected_format: str) -> 
     Returns:
         JSON string with validation results
     """
-    logger.info("Processing request")
+    logger.info("Starting document validation operation")
     result = await document_service.validate_document_format(document_path, expected_format)
     return str(result)
 
@@ -121,7 +121,7 @@ async def convert_document_format(input_path: str, output_format: str) -> str:
     Returns:
         JSON string with conversion results and output path
     """
-    logger.info("Processing request")
+    logger.info("Starting document validation operation")
     result = await document_service.convert_document_format(input_path, output_format)
     return str(result)
 

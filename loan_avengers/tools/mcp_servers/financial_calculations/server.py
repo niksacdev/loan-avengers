@@ -117,7 +117,7 @@ async def calculate_credit_utilization_ratio(total_credit_used: float, total_cre
     Returns:
         JSON string with utilization calculation
     """
-    logger.info("Processing request")
+    logger.info(f"Calculating credit utilization ratio - Used: ${total_credit_used}, Available: ${total_credit_available}")
     result = await financial_service.calculate_credit_utilization_ratio(total_credit_used, total_credit_available)
     return json.dumps(result)
 
@@ -143,7 +143,7 @@ async def calculate_total_debt_service_ratio(
     Returns:
         JSON string with TDSR calculation
     """
-    logger.info("Processing request")
+    logger.info(f"Calculating total debt service ratio - Income: ${monthly_income}, Debt: ${total_monthly_debt}")
     result = await financial_service.calculate_total_debt_service_ratio(
         monthly_income, total_monthly_debt, property_taxes, insurance, hoa_fees
     )

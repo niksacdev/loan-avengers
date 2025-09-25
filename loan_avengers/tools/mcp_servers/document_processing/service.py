@@ -53,7 +53,7 @@ class MCPDocumentProcessingService(DocumentProcessingService):
 
     async def extract_text_from_document(self, document_path: str, document_type: str = "auto") -> dict[str, Any]:
         """Extract text from document using Document Processing MCP server."""
-        logger.info("Service operation completed successfully")
+        logger.info(f"Starting document text extraction for: {document_path} (type: {document_type})")
 
         try:
             result = await self.mcp_client.call_tool(
@@ -62,7 +62,7 @@ class MCPDocumentProcessingService(DocumentProcessingService):
 
             parsed_result = json.loads(result) if isinstance(result, str) else result
 
-            logger.info("Service operation completed successfully")
+            logger.info(f"Document text extraction completed successfully for: {document_path}")
 
             return parsed_result if isinstance(parsed_result, dict) else {}
 

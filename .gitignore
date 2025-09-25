@@ -160,3 +160,8 @@ server_logs/
 # Test artifacts
 test_results/
 test_coverage/
+
+# Spec-kit / Claude agent security
+# May contain credentials, auth tokens, or identifying artifacts
+.claude/
+.specify/memory/

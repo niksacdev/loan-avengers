@@ -76,7 +76,7 @@ async def classify_document_type(document_content: str) -> str:
     Returns:
         JSON string with document classification results
     """
-    logger.info("Document classification request", content_length=len(document_content), component="mcp_server")
+    logger.info(f"Document classification request - content length: {len(document_content)}")
     result = await document_service.classify_document_type(document_content)
     return str(result)
 

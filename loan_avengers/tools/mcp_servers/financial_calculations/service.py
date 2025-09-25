@@ -40,7 +40,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
         self, monthly_income: float, monthly_debt_payments: float
     ) -> dict[str, Any]:
         """Calculate debt-to-income ratio with qualification assessment."""
-        logger.info("Calculating debt-to-income ratio", component="financial_service")
+        logger.info("Calculating debt-to-income ratio")
         # Note: application_id correlation available via correlation_context from caller
 
         if monthly_income <= 0:
@@ -91,7 +91,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
         loan_term_months: int,
     ) -> dict[str, Any]:
         """Calculate loan affordability with comprehensive assessment."""
-        logger.info("Calculating loan affordability", component="financial_service")
+        logger.info("Calculating loan affordability")
         # Calculate monthly payment
         monthly_rate = interest_rate / 12
         if monthly_rate == 0:
@@ -151,7 +151,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
         payment_type: str = "principal_and_interest",
     ) -> dict[str, Any]:
         """Calculate monthly loan payment using standard formula."""
-        logger.info("Calculating monthly payment", component="financial_service")
+        logger.info("Calculating monthly payment")
         monthly_rate = interest_rate / 12
 
         if monthly_rate == 0:

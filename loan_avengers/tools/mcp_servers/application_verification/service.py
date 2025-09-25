@@ -36,7 +36,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
     """
 
     async def retrieve_credit_report(self, applicant_id: str, full_name: str, address: str) -> dict[str, Any]:
-        logger.info(f"Retrieving credit report for {full_name} (ID: {applicant_id}) at address: {address}")
+        logger.info(f"Retrieving credit report for {full_name} (ID: {applicant_id[:8]}***) at address: {address}")
 
         score = random.randint(620, 780)
         utilization = round(random.uniform(0.15, 0.45), 2)
@@ -66,7 +66,7 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
         }
 
     async def verify_employment(self, applicant_id: str, employer_name: str, position: str) -> dict[str, Any]:
-        logger.info(f"Verifying employment for {position} at {employer_name} (Applicant ID: {applicant_id})")
+        logger.info(f"Verifying employment for {position} at {employer_name} (ID: {applicant_id[:8]}***)")
 
         income = random.randint(50000, 120000)
         tenure_months = random.randint(6, 60)

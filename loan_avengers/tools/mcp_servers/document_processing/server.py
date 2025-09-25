@@ -38,7 +38,7 @@ mcp.settings.port = 8011
 # Initialize service implementation
 document_service = MCPDocumentProcessingService()
 
-logger.info("Processing request")
+logger.info("Document Processing MCP Server initialized on port 8011")
 
 
 @mcp.tool()

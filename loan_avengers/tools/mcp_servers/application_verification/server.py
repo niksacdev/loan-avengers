@@ -38,7 +38,7 @@ logger.info("Application Verification MCP Server initialized on port 8010")
 @mcp.tool()
 async def retrieve_credit_report(applicant_id: str, full_name: str, address: str) -> str:
     """Return a credit report summary as JSON string."""
-    logger.info(f"Credit report request for applicant: {applicant_id}")
+    logger.info(f"Credit report request for applicant: {applicant_id[:8]}***")
     result = await service.retrieve_credit_report(applicant_id, full_name, address)
     return json.dumps(result)
 

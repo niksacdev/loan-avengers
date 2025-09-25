@@ -44,7 +44,7 @@ class FinancialCalculationsServiceImpl(FinancialCalculationsService):
         # Note: application_id correlation available via correlation_context from caller
 
         if monthly_income <= 0:
-            logger.error("Processing request")
+            logger.error(f"Invalid monthly income for DTI calculation: {monthly_income}")
             return {"error": "Monthly income must be greater than zero", "type": "calculation_error"}
 
         dti_ratio = (monthly_debt_payments / monthly_income) * 100

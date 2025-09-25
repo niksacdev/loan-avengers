@@ -170,5 +170,4 @@ Provide your assessment as valid JSON matching the required output format from y
                 "application_id": application.application_id,
             }
 
-
 __all__ = ["IntakeAgent"]

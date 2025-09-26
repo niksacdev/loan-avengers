@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any
 
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent
+from agent_framework._mcp import MCPStreamableHTTPTool
 from agent_framework_azure import AzureChatClient
 
 from loan_avengers.models.application import LoanApplication
@@ -51,7 +52,17 @@ class IntakeAgent:
         # Load persona instructions from markdown file
         self.instructions = PersonaLoader.load_persona("intake")
 
-        # Create the Microsoft Agent Framework ChatAgent with structured response
+        # Create MCP tool for application verification server (SSE endpoint)
+        application_verification_tool = MCPStreamableHTTPTool(
+            name="application-verification",
+            url="http://localhost:8010/sse",
+            description="Application verification service for basic parameter validation",
+            load_tools=True,
+            load_prompts=False,
+        )
+
+        # Create the Microsoft Agent Framework ChatAgent with validation tool
+        # The ChatAgent will automatically handle the MCP tool and add its functions
         self.agent = ChatAgent(
             chat_client=self.chat_client,
             instructions=self.instructions,
@@ -60,10 +71,10 @@ class IntakeAgent:
             temperature=temperature,
             max_tokens=max_tokens,
             response_format=IntakeAssessment,  # Structured response parsing
-            tools=None,  # Optimize for speed - no tools needed for intake
+            tools=[application_verification_tool],  # Agent Framework will handle MCP integration
         )
 
-        logger.info("John 'The Eagle Eye' initialized with Microsoft Agent Framework")
+        logger.info("John 'The Eagle Eye' initialized with MCP validation tools")
 
     async def process_application(
         self, application: LoanApplication, thread: AgentThread | None = None
@@ -169,5 +180,6 @@ Provide your assessment as valid JSON matching the required output format from y
                 "agent_name": "intake",
                 "application_id": application.application_id,
             }
+
 
 __all__ = ["IntakeAgent"]

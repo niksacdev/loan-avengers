@@ -105,3 +105,24 @@ class ApplicationVerificationService(ABC):
         """
         Verify asset information using internal applicant tracking.
         """
+
+    @abstractmethod
+    async def validate_basic_parameters(self, application_data: str) -> dict[str, Any]:
+        """
+        Validate basic loan application parameters for intake processing.
+
+        Performs lightweight validation for intake agent including:
+        - Required field completeness check
+        - Basic data format validation
+        - Profile completeness scoring
+        - Routing recommendations based on profile strength
+
+        Args:
+            application_data: JSON string of LoanApplication data
+
+        Returns:
+            dict with validation status, completeness score, routing recommendation
+
+        Raises:
+            ValidationError: If validation service encounters an error
+        """

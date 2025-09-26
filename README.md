@@ -135,6 +135,34 @@ loan_avengers/
 │   └── financial_calculations/
 ```
 
+## 🧪 **Testing & Quality**
+
+### Comprehensive Test Suite
+- **35 tests** across unit and integration test suites
+- **Module-specific coverage targets** (85-95% for core components)
+- **Performance validation** (<5 second processing requirements)
+- **Mock-based unit tests** for reliable CI/CD
+
+### Quick Testing Commands
+```bash
+# Run all unit tests
+uv run pytest tests/unit/ -v
+
+# Run with coverage analysis
+uv run python tests/test_suite_runner.py  # Interactive menu
+
+# Coverage analysis with detailed recommendations
+uv run python tests/coverage_report.py
+```
+
+### Current Coverage Status
+- **Overall**: 65.82% (Target: 85.00%)
+- **Models**: 90.48% ✅ (Target: 95%)
+- **MCP Services**: 76.71% 🔧 (Target: 85%)
+- **Agents**: 0.00% ❌ (Target: 90%) - High priority
+
+See [`tests/README.md`](tests/README.md) for complete testing documentation.
+
 ## 📚 **Documentation**
 
 - **[Technical Specification](docs/technical-specification.md)** - Complete system architecture

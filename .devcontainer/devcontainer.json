@@ -1,0 +1,165 @@
+{
+  "name": "Loan Avengers - Azure Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.6.0"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": "true"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true",
+      "installOhMyZsh": "true",
+      "upgradePackages": "true",
+      "username": "vscode",
+      "userUid": "automatic",
+      "userGid": "automatic"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Python development
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.pylint",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter",
+        
+        // Azure & Infrastructure
+        "ms-vscode.azure-account",
+        "ms-azure-devops.azure-pipelines", 
+        "HashiCorp.terraform",
+        "ms-azuretools.vscode-azureterraform",
+        "ms-azuretools.azure-dev",
+        
+        // DevOps & Git
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github",
+        "eamodio.gitlens",
+        
+        // Development tools
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.makefile-tools",
+        "aaron-bond.better-comments",
+        "oderwat.indent-rainbow",
+        
+        // Testing & Quality
+        "ms-python.pytest",
+        "charliermarsh.ruff",
+        "ms-vscode.test-adapter-converter"
+      ],
+      
+      "settings": {
+        // Python configuration
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.flake8Enabled": false,
+        "python.formatting.provider": "none",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        
+        // Ruff configuration (replaces flake8, black, isort)
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": true,
+            "source.organizeImports.ruff": true
+          },
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        
+        // Terraform configuration
+        "terraform.experimentalFeatures.validateOnSave": true,
+        "terraform.experimentalFeatures.prefillRequiredFields": true,
+        
+        // File associations
+        "files.associations": {
+          "*.tf": "terraform",
+          "*.tfvars": "terraform",
+          "*.hcl": "terraform"
+        },
+        
+        // Terminal configuration
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        
+        // Editor configuration
+        "editor.rulers": [88, 120],
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 88,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true
+      }
+    }
+  },
+
+  "forwardPorts": [
+    8000,  // FastAPI application
+    8010,  // MCP Server - Application Verification
+    8011,  // MCP Server - Document Processing  
+    8012,  // MCP Server - Financial Calculations
+    5000   // Development server
+  ],
+
+  "portsAttributes": {
+    "8000": {
+      "label": "Loan Avengers API",
+      "onAutoForward": "notify"
+    },
+    "8010": {
+      "label": "MCP - Application Verification", 
+      "onAutoForward": "silent"
+    },
+    "8011": {
+      "label": "MCP - Document Processing",
+      "onAutoForward": "silent"
+    },
+    "8012": {
+      "label": "MCP - Financial Calculations",
+      "onAutoForward": "silent"
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  "remoteUser": "vscode",
+  
+  "mounts": [
+    // Mount Azure CLI configuration (if it exists)
+    "source=${localEnv:HOME}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached",
+    // Mount SSH keys for Git operations
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ],
+
+  "containerEnv": {
+    // Development environment variables
+    "ENVIRONMENT": "development",
+    "PYTHONPATH": "/workspaces/loan-avengers",
+    "AZURE_CLI_DISABLE_CONNECTION_VERIFICATION": "1",
+    
+    // UV package manager configuration
+    "UV_CACHE_DIR": "/tmp/uv-cache",
+    "UV_NO_PROGRESS": "1"
+  },
+
+  "workspaceFolder": "/workspaces/loan-avengers"
+}

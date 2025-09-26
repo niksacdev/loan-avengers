@@ -117,7 +117,9 @@ async def calculate_credit_utilization_ratio(total_credit_used: float, total_cre
     Returns:
         JSON string with utilization calculation
     """
-    logger.info(f"Calculating credit utilization ratio - Used: ${total_credit_used}, Available: ${total_credit_available}")
+    logger.info(
+        f"Calculating credit utilization ratio - Used: ${total_credit_used}, Available: ${total_credit_available}"
+    )
     result = await financial_service.calculate_credit_utilization_ratio(total_credit_used, total_credit_available)
     return json.dumps(result)
 

@@ -46,7 +46,9 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
         risk_level = "low" if score >= 740 else "medium" if score >= 680 else "high"
         recommendation = "approve" if score >= 700 and utilization <= 0.3 else "review"
 
-        logger.info(f"Credit report analysis completed - Score: {score}, Risk: {risk_level}, Recommendation: {recommendation}")
+        logger.info(
+            f"Credit report analysis completed - Score: {score}, Risk: {risk_level}, Recommendation: {recommendation}"
+        )
 
         return {
             "applicant_id": applicant_id,
@@ -74,7 +76,10 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
 
         verification_status = "verified" if tenure_months >= 12 else "conditional"
 
-        logger.info(f"Employment verification completed - Status: {verification_status}, Annual Income: ${income}, Tenure: {tenure_months} months")
+        logger.info(
+            f"Employment verification completed - Status: {verification_status}, "
+            f"Annual Income: ${income}, Tenure: {tenure_months} months"
+        )
 
         return {
             "applicant_id": applicant_id,
@@ -137,3 +142,198 @@ class ApplicationVerificationServiceImpl(ApplicationVerificationService):
             "verification_confidence": round(random.uniform(0.75, 0.95), 2),
             "type": "asset_verification",
         }
+
+    async def validate_basic_parameters(self, application_data: str) -> dict[str, Any]:
+        """
+        Validate basic loan application parameters for intake agent.
+
+        Performs lightweight validation focusing on:
+        - Required field completeness
+        - Basic data format validation
+        - Profile completeness scoring
+        - Routing recommendations based on profile strength
+
+        This is specifically for intake validation - NOT comprehensive business rule validation.
+        """
+        import json
+
+        logger.info("Starting basic parameter validation for intake agent")
+
+        try:
+            # Parse the application data
+            app_data = json.loads(application_data)
+
+            # Track validation results
+            validation_issues = []
+            completeness_score = 0.0
+            total_fields = 0
+            completed_fields = 0
+
+            # Required fields for basic validation
+            required_fields = [
+                "applicant_name",
+                "applicant_id",
+                "email",
+                "phone",
+                "date_of_birth",
+                "loan_amount",
+                "loan_purpose",
+                "loan_term_months",
+                "annual_income",
+                "employment_status",
+            ]
+
+            # Check required fields
+            for field in required_fields:
+                total_fields += 1
+                if field in app_data and app_data[field] is not None:
+                    # Additional check for empty strings
+                    if isinstance(app_data[field], str) and app_data[field].strip():
+                        completed_fields += 1
+                    elif not isinstance(app_data[field], str):
+                        completed_fields += 1
+                else:
+                    validation_issues.append(f"Missing required field: {field}")
+
+            # Optional but important fields for completeness scoring
+            optional_fields = [
+                "employer_name",
+                "months_employed",
+                "monthly_expenses",
+                "existing_debt",
+                "assets",
+                "down_payment",
+            ]
+
+            for field in optional_fields:
+                total_fields += 1
+                if field in app_data and app_data[field] is not None:
+                    if isinstance(app_data[field], str) and app_data[field].strip():
+                        completed_fields += 1
+                    elif not isinstance(app_data[field], str):
+                        completed_fields += 1
+
+            # Calculate completeness score
+            completeness_score = completed_fields / total_fields if total_fields > 0 else 0.0
+
+            # Basic format validation
+            format_issues = []
+
+            # Email format (basic check)
+            if "email" in app_data and app_data["email"]:
+                if "@" not in str(app_data["email"]) or "." not in str(app_data["email"]).split("@")[-1]:
+                    format_issues.append("Invalid email format")
+
+            # Loan amount should be positive
+            if "loan_amount" in app_data and app_data["loan_amount"]:
+                try:
+                    amount = float(app_data["loan_amount"])
+                    if amount <= 0:
+                        format_issues.append("Loan amount must be greater than zero")
+                except (ValueError, TypeError):
+                    format_issues.append("Invalid loan amount format")
+
+            # Annual income should be positive
+            if "annual_income" in app_data and app_data["annual_income"]:
+                try:
+                    income = float(app_data["annual_income"])
+                    if income < 0:
+                        format_issues.append("Annual income cannot be negative")
+                except (ValueError, TypeError):
+                    format_issues.append("Invalid annual income format")
+
+            # Determine validation status
+            has_required_fields = len([issue for issue in validation_issues if "Missing required field" in issue]) == 0
+            has_valid_formats = len(format_issues) == 0
+
+            if has_required_fields and has_valid_formats:
+                validation_status = "VALID"
+            elif has_required_fields:
+                validation_status = "WARNING"  # Format issues but complete
+            else:
+                validation_status = "INVALID"  # Missing required fields
+
+            # Routing recommendation based on profile strength
+            routing_recommendation = "STANDARD"  # Default
+
+            if validation_status == "VALID" and completeness_score >= 0.85:
+                # Check for VIP indicators
+                annual_income = app_data.get("annual_income", 0)
+                try:
+                    if float(annual_income) >= 150000:
+                        routing_recommendation = "FAST_TRACK"
+                except (ValueError, TypeError):
+                    pass
+            elif validation_status == "INVALID" or completeness_score < 0.6:
+                routing_recommendation = "ENHANCED"
+
+            # Compile all issues
+            all_issues = validation_issues + format_issues
+
+            # Create response
+            result = {
+                "validation_status": validation_status,
+                "completeness_score": round(completeness_score, 2),
+                "routing_recommendation": routing_recommendation,
+                "validation_results": {
+                    "required_fields_complete": has_required_fields,
+                    "format_validation_passed": has_valid_formats,
+                    "completed_fields": completed_fields,
+                    "total_fields": total_fields,
+                },
+                "issues": all_issues,
+                "messages": [],
+                "type": "basic_parameter_validation",
+            }
+
+            # Add success messages based on results
+            if validation_status == "VALID":
+                result["messages"].append("All required fields present and valid")
+                if completeness_score >= 0.9:
+                    result["messages"].append("Excellent profile completeness")
+                elif completeness_score >= 0.75:
+                    result["messages"].append("Good profile completeness")
+
+            if routing_recommendation == "FAST_TRACK":
+                result["messages"].append("Profile qualifies for fast-track processing")
+
+            logger.info(
+                f"Basic validation completed - Status: {validation_status}, "
+                f"Completeness: {completeness_score:.2f}, Routing: {routing_recommendation}"
+            )
+
+            return result
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse application data: {e}")
+            return {
+                "validation_status": "ERROR",
+                "completeness_score": 0.0,
+                "routing_recommendation": "ENHANCED",
+                "validation_results": {
+                    "required_fields_complete": False,
+                    "format_validation_passed": False,
+                    "completed_fields": 0,
+                    "total_fields": 0,
+                },
+                "issues": [f"Invalid JSON format: {str(e)}"],
+                "messages": ["Unable to parse application data"],
+                "type": "basic_parameter_validation",
+            }
+
+        except Exception as e:
+            logger.error(f"Unexpected error during validation: {e}")
+            return {
+                "validation_status": "ERROR",
+                "completeness_score": 0.0,
+                "routing_recommendation": "ENHANCED",
+                "validation_results": {
+                    "required_fields_complete": False,
+                    "format_validation_passed": False,
+                    "completed_fields": 0,
+                    "total_fields": 0,
+                },
+                "issues": [f"Validation error: {str(e)}"],
+                "messages": ["Validation service encountered an error"],
+                "type": "basic_parameter_validation",
+            }

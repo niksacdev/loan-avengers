@@ -68,6 +68,7 @@ dev-dependencies = [
     "black>=24.0.0",
     "ruff>=0.1.0",
     "mypy>=1.8.0",
+    "pytest-cov>=7.0.0",
 ]
 
 [tool.uv.sources]
@@ -112,6 +113,89 @@ disallow_untyped_defs = true
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
+markers = [
+    "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+    "performance: marks tests as performance tests",
+    "slow: marks tests as slow running",
+]
+addopts = [
+    "--strict-markers",
+    "--strict-config", 
+    "--disable-warnings",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["loan_avengers"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*.py", 
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/examples/*",
+    "*/scripts/*",
+    "*/docs/*",
+]
+parallel = true
+
+[tool.coverage.paths]
+source = [
+    "loan_avengers/",
+    "/Users/*/loan-avengers/loan_avengers/",
+    "*/loan_avengers/",
+]
+
+[tool.coverage.report]
+# Target coverage levels
+precision = 2
+show_missing = true
+skip_covered = false
+skip_empty = false
+
+# Coverage thresholds for different modules
+fail_under = 85.0
+exclude_lines = [
+    # Standard pragmas
+    "pragma: no cover",
+    "pragma: nocover", 
+    
+    # Don't complain about missing debug-only code
+    "def __repr__",
+    "if self\\.debug",
+    
+    # Don't complain if tests don't hit defensive assertion code
+    "raise AssertionError",
+    "raise NotImplementedError",
+    
+    # Don't complain if non-runnable code isn't run
+    "if 0:",
+    "if False:",
+    "if __name__ == .__main__.:",
+    
+    # Don't complain about abstract methods, they aren't run
+    "@(abc\\.)?abstractmethod",
+    
+    # Don't complain about type checking code
+    "if TYPE_CHECKING:",
+    
+    # Don't complain about platform specific code
+    "pragma: (.*\\s)?platform",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+title = "Loan Avengers Coverage Report"
+show_contexts = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.coverage.json]
+output = "coverage.json"
+show_contexts = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["loan_avengers"]

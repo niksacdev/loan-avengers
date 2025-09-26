@@ -80,6 +80,28 @@ async def verify_asset_information(asset_type: str, asset_details_json: str) -> 
 
 
 @mcp.tool()
+async def validate_basic_parameters(application_data: str) -> str:
+    """
+    Validate basic loan application parameters for completeness and format.
+
+    This tool performs lightweight validation for the intake agent:
+    - Required field completeness check
+    - Basic data format validation
+    - User profile completeness scoring
+    - Simple routing recommendations based on profile strength
+
+    Args:
+        application_data: JSON string of LoanApplication data
+
+    Returns:
+        JSON validation result with status, completeness scores, and routing suggestions
+    """
+    logger.info("Basic parameter validation request received")
+    result = await service.validate_basic_parameters(application_data)
+    return json.dumps(result)
+
+
+@mcp.tool()
 async def application_verification_health_check() -> str:
     """Health check endpoint for application verification service."""
     from datetime import datetime, timezone

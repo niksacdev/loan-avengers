@@ -1,0 +1,53 @@
+# Coverage configuration file
+# This file provides additional coverage configuration beyond pyproject.toml
+
+[run]
+source = loan_avengers
+branch = True
+parallel = True
+concurrency = multiprocessing
+
+# Omit these files from coverage
+omit = 
+    */tests/*
+    */test_*.py
+    */__pycache__/*
+    */migrations/*
+    */venv/*
+    */.venv/*
+    */examples/*
+    */scripts/*
+    */docs/*
+    */build/*
+    */dist/*
+    setup.py
+    conftest.py
+
+[report]
+precision = 2
+show_missing = True
+skip_covered = False
+skip_empty = False
+sort = Cover
+
+# Ignore these lines in coverage
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if False:
+    if __name__ == .__main__.:
+    @abstractmethod
+    if TYPE_CHECKING:
+
+[html]
+directory = htmlcov
+title = Loan Avengers - Test Coverage Report
+
+[xml]
+output = coverage.xml
+
+[json] 
+output = coverage.json

@@ -1,20 +1,29 @@
 {
   "name": "Loan Avengers - Azure Development Environment",
-  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
-  
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
+
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {
-      "version": "latest"
+      "version": "latest",
+      "installBicep": false,
+      "installAzureDeveloperCli": false
     },
     "ghcr.io/devcontainers/features/terraform:1": {
       "version": "1.6.0"
     },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "version": "latest",
-      "enableNonRootDocker": "true"
+      "enableNonRootDocker": "true",
+      "moby": false
     },
     "ghcr.io/devcontainers/features/github-cli:1": {
       "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": false,
+      "nvmVersion": "latest"
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": "true",
@@ -23,7 +32,8 @@
       "upgradePackages": "true",
       "username": "vscode",
       "userUid": "automatic",
-      "userGid": "automatic"
+      "userGid": "automatic",
+      "installOhMyZshConfig": false
     }
   },
 
@@ -32,37 +42,37 @@
       "extensions": [
         // Python development
         "ms-python.python",
-        "ms-python.flake8",
         "ms-python.pylint",
-        "ms-python.black-formatter",
         "ms-toolsai.jupyter",
-        
+        "charliermarsh.ruff",
+
         // Azure & Infrastructure
-        "ms-vscode.azure-account",
-        "ms-azure-devops.azure-pipelines", 
+        "ms-azure-devops.azure-pipelines",
         "HashiCorp.terraform",
         "ms-azuretools.vscode-azureterraform",
         "ms-azuretools.azure-dev",
-        
-        // DevOps & Git
+
+        // AI & DevOps & Git
         "GitHub.copilot",
         "GitHub.copilot-chat",
+        "claudeai.claude-dev",
         "GitHub.vscode-pull-request-github",
-        "eamodio.gitlens",
-        
-        // Development tools
+        "eamodio.gitlens",        // Development tools
         "ms-vscode.vscode-json",
         "redhat.vscode-yaml",
         "ms-vscode.makefile-tools",
         "aaron-bond.better-comments",
-        "oderwat.indent-rainbow",
-        
+
+        // Node.js & JavaScript/TypeScript
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-eslint",
+        "ms-vscode.vscode-npm-script",
+
         // Testing & Quality
         "ms-python.pytest",
-        "charliermarsh.ruff",
         "ms-vscode.test-adapter-converter"
       ],
-      
+
       "settings": {
         // Python configuration
         "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -72,28 +82,39 @@
         "python.formatting.provider": "none",
         "python.testing.pytestEnabled": true,
         "python.testing.unittestEnabled": false,
-        
+
         // Ruff configuration (replaces flake8, black, isort)
         "[python]": {
           "editor.formatOnSave": true,
           "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": true,
-            "source.organizeImports.ruff": true
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
           },
           "editor.defaultFormatter": "charliermarsh.ruff"
         },
-        
+
+        // JavaScript/TypeScript configuration
+        "[javascript]": {
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.formatOnSave": true
+        },
+        "[json]": {
+          "editor.formatOnSave": true
+        },
+
         // Terraform configuration
         "terraform.experimentalFeatures.validateOnSave": true,
         "terraform.experimentalFeatures.prefillRequiredFields": true,
-        
+
         // File associations
         "files.associations": {
           "*.tf": "terraform",
           "*.tfvars": "terraform",
           "*.hcl": "terraform"
         },
-        
+
         // Terminal configuration
         "terminal.integrated.defaultProfile.linux": "zsh",
         "terminal.integrated.profiles.linux": {
@@ -101,7 +122,7 @@
             "path": "/bin/zsh"
           }
         },
-        
+
         // Editor configuration
         "editor.rulers": [88, 120],
         "editor.wordWrap": "wordWrapColumn",
@@ -112,42 +133,18 @@
     }
   },
 
-  "forwardPorts": [
-    8000,  // FastAPI application
-    8010,  // MCP Server - Application Verification
-    8011,  // MCP Server - Document Processing  
-    8012,  // MCP Server - Financial Calculations
-    5000   // Development server
-  ],
+  // Port forwarding removed for faster startup
+  // Ports can be forwarded manually when needed using VS Code port forwarding
+  "forwardPorts": [],  "postCreateCommand": "bash .devcontainer/post-create.sh",
 
-  "portsAttributes": {
-    "8000": {
-      "label": "Loan Avengers API",
-      "onAutoForward": "notify"
-    },
-    "8010": {
-      "label": "MCP - Application Verification", 
-      "onAutoForward": "silent"
-    },
-    "8011": {
-      "label": "MCP - Document Processing",
-      "onAutoForward": "silent"
-    },
-    "8012": {
-      "label": "MCP - Financial Calculations",
-      "onAutoForward": "silent"
-    }
-  },
-
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
-  
   "remoteUser": "vscode",
-  
+
   "mounts": [
-    // Mount Azure CLI configuration (if it exists)
-    "source=${localEnv:HOME}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached",
-    // Mount SSH keys for Git operations
-    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+    // Mount Azure CLI configuration for Azure authentication
+    "source=${localEnv:HOME}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached"
+    // Note: SSH keys not mounted by default. Use GitHub CLI (gh auth login) for Git authentication.
+    // If you need SSH keys, uncomment the line below (ensure ~/.ssh exists first):
+    // ,"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
   ],
 
   "containerEnv": {
@@ -155,11 +152,18 @@
     "ENVIRONMENT": "development",
     "PYTHONPATH": "/workspaces/loan-avengers",
     "AZURE_CLI_DISABLE_CONNECTION_VERIFICATION": "1",
-    
-    // UV package manager configuration
-    "UV_CACHE_DIR": "/tmp/uv-cache",
-    "UV_NO_PROGRESS": "1"
-  },
 
-  "workspaceFolder": "/workspaces/loan-avengers"
+    // UV package manager optimization
+    "UV_CACHE_DIR": "/tmp/uv-cache",
+    "UV_NO_PROGRESS": "1",
+    "UV_CONCURRENT_DOWNLOADS": "8",
+
+    // Python optimization
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUNBUFFERED": "1",
+
+    // Node.js optimization
+    "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+    "NPM_CONFIG_AUDIT": "false"
+  },  "workspaceFolder": "/workspaces/loan-avengers"
 }

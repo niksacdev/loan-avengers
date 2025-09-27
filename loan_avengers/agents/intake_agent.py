@@ -145,14 +145,8 @@ Provide your assessment as valid JSON matching the required output format from y
 
                 response: AgentRunResponse = await agent.run(message, thread=thread)
 
-                # Log tool usage at debug level
-                tool_calls = [
-                    getattr(content, "name", "unknown")
-                    for msg in response.messages
-                    if hasattr(msg, "contents")
-                    for content in msg.contents
-                    if hasattr(content, "type") and "function" in str(getattr(content, "type", "")).lower()
-                ]
+                # Log tool usage at debug level with safe extraction
+                tool_calls = Observability.extract_tool_calls_from_response(response.messages)
                 if tool_calls:
                     logger.debug(
                         "Tools called",

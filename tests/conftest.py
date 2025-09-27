@@ -48,10 +48,14 @@ def setup_unit_test_environment(request):
     yield
 
     # Restore original values after test
-    if original_endpoint:
+    if original_endpoint is not None:
         os.environ["FOUNDRY_PROJECT_ENDPOINT"] = original_endpoint
-    if original_model:
+    else:
+        os.environ.pop("FOUNDRY_PROJECT_ENDPOINT", None)
+    if original_model is not None:
         os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = original_model
+    else:
+        os.environ.pop("FOUNDRY_MODEL_DEPLOYMENT_NAME", None)
 
 
 @pytest.fixture

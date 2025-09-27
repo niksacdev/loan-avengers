@@ -14,7 +14,7 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 from agent_framework import AgentThread
-from agent_framework_azure import AzureChatClient
+from agent_framework_foundry import FoundryChatClient
 
 from loan_avengers.models.application import EmploymentStatus, LoanApplication, LoanPurpose
 from loan_avengers.models.responses import IntakeAssessment
@@ -22,11 +22,36 @@ from loan_avengers.models.responses import IntakeAssessment
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment() -> None:
-    """Set up test environment variables."""
+    """Set up test environment variables for unit tests only."""
     # Disable Azure Application Insights for tests
     os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] = ""
     # Set test log level
     os.environ["LOG_LEVEL"] = "DEBUG"
+
+
+@pytest.fixture(scope="function", autouse=True)
+def setup_unit_test_environment(request):
+    """Override Foundry config for unit tests only (not integration tests)."""
+    # Check if this is an integration test
+    if "integration" in request.keywords:
+        # Integration test - use real .env values, no override
+        yield
+        return
+
+    # Unit test - override with test values
+    original_endpoint = os.environ.get("FOUNDRY_PROJECT_ENDPOINT")
+    original_model = os.environ.get("FOUNDRY_MODEL_DEPLOYMENT_NAME")
+
+    os.environ["FOUNDRY_PROJECT_ENDPOINT"] = "https://test-project.projects.ai.azure.com"
+    os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = "test-model"
+
+    yield
+
+    # Restore original values after test
+    if original_endpoint:
+        os.environ["FOUNDRY_PROJECT_ENDPOINT"] = original_endpoint
+    if original_model:
+        os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = original_model
 
 
 @pytest.fixture
@@ -117,8 +142,8 @@ def sample_intake_assessment() -> IntakeAssessment:
 
 @pytest.fixture
 def mock_azure_chat_client() -> Mock:
-    """Create a mock Azure OpenAI chat client for testing."""
-    mock_client = Mock(spec=AzureChatClient)
+    """Create a mock Foundry chat client for testing."""
+    mock_client = Mock(spec=FoundryChatClient)
 
     # Mock successful response
     mock_response = Mock()

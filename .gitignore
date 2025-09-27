@@ -161,7 +161,13 @@ server_logs/
 test_results/
 test_coverage/
 
-# Spec-kit / Claude agent security
-# May contain credentials, auth tokens, or identifying artifacts
-.claude/
+# Spec-kit / Claude agent configuration
+# .claude/ contains agent definitions and should be tracked
+# Only ignore local settings that may contain credentials
+.claude/settings.local.json
+
+# Specify memory may contain sensitive data
 .specify/memory/
+
+# Ruff cache
+.ruff_cache/

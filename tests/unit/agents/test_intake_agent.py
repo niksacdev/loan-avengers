@@ -127,12 +127,23 @@ class TestIntakeAgentProcessApplication:
             result = await mock_intake_agent.process_application(sample_loan_application)
 
         # Verify result structure (Pydantic model, not dict!)
+        from loan_avengers.models.responses import AgentResponse, IntakeAssessment
+
+        assert isinstance(result, AgentResponse)
+        assert isinstance(result.assessment, IntakeAssessment)
+
+        # Use variables for expected values from sample data
+        expected_validation_status = sample_intake_assessment.validation_status
+        expected_routing_decision = sample_intake_assessment.routing_decision
+        expected_specialist_name = sample_intake_assessment.specialist_name
+        expected_tokens = 150  # From mock response setup
+
         assert result.agent_name == "intake"
         assert result.application_id == sample_loan_application.application_id
-        assert result.assessment.validation_status == "COMPLETE"
-        assert result.assessment.routing_decision == "STANDARD"
-        assert result.assessment.specialist_name == "John"
-        assert result.usage_stats.total_tokens == 150
+        assert result.assessment.validation_status == expected_validation_status
+        assert result.assessment.routing_decision == expected_routing_decision
+        assert result.assessment.specialist_name == expected_specialist_name
+        assert result.usage_stats.total_tokens == expected_tokens
 
     async def test_process_application_with_thread(
         self, mock_intake_agent, sample_loan_application, sample_agent_thread

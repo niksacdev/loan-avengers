@@ -110,6 +110,7 @@ class IntakeAgent:
         try:
             # Connect to MCP tool and create agent within async context
             async with self.mcp_tool:
+                # Log MCP tool connection details after connection is established
                 logger.debug(
                     "MCP tool connected",
                     extra={

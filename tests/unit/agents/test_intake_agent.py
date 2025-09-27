@@ -300,3 +300,44 @@ class TestIntakeAgentConfiguration:
         assert call_args[1]["url"] == "http://localhost:8010/mcp"
         assert call_args[1]["load_tools"] is True
         assert call_args[1]["load_prompts"] is False
+
+
+class TestIntakeAgentSerializationCompatibility:
+    """Test Pydantic model serialization compatibility."""
+
+    async def test_agent_response_json_serialization_compatibility(self, sample_intake_assessment):
+        """Test that AgentResponse can be serialized to JSON for API compatibility."""
+        from loan_avengers.models.responses import AgentResponse, UsageStats
+
+        # Create a sample AgentResponse
+        usage_stats = UsageStats(input_tokens=100, output_tokens=50, total_tokens=150)
+
+        agent_response = AgentResponse(
+            assessment=sample_intake_assessment,
+            usage_stats=usage_stats,
+            response_id="test-response-123",
+            created_at="2025-01-01T00:00:00Z",
+            agent_name="intake",
+            application_id="LN1234567890",
+        )
+
+        # Test that it can be serialized to JSON (for FastAPI compatibility)
+        json_data = agent_response.model_dump_json()
+
+        # Verify JSON is valid and contains expected structure
+        import json
+
+        parsed = json.loads(json_data)
+
+        assert parsed["agent_name"] == "intake"
+        assert parsed["application_id"] == "LN1234567890"
+        assert "assessment" in parsed
+        assert "usage_stats" in parsed
+        assert parsed["usage_stats"]["total_tokens"] == 150
+        assert parsed["assessment"]["validation_status"] == "COMPLETE"
+
+        # Test round-trip serialization
+        reconstructed = AgentResponse.model_validate(parsed)
+        assert reconstructed.agent_name == agent_response.agent_name
+        assert reconstructed.usage_stats.total_tokens == agent_response.usage_stats.total_tokens
+        assert reconstructed.assessment.validation_status == agent_response.assessment.validation_status

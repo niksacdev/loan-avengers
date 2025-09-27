@@ -15,6 +15,11 @@ from loan_avengers.models.application import EmploymentStatus, LoanApplication, 
 from loan_avengers.tools.mcp_servers.application_verification.service import ApplicationVerificationServiceImpl
 
 
+def serialize_test_data(data):
+    """Helper function to serialize test data with proper datetime handling."""
+    return json.dumps(data, default=lambda obj: obj.isoformat() if isinstance(obj, datetime) else str(obj))
+
+
 class TestApplicationVerificationServiceImpl:
     """Test ApplicationVerificationServiceImpl methods."""
 
@@ -84,7 +89,7 @@ class TestApplicationVerificationServiceImpl:
         # Remove required field
         app_data = sample_loan_application.model_dump()
         del app_data["annual_income"]
-        incomplete_json = json.dumps(app_data, default=str)
+        incomplete_json = serialize_test_data(app_data)
 
         result = await service.validate_basic_parameters(incomplete_json)
 
@@ -107,7 +112,7 @@ class TestApplicationVerificationServiceImpl:
         # Set invalid email
         app_data = sample_loan_application.model_dump()
         app_data["email"] = "invalid-email-format"
-        invalid_json = json.dumps(app_data, default=str)
+        invalid_json = serialize_test_data(app_data)
 
         result = await service.validate_basic_parameters(invalid_json)
 
@@ -126,7 +131,7 @@ class TestApplicationVerificationServiceImpl:
         # Set negative loan amount
         app_data = sample_loan_application.model_dump()
         app_data["loan_amount"] = -50000.0
-        invalid_json = json.dumps(app_data, default=str)
+        invalid_json = serialize_test_data(app_data)
 
         result = await service.validate_basic_parameters(invalid_json)
 
@@ -142,7 +147,7 @@ class TestApplicationVerificationServiceImpl:
         # Set negative income
         app_data = sample_loan_application.model_dump()
         app_data["annual_income"] = -1000.0
-        invalid_json = json.dumps(app_data, default=str)
+        invalid_json = serialize_test_data(app_data)
 
         result = await service.validate_basic_parameters(invalid_json)
 
@@ -231,7 +236,7 @@ class TestApplicationVerificationServiceImpl:
             "employment_status": "employed",
             # Missing all optional fields (5 out of 16 total)
         }
-        partial_json = json.dumps(partial_app_data, default=str)
+        partial_json = serialize_test_data(partial_app_data)
 
         result = await service.validate_basic_parameters(partial_json)
 
@@ -257,7 +262,7 @@ class TestApplicationVerificationServiceImpl:
         # Modify income
         app_data = sample_loan_application.model_dump()
         app_data["annual_income"] = income
-        app_json = json.dumps(app_data, default=str)
+        app_json = serialize_test_data(app_data)
 
         result = await service.validate_basic_parameters(app_json)
 

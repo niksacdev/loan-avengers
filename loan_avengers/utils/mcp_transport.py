@@ -4,6 +4,7 @@ Shared utilities for MCP server command-line argument parsing.
 Provides consistent transport selection across all MCP servers.
 """
 
+import os
 import sys
 from typing import Literal
 
@@ -15,20 +16,28 @@ def parse_mcp_transport_args() -> TransportType:
     Parse command-line arguments to determine MCP transport type.
 
     Provides consistent command-line interface across all MCP servers:
-    - Default: streamable-http (Agent Framework MCPStreamableHTTPTool compatibility)
-    - stdio: For development/testing
-    - sse: For legacy compatibility
+    - Default: streamable-http (recommended for production use; compatible with Agent Framework MCPStreamableHTTPTool)
+    - stdio: For development and testing (not recommended for production)
+    - sse: For legacy compatibility (not recommended for new deployments)
 
     Returns:
         TransportType: The selected transport method
 
     Examples:
-        python server.py                    # Uses streamable-http
-        python server.py stdio              # Uses stdio
-        python server.py sse                # Uses sse
+        python server.py                    # Uses streamable-http (recommended for production)
+        python server.py stdio              # Uses stdio (development/testing)
+        python server.py sse                # Uses sse (legacy compatibility)
+
+    Environment Variables:
+        DEFAULT_MCP_TRANSPORT: Override the default transport (streamable-http, sse, stdio)
     """
-    # Use streamable-http transport for Agent Framework MCPStreamableHTTPTool compatibility
-    transport: TransportType = "streamable-http"
+    # Default to streamable-http transport (recommended for production use and
+    # Agent Framework MCPStreamableHTTPTool compatibility)
+    default_transport = os.getenv("DEFAULT_MCP_TRANSPORT", "streamable-http")
+    if default_transport not in ["streamable-http", "sse", "stdio"]:
+        default_transport = "streamable-http"
+
+    transport: TransportType = default_transport  # type: ignore
 
     if len(sys.argv) > 1:
         arg = sys.argv[1].lower()

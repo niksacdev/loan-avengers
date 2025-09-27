@@ -7,6 +7,8 @@ and efficient humor. Part of Alisha's Dream Team for revolutionary loan processi
 
 from __future__ import annotations
 
+import os
+
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent
 from agent_framework._mcp import MCPStreamableHTTPTool
 from agent_framework_foundry import FoundryChatClient
@@ -14,6 +16,7 @@ from azure.identity.aio import DefaultAzureCredential
 
 from loan_avengers.models.application import LoanApplication
 from loan_avengers.models.responses import AgentResponse, IntakeAssessment, UsageStats
+from loan_avengers.utils.logging import extract_tool_call_names, mask_application_id
 from loan_avengers.utils.observability import Observability
 from loan_avengers.utils.persona_loader import PersonaLoader
 
@@ -68,9 +71,10 @@ class IntakeAgent:
 
         # Create MCP tool for application verification server
         # Note: Tool connection is deferred until process_application is called
+        mcp_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL", "http://localhost:8010/mcp")
         self.mcp_tool = MCPStreamableHTTPTool(
             name="application-verification",
-            url="http://localhost:8010/mcp",
+            url=mcp_url,
             description="Application verification service for basic parameter validation",
             load_tools=True,
             load_prompts=False,
@@ -115,7 +119,7 @@ class IntakeAgent:
                     "MCP tool connected",
                     extra={
                         "tool_count": len(self.mcp_tool.functions),
-                        "application_id": f"{application.application_id[:8]}***",
+                        "application_id": mask_application_id(application.application_id),
                     },
                 )
 
@@ -141,23 +145,17 @@ Provide your assessment as valid JSON matching the required output format from y
                 # Process with Microsoft Agent Framework (with optional conversation context)
                 logger.info(
                     "Processing application",
-                    extra={"application_id": f"{application.application_id[:8]}***", "agent": "intake"},
+                    extra={"application_id": mask_application_id(application.application_id), "agent": "intake"},
                 )
 
                 response: AgentRunResponse = await agent.run(message, thread=thread)
 
-                # Log tool usage at debug level
-                tool_calls = [
-                    getattr(content, "name", "unknown")
-                    for msg in response.messages
-                    if hasattr(msg, "contents")
-                    for content in msg.contents
-                    if hasattr(content, "type") and "function" in str(getattr(content, "type", "")).lower()
-                ]
+                # Log tool usage at debug level with simplified extraction
+                tool_calls = extract_tool_call_names(response.messages)
                 if tool_calls:
                     logger.debug(
                         "Tools called",
-                        extra={"tools": tool_calls, "application_id": f"{application.application_id[:8]}***"},
+                        extra={"tools": tool_calls, "application_id": mask_application_id(application.application_id)},
                     )
 
                 # Agent Framework automatically parses response into IntakeAssessment
@@ -170,7 +168,7 @@ Provide your assessment as valid JSON matching the required output format from y
                     logger.warning(
                         "Structured response parsing failed",
                         extra={
-                            "application_id": f"{application.application_id[:8]}***",
+                            "application_id": mask_application_id(application.application_id),
                             "response_preview": content[:200],
                         },
                     )
@@ -209,7 +207,7 @@ Provide your assessment as valid JSON matching the required output format from y
                 logger.info(
                     "Application processed",
                     extra={
-                        "application_id": f"{application.application_id[:8]}***",
+                        "application_id": mask_application_id(application.application_id),
                         "agent": "intake",
                         "validation_status": assessment.validation_status,
                         "routing_decision": assessment.routing_decision,

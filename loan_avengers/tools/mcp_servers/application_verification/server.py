@@ -118,12 +118,19 @@ async def application_verification_health_check() -> str:
 
 
 if __name__ == "__main__":
-    # Default to SSE transport as recommended by architect
-    transport = "sse"
-    if len(sys.argv) > 1 and sys.argv[1] == "stdio":
-        transport = "stdio"  # Allow stdio override for development
+    # Use streamable-http transport for Agent Framework MCPStreamableHTTPTool compatibility
+    transport = "streamable-http"
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "stdio":
+            transport = "stdio"
+        elif sys.argv[1] == "sse":
+            transport = "sse"
 
-    if transport == "sse":
+    if transport == "streamable-http":
+        logger.info(
+            "Starting Application Verification MCP Server with streamable-http transport on http://localhost:8010/mcp"
+        )
+    elif transport == "sse":
         logger.info("Starting Application Verification MCP Server with SSE transport on http://localhost:8010/sse")
     else:
         logger.info("Starting Application Verification MCP Server with stdio transport")

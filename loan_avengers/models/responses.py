@@ -7,7 +7,7 @@ workflow, designed to be compatible with Agent Framework's response_format param
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Generic, Literal, TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -160,10 +160,52 @@ class LoanDecision(BaseModel):
     confidence_score: float = Field(ge=0.0, le=1.0, description="Confidence in the final decision")
 
 
+# Generic type for agent assessments
+AssessmentType = TypeVar(
+    "AssessmentType", IntakeAssessment, CreditAssessment, IncomeAssessment, RiskAssessment, LoanDecision
+)
+
+
+class UsageStats(BaseModel):
+    """Token usage statistics from agent execution."""
+
+    input_tokens: int | None = Field(None, description="Number of input tokens used")
+    output_tokens: int | None = Field(None, description="Number of output tokens generated")
+    total_tokens: int | None = Field(None, description="Total tokens used")
+
+
+class AgentResponse(BaseModel, Generic[AssessmentType]):
+    """
+    Generic response wrapper for agent outputs.
+
+    Type-safe wrapper that preserves the specific assessment type.
+    Combines assessment data with metadata and usage statistics.
+
+    Example:
+        intake_response: AgentResponse[IntakeAssessment] = await intake_agent.process(...)
+        credit_response: AgentResponse[CreditAssessment] = await credit_agent.process(...)
+
+    Benefits:
+        - Full IDE autocomplete for assessment-specific properties
+        - Type checking at compile time
+        - Self-documenting return types
+    """
+
+    assessment: AssessmentType = Field(description="The agent's assessment result")
+    usage_stats: UsageStats = Field(description="Token usage statistics")
+    response_id: str | None = Field(None, description="Unique response identifier")
+    created_at: str | None = Field(None, description="Response timestamp")
+    agent_name: str = Field(description="Name of the agent that produced this response")
+    application_id: str = Field(description="Application identifier")
+
+
 __all__ = [
     "IntakeAssessment",
     "CreditAssessment",
     "IncomeAssessment",
     "RiskAssessment",
     "LoanDecision",
+    "UsageStats",
+    "AgentResponse",
+    "AssessmentType",
 ]

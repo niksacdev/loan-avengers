@@ -7,14 +7,13 @@ and efficient humor. Part of Alisha's Dream Team for revolutionary loan processi
 
 from __future__ import annotations
 
-from typing import Any
-
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent
 from agent_framework._mcp import MCPStreamableHTTPTool
-from agent_framework_azure import AzureChatClient
+from agent_framework_foundry import FoundryChatClient
+from azure.identity.aio import DefaultAzureCredential
 
 from loan_avengers.models.application import LoanApplication
-from loan_avengers.models.responses import IntakeAssessment
+from loan_avengers.models.responses import AgentResponse, IntakeAssessment, UsageStats
 from loan_avengers.utils.observability import Observability
 from loan_avengers.utils.persona_loader import PersonaLoader
 
@@ -29,133 +28,202 @@ class IntakeAgent:
     - Lightning-fast application data validation with eagle precision
     - Smart routing to optimal Dream Team specialist experience
     - Quality assurance setup for downstream specialists
-    - Streaming progress updates with efficient humor
+    - MCP tool integration for verification services
+
+    Architecture:
+    - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
+    - MCP tools connected via async context manager per request
+    - Structured logging with masked sensitive data (application_id[:8]***)
     """
 
     def __init__(
         self,
-        chat_client: AzureChatClient | None = None,
-        temperature: float = 0.1,  # Low temperature for consistent routing decisions
-        max_tokens: int = 500,  # Small response for speed
+        chat_client: FoundryChatClient | None = None,
+        temperature: float = 0.1,
+        max_tokens: int = 500,
     ):
         """
         Initialize the Intake Agent.
 
+        Creates MCP tool connection for application verification service.
+        ChatAgent is created per-request to ensure proper MCP tool lifecycle.
+
         Args:
-            chat_client: Azure OpenAI chat client. If None, will be created from environment.
+            chat_client: Azure AI Foundry chat client. If None, creates with
+                DefaultAzureCredential for Entra ID authentication.
             temperature: Sampling temperature for the model (low for consistency)
             max_tokens: Maximum tokens for response (small for speed)
+
+        Environment:
+            Requires FOUNDRY_PROJECT_ENDPOINT and FOUNDRY_MODEL_DEPLOYMENT_NAME.
+            Authentication via Azure CLI (az login) or Managed Identity.
         """
-        # Create chat client if not provided
-        self.chat_client = chat_client or AzureChatClient()
+        if chat_client:
+            self.chat_client = chat_client
+        else:
+            self.chat_client = FoundryChatClient(async_credential=DefaultAzureCredential())
 
         # Load persona instructions from markdown file
         self.instructions = PersonaLoader.load_persona("intake")
 
-        # Create MCP tool for application verification server (SSE endpoint)
-        application_verification_tool = MCPStreamableHTTPTool(
+        # Create MCP tool for application verification server
+        # Note: Tool connection is deferred until process_application is called
+        self.mcp_tool = MCPStreamableHTTPTool(
             name="application-verification",
-            url="http://localhost:8010/sse",
+            url="http://localhost:8010/mcp",
             description="Application verification service for basic parameter validation",
             load_tools=True,
             load_prompts=False,
         )
 
-        # Create the Microsoft Agent Framework ChatAgent with validation tool
-        # The ChatAgent will automatically handle the MCP tool and add its functions
-        self.agent = ChatAgent(
-            chat_client=self.chat_client,
-            instructions=self.instructions,
-            name="John - The Eagle Eye",
-            description="Sharp-eyed application validator with efficient humor",
-            temperature=temperature,
-            max_tokens=max_tokens,
-            response_format=IntakeAssessment,  # Structured response parsing
-            tools=[application_verification_tool],  # Agent Framework will handle MCP integration
-        )
+        # Store agent configuration for later initialization
+        self.temperature = temperature
+        self.max_tokens = max_tokens
 
-        logger.info("John 'The Eagle Eye' initialized with MCP validation tools")
+        logger.info("IntakeAgent initialized", extra={"agent": "intake"})
 
     async def process_application(
         self, application: LoanApplication, thread: AgentThread | None = None
-    ) -> dict[str, Any]:
+    ) -> AgentResponse[IntakeAssessment]:
         """
         Process loan application for intake validation and routing.
+
+        Uses async context manager to connect MCP tools and create ChatAgent per request.
+        This ensures proper tool discovery and lifecycle management.
 
         Args:
             application: The loan application to process
             thread: Optional conversation thread for context (conversation history)
 
         Returns:
-            Dictionary containing:
-            - assessment: Sarah's enthusiastic routing decision and validation results
-            - usage_stats: Token usage and performance metrics
-            - response_id: Unique response identifier for tracing
+            AgentResponse: Pydantic model containing:
+            - assessment: IntakeAssessment with validation and routing
+            - usage_stats: UsageStats with token metrics
+            - response_id: Unique identifier
+            - created_at: Timestamp
+            - agent_name: "intake"
+            - application_id: Application ID
+
+        Note:
+            Logs mask sensitive data - application_id logged as "[:8]***"
         """
         try:
-            # Convert Pydantic model to JSON string for agent processing
-            application_json = application.model_dump_json(indent=2)
+            # Connect to MCP tool and create agent within async context
+            async with self.mcp_tool:
+                logger.debug(
+                    "MCP tool connected",
+                    extra={
+                        "tool_count": len(self.mcp_tool.functions),
+                        "application_id": f"{application.application_id[:8]}***",
+                    },
+                )
 
-            # Create the message for the agent
-            message = f"""Process this loan application for intake validation and routing:
+                # Create ChatAgent with connected MCP tool
+                agent = ChatAgent(
+                    chat_client=self.chat_client,
+                    instructions=self.instructions,
+                    name="John - The Eagle Eye",
+                    description="Sharp-eyed application validator with efficient humor",
+                    temperature=self.temperature,
+                    max_tokens=self.max_tokens,
+                    response_format=IntakeAssessment,
+                    tools=[self.mcp_tool],
+                )
 
-{application_json}
+                # Create message with JSON-serialized application data
+                message = f"""Process this loan application for intake validation and routing:
+
+{application.model_dump_json(indent=2)}
 
 Provide your assessment as valid JSON matching the required output format from your instructions."""
 
-            # Process with Microsoft Agent Framework (with optional conversation context)
-            logger.info(f"🦅 John's Eagle Eye scanning application {application.application_id}")
-
-            response: AgentRunResponse = await self.agent.run(message, thread=thread)
-
-            # Agent Framework automatically parses response into IntakeAssessment
-            assessment = response.value  # Already parsed as IntakeAssessment object
-
-            if assessment is None:
-                # Fallback if parsing failed - extract from text
-                last_message = response.messages[-1] if response.messages else None
-                content = last_message.text if last_message else "No response"
-                logger.warning(f"Failed to parse structured response, got: {content}")
-
-                # Create fallback assessment with John's eagle-eyed efficiency
-                assessment = IntakeAssessment(
-                    validation_status="FAILED",
-                    routing_decision="MANUAL",
-                    confidence_score=0.0,
-                    processing_notes=f"Eagle eye scan encountered parsing issue: {content[:200]}...",
-                    data_quality_score=0.0,
-                    specialist_name="John",
-                    celebration_message="🦅 Eagle eyes spotted something! Let me fix this with precision!",
-                    encouragement_note="Technical hiccup detected - these eagle eyes will sort it out!",
-                    next_step_preview="Getting this sharpened up for the Dream Team!",
-                    animation_type="pulse",
-                    celebration_level="mild",
+                # Process with Microsoft Agent Framework (with optional conversation context)
+                logger.info(
+                    "Processing application",
+                    extra={"application_id": f"{application.application_id[:8]}***", "agent": "intake"},
                 )
 
-            # Build comprehensive response with observability data
-            result = {
-                "assessment": assessment.model_dump(),  # Convert Pydantic model to dict
-                "usage_stats": {
-                    "input_tokens": response.usage_details.input_token_count if response.usage_details else None,
-                    "output_tokens": response.usage_details.output_token_count if response.usage_details else None,
-                    "total_tokens": response.usage_details.total_token_count if response.usage_details else None,
-                },
-                "response_id": response.response_id,
-                "created_at": response.created_at,
-                "agent_name": "intake",
-                "application_id": application.application_id,
-            }
+                response: AgentRunResponse = await agent.run(message, thread=thread)
 
-            logger.info(
-                f"Completed intake processing for {application.application_id}. "
-                f"Tokens used: {result['usage_stats']['total_tokens']}"
-            )
+                # Log tool usage at debug level
+                tool_calls = [
+                    getattr(content, "name", "unknown")
+                    for msg in response.messages
+                    if hasattr(msg, "contents")
+                    for content in msg.contents
+                    if hasattr(content, "type") and "function" in str(getattr(content, "type", "")).lower()
+                ]
+                if tool_calls:
+                    logger.debug(
+                        "Tools called",
+                        extra={"tools": tool_calls, "application_id": f"{application.application_id[:8]}***"},
+                    )
 
-            return result
+                # Agent Framework automatically parses response into IntakeAssessment
+                assessment = response.value  # Already parsed as IntakeAssessment object
+
+                if assessment is None:
+                    # Fallback if parsing failed - extract from text
+                    last_message = response.messages[-1] if response.messages else None
+                    content = last_message.text if last_message else "No response"
+                    logger.warning(
+                        "Structured response parsing failed",
+                        extra={
+                            "application_id": f"{application.application_id[:8]}***",
+                            "response_preview": content[:200],
+                        },
+                    )
+
+                    # Create fallback assessment with John's eagle-eyed efficiency
+                    assessment = IntakeAssessment(
+                        validation_status="FAILED",
+                        routing_decision="MANUAL",
+                        confidence_score=0.0,
+                        processing_notes=f"Eagle eye scan encountered parsing issue: {content[:200]}...",
+                        data_quality_score=0.0,
+                        specialist_name="John",
+                        celebration_message="🦅 Eagle eyes spotted something! Let me fix this with precision!",
+                        encouragement_note="Technical hiccup detected - these eagle eyes will sort it out!",
+                        next_step_preview="Getting this sharpened up for the Dream Team!",
+                        animation_type="pulse",
+                        celebration_level="mild",
+                    )
+
+                # Build Pydantic response model (no dict conversion needed!)
+                usage = UsageStats(
+                    input_tokens=response.usage_details.input_token_count if response.usage_details else None,
+                    output_tokens=response.usage_details.output_token_count if response.usage_details else None,
+                    total_tokens=response.usage_details.total_token_count if response.usage_details else None,
+                )
+
+                result = AgentResponse(
+                    assessment=assessment,  # Keep as Pydantic model!
+                    usage_stats=usage,
+                    response_id=response.response_id,
+                    created_at=response.created_at,
+                    agent_name="intake",
+                    application_id=application.application_id,
+                )
+
+                logger.info(
+                    "Application processed",
+                    extra={
+                        "application_id": f"{application.application_id[:8]}***",
+                        "agent": "intake",
+                        "validation_status": assessment.validation_status,
+                        "routing_decision": assessment.routing_decision,
+                        "tokens_used": usage.total_tokens,
+                    },
+                )
+
+                return result
 
         except Exception as e:
-            # Log error - the @use_agent_observability decorator handles telemetry automatically
-            logger.error(f"Error processing application {application.application_id}: {e}", exc_info=True)
+            logger.error(
+                "Application processing failed",
+                extra={"application_id": f"{application.application_id[:8]}***", "agent": "intake"},
+                exc_info=True,
+            )
             # Create error assessment with John's eagle-eyed efficiency
             error_assessment = IntakeAssessment(
                 validation_status="FAILED",
@@ -171,15 +239,15 @@ Provide your assessment as valid JSON matching the required output format from y
                 celebration_level="mild",
             )
 
-            # Return error response with same structure
-            return {
-                "assessment": error_assessment.model_dump(),
-                "usage_stats": {"input_tokens": None, "output_tokens": None, "total_tokens": None},
-                "response_id": None,
-                "created_at": None,
-                "agent_name": "intake",
-                "application_id": application.application_id,
-            }
+            # Return error response as Pydantic model
+            return AgentResponse(
+                assessment=error_assessment,
+                usage_stats=UsageStats(input_tokens=None, output_tokens=None, total_tokens=None),
+                response_id=None,
+                created_at=None,
+                agent_name="intake",
+                application_id=application.application_id,
+            )
 
 
 __all__ = ["IntakeAgent"]

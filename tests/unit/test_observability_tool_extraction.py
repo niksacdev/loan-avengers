@@ -1,10 +1,8 @@
 """
-Test the Observability.extract_tool_calls_from_response helper function.
+Test the Observability utility functions.
 """
 
 from unittest.mock import Mock
-
-import pytest
 
 from loan_avengers.utils.observability import Observability
 
@@ -68,7 +66,7 @@ class TestToolCallExtraction:
 
         messages = [mock_message]
         tool_calls = Observability.extract_tool_calls_from_response(messages)
-        
+
         # Should handle missing name gracefully
         assert tool_calls == ["unknown"]
 
@@ -87,7 +85,7 @@ class TestToolCallExtraction:
 
         messages = [mock_message]
         tool_calls = Observability.extract_tool_calls_from_response(messages)
-        
+
         # Only function-type content should be extracted
         assert tool_calls == ["validate_basic_parameters"]
 
@@ -99,7 +97,7 @@ class TestToolCallExtraction:
 
         messages = [mock_message]
         tool_calls = Observability.extract_tool_calls_from_response(messages)
-        
+
         # Should return empty list without raising exception
         assert tool_calls == []
 
@@ -107,3 +105,41 @@ class TestToolCallExtraction:
         """Test that the function handles None input gracefully."""
         tool_calls = Observability.extract_tool_calls_from_response(None)
         assert tool_calls == []
+
+
+class TestApplicationIdMasking:
+    """Test the application ID masking utility function."""
+
+    def test_mask_application_id_normal_case(self):
+        """Test masking for normal application IDs."""
+        app_id = "LN1234567890ABCD"
+        result = Observability.mask_application_id(app_id)
+        assert result == "LN123456***"
+
+    def test_mask_application_id_short_id(self):
+        """Test masking for short application IDs."""
+        app_id = "LN123"
+        result = Observability.mask_application_id(app_id)
+        assert result == "LN123***"
+
+    def test_mask_application_id_exactly_eight_chars(self):
+        """Test masking for exactly 8 character IDs."""
+        app_id = "LN123456"
+        result = Observability.mask_application_id(app_id)
+        assert result == "LN123456***"
+
+    def test_mask_application_id_empty_string(self):
+        """Test masking for empty string."""
+        result = Observability.mask_application_id("")
+        assert result == "***"
+
+    def test_mask_application_id_none_value(self):
+        """Test masking for None value."""
+        result = Observability.mask_application_id(None)
+        assert result == "***"
+
+    def test_mask_application_id_long_id(self):
+        """Test masking for very long application IDs."""
+        app_id = "LN1234567890ABCDEFGHIJKLMNOP"
+        result = Observability.mask_application_id(app_id)
+        assert result == "LN123456***"

@@ -21,7 +21,7 @@ class TestEnvironmentIsolation:
         # Change env vars during test
         os.environ["FOUNDRY_PROJECT_ENDPOINT"] = "https://modified-endpoint.ai.azure.com"
         os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = "modified-model"
-        
+
         # These changes should not persist to other tests due to conftest.py cleanup
 
     def test_env_vars_reset_after_modification(self):
@@ -34,14 +34,14 @@ class TestEnvironmentIsolation:
 @pytest.mark.integration
 class TestIntegrationEnvNotOverridden:
     """Test that integration tests don't get env overrides."""
-    
+
     def test_integration_uses_real_env_values(self):
         """Integration tests should use real .env values, not test overrides."""
         # For integration tests, the conftest should not override these
         # The values will depend on what's in the actual .env file
-        endpoint = os.environ.get("FOUNDRY_PROJECT_ENDPOINT") 
+        endpoint = os.environ.get("FOUNDRY_PROJECT_ENDPOINT")
         model = os.environ.get("FOUNDRY_MODEL_DEPLOYMENT_NAME")
-        
+
         # Should NOT be the test values
         if endpoint is not None:
             assert endpoint != "https://test-project.projects.ai.azure.com"

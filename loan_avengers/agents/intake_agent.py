@@ -118,7 +118,7 @@ class IntakeAgent:
                     "MCP tool connected",
                     extra={
                         "tool_count": len(self.mcp_tool.functions),
-                        "application_id": f"{application.application_id[:8]}***",
+                        "application_id": Observability.mask_application_id(application.application_id),
                     },
                 )
 
@@ -144,7 +144,10 @@ Provide your assessment as valid JSON matching the required output format from y
                 # Process with Microsoft Agent Framework (with optional conversation context)
                 logger.info(
                     "Processing application",
-                    extra={"application_id": f"{application.application_id[:8]}***", "agent": "intake"},
+                    extra={
+                        "application_id": Observability.mask_application_id(application.application_id),
+                        "agent": "intake",
+                    },
                 )
 
                 response: AgentRunResponse = await agent.run(message, thread=thread)
@@ -154,7 +157,10 @@ Provide your assessment as valid JSON matching the required output format from y
                 if tool_calls:
                     logger.debug(
                         "Tools called",
-                        extra={"tools": tool_calls, "application_id": f"{application.application_id[:8]}***"},
+                        extra={
+                            "tools": tool_calls,
+                            "application_id": Observability.mask_application_id(application.application_id),
+                        },
                     )
 
                 # Agent Framework automatically parses response into IntakeAssessment
@@ -167,7 +173,7 @@ Provide your assessment as valid JSON matching the required output format from y
                     logger.warning(
                         "Structured response parsing failed",
                         extra={
-                            "application_id": f"{application.application_id[:8]}***",
+                            "application_id": Observability.mask_application_id(application.application_id),
                             "response_preview": content[:200],
                         },
                     )
@@ -206,7 +212,7 @@ Provide your assessment as valid JSON matching the required output format from y
                 logger.info(
                     "Application processed",
                     extra={
-                        "application_id": f"{application.application_id[:8]}***",
+                        "application_id": Observability.mask_application_id(application.application_id),
                         "agent": "intake",
                         "validation_status": assessment.validation_status,
                         "routing_decision": assessment.routing_decision,
@@ -219,7 +225,10 @@ Provide your assessment as valid JSON matching the required output format from y
         except Exception as e:
             logger.error(
                 "Application processing failed",
-                extra={"application_id": f"{application.application_id[:8]}***", "agent": "intake"},
+                extra={
+                    "application_id": Observability.mask_application_id(application.application_id),
+                    "agent": "intake",
+                },
                 exc_info=True,
             )
             # Create error assessment with John's eagle-eyed efficiency

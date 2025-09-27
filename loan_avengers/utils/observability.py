@@ -134,5 +134,27 @@ class Observability:
 
         return tool_calls
 
+    @staticmethod
+    def mask_application_id(app_id: str) -> str:
+        """
+        Mask application ID for secure logging.
+
+        Shows first 8 characters followed by *** to preserve some context
+        while protecting full identifiers in logs.
+
+        Args:
+            app_id: The application ID to mask
+
+        Returns:
+            str: Masked application ID in format "XXXXXXXX***"
+
+        Examples:
+            >>> Observability.mask_application_id("LN1234567890ABCD")
+            "LN123456***"
+        """
+        if not app_id or len(app_id) <= 8:
+            return f"{app_id}***" if app_id else "***"
+        return f"{app_id[:8]}***"
+
 
 __all__ = ["Observability"]

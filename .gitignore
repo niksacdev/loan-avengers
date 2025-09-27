@@ -171,3 +171,17 @@ test_coverage/
 
 # Ruff cache
 .ruff_cache/
+
+# Frontend specific ignores
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/coverage/
+
+# Frontend build artifacts
+*.tsbuildinfo
+.eslintcache

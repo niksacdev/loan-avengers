@@ -127,12 +127,23 @@ class TestIntakeAgentProcessApplication:
             result = await mock_intake_agent.process_application(sample_loan_application)
 
         # Verify result structure (Pydantic model, not dict!)
+        from loan_avengers.models.responses import AgentResponse, IntakeAssessment
+
+        assert isinstance(result, AgentResponse)
+        assert isinstance(result.assessment, IntakeAssessment)
+
+        # Use variables for expected values from sample data
+        expected_validation_status = sample_intake_assessment.validation_status
+        expected_routing_decision = sample_intake_assessment.routing_decision
+        expected_specialist_name = sample_intake_assessment.specialist_name
+        expected_tokens = 150  # From mock response setup
+
         assert result.agent_name == "intake"
         assert result.application_id == sample_loan_application.application_id
-        assert result.assessment.validation_status == "COMPLETE"
-        assert result.assessment.routing_decision == "STANDARD"
-        assert result.assessment.specialist_name == "John"
-        assert result.usage_stats.total_tokens == 150
+        assert result.assessment.validation_status == expected_validation_status
+        assert result.assessment.routing_decision == expected_routing_decision
+        assert result.assessment.specialist_name == expected_specialist_name
+        assert result.usage_stats.total_tokens == expected_tokens
 
     async def test_process_application_with_thread(
         self, mock_intake_agent, sample_loan_application, sample_agent_thread
@@ -289,3 +300,44 @@ class TestIntakeAgentConfiguration:
         assert call_args[1]["url"] == "http://localhost:8010/mcp"
         assert call_args[1]["load_tools"] is True
         assert call_args[1]["load_prompts"] is False
+
+
+class TestIntakeAgentSerializationCompatibility:
+    """Test Pydantic model serialization compatibility."""
+
+    async def test_agent_response_json_serialization_compatibility(self, sample_intake_assessment):
+        """Test that AgentResponse can be serialized to JSON for API compatibility."""
+        from loan_avengers.models.responses import AgentResponse, UsageStats
+
+        # Create a sample AgentResponse
+        usage_stats = UsageStats(input_tokens=100, output_tokens=50, total_tokens=150)
+
+        agent_response = AgentResponse(
+            assessment=sample_intake_assessment,
+            usage_stats=usage_stats,
+            response_id="test-response-123",
+            created_at="2025-01-01T00:00:00Z",
+            agent_name="intake",
+            application_id="LN1234567890",
+        )
+
+        # Test that it can be serialized to JSON (for FastAPI compatibility)
+        json_data = agent_response.model_dump_json()
+
+        # Verify JSON is valid and contains expected structure
+        import json
+
+        parsed = json.loads(json_data)
+
+        assert parsed["agent_name"] == "intake"
+        assert parsed["application_id"] == "LN1234567890"
+        assert "assessment" in parsed
+        assert "usage_stats" in parsed
+        assert parsed["usage_stats"]["total_tokens"] == 150
+        assert parsed["assessment"]["validation_status"] == "COMPLETE"
+
+        # Test round-trip serialization
+        reconstructed = AgentResponse.model_validate(parsed)
+        assert reconstructed.agent_name == agent_response.agent_name
+        assert reconstructed.usage_stats.total_tokens == agent_response.usage_stats.total_tokens
+        assert reconstructed.assessment.validation_status == agent_response.assessment.validation_status

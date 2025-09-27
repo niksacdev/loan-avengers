@@ -37,6 +37,11 @@ async def test_intake_agent_live_with_foundry(sample_loan_application):
         print("=" * 60)
 
         # Display results - using Pydantic model properties
+        # Verify result structure (Pydantic model validation)
+        from loan_avengers.models.responses import AgentResponse
+
+        assert isinstance(result, AgentResponse)
+
         assessment = result.assessment
         print("\n📊 Assessment Results:")
         print(f"  Validation Status: {assessment.validation_status}")

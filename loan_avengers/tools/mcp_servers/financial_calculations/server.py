@@ -169,14 +169,10 @@ async def financial_calculations_health_check() -> str:
 
 
 if __name__ == "__main__":
-    # Default to SSE transport as recommended by architect
-    transport = "sse"
-    if len(sys.argv) > 1 and sys.argv[1] == "stdio":
-        transport = "stdio"  # Allow stdio override for development
+    from loan_avengers.utils.mcp_transport import get_transport_info, parse_mcp_transport_args
 
-    if transport == "sse":
-        logger.info("Starting Financial Calculations MCP Server with SSE transport on http://localhost:8012/sse")
-    else:
-        logger.info("Starting Financial Calculations MCP Server with stdio transport")
+    transport = parse_mcp_transport_args()
+
+    logger.info(f"Starting Financial Calculations MCP Server with {get_transport_info(transport, 8012)}")
 
     mcp.run(transport=transport)

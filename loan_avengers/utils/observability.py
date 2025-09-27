@@ -85,5 +85,76 @@ class Observability:
         """Get the configured log level."""
         return os.getenv("LOG_LEVEL", "INFO").upper()
 
+    @staticmethod
+    def extract_tool_calls_from_response(response_messages) -> list[str]:
+        """
+        Extract tool call names from agent response messages.
+
+        Safely traverses the complex nested structure with proper error handling.
+        Replaces fragile list comprehension with clear, maintainable logic.
+
+        Args:
+            response_messages: List of messages from AgentRunResponse
+
+        Returns:
+            List of tool names that were called
+
+        Example:
+            tool_calls = Observability.extract_tool_calls_from_response(response.messages)
+        """
+        tool_calls = []
+
+        try:
+            for msg in response_messages:
+                if not hasattr(msg, "contents"):
+                    continue
+
+                for content in msg.contents:
+                    try:
+                        # Check if this is a function call content
+                        content_type = getattr(content, "type", None)
+                        if content_type is None:
+                            continue
+
+                        # Check for function call indicators
+                        type_str = str(content_type).lower()
+                        if "function" in type_str:
+                            # Extract function name safely
+                            tool_name = getattr(content, "name", "unknown")
+                            tool_calls.append(tool_name)
+
+                    except (AttributeError, TypeError) as e:
+                        # Log parsing issues at debug level but don't fail
+                        logging.debug(f"Failed to parse content for tool calls: {e}")
+                        continue
+
+        except (AttributeError, TypeError) as e:
+            # Log response parsing issues but don't fail
+            logging.debug(f"Failed to extract tool calls from response: {e}")
+
+        return tool_calls
+
+    @staticmethod
+    def mask_application_id(app_id: str) -> str:
+        """
+        Mask application ID for secure logging.
+
+        Shows first 8 characters followed by *** to preserve some context
+        while protecting full identifiers in logs.
+
+        Args:
+            app_id: The application ID to mask
+
+        Returns:
+            str: Masked application ID in format "XXXXXXXX***"
+
+        Examples:
+            >>> Observability.mask_application_id("LN1234567890ABCD")
+            "LN123456***"
+        """
+        if not app_id or len(app_id) <= 8:
+            return f"{app_id}***" if app_id else "***"
+        return f"{app_id[:8]}***"
+
 
 __all__ = ["Observability"]

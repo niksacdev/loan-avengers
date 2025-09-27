@@ -32,26 +32,23 @@ def setup_test_environment() -> None:
 @pytest.fixture(scope="function", autouse=True)
 def setup_unit_test_environment(request):
     """Override Foundry config for unit tests only (not integration tests)."""
+    from unittest.mock import patch
+
     # Check if this is an integration test
     if "integration" in request.keywords:
         # Integration test - use real .env values, no override
         yield
         return
 
-    # Unit test - override with test values
-    original_endpoint = os.environ.get("FOUNDRY_PROJECT_ENDPOINT")
-    original_model = os.environ.get("FOUNDRY_MODEL_DEPLOYMENT_NAME")
-
-    os.environ["FOUNDRY_PROJECT_ENDPOINT"] = "https://test-project.projects.ai.azure.com"
-    os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = "test-model"
-
-    yield
-
-    # Restore original values after test
-    if original_endpoint:
-        os.environ["FOUNDRY_PROJECT_ENDPOINT"] = original_endpoint
-    if original_model:
-        os.environ["FOUNDRY_MODEL_DEPLOYMENT_NAME"] = original_model
+    # Unit test - override with test values using patch.dict for proper isolation
+    with patch.dict(
+        "os.environ",
+        {
+            "FOUNDRY_PROJECT_ENDPOINT": "https://test-project.projects.ai.azure.com",
+            "FOUNDRY_MODEL_DEPLOYMENT_NAME": "test-model",
+        },
+    ):
+        yield
 
 
 @pytest.fixture

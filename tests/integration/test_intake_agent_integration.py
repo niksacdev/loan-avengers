@@ -94,12 +94,12 @@ class TestIntakeAgentMCPIntegration:
         result = await agent.process_application(sample_loan_application)
 
         # Verify integration worked
-        assert result["agent_name"] == "intake"
-        assert result["application_id"] == sample_loan_application.application_id
-        assert "assessment" in result
+        assert result.agent_name == "intake"
+        assert result.application_id == sample_loan_application.application_id
+        assert result.assessment is not None
 
-        # Verify MCP server was accessible (indirectly through agent initialization)
-        assert agent.agent is not None
+        # Verify MCP server was accessible (indirectly through successful agent processing)
+        assert result.assessment is not None
 
 
 class TestMCPServerDirectIntegration:
@@ -142,9 +142,9 @@ class TestIntakeAgentEndToEnd:
         result = await agent.process_application(vip_loan_application)
 
         # Verify VIP routing
-        assessment = result["assessment"]
-        assert assessment["routing_decision"] == "FAST_TRACK"
-        assert assessment["validation_status"] == "COMPLETE"
+        assessment = result.assessment
+        assert assessment.routing_decision == "FAST_TRACK"
+        assert assessment.validation_status == "COMPLETE"
 
         # Verify performance (should be under 5 seconds)
         # This would need timing measurement
@@ -157,11 +157,11 @@ class TestIntakeAgentEndToEnd:
         result = await agent.process_application(incomplete_loan_application)
 
         # Verify enhanced routing for incomplete app
-        assessment = result["assessment"]
-        assert assessment["routing_decision"] == "ENHANCED"
+        assessment = result.assessment
+        assert assessment.routing_decision == "ENHANCED"
 
         # Should still complete successfully despite incomplete data
-        assert assessment["validation_status"] in ["COMPLETE", "WARNING"]
+        assert assessment.validation_status in ["COMPLETE", "WARNING"]
 
     @pytest.mark.integration
     @pytest.mark.skip(reason="Requires conversation context setup")
@@ -219,8 +219,8 @@ class TestMCPServerErrorHandling:
             result = await agent.process_application(sample_loan_application)
 
             # Verify graceful degradation
-            assert result["agent_name"] == "intake"
-            assert "assessment" in result
+            assert result.agent_name == "intake"
+            assert result.assessment is not None
 
         except Exception as e:
             # If initialization fails completely, that's also acceptable error handling
@@ -236,7 +236,7 @@ class TestMCPServerErrorHandling:
 
         # The MCPStreamableHTTPTool should have timeout handling
         # This is more of a verification that the integration includes timeouts
-        assert agent.agent is not None
+        assert agent.mcp_tool is not None
 
         # Actual timeout testing would require a slow/unresponsive MCP server
 
@@ -261,7 +261,7 @@ class TestPerformanceRequirements:
         assert processing_time < 5.0, f"Processing took {processing_time:.2f} seconds, should be < 5 seconds"
 
         # Verify successful processing
-        assert result["assessment"]["validation_status"] == "COMPLETE"
+        assert result.assessment.validation_status == "COMPLETE"
 
     @pytest.mark.integration
     @pytest.mark.performance
@@ -282,7 +282,7 @@ class TestPerformanceRequirements:
             processing_times.append(processing_time)
 
             # Verify each run is successful
-            assert result["assessment"]["validation_status"] == "COMPLETE"
+            assert result.assessment.validation_status == "COMPLETE"
 
         # Verify all runs meet performance target
         max_time = max(processing_times)

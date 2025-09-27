@@ -39,8 +39,13 @@ class TestMCPDocumentProcessingService:
         assert service.mcp_client is None
 
     async def test_extract_text_from_document_success(self, service, mock_mcp_client):
-        """Test successful text extraction from document."""
-        # Mock response
+        """Test successful text extraction from document.
+
+        Note: MCP client can return responses in two formats:
+        1. JSON string (most common) - parsed with json.loads()
+        2. Dictionary object (less common) - used directly
+        """
+        # Mock response as JSON string (most common format)
         mock_response = {
             "type": "text_extraction",
             "document_path": "/path/to/doc.pdf",
@@ -62,8 +67,12 @@ class TestMCPDocumentProcessingService:
         assert result["extracted_text"] == "Sample document text"
 
     async def test_extract_text_from_document_with_dict_response(self, service, mock_mcp_client):
-        """Test text extraction when MCP returns dict instead of JSON string."""
-        # Mock response as dict
+        """Test text extraction when MCP returns dict instead of JSON string.
+
+        Note: Some MCP clients may return dict objects directly instead of JSON strings.
+        The service should handle both formats gracefully.
+        """
+        # Mock response as dict (alternative format)
         mock_response = {"type": "text_extraction", "extracted_text": "Text content"}
         mock_mcp_client.call_tool.return_value = mock_response
 

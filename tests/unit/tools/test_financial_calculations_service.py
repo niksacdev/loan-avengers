@@ -74,8 +74,14 @@ class TestFinancialCalculationsServiceImpl:
         assert result["annual_interest_rate"] == 0.05
         assert result["term_months"] == 360
 
-        # Monthly payment should be around $536.82 for 100k at 5% over 30 years
-        assert 530 < result["monthly_payment"] < 545
+        # Monthly payment is calculated as:
+        # P = L[c(1 + c)^n] / [(1 + c)^n - 1]
+        # Where L = loan_amount, c = monthly interest rate, n = loan_term_months
+        # For $100,000, 5% annual interest, 360 months:
+        # c = 0.05 / 12 = 0.0041666667, n = 360
+        # Expected monthly payment ≈ $536.82
+        # Allow a small tolerance for floating-point rounding
+        assert result["monthly_payment"] == pytest.approx(536.82, abs=0.1)
         assert result["total_interest"] > 0
         assert result["total_payment"] > loan_amount
 

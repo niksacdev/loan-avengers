@@ -1,0 +1,126 @@
+name: Require Linked Issue
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  issues: read
+
+jobs:
+  check-linked-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for linked issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            const prTitle = context.payload.pull_request.title || '';
+
+            // Keywords that indicate issue linking
+            const linkKeywords = ['closes', 'fixes', 'resolves', 'close', 'fix', 'resolve'];
+
+            // Check PR body for issue links (e.g., "Closes #123" or "Fixes #456")
+            const bodyLinkRegex = /(?:closes|fixes|resolves|close|fix|resolve)\s+#(\d+)/gi;
+            const bodyMatches = prBody.match(bodyLinkRegex);
+
+            // Check PR title for issue reference (e.g., "[#123]" or "(#123)")
+            const titleLinkRegex = /[\[\(]#(\d+)[\]\)]/gi;
+            const titleMatches = prTitle.match(titleLinkRegex);
+
+            // Check for "Relates to #123" pattern
+            const relatesRegex = /relates\s+to\s+#(\d+)/gi;
+            const relatesMatches = prBody.match(relatesRegex);
+
+            const hasLinkedIssue = bodyMatches || titleMatches || relatesMatches;
+
+            if (!hasLinkedIssue) {
+              // Add comment explaining the requirement
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: `## ❌ Missing Linked Issue
+
+This pull request does not reference a GitHub issue.
+
+**Every PR must be linked to an issue for traceability.**
+
+### How to Fix:
+Add one of the following to your PR description:
+- \`Closes #XXX\` - Will auto-close the issue when PR merges
+- \`Fixes #XXX\` - Will auto-close the issue when PR merges
+- \`Resolves #XXX\` - Will auto-close the issue when PR merges
+- \`Relates to #XXX\` - Links but doesn't auto-close
+
+Or include issue number in PR title:
+- \`[#XXX] Your PR title\`
+
+### Why This Matters:
+- **Traceability**: Connect code changes to requirements
+- **Documentation**: Track why changes were made
+- **Team Coordination**: Prevent duplicate work
+- **Project Management**: Monitor sprint progress
+
+See \`CLAUDE.md\` for full guidelines on issue management.
+
+---
+**This check will fail until an issue is linked.**`
+              });
+
+              // Fail the check
+              core.setFailed('❌ No linked issue found. PRs must reference a GitHub issue.');
+            } else {
+              // Success - PR has linked issue
+              console.log('✅ PR has linked issue(s)');
+
+              // Extract issue numbers for logging
+              let issueNumbers = [];
+              if (bodyMatches) {
+                issueNumbers = issueNumbers.concat(
+                  bodyMatches.map(m => m.match(/#(\d+)/)[1])
+                );
+              }
+              if (titleMatches) {
+                issueNumbers = issueNumbers.concat(
+                  titleMatches.map(m => m.match(/#(\d+)/)[1])
+                );
+              }
+              if (relatesMatches) {
+                issueNumbers = issueNumbers.concat(
+                  relatesMatches.map(m => m.match(/#(\d+)/)[1])
+                );
+              }
+
+              // Remove duplicates
+              issueNumbers = [...new Set(issueNumbers)];
+
+              console.log(`Linked to issue(s): ${issueNumbers.join(', ')}`);
+
+              // Optional: Add success comment (only once)
+              const comments = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number
+              });
+
+              const botComments = comments.data.filter(
+                comment => comment.user.type === 'Bot' &&
+                comment.body.includes('✅ Linked Issue Check Passed')
+              );
+
+              if (botComments.length === 0) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  body: `## ✅ Linked Issue Check Passed
+
+This PR is properly linked to issue(s): ${issueNumbers.map(n => `#${n}`).join(', ')}
+
+**Good job following project guidelines!** 🎉`
+                });
+              }
+            }

@@ -542,6 +542,239 @@ See [ADR-003](docs/decisions/adr-003-instruction-synchronization.md) for detaile
    - Record lessons learned for future similar issues
 ```
 
+## GitHub Issue Management (MANDATORY)
+
+### Core Principle
+**NO CODE WITHOUT AN ISSUE. NO PR WITHOUT A LINKED ISSUE.**
+
+Every code change must be tracked through a GitHub issue for transparency, traceability, and team coordination.
+
+### When to Create Issues
+
+#### ALWAYS Create an Issue For:
+1. **New Features** - Any new functionality or capability
+2. **Bug Fixes** - Even small bugs need tracking
+3. **Refactoring** - Code improvements or technical debt
+4. **Documentation** - New docs or significant updates
+5. **Infrastructure** - CI/CD, deployment, configuration changes
+6. **Dependencies** - Upgrading or adding packages
+
+#### Exception (Create Issue Retroactively):
+- Urgent hotfixes (create issue immediately after deploying)
+- Typo fixes in comments (optional)
+
+### Issue Structure Best Practices
+
+#### 1. Use Product-Manager-Advisor BEFORE Creating Issues
+**MANDATORY for all feature/enhancement issues:**
+```
+Before creating GitHub issues, use Task tool with:
+  subagent_type: product-manager-advisor
+  prompt: "Help me create GitHub issues for [feature description].
+          Context: [user need, business value, technical constraints]"
+```
+
+The advisor will:
+- Help clarify requirements
+- Suggest proper issue breakdown
+- Define acceptance criteria
+- Add business context
+- Recommend size estimates
+
+#### 2. Issue Size Guidelines
+Break down issues to keep them manageable:
+- **Small** (1-3 days): Single component, clear scope, minimal dependencies
+- **Medium** (4-7 days): Multiple related changes, some complexity
+- **Large** (8+ days): Break into Epic with sub-issues
+
+**Rule**: If an issue takes >1 week, create an Epic and sub-issues.
+
+#### 3. Required Issue Components
+
+**Every Issue Must Have:**
+```markdown
+## Overview
+[1-2 sentence description]
+
+## Context
+- Why is this needed?
+- What problem does it solve?
+- Reference to product docs/ADRs if applicable
+
+## Acceptance Criteria
+- [ ] Specific testable criterion 1
+- [ ] Specific testable criterion 2
+- [ ] Specific testable criterion 3
+
+## Technical Requirements
+- Technology/framework constraints
+- Performance requirements
+- Security considerations
+
+## Definition of Done
+- [ ] Code implemented and tested
+- [ ] Tests pass with ≥85% coverage
+- [ ] Documentation updated
+- [ ] Code reviewed and approved
+- [ ] PR merged to main
+
+## Dependencies
+- Blocked by: #XX (if applicable)
+- Blocks: #YY (if applicable)
+
+## Related Documentation
+- Link to product docs
+- Link to ADRs
+- Link to design docs
+```
+
+#### 4. Labels (Required)
+
+**Every issue MUST have at least 3 labels:**
+1. **Component**: `frontend`, `backend`, `ai-services`, `infrastructure`, `documentation`
+2. **Size**: `size: small`, `size: medium`, `size: large`, `epic`
+3. **Phase**: `phase-1-mvp`, `phase-2-enhanced`, etc.
+
+**Optional but Recommended:**
+- **Priority**: `priority: high`, `priority: medium`, `priority: low`
+- **Type**: `bug`, `enhancement`, `good first issue`
+- **Team**: `team: frontend`, `team: backend`
+
+#### 5. Milestones (Required for Sprint Planning)
+- Assign every issue to a milestone
+- Milestones represent sprints or phases
+- Update milestone progress weekly
+
+### Epic Management
+
+**When to Create an Epic:**
+- Feature requires 2+ weeks of work
+- Feature has 3+ sub-tasks
+- Multiple team members will work on different parts
+
+**Epic Structure:**
+```
+Issue Title: [EPIC] Feature Name
+Labels: epic, size: large, [component], [phase]
+
+Body:
+## Overview
+High-level feature description
+
+## Sub-Issues
+- [ ] #XX - Sub-task 1 (owner: @username)
+- [ ] #YY - Sub-task 2 (owner: @username)
+- [ ] #ZZ - Sub-task 3 (owner: @username)
+
+## Progress
+- Total: 3 sub-issues
+- Completed: 1 (33%)
+- Remaining: 2
+
+## Definition of Done
+- All sub-issues completed
+- Integration testing passed
+- Documentation complete
+```
+
+### Pull Request Rules (ENFORCED)
+
+#### 1. Every PR Must Link to an Issue
+**Format in PR description:**
+```markdown
+Closes #123
+Fixes #456
+Relates to #789
+```
+
+**GitHub will:**
+- Auto-close issue when PR merges (if using "Closes" or "Fixes")
+- Link PR to issue for traceability
+- **Block PR merge if no issue linked** (via branch protection rule)
+
+#### 2. PR Title Format
+```
+[#123] Brief description of change
+
+Examples:
+[#24] Implement conversation state machine
+[#31] Add progress card component with 4 states
+[#bug-456] Fix authentication token expiration
+```
+
+#### 3. PR Description Must Include
+```markdown
+## Related Issue
+Closes #XXX
+
+## Changes Made
+- Bullet list of changes
+- What was added/modified/removed
+
+## Testing
+- [ ] Unit tests added/updated
+- [ ] Integration tests pass
+- [ ] Manual testing performed
+
+## Screenshots (if UI)
+[Add screenshots for UI changes]
+
+## Checklist
+- [ ] Code follows project conventions
+- [ ] Tests pass locally
+- [ ] Documentation updated
+- [ ] No merge conflicts
+```
+
+### GitHub Branch Protection Rules
+
+**Main branch protection (ENFORCED):**
+1. ✅ Require pull request before merging
+2. ✅ Require status checks to pass:
+   - CI tests must pass
+   - Code coverage ≥85%
+   - Ruff linting passes
+3. ✅ **Require linked issue** (via GitHub Actions check)
+4. ✅ Require code review approval (1+ reviewer)
+5. ✅ Dismiss stale reviews when new commits pushed
+6. ✅ Require conversation resolution before merge
+7. ❌ Allow force pushes (disabled)
+8. ❌ Allow deletions (disabled)
+
+**See**: `.github/workflows/require-linked-issue.yml` for enforcement
+
+### Issue Workflow States
+
+**Use GitHub Projects to track:**
+1. **Backlog** - Not yet prioritized
+2. **Ready** - Prioritized, no blockers, ready to start
+3. **In Progress** - Actively being worked on
+4. **In Review** - PR submitted, awaiting review
+5. **Done** - PR merged, issue closed
+
+**Update issue status when:**
+- Starting work: Comment "Starting work on this" and move to In Progress
+- Creating PR: Link PR and move to In Review
+- PR merged: Issue auto-closes and moves to Done
+
+### Common Mistakes to Avoid
+
+❌ **DON'T**:
+- Start coding without creating an issue first
+- Create vague issues ("Improve performance")
+- Skip acceptance criteria
+- Forget to link PRs to issues
+- Create issues that are too large (>2 weeks)
+- Work on issues without assigning yourself
+
+✅ **DO**:
+- Use product-manager-advisor to help create well-structured issues
+- Break large features into Epic + sub-issues
+- Link all related issues (blocks/blocked-by)
+- Assign issues to yourself when starting work
+- Update issue with progress comments
+- Close issues only when Definition of Done is met
+
 ## Common Patterns
 
 ### Multi-Agent Workflow Processing

@@ -36,37 +36,37 @@ async def test_intake_agent_live_with_foundry(sample_loan_application):
         print("\n✅ SUCCESS! Agent processed the application")
         print("=" * 60)
 
-        # Display results
-        assessment = result["assessment"]
+        # Display results - using Pydantic model properties
+        assessment = result.assessment
         print("\n📊 Assessment Results:")
-        print(f"  Validation Status: {assessment['validation_status']}")
-        print(f"  Routing Decision: {assessment['routing_decision']}")
-        print(f"  Confidence Score: {assessment['confidence_score']:.2%}")
-        print(f"  Data Quality: {assessment['data_quality_score']:.2%}")
-        print(f"  Specialist: {assessment['specialist_name']}")
+        print(f"  Validation Status: {assessment.validation_status}")
+        print(f"  Routing Decision: {assessment.routing_decision}")
+        print(f"  Confidence Score: {assessment.confidence_score:.2%}")
+        print(f"  Data Quality: {assessment.data_quality_score:.2%}")
+        print(f"  Specialist: {assessment.specialist_name}")
 
         print("\n💬 Agent Messages:")
-        print(f"  Celebration: {assessment['celebration_message']}")
-        print(f"  Encouragement: {assessment['encouragement_note']}")
-        print(f"  Next Step: {assessment['next_step_preview']}")
+        print(f"  Celebration: {assessment.celebration_message}")
+        print(f"  Encouragement: {assessment.encouragement_note}")
+        print(f"  Next Step: {assessment.next_step_preview}")
 
         print("\n📈 Usage Stats:")
-        usage = result["usage_stats"]
-        print(f"  Input Tokens: {usage['input_tokens']}")
-        print(f"  Output Tokens: {usage['output_tokens']}")
-        print(f"  Total Tokens: {usage['total_tokens']}")
+        usage = result.usage_stats
+        print(f"  Input Tokens: {usage.input_tokens}")
+        print(f"  Output Tokens: {usage.output_tokens}")
+        print(f"  Total Tokens: {usage.total_tokens}")
 
         print("\n" + "=" * 60)
 
-        # Assertions
-        assert result["agent_name"] == "intake"
-        assert result["application_id"] == sample_loan_application.application_id
-        assert "assessment" in result
-        assert assessment["validation_status"] in ["COMPLETE", "VALID", "WARNING", "INVALID", "FAILED"]
-        assert assessment["specialist_name"] == "John"
+        # Assertions - using Pydantic model properties
+        assert result.agent_name == "intake"
+        assert result.application_id == sample_loan_application.application_id
+        assert result.assessment is not None
+        assert assessment.validation_status in ["COMPLETE", "VALID", "WARNING", "INVALID", "FAILED"]
+        assert assessment.specialist_name == "John"
 
         # If we got a FAILED status, it means structured parsing failed but agent still responded
-        if assessment["validation_status"] == "FAILED":
+        if assessment.validation_status == "FAILED":
             print("\n⚠️  Note: Structured response parsing failed, but agent responded successfully")
             print("   This is expected behavior - fallback assessment was used")
 
@@ -99,15 +99,16 @@ async def test_vip_application_live(vip_loan_application):
 
     result = await agent.process_application(vip_loan_application)
 
-    assessment = result["assessment"]
+    # Use Pydantic model properties
+    assessment = result.assessment
     print("\n📊 VIP Assessment:")
-    print(f"  Routing: {assessment['routing_decision']}")
-    print(f"  Status: {assessment['validation_status']}")
+    print(f"  Routing: {assessment.routing_decision}")
+    print(f"  Status: {assessment.validation_status}")
 
     # VIP applications should get special routing
     print("\n✅ VIP application processed successfully")
 
-    assert result["agent_name"] == "intake"
+    assert result.agent_name == "intake"
 
 
 if __name__ == "__main__":

@@ -222,6 +222,84 @@ This system is designed to work with multiple AI frameworks:
 4. **Test Workflow**: Process sample loan applications through 5-agent sequence
 5. **Customize**: Modify agent personas and business logic as needed
 
+## GitHub Issue Workflow (Development Process)
+
+### Core Principle
+**NO CODE WITHOUT AN ISSUE. NO PR WITHOUT A LINKED ISSUE.**
+
+All code changes in this repository must be tracked through GitHub issues for transparency and team coordination.
+
+### Issue Creation Guidelines
+
+**Always Create Issues For:**
+- New loan processing features or agent capabilities
+- Bug fixes (even small ones need audit trails)
+- Agent persona updates or MCP server integration changes
+- Documentation updates
+- Infrastructure or CI/CD changes
+- Dependency upgrades
+
+**Issue Size Recommendations:**
+- **Small** (1-3 days): Label `size: small` - Single component, clear scope
+- **Medium** (4-7 days): Label `size: medium` - Multiple changes, some complexity
+- **Large** (8+ days): Create Epic with sub-issues
+
+**Required Labels (Minimum 3):**
+1. Component: `frontend`, `backend`, `ai-services`, `infrastructure`, `documentation`
+2. Size: `size: small`, `size: medium`, `size: large`, `epic`
+3. Phase: `phase-1-mvp`, `phase-2-enhanced`, etc.
+
+### Pull Request Requirements
+
+**Every PR Must:**
+- Link to a GitHub issue using `Closes #XXX`, `Fixes #XXX`, or `Relates to #XXX`
+- Include issue number in PR title: `[#123] Brief description`
+- Pass all CI/CD checks (tests, linting, coverage ≥85%)
+- Have code review approval
+
+**Enforcement:**
+- GitHub Actions automatically checks for linked issues (`.github/workflows/require-linked-issue.yml`)
+- PRs without linked issues will fail checks and cannot be merged
+
+### Issue Template Structure
+
+```markdown
+## Overview
+[1-2 sentence description]
+
+## Context
+- Why needed for loan processing workflow?
+- What problem does it solve?
+- Reference to docs/ADRs if applicable
+
+## Acceptance Criteria
+- [ ] Specific testable criterion 1
+- [ ] Specific testable criterion 2
+- [ ] Specific testable criterion 3
+
+## Technical Requirements
+- Framework constraints (Microsoft Agent Framework)
+- Performance requirements (token optimization)
+- Security considerations (PII protection, audit trails)
+
+## Definition of Done
+- [ ] Code implemented and tested
+- [ ] Tests pass with ≥85% coverage
+- [ ] Agent personas optimized (<500 lines)
+- [ ] Documentation updated
+- [ ] Code reviewed and approved
+- [ ] PR merged to main
+
+## Dependencies
+- Blocked by: #XX
+- Blocks: #YY
+
+## Related Documentation
+- Links to docs/product/, docs/decisions/, docs/agent-patterns.md
+```
+
+**See CLAUDE.md for comprehensive issue management guidelines.**
+
 ---
 
 **Goal**: Provide universal AI agent guidance for building multi-agent loan processing systems with any AI development tool or framework.

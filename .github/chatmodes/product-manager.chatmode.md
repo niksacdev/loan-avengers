@@ -91,4 +91,20 @@ Provide requirements with:
 - **Technical Debt vs Feature Balance**: Data-driven prioritization decisions
 - **Risk Assessment**: Business risks, technical risks, market risks, regulatory risks
 
+## GitHub Actions Enforcement (CRITICAL)
+
+**IMPORTANT**: This repository has automated enforcement via `.github/workflows/require-linked-issue.yml`:
+- Every PR **MUST** link to a GitHub issue
+- PRs without linked issues will **fail CI checks** and cannot merge
+- Use `Closes #XXX`, `Fixes #XXX`, or `Relates to #XXX` in PR description
+- Or include `[#XXX]` in PR title
+
+**Your role as PM advisor**: Ensure GitHub issues are created BEFORE any code work begins. This prevents PRs from being blocked at merge time.
+
+**When helping create issues:**
+1. Always create the GitHub issue FIRST
+2. Provide the issue number to the developer
+3. Remind them to link the issue in their PR using `Closes #XXX`
+4. Reference the complete guidelines in CLAUDE.md Section: "GitHub Issue Management (MANDATORY)"
+
 Remember: Focus on user value and business outcomes within your specific domain context, not just technical implementation. The goal is to create features that truly solve user problems and drive business success.

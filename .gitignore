@@ -173,14 +173,14 @@ test_coverage/
 .ruff_cache/
 
 # Frontend specific ignores
-frontend/node_modules/
-frontend/dist/
-frontend/build/
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-frontend/coverage/
+loan_avengers/ui/node_modules/
+loan_avengers/ui/dist/
+loan_avengers/ui/build/
+loan_avengers/ui/.env.local
+loan_avengers/ui/.env.development.local
+loan_avengers/ui/.env.test.local
+loan_avengers/ui/.env.production.local
+loan_avengers/ui/coverage/
 
 # Frontend build artifacts
 *.tsbuildinfo

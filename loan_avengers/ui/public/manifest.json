@@ -1,0 +1,18 @@
+{
+  "name": "Loan Avengers - Your AI Dream Team",
+  "short_name": "Loan Avengers",
+  "description": "Revolutionary loan application experience with AI specialists",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#3b82f6",
+  "background_color": "#f9fafb",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["finance", "productivity"],
+  "lang": "en"
+}

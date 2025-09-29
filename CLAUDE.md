@@ -5,6 +5,13 @@
 ## Project Overview
 This is a **Multi-Agent Loan Processing System** demonstrating the use of **Microsoft Agent Framework** with MCP (Model Context Protocol) servers as tools. The system implements 5 specialized autonomous agents that process loan applications through a coordinated workflow from intake to final decision.
 
+**Revolutionary Development Approach**: This project showcases an **AI-augmented development workflow** where a single human developer orchestrates multiple AI agents to achieve the productivity traditionally requiring an 8-12 person multi-disciplinary team. See [Development Philosophy](docs/development-philosophy.md) and [AI-Augmented Workflow](docs/ai-augmented-development-workflow.md) for comprehensive details.
+
+## 📊 **Visual Documentation**
+- **[Development Workflow Diagrams](docs/diagrams/)** - Mermaid diagrams comparing traditional vs AI-augmented development
+- **[System Architecture Diagrams](docs/diagrams/system-architecture-diagram.md)** - Technical system design visualization
+- **[Azure Deployment Architecture](docs/diagrams/azure-deployment-architecture.md)** - Cloud infrastructure design
+
 ## Critical Lessons Learned
 
 ### Token Optimization Discovery

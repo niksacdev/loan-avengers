@@ -11,8 +11,7 @@ from __future__ import annotations
 from collections.abc import AsyncGenerator
 from typing import Any
 
-from agent_framework import AgentThread, WorkflowBuilder
-from agent_framework import AgentRunUpdateEvent, WorkflowOutputEvent, ChatAgent
+from agent_framework import AgentRunUpdateEvent, AgentThread, ChatAgent, WorkflowBuilder, WorkflowOutputEvent
 from agent_framework_foundry import FoundryChatClient
 from azure.identity.aio import DefaultAzureCredential
 from pydantic import BaseModel
@@ -62,7 +61,7 @@ class WorkflowOrchestrator:
             self.chat_client = FoundryChatClient(async_credential=DefaultAzureCredential())
 
         # Initialize Intake Agent for WorkflowBuilder
-        self.john_executor = self._create_intake_executor()
+        self.intake_executor = self._create_intake_executor()
 
         # Initialize workflow
         self.workflow = None
@@ -117,42 +116,33 @@ class WorkflowOrchestrator:
             extra={
                 "application_id": application.application_id[:8] + "***",
                 "loan_amount": float(application.loan_amount),
-                "thread_id": thread.thread_id if hasattr(thread, "thread_id") else "new",
+                "thread_id": getattr(thread, "thread_id", "new"),
             },
         )
 
         try:
             # Build the workflow using WorkflowBuilder
-            workflow = WorkflowBuilder().set_start_executor(self.john_executor).build()
+            workflow = WorkflowBuilder().set_start_executor(self.intake_executor).build()
 
-            # Prepare the application data for the workflow
-            application_prompt = f"""
-            Please validate the following loan application:
+            # Convert validated Pydantic model to JSON for WorkflowBuilder
+            # This preserves validation benefits while meeting framework requirements
+            application_json = application.model_dump_json(indent=2)
 
-            APPLICATION DETAILS:
-            - Application ID: {application.application_id}
-            - Applicant: {application.applicant_name}
-            - Email: {application.email}
-            - Phone: {application.phone}
-            - Date of Birth: {application.date_of_birth}
-            - Loan Amount: ${application.loan_amount:,.2f}
-            - Loan Purpose: {application.loan_purpose.value}
-            - Loan Term: {application.loan_term_months} months
-            - Annual Income: ${application.annual_income:,.2f}
-            - Employment Status: {application.employment_status.value}
-            - Employer: {application.employer_name or "Not provided"}
-            - Months Employed: {application.months_employed or "Not provided"}
-
-            Please provide a complete validation assessment with routing decision.
-            """
+            logger.debug(
+                "Passing validated LoanApplication as JSON to workflow",
+                extra={
+                    "application_id": Observability.mask_application_id(application.application_id),
+                    "loan_amount": float(application.loan_amount),
+                }
+            )
 
             logger.info("Processing with WorkflowBuilder - Intake Agent", extra={"step": 1})
 
             # Variables to track workflow results
             workflow_completed = False
 
-            # Run the workflow and stream events
-            events = workflow.run_stream(application_prompt)
+            # Run the workflow with JSON string - framework requirement
+            events = workflow.run_stream(application_json)
 
             async for event in events:
                 if isinstance(event, AgentRunUpdateEvent):
@@ -173,7 +163,8 @@ class WorkflowOrchestrator:
                 elif isinstance(event, WorkflowOutputEvent):
                     # Final workflow output
                     workflow_completed = True
-                    intake_result = event.output
+                    # Get workflow output - may be in different attributes depending on framework version
+                    intake_result = getattr(event, "output", getattr(event, "data", str(event)))
 
                     logger.info("WorkflowBuilder completed - processing results")
 
@@ -194,9 +185,8 @@ class WorkflowOrchestrator:
                             conditions=[],
                             decision_maker="WorkflowBuilder_Orchestrator_MVP",
                             reasoning=(
-                                f"Intake Agent via WorkflowBuilder "
-                                f"validated the application successfully. Assessment: "
-                                f"{intake_result[:200]}..."
+                                f"Intake Agent via WorkflowBuilder validated the application "
+                                f"successfully. Assessment: {intake_result[:200]}..."
                             ),
                             agents_consulted=["Intake_Agent"],
                             processing_duration_seconds=2.0,  # Mock timing
@@ -230,9 +220,8 @@ class WorkflowOrchestrator:
                             confidence_score=0.95,
                             decision_maker="WorkflowBuilder_Orchestrator_MVP",
                             reasoning=(
-                                f"Intake Agent via WorkflowBuilder "
-                                f"could not validate the application. Assessment: "
-                                f"{intake_result[:200]}..."
+                                f"Intake Agent via WorkflowBuilder could not validate the "
+                                f"application. Assessment: {intake_result[:200]}..."
                             ),
                             agents_consulted=["Intake_Agent"],
                             processing_duration_seconds=2.0,

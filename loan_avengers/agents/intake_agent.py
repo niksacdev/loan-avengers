@@ -1,8 +1,8 @@
 """
-John "The Eagle Eye" - Application Validator using Microsoft Agent Framework.
+Intake Agent - Application Validator using Microsoft Agent Framework.
 
-John performs lightning-fast application validation and routing with eagle precision
-and efficient humor. Part of Alisha's Dream Team for revolutionary loan processing.
+Performs lightning-fast application validation and routing with precision.
+Personality and display name are defined in the persona file for UI flexibility.
 """
 
 from __future__ import annotations
@@ -24,18 +24,20 @@ logger = Observability.get_logger("intake_agent")
 
 class IntakeAgent:
     """
-    John "The Eagle Eye" - Application Validator for Alisha's Dream Team.
+    Intake Agent - Application Validator for the Loan Processing System.
 
     Responsibilities:
-    - Lightning-fast application data validation with eagle precision
-    - Smart routing to optimal Dream Team specialist experience
-    - Quality assurance setup for downstream specialists
+    - Lightning-fast application data validation
+    - Smart routing to optimal specialist workflow
+    - Quality assurance setup for downstream specialists  
     - MCP tool integration for verification services
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
     - MCP tools connected via async context manager per request
     - Structured logging with masked sensitive data (application_id[:8]***)
+    
+    Note: Personality and display names are defined in persona files for flexibility.
     """
 
     def __init__(
@@ -126,7 +128,7 @@ class IntakeAgent:
                 agent = ChatAgent(
                     chat_client=self.chat_client,
                     instructions=self.instructions,
-                    name="John - The Eagle Eye",
+                    name="Intake_Agent",
                     description="Sharp-eyed application validator with efficient humor",
                     temperature=self.temperature,
                     max_tokens=self.max_tokens,
@@ -178,14 +180,14 @@ Provide your assessment as valid JSON matching the required output format from y
                         },
                     )
 
-                    # Create fallback assessment with John's eagle-eyed efficiency
+                    # Create fallback assessment with structured response
                     assessment = IntakeAssessment(
                         validation_status="FAILED",
                         routing_decision="MANUAL",
                         confidence_score=0.0,
                         processing_notes=f"Eagle eye scan encountered parsing issue: {content[:200]}...",
                         data_quality_score=0.0,
-                        specialist_name="John",
+                        specialist_name="Intake Agent",
                         celebration_message="🦅 Eagle eyes spotted something! Let me fix this with precision!",
                         encouragement_note="Technical hiccup detected - these eagle eyes will sort it out!",
                         next_step_preview="Getting this sharpened up for the Dream Team!",
@@ -231,17 +233,17 @@ Provide your assessment as valid JSON matching the required output format from y
                 },
                 exc_info=True,
             )
-            # Create error assessment with John's eagle-eyed efficiency
+            # Create error assessment with structured response
             error_assessment = IntakeAssessment(
                 validation_status="FAILED",
                 routing_decision="MANUAL",
                 confidence_score=0.0,
-                processing_notes=f"Eagle eye processing failed: {str(e)}",
+                processing_notes=f"Processing error: {str(e)}",
                 data_quality_score=0.0,
-                specialist_name="John",
-                celebration_message="🦅 Eagle eyes spotted a technical issue! Let me refocus these eyes!",
+                specialist_name="Intake Agent", 
+                celebration_message="Processing encountered a technical issue, let me refocus!",
                 encouragement_note="Technical hiccup detected - but your data still has potential!",
-                next_step_preview="Sharpening focus to get this sorted for the Dream Team!",
+                next_step_preview="Working to get this sorted for the next step!",
                 animation_type="pulse",
                 celebration_level="mild",
             )

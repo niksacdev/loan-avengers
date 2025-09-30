@@ -12,7 +12,7 @@ Transform loan applications from anxiety-inducing paperwork into an exciting, co
 - **Competitive Landscape**: No major lender offers truly conversational, AI-specialist-driven experience
 
 ### Our Solution
-**The Loan Avengers Squad**: Users interact with Alisha (UI Concierge) who coordinates a superhero team - John "Eagle Eye" (Validator), Sarah (Income), Marcus (Credit), Alex (Risk) - through natural conversation instead of forms, with <3-minute processing and real-time progress visualization.
+**The Loan Avengers Squad**: Users interact with Alisha (UI Concierge) who coordinates a superhero team - Intake Agent "Eagle Eye" (Validator), Hawk-Income (Income), Scarlet Witch-Credit (Credit), Doctor Strange-Risk (Risk) - through natural conversation instead of forms, with <3-minute processing and real-time progress visualization.
 
 ## Business Case
 

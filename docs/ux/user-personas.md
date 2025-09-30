@@ -8,7 +8,7 @@ The loan processing system serves multiple user types through a streamlined, age
 
 ## Primary User Personas
 
-### 1. Loan Applicant - "Sarah the Home Buyer"
+### 1. Loan Applicant - "Hawk-Income the Home Buyer"
 
 **Demographics & Context**
 - Age: 32, married, first-time home buyer
@@ -41,7 +41,7 @@ The loan processing system serves multiple user types through a streamlined, age
 
 ---
 
-### 2. Loan Officer - "Marcus the Processor"
+### 2. Loan Officer - "Scarlet Witch-Credit the Processor"
 
 **Demographics & Context**
 - Age: 28, 2 years experience in lending
@@ -140,7 +140,7 @@ The loan processing system serves multiple user types through a streamlined, age
 
 ## User Journey Mapping
 
-### Applicant Journey - "Sarah's Home Loan Experience"
+### Applicant Journey - "Hawk-Income's Home Loan Experience"
 
 **Phase 1: Discovery & Application (10 minutes)**
 1. **Trigger**: Found dream home, needs financing quickly
@@ -168,7 +168,7 @@ The loan processing system serves multiple user types through a streamlined, age
 - Decision delivery: Comprehensive explanation and rationale
 - Follow-up: Proactive communication about next steps
 
-### Loan Officer Journey - "Marcus's Daily Workflow"
+### Loan Officer Journey - "Scarlet Witch-Credit's Daily Workflow"
 
 **Morning Setup (15 minutes)**
 - Dashboard review: Pipeline status, priority applications

@@ -121,6 +121,19 @@ export default {
           darkBlue: '#2563eb',
         },
         // Dark mode color system (Vite-inspired)
+        'dark-bg': {
+          primary: '#0F0F14',
+          secondary: '#1A1A2E',
+          tertiary: '#16213E',
+          card: '#1E1E2E',
+        },
+        'dark-text': {
+          primary: '#FFFFFF',
+          secondary: '#D1D5DB',
+          tertiary: '#9CA3AF',
+          accent: '#A78BFA',
+        },
+        // Keep nested structure for reference
         dark: {
           bg: {
             primary: '#0F0F14',

@@ -94,19 +94,19 @@
 ## Target User Scenarios
 
 ### Scenario 1: First-Time Homebuyer
-**User**: Sarah, 29, software engineer, renting, $85K income
+**User**: Hawk-Income, 29, software engineer, renting, $85K income
 **Journey**: Discovery → Pre-qualification → Application → Approval
 **Key Needs**: Education, confidence building, clear next steps
 **Success Criteria**: Completes application in one session, refers friends
 
 ### Scenario 2: Refinancing Expert
-**User**: Marcus, 38, business owner, current mortgage holder
+**User**: Scarlet Witch-Credit, 38, business owner, current mortgage holder
 **Journey**: Rate comparison → Quick application → Fast approval
 **Key Needs**: Efficiency, rate transparency, minimal documentation
 **Success Criteria**: Sub-10 minute application, immediate rate comparison
 
 ### Scenario 3: Investment Property
-**User**: Alex, 34, real estate investor, portfolio owner
+**User**: Doctor Strange-Risk, 34, real estate investor, portfolio owner
 **Journey**: Property analysis → Investment loan → Portfolio integration
 **Key Needs**: Investment-specific guidance, portfolio view, tax implications
 **Success Criteria**: Complex loan approved with investment guidance

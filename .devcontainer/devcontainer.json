@@ -133,9 +133,22 @@
     }
   },
 
-  // Port forwarding removed for faster startup
-  // Ports can be forwarded manually when needed using VS Code port forwarding
-  "forwardPorts": [],  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  // Port forwarding for development servers
+  "forwardPorts": [5173, 5175, 8000],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server (Test)",
+      "onAutoForward": "notify"
+    },
+    "5175": {
+      "label": "Loan Avengers UI",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "FastAPI Backend",
+      "onAutoForward": "notify"
+    }
+  },  "postCreateCommand": "bash .devcontainer/post-create.sh",
 
   "remoteUser": "vscode",
 

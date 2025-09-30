@@ -29,14 +29,14 @@ class IntakeAgent:
     Responsibilities:
     - Lightning-fast application data validation
     - Smart routing to optimal specialist workflow
-    - Quality assurance setup for downstream specialists  
+    - Quality assurance setup for downstream specialists
     - MCP tool integration for verification services
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
     - MCP tools connected via async context manager per request
     - Structured logging with masked sensitive data (application_id[:8]***)
-    
+
     Note: Personality and display names are defined in persona files for flexibility.
     """
 
@@ -240,7 +240,7 @@ Provide your assessment as valid JSON matching the required output format from y
                 confidence_score=0.0,
                 processing_notes=f"Processing error: {str(e)}",
                 data_quality_score=0.0,
-                specialist_name="Intake Agent", 
+                specialist_name="Intake Agent",
                 celebration_message="Processing encountered a technical issue, let me refocus!",
                 encouragement_note="Technical hiccup detected - but your data still has potential!",
                 next_step_preview="Working to get this sorted for the next step!",

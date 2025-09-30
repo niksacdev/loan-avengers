@@ -95,7 +95,7 @@ Create a Draw.io diagram based on the system architecture from docs/diagrams/sys
 The diagram should include:
 - User Experience Layer (React UI with Alisha coordinator)
 - API Gateway Layer (FastAPI with streaming)
-- Microsoft Agent Framework workflow (John → Sarah → Marcus → Alex)
+- Microsoft Agent Framework workflow (Intake Agent → Hawk-Income → Scarlet Witch-Credit → Doctor Strange-Risk)
 - MCP Tool Integration (3 servers on ports 8010-8012)
 - Data Models & State Management (Pydantic, AgentThread, Redis)
 - External Service Integration (Azure OpenAI, Credit APIs, Banking APIs)

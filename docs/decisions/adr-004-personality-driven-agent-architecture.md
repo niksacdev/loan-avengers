@@ -7,7 +7,7 @@
 
 ## Context
 
-The loan processing system is implementing a revolutionary AI Dream Team user experience featuring personality-driven agents (Sarah, Marcus, Alex, Riley) with celebration-focused messaging and voice-first mobile experience. The core architectural question is how to implement personality-driven responses while maintaining the technical integrity of the existing loan processing workflow.
+The loan processing system is implementing a revolutionary AI Dream Team user experience featuring personality-driven agents (Hawk-Income, Scarlet Witch-Credit, Doctor Strange-Risk, Cap-ital America) with celebration-focused messaging and voice-first mobile experience. The core architectural question is how to implement personality-driven responses while maintaining the technical integrity of the existing loan processing workflow.
 
 ### Current Technical Foundation
 - 5 specialized agents: Intake → Credit → Income → Risk → Orchestrator
@@ -96,7 +96,7 @@ class EnhancedAssessment(BaseModel):
 
 class PersonalityResponse(BaseModel):
     """Personality-driven presentation data."""
-    agent_name: str  # "Sarah", "Marcus", "Alex", "Riley"
+    agent_name: str  # "Hawk-Income", "Scarlet Witch-Credit", "Doctor Strange-Risk", "Cap-ital America"
     celebration_message: str
     encouragement_note: str
     milestone_achieved: str | None
@@ -218,10 +218,10 @@ UI Layer (animations, celebrations)
 - [ ] Add fallback mechanisms for personality layer failures
 
 ### Phase 2: Agent Personalities (Weeks 3-4)
-- [ ] Develop Marcus (Credit Analyst) personality persona and responses
-- [ ] Develop Sarah (Income Specialist) personality persona and responses
-- [ ] Develop Alex (Risk Assessor) personality persona and responses
-- [ ] Develop Riley (Decision Coordinator) personality persona and responses
+- [ ] Develop Scarlet Witch-Credit (Credit Analyst) personality persona and responses
+- [ ] Develop Hawk-Income (Income Specialist) personality persona and responses
+- [ ] Develop Doctor Strange-Risk (Risk Assessor) personality persona and responses
+- [ ] Develop Cap-ital America (Decision Coordinator) personality persona and responses
 - [ ] Implement UI trigger generation for animations and celebrations
 
 ### Phase 3: Integration & Testing (Weeks 5-6)

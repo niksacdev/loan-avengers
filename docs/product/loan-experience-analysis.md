@@ -54,7 +54,7 @@ Based on the vision for a revolutionary loan application experience, I'm conduct
 
 **Phase 1: Discovery & Engagement**
 - User learns about conversational loan experience
-- Meets their "AI Dream Team" (Sarah, Marcus, Alex, Riley)
+- Meets their "AI Dream Team" (Hawk-Income, Scarlet Witch-Credit, Doctor Strange-Risk, Cap-ital America)
 - Initial curiosity and interest building
 
 **Phase 2: Personalized Onboarding**

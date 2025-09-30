@@ -76,3 +76,32 @@ export interface AccessibilityConfig {
   fontSize: 'small' | 'medium' | 'large';
   reduceMotion: boolean;
 }
+
+// Riley Chat Interface Types
+export interface ChatMessage {
+  id: string;
+  sender: 'user' | 'riley';
+  message: string;
+  timestamp: Date;
+  typing?: boolean;
+}
+
+export interface RileyResponse {
+  agent_name: string;
+  message: string;
+  action: 'collect_info' | 'ready_for_processing' | 'need_clarification';
+  collected_data: Record<string, any>;
+  next_step: string;
+  completion_percentage: number;
+}
+
+export interface ChatSession {
+  id: string;
+  thread_id?: string;
+  messages: ChatMessage[];
+  collected_data: Record<string, any>;
+  completion_percentage: number;
+  status: 'active' | 'complete' | 'processing' | 'error';
+  created_at: Date;
+  updated_at: Date;
+}

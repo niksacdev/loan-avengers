@@ -1,7 +1,7 @@
 """
-Mock unified workflow for testing API integration without agent_framework.
+Mock sequential workflow for testing API integration without agent_framework.
 
-This module provides the same interface as the unified_workflow but uses
+This module provides the same interface as the sequential_workflow but uses
 mock implementations so we can test the API endpoints and UI integration.
 """
 
@@ -14,7 +14,7 @@ from typing import Any
 
 from loan_avengers.utils.observability import Observability
 
-logger = Observability.get_logger("mock_unified_workflow")
+logger = Observability.get_logger("mock_sequential_workflow")
 
 
 class MockAgentThread:
@@ -68,7 +68,7 @@ class MockSequentialLoanWorkflow:
 
     def __init__(self, chat_client=None):
         """Initialize mock workflow."""
-        logger.info("MockUnifiedLoanWorkflow initialized")
+        logger.info("MockSequentialLoanWorkflow initialized")
 
     async def process_conversation(
         self, user_message: str, thread: MockAgentThread, shared_state: MockSharedState = None

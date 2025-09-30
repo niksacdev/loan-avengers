@@ -26,7 +26,7 @@ from loan_avengers.models.application import LoanApplication
 from loan_avengers.utils.observability import Observability
 from loan_avengers.utils.persona_loader import PersonaLoader
 
-logger = Observability.get_logger("unified_workflow")
+logger = Observability.get_logger("sequential_workflow")
 
 
 class WorkflowResponse(BaseModel):
@@ -88,7 +88,7 @@ class SequentialLoanWorkflow:
         # Build the sequential workflow
         self.workflow = self._build_sequential_workflow()
 
-        logger.info("UnifiedLoanWorkflow initialized with SequentialBuilder")
+        logger.info("SequentialLoanWorkflow initialized with SequentialBuilder")
 
     def _create_coordinator_collector(self) -> ChatAgent:
         """Create loan coordinator agent for conversational data collection."""

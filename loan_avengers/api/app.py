@@ -16,7 +16,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 try:
-    from agent_framework import AgentThread, SharedState
+    from agent_framework import SharedState  # AgentThread not directly used here
 
     from loan_avengers.agents.sequential_workflow import SequentialLoanWorkflow
 
@@ -172,7 +172,7 @@ async def handle_unified_chat(request: ConversationRequest):
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to process chat: {str(e)}"
-        )
+        ) from e
 
 
 # Old processing endpoint removed - unified workflow handles entire journey in /api/chat

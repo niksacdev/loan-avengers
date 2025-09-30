@@ -95,7 +95,11 @@ class MockSequentialLoanWorkflow:
         else:
             # Process through all phases
             phases_to_process = [
-                ("validating", "Intake_Validator", "Intake Agent here. I'm reviewing your application details carefully. "),
+                (
+                    "validating",
+                    "Intake_Validator",
+                    "Intake Agent here. I'm reviewing your application details carefully. ",
+                ),
                 (
                     "assessing_credit",
                     "Credit_Assessor",
@@ -323,8 +327,8 @@ class MockSequentialLoanWorkflow:
         return data
 
 
-# Create the workflow instance that the API expects
-UnifiedLoanWorkflow = MockUnifiedLoanWorkflow
+# Create the workflow instance alias that the API expects
+UnifiedLoanWorkflow = MockUnifiedLoanWorkflow  # noqa: F811
 
 
 __all__ = ["MockUnifiedLoanWorkflow", "UnifiedLoanWorkflow", "WorkflowResponse", "MockAgentThread", "MockSharedState"]

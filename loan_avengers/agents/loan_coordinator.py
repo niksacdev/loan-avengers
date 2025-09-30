@@ -112,12 +112,13 @@ class LoanCoordinator:
 
             # Build context message with conversation and current state
             current_data = current_data or {}
-            context_message = f"""User message: "{user_message}"
-
-Current application data collected:
-{json.dumps(current_data, indent=2)}
-
-Please respond with your next conversational message and update the collected data based on the user's input. Follow your persona guidelines for natural conversation flow."""
+            context_message = (
+                f"""User message: "{user_message}"\n\n"""
+                f"""Current application data collected:\n{json.dumps(current_data, indent=2)}\n\n"""
+                f"""Please respond with your next conversational message and update the collected """
+                f"""data based on the user's input. Follow your persona guidelines for natural """
+                f"""conversation flow."""
+            )
 
             logger.info(
                 "Processing coordinator conversation",
@@ -151,7 +152,10 @@ Please respond with your next conversational message and update the collected da
                 # Create fallback response
                 coordinator_response = CoordinatorResponse(
                     agent_name="Coordinator",
-                    message="I'm sorry, I had a small technical hiccup there! Could you please repeat what you said? I'm here to help you with your loan application. 😊",
+                    message=(
+                        "I'm sorry, I had a small technical hiccup there! Could you please "
+                        "repeat what you said? I'm here to help you with your loan application. 😊"
+                    ),
                     action="need_clarification",
                     collected_data=current_data,
                     next_step="Waiting for user to repeat their message",
@@ -197,7 +201,10 @@ Please respond with your next conversational message and update the collected da
             # Create error response
             error_response = CoordinatorResponse(
                 agent_name="Coordinator",
-                message="Oops! I encountered a technical issue, but don't worry - I'm back and ready to help! What can I assist you with for your loan application today? 🌟",
+                message=(
+                    "Oops! I encountered a technical issue, but don't worry - I'm back and ready to "
+                    "help! What can I assist you with for your loan application today? 🌟"
+                ),
                 action="need_clarification",
                 collected_data=current_data or {},
                 next_step="Waiting for user input to continue",
@@ -284,7 +291,7 @@ Please respond with your next conversational message and update the collected da
                 extra={"collected_data": collected_data},
                 exc_info=True,
             )
-            raise ValueError(f"Invalid application data: {str(e)}")
+            raise ValueError(f"Invalid application data: {str(e)}") from e
 
 
 __all__ = ["LoanCoordinator", "CoordinatorResponse"]

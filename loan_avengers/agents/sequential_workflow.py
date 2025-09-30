@@ -396,7 +396,7 @@ class SequentialLoanWorkflow:
                 extra={"collected_data": collected_data},
                 exc_info=True,
             )
-            raise ValueError(f"Invalid workflow data for loan application: {str(e)}")
+            raise ValueError(f"Invalid workflow data for loan application: {str(e)}") from e
 
 
 __all__ = ["UnifiedLoanWorkflow", "WorkflowResponse"]

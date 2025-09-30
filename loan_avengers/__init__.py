@@ -23,7 +23,7 @@ Usage:
     # Create loan application with business validation
     application = LoanApplication(
         application_id="LN1234567890",
-        applicant_name="John Doe",
+        applicant_name="Sample Applicant",
         # ... other fields
     )
 

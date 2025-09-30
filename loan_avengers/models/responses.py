@@ -14,10 +14,10 @@ from pydantic import BaseModel, Field
 
 class IntakeAssessment(BaseModel):
     """
-    Enhanced response from John "The Eagle Eye" (Application Validator).
+    Enhanced response from the Intake Agent (Application Validator).
 
-    Combines technical validation data with eagle-eyed personality messaging
-    for Alisha's Dream Team experience.
+    Combines technical validation data with personality-driven messaging
+    for enhanced user experience. Personality details defined in persona file.
     """
 
     # Technical Processing Data (Core Functionality)
@@ -38,7 +38,7 @@ class IntakeAssessment(BaseModel):
     next_agent: str = Field(default="credit", description="Next agent in the workflow chain")
 
     # AI Dream Team Personality Layer (Revolutionary UX)
-    specialist_name: str = Field(default="John", description="AI specialist name for personalization")
+    specialist_name: str = Field(default="Intake Agent", description="AI specialist name for personalization")
 
     celebration_message: str = Field(description="Eagle-eyed validation message with efficient humor")
 

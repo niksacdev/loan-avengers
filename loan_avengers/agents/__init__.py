@@ -9,11 +9,11 @@ with any agent framework, particularly Microsoft Agent Framework.
 # These can be loaded by any agent framework implementation
 
 AGENT_PERSONAS = {
+    "coordinator": "coordinator-persona.md",
     "intake": "intake-agent-persona.md",
     "credit": "credit-agent-persona.md",
     "income": "income-agent-persona.md",
     "risk": "risk-agent-persona.md",
-    "orchestrator": "orchestrator-agent-persona.md",
 }
 
 

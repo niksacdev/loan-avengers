@@ -327,8 +327,9 @@ class MockSequentialLoanWorkflow:
         return data
 
 
-# Create the workflow instance alias that the API expects
-UnifiedLoanWorkflow = MockUnifiedLoanWorkflow  # noqa: F811
-
-
-__all__ = ["MockUnifiedLoanWorkflow", "UnifiedLoanWorkflow", "WorkflowResponse", "MockAgentThread", "MockSharedState"]
+__all__ = [
+    "MockSequentialLoanWorkflow",
+    "WorkflowResponse",
+    "MockAgentThread",
+    "MockSharedState",
+]

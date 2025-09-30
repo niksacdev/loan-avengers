@@ -399,4 +399,4 @@ class SequentialLoanWorkflow:
             raise ValueError(f"Invalid workflow data for loan application: {str(e)}") from e
 
 
-__all__ = ["UnifiedLoanWorkflow", "WorkflowResponse"]
+__all__ = ["SequentialLoanWorkflow", "WorkflowResponse"]

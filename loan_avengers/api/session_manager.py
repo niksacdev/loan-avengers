@@ -8,7 +8,7 @@ persistence, and coordination between coordinator conversations and WorkflowOrch
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 try:
@@ -262,7 +262,7 @@ class SessionManager:
         Returns:
             Number of sessions cleaned up
         """
-        cutoff_time = datetime.now(timezone.utc).replace(hour=datetime.now(timezone.utc).hour - max_age_hours)
+        cutoff_time = datetime.now(timezone.utc) - timedelta(hours=max_age_hours)
 
         old_sessions = [
             session_id for session_id, session in self._sessions.items() if session.last_activity < cutoff_time

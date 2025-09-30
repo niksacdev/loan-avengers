@@ -4,37 +4,45 @@
 
 When financial dreams are threatened by boring forms and complex processes, **The Loan Avengers assemble to save the day!** This revolutionary superhero squad transforms traditional loan applications into epic missions where every user gets their own personal team of financial superheroes working to make their dreams come true.
 
+> **⚠️ Experimental Application**: This is a showcase demonstrating **Microsoft Agent Framework** and **Azure AI Foundry** capabilities through a practical multi-agent loan processing scenario.
+
+## 📊 Architecture Documentation
+
+For comprehensive system architecture and deployment details, see:
+- **[Complete System Architecture Diagram](diagrams/system-architecture-diagram.md)** - End-to-end agent workflow and component interactions
+- **[Azure Deployment Architecture](diagrams/azure-deployment-architecture.md)** - Complete cloud infrastructure and deployment topology
+- **[Architecture Decision Records](decisions/)** - Key architectural decisions and rationale
+
 ## Revolutionary User Experience
 
-### 🎯 **Core Innovation: Alisha & Your Personal AI Dream Team**
-Instead of traditional forms, users interact with Alisha (UI Concierge) who coordinates a team of named AI specialists through a collaborative journey:
+### 🎯 **Core Innovation: Cap-ital America & Your Personal AI Dream Team**
+Instead of traditional forms, users interact with Cap-ital America (Loan Coordinator) who assembles a team of specialized AI agents through a collaborative journey:
 
-**🌟 Alisha (UI Concierge)**: *"Hey Sarah! Let me get my Dream Team to help you achieve your goals!"*
+**🦸‍♂️ Cap-ital America (Loan Coordinator)**: *"AVENGERS, ASSEMBLE! Let me get my team to help you achieve your goals!"*
 
 **Your Personal AI Dream Team:**
-- **👁️ John "The Eagle Eye" (Validator)**: *"Eagle eyes engaged! 🦅 Let me scan this with my super vision!"*
-- **💼 Sarah (Income Specialist)**: *"John found everything perfect! I see you're crushing it with your career!"*
-- **📊 Marcus (Credit Analyst)**: *"Sarah shared incredible news! Your credit journey looks fantastic!"*
-- **🛡️ Alex (Risk Assessor)**: *"This loan perfectly protects your financial dreams and goals!"*
+- **🦸‍♂️ Cap-ital America (Loan Coordinator)**: Orchestrates the entire application experience with natural conversation
+- **💼 Hawk-Income (Income Specialist)**: *"I see you're crushing it with your career! Let me verify those amazing earnings..."*
+- **📊 Scarlet Witch-Credit (Credit Analyst)**: *"Hawk-Income shared incredible news! Your credit journey looks fantastic!"*
+- **🛡️ Doctor Strange-Risk (Risk Assessor)**: *"This loan perfectly protects your financial dreams and goals!"*
+
+> **Note**: All agents are AI assistants designed to help with loan applications. Behind the scenes, an Intake Agent validates applications for routing.
 
 ### 📱 **Mobile-First Conversational Journey**
 
-#### Phase 1: Alisha's Personalized Welcome & Dream Team Introduction
+#### Phase 1: Cap-ital America's Welcome & Avengers Assembly
 ```
-🌟 Alisha: "Hey Sarah! 👋 Hope you're having an amazing day!
-           I noticed you've been browsing some beautiful homes lately -
-           anything exciting on the horizon? 🏡✨"
+🦸‍♂️ Cap-ital America: "Hey there! 👋 I'm Cap-ital America, your AI loan coordinator.
+                      Looking to make your homeownership dreams come true? 🏡✨"
 
-🎤 User: [Voice input] "Actually yes! I found this perfect house
-        and I think I need around 250K to make it happen"
+🎤 User: "Yes! I found this perfect house and I think I need around 250K"
 
-🌟 Alisha: "That's SO exciting! 🎉 Your dream home journey is about to begin!
-           Let me get my incredible Dream Team to help you!
-           First, let me pull in John - he's got eagle eyes and will
-           quickly make sure we have everything we need! 🦅"
+🦸‍♂️ Cap-ital America: "That's SO exciting! 🎉 Your dream home journey is about to begin!
+                      AVENGERS, ASSEMBLE! Let me get my team of AI specialists
+                      to help you. First, I'll validate everything looks good! 🦅"
 ```
 
-#### Phase 2: Alisha's Dream Team in Action (Real-Time Streaming)
+#### Phase 2: The Avengers Team in Action (Real-Time Streaming)
 ```
 🚀 Dynamic Card Interface with Smooth Animations:
 
@@ -43,22 +51,22 @@ Instead of traditional forms, users interact with Alisha (UI Concierge) who coor
 │ $250,000 Home Loan             │
 │ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │                                │
-│ 👥 Alisha's AI Dream Team:     │
-│ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐│
-│ │John │ │Sarah│ │Marcus│ │Alex ││
-│ │🦅 ✨│ │💼 💤│ │📊 💤│ │🛡️💤││
-│ └─────┘ └─────┘ └─────┘ └─────┘│
+│ 🦸 The Avengers Team:          │
+│ ┌─────┐ ┌─────┐ ┌─────┐        │
+│ │Hawk-Income│ │Scarlet Witch-Credit│ │Doctor Strange-Risk │      │
+│ │💼 ✨│ │📊 💤│ │🛡️💤│        │
+│ └─────┘ └─────┘ └─────┘        │
 └─────────────────────────────────┘
 
-👁️ John: [Streaming] "Eagle eyes engaged! 🦅 Scanning application data..."
-👁️ John: [Streaming] "Everything looks sharp! No missing pieces!"
-👁️ John: "Perfect! Sarah, this application is pristine - take it away!"
+🦸‍♂️ Cap-ital America: [Streaming] "Eagle eyes engaged! 🦅 Validating application data..."
+🦸‍♂️ Cap-ital America: [Streaming] "Everything looks sharp! No missing pieces!"
+🦸‍♂️ Cap-ital America: "Perfect! Specialists, this application is ready - take it away!"
 
-💼 Sarah: "Thanks John! I see you're absolutely crushing it with your $8,500/month income!"
-📊 Marcus: "Sarah shared amazing news! Your 740 credit score is opening incredible doors!"
-🛡️ Alex: "This loan fits perfectly with your financial dreams!"
+💼 Hawk-Income: "Thanks! I see you're absolutely crushing it with your $8,500/month income!"
+📊 Scarlet Witch-Credit: "Hawk-Income shared amazing news! Your 740 credit score is opening incredible doors!"
+🛡️ Doctor Strange-Risk: "This loan fits perfectly with your financial dreams!"
 
-🌟 Alisha: "🎊 TEAM SUCCESS! Your Dream Home Loan is APPROVED!"
+🦸‍♂️ Cap-ital America: "🎊 MISSION COMPLETE! Your Dream Home Loan is APPROVED!"
 ```
 
 #### Phase 3: Celebration & Results
@@ -80,34 +88,41 @@ Instead of traditional forms, users interact with Alisha (UI Concierge) who coor
 
 ## Revolutionary System Architecture
 
-### 🤝 **Alisha's Dream Team Workflow** (Clean SRP Architecture)
-Alisha (UI Concierge) coordinates a streamlined team of AI specialists with clear responsibilities:
+### 🤝 **The Avengers Workflow** (Clean Multi-Agent Architecture)
+Cap-ital America (Loan Coordinator) leads a streamlined team of AI specialists with clear responsibilities:
 
-**🌟 Alisha (UI Concierge)** - *Not an agent, pure UI personality*
-- Manages user conversation and introduces Dream Team members
-- "Let me get my incredible Dream Team to help you achieve your goals!"
+**Technical Agent Chain:**
 
-**Technical Agent Chain (SRP Compliant):**
+1. **🦸‍♂️ Cap-ital America (Loan Coordinator)** = Coordinator Agent
+   - Primary responsibility: Natural conversation and team coordination
+   - "AVENGERS, ASSEMBLE! Let me collect your information through friendly conversation"
+   - Performs initial validation before routing to specialists
+   - Tools: Conversational data collection
+   - **Note**: AI assistant designed to help with loan applications
 
-1. **👁️ John "The Eagle Eye" (Validator)** = Intake Agent
+2. **👁️ Intake Agent (Validator)** = Intake Agent (Background)
    - Single responsibility: Lightning-fast application validation and routing
-   - "Eagle eyes engaged! 🦅 Nothing gets past these eyes!"
+   - Validates completeness and routes to appropriate workflow
    - Tools: None (pure validation logic for speed)
+   - **Note**: Works behind the scenes
 
-2. **💼 Sarah (Income Specialist)** = Income Agent
+3. **💼 Hawk-Income (Income Specialist)** = Income Agent
    - Single responsibility: Income verification and employment validation
-   - "John found everything perfect! I see you're crushing it with your career!"
+   - "I see you're crushing it with your career!"
    - Tools: Employment verification, document processing, financial calculations
+   - **Note**: AI assistant for comprehensive income verification
 
-3. **📊 Marcus (Credit Analyst)** = Credit Agent
+4. **📊 Scarlet Witch-Credit (Credit Analyst)** = Credit Agent
    - Single responsibility: Credit assessment and scoring
-   - "Sarah shared incredible news! Your credit journey looks fantastic!"
+   - "Your credit journey looks fantastic!"
    - Tools: Credit bureau, identity verification, financial calculations
+   - **Note**: AI assistant designed to analyze credit profiles
 
-4. **🛡️ Alex (Risk Assessor)** = Risk Agent + Decision
+5. **🛡️ Doctor Strange-Risk (Risk Assessor)** = Risk Agent + Decision
    - Single responsibility: Risk analysis and final loan decision
    - "This loan perfectly protects your financial dreams!"
    - Tools: All MCP servers for comprehensive risk assessment
+   - **Note**: AI system providing advisory risk recommendations
 
 ### Technology Stack
 
@@ -130,43 +145,43 @@ Alisha (UI Concierge) coordinates a streamlined team of AI specialists with clea
 - **Adaptive Messaging**: Dynamic tone based on user's financial profile
 - **Celebration Triggers**: Smart confetti and success animations
 
-## Complete Dream Team Handoff Flow
+## Complete Avengers Handoff Flow
 
-### 🎬 **Alisha's Orchestrated Experience**
+### 🎬 **Cap-ital America's Orchestrated Experience**
 
 **The Full Revolutionary Conversation:**
 
 ```
-🌟 Alisha: "Hey Sarah! Let me get my incredible Dream Team to help you!
-           First, let me pull in John - he's got eagle eyes and will
-           quickly make sure we have everything we need! 🦅"
+🦸‍♂️ Cap-ital America: "Hey there! Let me get my incredible team to help you!
+                      AVENGERS, ASSEMBLE! First, I'll make sure we have
+                      everything we need! 🦅"
 
-👁️ John: [Streaming] "Eagle eyes engaged! 🦅 Scanning application data..."
-👁️ John: [Streaming] "Checking every field with precision... nothing escapes these eyes!"
-👁️ John: [Streaming] "Perfect profile detected! Everything looks sharp!"
-👁️ John: "All clear! Sarah, this application is pristine - take it away!"
+🦸‍♂️ Cap-ital America: [Streaming] "Eagle eyes engaged! 🦅 Validating application data..."
+🦸‍♂️ Cap-ital America: [Streaming] "Checking every field with precision... nothing escapes these eyes!"
+🦸‍♂️ Cap-ital America: [Streaming] "Perfect profile detected! Everything looks sharp!"
+🦸‍♂️ Cap-ital America: "All clear! Specialists, this application is ready - take it away!"
 
-💼 Sarah: "Thanks John! I see you're absolutely crushing it with your $125k income!
+💼 Hawk-Income: "Thanks! I see you're absolutely crushing it with your $125k income!
           Let me verify those amazing earnings and show you what's possible..."
 
-📊 Marcus: "Sarah shared incredible news about your income stability!
+📊 Scarlet Witch-Credit: "Hawk-Income shared incredible news about your income stability!
            Your 740 credit score is opening amazing doors - let me show you!"
 
-🛡️ Alex: "Marcus found fantastic credit strength! This loan fits perfectly
+🛡️ Doctor Strange-Risk: "Scarlet Witch-Credit found fantastic credit strength! This loan fits perfectly
           with your financial dreams. Let me finalize the perfect terms..."
 
-🌟 Alisha: "🎊 TEAM SUCCESS! John's validation was perfect, Sarah loved your income,
-           Marcus celebrated your credit, and Alex protected your dreams!
-           Your Dream Home Loan is APPROVED! 🏡✨"
+🦸‍♂️ Cap-ital America: "🎊 MISSION COMPLETE! Validation was perfect, Hawk-Income loved your income,
+                      Scarlet Witch-Credit celebrated your credit, and Doctor Strange-Risk protected your dreams!
+                      Your Dream Home Loan is APPROVED! 🏡✨"
 ```
 
 ### 🤝 **Seamless Agent Handoffs**
 
 **Context Preservation Between Specialists:**
-- **John → Sarah**: "This application is pristine - celebrate their amazing income!"
-- **Sarah → Marcus**: "Income verified and impressive - show them what their credit unlocks!"
-- **Marcus → Alex**: "Credit strength confirmed - ensure this loan protects their dreams!"
-- **Alex → Alisha**: "Perfect loan terms calculated - ready for celebration!"
+- **Cap-ital America → Hawk-Income**: "Application validated - celebrate their amazing income!"
+- **Hawk-Income → Scarlet Witch-Credit**: "Income verified and impressive - show them what their credit unlocks!"
+- **Scarlet Witch-Credit → Doctor Strange-Risk**: "Credit strength confirmed - ensure this loan protects their dreams!"
+- **Doctor Strange-Risk → Cap-ital America**: "Perfect loan terms calculated - ready for celebration!"
 
 ## AI Dream Team Design Principles
 
@@ -174,9 +189,24 @@ Alisha (UI Concierge) coordinates a streamlined team of AI specialists with clea
 
 Each AI specialist has a distinct personality that transforms technical processing into an engaging conversation:
 
-#### **Sarah (Income Specialist)** - Enthusiastic & Supportive
+> **AI Transparency**: All agents are AI assistants designed to help with loan applications. They clearly identify themselves as AI and never deceive users about their nature.
+
+#### **🦸‍♂️ Cap-ital America (Loan Coordinator)** - Leadership & Team Coordination
 ```python
-class SarahPersonality:
+class CoordinatorPersonality:
+    tone = "friendly, transparent, team-oriented"
+    phrases = [
+        "AVENGERS, ASSEMBLE! Let me get my team to help you!",
+        "I'm Cap-ital America, your AI loan coordinator",
+        "Let me collect your information through friendly conversation"
+    ]
+    focus = "conversational data collection and team coordination"
+    transparency = "Clearly identifies as AI assistant"
+```
+
+#### **💼 Hawk-Income (Income Specialist)** - Enthusiastic & Supportive
+```python
+class HawkIncomePersonality:
     tone = "enthusiastic, supportive, celebrates achievements"
     phrases = [
         "I see you're crushing it at your job!",
@@ -184,11 +214,12 @@ class SarahPersonality:
         "I'm so excited about your financial journey!"
     ]
     focus = "income validation with career celebration"
+    transparency = "AI assistant for comprehensive income verification"
 ```
 
-#### **Marcus (Credit Analyst)** - Confident & Knowledgeable
+#### **📊 Scarlet Witch-Credit (Credit Analyst)** - Confident & Knowledgeable
 ```python
-class MarcusPersonality:
+class ScarletWitchPersonality:
     tone = "confident, knowledgeable, empowering"
     phrases = [
         "Your credit journey is impressive!",
@@ -196,11 +227,12 @@ class MarcusPersonality:
         "I love what I'm seeing in your credit profile!"
     ]
     focus = "credit analysis with strength emphasis"
+    transparency = "AI assistant designed to analyze credit profiles"
 ```
 
-#### **Alex (Risk Assessor)** - Protective & Goal-Focused
+#### **🛡️ Doctor Strange-Risk (Risk Assessor)** - Protective & Goal-Focused
 ```python
-class AlexPersonality:
+class DoctorStrangePersonality:
     tone = "protective, thoughtful, goal-oriented"
     phrases = [
         "I'm making sure this perfectly fits your dreams!",
@@ -208,18 +240,7 @@ class AlexPersonality:
         "I'm here to protect your financial future!"
     ]
     focus = "risk assessment with dream protection"
-```
-
-#### **Riley (Decision Coordinator)** - Celebratory & Results-Oriented
-```python
-class RileyPersonality:
-    tone = "celebratory, exciting, milestone-focused"
-    phrases = [
-        "I've got incredible news for you!",
-        "Time to celebrate your success!",
-        "Your dream home is about to become reality!"
-    ]
-    focus = "decision delivery with maximum celebration"
+    transparency = "AI system providing advisory risk recommendations"
 ```
 
 ### 📊 **Enhanced Response Format Strategy**
@@ -233,7 +254,7 @@ class PersonalizedAssessment(BaseModel):
     confidence_score: float = Field(ge=0.0, le=1.0)
 
     # Personality-driven messaging
-    specialist_name: str  # "Sarah", "Marcus", "Alex", "Riley"
+    specialist_name: str  # "Hawk-Income", "Scarlet Witch-Credit", "Doctor Strange-Risk", "Cap-ital America"
     celebration_message: str  # Personalized success message
     encouragement_note: str   # Supportive context
     next_step_preview: str    # Exciting preview of what's next
@@ -307,10 +328,10 @@ class PersonalizedAssessment(BaseModel):
 ## Revolutionary Success Criteria
 
 ### 🚀 **Performance Targets (Next-Gen Standards)**
-- **Sarah's Income Analysis**: <8 seconds with enthusiastic feedback
-- **Marcus's Credit Assessment**: <12 seconds with confidence-building results
-- **Alex's Risk Review**: <15 seconds with goal-alignment confirmation
-- **Riley's Decision Delivery**: <10 seconds with maximum celebration
+- **Hawk-Income's Income Analysis**: <8 seconds with enthusiastic feedback
+- **Scarlet Witch-Credit's Credit Assessment**: <12 seconds with confidence-building results
+- **Doctor Strange-Risk's Risk Review**: <15 seconds with goal-alignment confirmation
+- **Cap-ital America's Decision Delivery**: <10 seconds with maximum celebration
 - **Total Dream Team Experience**: <2 minutes end-to-end
 - **Voice Response Time**: <200ms for natural conversation flow
 - **Animation Fluidity**: 60fps on all mobile devices
@@ -353,6 +374,24 @@ class PersonalizedAssessment(BaseModel):
 - Fraud detection and prevention
 - Automated underwriting optimization
 
+## 📚 Related Documentation
+
+For implementation details and architectural decisions, refer to:
+
+### Architecture & Design
+- **[System Architecture Diagram](diagrams/system-architecture-diagram.md)** - Complete multi-agent workflow visualization
+- **[Azure Deployment Architecture](diagrams/azure-deployment-architecture.md)** - Cloud infrastructure and security design
+- **[Architecture Decision Records](decisions/)** - Key technical decisions and rationale
+
+### Development & Operations
+- **[AI-Augmented Development Workflow](ai-augmented-development-workflow.md)** - Revolutionary development approach
+- **[Development Philosophy](development-philosophy.md)** - Team productivity and AI collaboration
+- **[API Architecture](api/api-architecture.md)** - Backend API design and streaming protocol
+
+### Product & Business
+- **[Revolutionary Loan Experience Strategy](revolutionary-loan-experience-strategy.md)** - Product vision and strategy
+- **[Business Case](product/business-case.md)** - Implementation ROI and business value
+
 ---
 
-*This specification serves as the technical foundation for implementing a world-class loan processing experience that combines conversational AI with enterprise-grade multi-agent orchestration.*
+*This specification serves as the technical foundation for implementing a world-class loan processing experience that combines conversational AI with enterprise-grade multi-agent orchestration powered by Microsoft Agent Framework and Azure AI Foundry.*

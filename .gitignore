@@ -172,16 +172,24 @@ test_coverage/
 # Ruff cache
 .ruff_cache/
 
-# Frontend specific ignores
-loan_avengers/ui/node_modules/
-loan_avengers/ui/dist/
-loan_avengers/ui/build/
-loan_avengers/ui/.env.local
-loan_avengers/ui/.env.development.local
-loan_avengers/ui/.env.test.local
-loan_avengers/ui/.env.production.local
-loan_avengers/ui/coverage/
+# Frontend specific ignores - Use generic patterns to catch all locations
+node_modules/
+dist/
+build/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+coverage/
+
+# Vite build cache
+.vite/
 
 # Frontend build artifacts
 *.tsbuildinfo
 .eslintcache
+
+# Package manager lock files (from root if UI installs there)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

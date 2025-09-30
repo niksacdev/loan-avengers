@@ -169,7 +169,7 @@ Authorization: Bearer <entra-id-token>
 Content-Type: application/json
 
 {
-  "applicant_name": "John Doe",
+  "applicant_name": "Intake Agent Doe",
   "loan_amount": 50000.00,
   "loan_purpose": "home_purchase",
   ...
@@ -180,8 +180,8 @@ Response 201:
   "application_id": "LN1234567890",
   "session_id": "thread_abc123",
   "status": "STARTED",
-  "intake_agent": "John - The Eagle Eye",
-  "initial_message": "Hi! I'm John, your application validator...",
+  "intake_agent": "John_The_Eagle_Eye",
+  "initial_message": "Hi! I'm Intake Agent, your application validator...",
   "created_at": "2025-09-28T10:30:00Z"
 }
 ```
@@ -217,7 +217,7 @@ Content-Type: application/json
 
 Response 200:
 {
-  "agent_name": "John - The Eagle Eye",
+  "agent_name": "John_The_Eagle_Eye",
   "agent_response": "Great! That's a solid income. Now let's talk about...",
   "assessment": {
     "validation_status": "COMPLETE",
@@ -240,7 +240,7 @@ Response 200:
   "messages": [
     {
       "role": "assistant",
-      "text": "Hi! I'm John...",
+      "text": "Hi! I'm Intake Agent...",
       "timestamp": "2025-09-28T10:30:00Z"
     },
     {

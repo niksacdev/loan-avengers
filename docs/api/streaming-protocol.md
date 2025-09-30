@@ -132,7 +132,7 @@ Workflow produced output (agent assessment).
       "routing_decision": "STANDARD",
       "confidence_score": 0.95,
       "data_quality_score": 1.0,
-      "specialist_name": "John",
+      "specialist_name": "Intake Agent",
       "celebration_message": "🦅 Eagle-eyed validation complete!",
       "next_agent": "credit"
     },
@@ -174,7 +174,7 @@ Agent started processing.
   "params": {
     "application_id": "LN1234567890",
     "executor_id": "intake_agent",
-    "executor_name": "John - The Eagle Eye",
+    "executor_name": "John_The_Eagle_Eye",
     "input_type": "LoanApplication",
     "timestamp": "2025-09-28T10:30:01Z"
   }
@@ -191,7 +191,7 @@ Agent finished processing.
   "params": {
     "application_id": "LN1234567890",
     "executor_id": "intake_agent",
-    "executor_name": "John - The Eagle Eye",
+    "executor_name": "John_The_Eagle_Eye",
     "output_type": "IntakeAssessment",
     "duration_ms": 1500,
     "success": true,
@@ -210,7 +210,7 @@ Agent processing failed.
   "params": {
     "application_id": "LN1234567890",
     "executor_id": "credit_agent",
-    "executor_name": "Sarah - The Credit Guardian",
+    "executor_name": "Hawk-Income - The Credit Guardian",
     "error": {
       "code": "MCP_SERVER_UNAVAILABLE",
       "message": "Credit verification service unavailable",

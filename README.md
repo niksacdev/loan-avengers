@@ -1,65 +1,92 @@
 # 🦸‍♂️ The Loan Avengers
 
-A multi-agent loan processing system built with **Microsoft Agent Framework** that transforms traditional loan applications into a conversational experience using personality-driven AI agents.
+A multi-agent loan processing system built that transforms traditional loan applications into a conversational experience using personality-driven AI agents.
 
+> **⚠️ Experimental Application**: This is a sample demonstrating **Microsoft Agent Framework** and **Azure AI Foundry** capabilities through a practical multi-agent loan processing scenario. It highlights AI agent architecture patterns, secure cloud deployment, and AI-augmented agent development practices.
 ## 🎬 **How It Works**
 
 ### **The Avengers Assembly Sequence**
 ```
 User: "I need 250K for this house I'm looking at"
 
-🌟 Alisha: "That's exciting! Let me get my team to help you.
-           AVENGERS, ASSEMBLE! John, engage those eagle eyes! 🦅"
+🦸‍♂️ Cap-ital America: "That's exciting! Let me get my team to help you.
+                      AVENGERS, ASSEMBLE! 🦅"
 
-👁️ John: [Streaming] "Eagle eyes engaged! 🦅 Scanning application data..."
-👁️ John: [Streaming] "Everything looks sharp! No missing pieces!"
-👁️ John: "Perfect! Sarah, this application is pristine - take it away!"
+🦸‍♂️ Cap-ital America: [Streaming] "Eagle eyes engaged! 🦅 Scanning application data..."
+🦸‍♂️ Cap-ital America: [Streaming] "Everything looks sharp! No missing pieces!"
+🦸‍♂️ Cap-ital America: "Perfect! Specialists, this application is pristine - take it away!"
 
-💼 Sarah: "Thanks John! I see you're crushing it with your $85k income!
-          Let me verify those amazing earnings..."
+💼 Hawk-Income: "Thanks! I see you're crushing it with your $85k income!
+                Let me verify those amazing earnings..."
 
-📊 Marcus: "Sarah shared great news about your income stability!
-           Your credit score is opening doors - let me show you what's possible!"
+📊 Scarlet Witch-Credit: "Hawk-Income shared great news about your income stability!
+                         Your credit score is opening doors - let me show you what's possible!"
 
-🛡️ Alex: "Marcus found solid credit strength! This loan fits well
-          with your financial goals. Let me finalize the terms..."
+🛡️ Doctor Strange-Risk: "Scarlet Witch-Credit found solid credit strength! This loan fits well
+                        with your financial goals. Let me finalize the terms..."
 
-🌟 Alisha: "🎊 MISSION COMPLETE! Your loan application has been approved!"
+🦸‍♂️ Cap-ital America: "🎊 MISSION COMPLETE! Your loan application has been approved!"
 ```
 
 ## 🦸‍♂️ **Meet the Avengers**
 
-### **🎭 Alisha - Team Coordinator (UI)**
-- **Role**: Coordinates the entire user experience and agent workflow
-- **Function**: Web app interface that manages conversation and introduces team members
+### **🦸‍♂️ Cap-ital America - Loan Orchestrator**
+- **Role**: Coordinates the entire loan application experience
+- **Superpower**: Natural conversation and team coordination
+- **Mission**: Collect application details through friendly conversation
+- **Note**: AI assistant designed to help with loan applications
 
-### **🦅 John "Eagle Eye" - Application Validator**
-- **Superpower**: Lightning-fast data validation with precision
-- **Mission**: Validates application completeness and routes to appropriate workflow
-- **Performance**: <5 seconds processing time
-
-### **⚡ Sarah - Income Specialist**
+### **💼 Hawk-Income - Income Specialist**
 - **Superpower**: Income verification and employment validation
 - **Mission**: Verifies earnings, employment stability, and income adequacy
 - **Tools**: Employment verification, document processing, financial calculations
+- **Note**: AI assistant for comprehensive income verification
 
-### **🏆 Marcus - Credit Analyst**
-- **Superpower**: Credit assessment and scoring analysis
+### **📊 Scarlet Witch-Credit - Credit Analyst**
+- **Superpower**: Credit assessment and mystical credit analysis
 - **Mission**: Credit history evaluation, identity verification, risk scoring
 - **Tools**: Credit bureau integration, identity verification, financial calculations
+- **Note**: AI assistant designed to analyze credit profiles
 
-### **🛡️ Alex - Risk Assessor**
-- **Superpower**: Comprehensive risk analysis and loan decision
+### **🛡️ Doctor Strange-Risk - Risk Assessor**
+- **Superpower**: Dimensional risk analysis and comprehensive evaluation
 - **Mission**: Final risk evaluation and loan recommendation synthesis
 - **Tools**: All MCP servers for complete risk assessment
+- **Note**: AI system providing advisory risk recommendations
 
-## 🏗️ **Technical Architecture**
+## 🚀 **Capabilities**
+
+### **🔄 Agent Framework Workflow**
+Built with Microsoft Agent Framework leveraging Workflows, Agents, and Threads for orchestrated multi-agent collaboration
+- Sequential agent coordination with automatic handoffs
+- Context-aware processing across specialized agents
+- Real-time state management and progress tracking
+
+### **🔧 Agent-to-MCP Tools Integration**
+Seamless integration between AI agents and Model Context Protocol (MCP) servers for specialized tool capabilities
+- **3 specialized MCP servers**: Application verification, document processing, financial calculations
+- **Streamable HTTP transport**: Real-time progress updates during agent execution
+- **Autonomous tool selection**: Agents independently choose appropriate tools based on their assessment needs
+
+### **🔒 Secure Azure Deployment**
+Production-ready deployment architecture using Azure Container Apps with enterprise-grade security
+- **Azure Container Apps**: Scalable, serverless container hosting
+- **Entra ID authentication**: Enterprise identity and access management
+- **Managed identities**: Secure, credential-free service authentication
+- **Agent Framework observability**: Built-in telemetry and performance tracking across all agents
+
+### **🤖 Agents Built by Agents**
+Revolutionary AI-augmented development workflow using specialized developer agents
+- **Multi-platform AI support**: Compatible with GitHub Copilot, Claude Code, Cursor, and universal AGENTS.md format
+- **System architecture review**: AI agents validate design decisions and architectural patterns
+- **Automated code review**: AI agents ensure best practices and code quality standards
+- **Single developer productivity**: Achieves 8-12 person team output through AI-augmented workflow
 
 ### **Multi-Agent Workflow System**
 Built on **Microsoft Agent Framework** with sequential agent processing:
 
 ```
-Web App (Alisha) → John (Validation) → Sarah (Income) → Marcus (Credit) → Alex (Risk) → Result
+Web App → Loan Coordinator → Intake Agent (Validation) → Income Agent → Credit Agent → Risk Agent → Result
 ```
 
 ### **Core Technologies**
@@ -81,10 +108,10 @@ Web App (Alisha) → John (Validation) → Sarah (Income) → Marcus (Credit) �
 ## 🎯 **Performance Goals**
 
 ### **Loan Processing Targets**
-- **John (Validation)**: <5 seconds application validation and routing
-- **Sarah (Income)**: <30 seconds income verification and employment validation
-- **Marcus (Credit)**: <60 seconds credit assessment and scoring
-- **Alex (Risk)**: <90 seconds comprehensive risk analysis and decision
+- **Intake Agent (Validation)**: <5 seconds application validation and routing
+- **Income Agent**: <30 seconds income verification and employment validation
+- **Credit Agent**: <60 seconds credit assessment and scoring
+- **Risk Agent**: <90 seconds comprehensive risk analysis and decision
 - **Total Workflow**: <3 minutes end-to-end processing vs traditional 24-48 hours
 
 ### **Technical Benefits**
@@ -112,57 +139,6 @@ cp .env.example .env
 # Test the Avengers
 uv run test_intake_agent.py
 ```
-
-## 📁 **Project Structure**
-
-```
-loan_avengers/
-├── agents/                          # The Avengers Squad
-│   ├── intake_agent.py             # John "Eagle Eye" (Validator)
-│   ├── income_agent.py             # Sarah (Income Specialist)
-│   ├── credit_agent.py             # Marcus (Credit Analyst)
-│   └── risk_agent.py               # Alex (Risk Assessor)
-├── models/                          # Data Models
-│   ├── application.py              # LoanApplication with validation
-│   ├── responses.py                # Agent response models
-│   └── decision.py                 # Final loan decision
-├── utils/                           # Core Utilities
-│   ├── observability.py           # Agent Framework integration
-│   └── persona_loader.py           # Agent personality loading
-├── tools/mcp_servers/              # External Tool Integration
-│   ├── application_verification/
-│   ├── document_processing/
-│   └── financial_calculations/
-```
-
-## 🧪 **Testing & Quality**
-
-### Comprehensive Test Suite
-- **35 tests** across unit and integration test suites
-- **Module-specific coverage targets** (85-95% for core components)
-- **Performance validation** (<5 second processing requirements)
-- **Mock-based unit tests** for reliable CI/CD
-
-### Quick Testing Commands
-```bash
-# Run all unit tests
-uv run pytest tests/unit/ -v
-
-# Run with coverage analysis
-uv run python tests/test_suite_runner.py  # Interactive menu
-
-# Coverage analysis with detailed recommendations
-uv run python tests/coverage_report.py
-```
-
-### Current Coverage Status
-- **Overall**: 65.82% (Target: 85.00%)
-- **Models**: 90.48% ✅ (Target: 95%)
-- **MCP Services**: 76.71% 🔧 (Target: 85%)
-- **Agents**: 0.00% ❌ (Target: 90%) - High priority
-
-See [`tests/README.md`](tests/README.md) for complete testing documentation.
-
 ## 📚 **Documentation**
 
 - **[Technical Specification](docs/technical-specification.md)** - Complete system architecture
@@ -177,4 +153,4 @@ See [`tests/README.md`](tests/README.md) for complete testing documentation.
 
 ---
 
-**🦸‍♂️ The Loan Avengers - Making homeownership dreams happen, one heroic mission at a time!**
+**🦸‍♂️ The Loan Avengers

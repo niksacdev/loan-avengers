@@ -57,7 +57,7 @@ Start a new loan application workflow.
 **Request Body**:
 ```json
 {
-  "applicant_name": "John Doe",
+  "applicant_name": "Intake Agent Doe",
   "applicant_id": "550e8400-e29b-41d4-a716-446655440000",
   "email": "john.doe@example.com",
   "phone": "+14155552671",
@@ -83,10 +83,10 @@ Start a new loan application workflow.
   "status": "STARTED",
   "current_stage": "INTAKE",
   "intake_agent": {
-    "name": "John - The Eagle Eye",
+    "name": "John_The_Eagle_Eye",
     "description": "Sharp-eyed application validator"
   },
-  "initial_message": "Hi! I'm John, your application validator. I'll help you get started with your loan application. Let me take a quick look at your information...",
+  "initial_message": "Hi! I'm Intake Agent, your application validator. I'll help you get started with your loan application. Let me take a quick look at your information...",
   "created_at": "2025-09-28T10:30:00Z",
   "expires_at": "2025-09-28T11:00:00Z"
 }
@@ -159,7 +159,7 @@ curl -X POST https://api.loanavengers.com/api/v1/applications \
   -H "Authorization: Bearer ${ENTRA_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
-    "applicant_name": "John Doe",
+    "applicant_name": "Intake Agent Doe",
     "applicant_id": "550e8400-e29b-41d4-a716-446655440000",
     "email": "john.doe@example.com",
     "phone": "+14155552671",
@@ -193,7 +193,7 @@ Retrieve current status and progress of a loan application.
   "current_stage": "CREDIT",
   "current_agent": {
     "name": "credit",
-    "display_name": "Sarah - The Credit Guardian"
+    "display_name": "Hawk-Income - The Credit Guardian"
   },
   "progress": 0.5,
   "stages_completed": ["INTAKE"],
@@ -325,7 +325,7 @@ Send a chat message to the intake agent for conversational loan intake.
 ```json
 {
   "message_id": "msg_abc123",
-  "agent_name": "John - The Eagle Eye",
+  "agent_name": "John_The_Eagle_Eye",
   "agent_response": "Great! That's a solid income. I see you work at Tech Corp. How long have you been with them?",
   "assessment": {
     "validation_status": "INCOMPLETE",
@@ -350,7 +350,7 @@ Send a chat message to the intake agent for conversational loan intake.
 ```json
 {
   "message_id": "msg_xyz789",
-  "agent_name": "John - The Eagle Eye",
+  "agent_name": "John_The_Eagle_Eye",
   "agent_response": "Perfect! I have all the information I need. Your application looks great! 🦅 Eagle eyes verified everything. You're all set for the next step!",
   "assessment": {
     "validation_status": "COMPLETE",
@@ -363,8 +363,8 @@ Send a chat message to the intake agent for conversational loan intake.
   "workflow_stage": "INTAKE_COMPLETE",
   "intake_complete": true,
   "next_step": {
-    "agent": "Sarah - The Credit Guardian",
-    "description": "Sarah will now assess your creditworthiness",
+    "agent": "Hawk-Income - The Credit Guardian",
+    "description": "Hawk-Income will now assess your creditworthiness",
     "estimated_time": "2-3 minutes"
   },
   "timestamp": "2025-09-28T10:35:00Z"
@@ -418,8 +418,8 @@ Retrieve the complete conversation history for an application.
     {
       "message_id": "msg_001",
       "role": "assistant",
-      "agent_name": "John - The Eagle Eye",
-      "text": "Hi! I'm John, your application validator...",
+      "agent_name": "John_The_Eagle_Eye",
+      "text": "Hi! I'm Intake Agent, your application validator...",
       "timestamp": "2025-09-28T10:30:00Z"
     },
     {
@@ -431,7 +431,7 @@ Retrieve the complete conversation history for an application.
     {
       "message_id": "msg_003",
       "role": "assistant",
-      "agent_name": "John - The Eagle Eye",
+      "agent_name": "John_The_Eagle_Eye",
       "text": "Great! That's a solid income...",
       "timestamp": "2025-09-28T10:31:15Z"
     }
@@ -865,7 +865,7 @@ const client = new LoanAvengersClient({
 
 // Create application
 const application = await client.applications.create({
-  applicant_name: 'John Doe',
+  applicant_name: 'Intake Agent Doe',
   email: 'john.doe@example.com',
   loan_amount: 50000,
   loan_purpose: 'home_purchase',
@@ -898,7 +898,7 @@ client = LoanAvengersClient(
 
 # Create application
 application = await client.applications.create(
-    applicant_name="John Doe",
+    applicant_name="Intake Agent Doe",
     email="john.doe@example.com",
     loan_amount=50000.0,
     loan_purpose="home_purchase"

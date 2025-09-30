@@ -10,8 +10,14 @@ from __future__ import annotations
 import logging
 import os
 
-from agent_framework import get_logger
-from agent_framework.observability import setup_observability
+try:
+    from agent_framework import get_logger
+    from agent_framework.observability import setup_observability
+
+    AGENT_FRAMEWORK_AVAILABLE = True
+except ImportError:
+    # Fallback to standard logging when agent_framework is not available
+    AGENT_FRAMEWORK_AVAILABLE = False
 
 
 class Observability:
@@ -42,16 +48,18 @@ class Observability:
             force=True,  # Override any existing configuration
         )
 
-        # Initialize Agent Framework observability if Application Insights is configured
-        if app_insights_connection_string:
+        # Initialize Agent Framework observability if available and Application Insights is configured
+        if AGENT_FRAMEWORK_AVAILABLE and app_insights_connection_string:
             setup_observability(
                 applicationinsights_connection_string=app_insights_connection_string,
                 enable_sensitive_data=enable_sensitive_data,
                 enable_live_metrics=True,  # Enable live metrics for real-time monitoring
             )
             logging.info("Agent Framework observability initialized with Application Insights")
-        else:
+        elif AGENT_FRAMEWORK_AVAILABLE:
             logging.info("Agent Framework observability using stdio logging only")
+        else:
+            logging.info("Using standard Python logging (agent_framework not available)")
 
         cls._initialized = True
 
@@ -69,11 +77,16 @@ class Observability:
         # Ensure observability is initialized
         cls.initialize()
 
-        # Agent Framework REQUIRES 'agent_framework' prefix (unit test verified)
-        # See test_logger_requirements.py - get_logger('test') raises "Logger name must start with 'agent_framework'"
-        # PR reviewer suggestion to remove prefix is INCORRECT
-        framework_logger_name = f"agent_framework.{name}"
-        return get_logger(framework_logger_name)
+        if AGENT_FRAMEWORK_AVAILABLE:
+            # Agent Framework REQUIRES 'agent_framework' prefix (unit test verified)
+            # See test_logger_requirements.py - get_logger('test') raises "Logger name must start with 'agent_framework'"
+            # PR reviewer suggestion to remove prefix is INCORRECT
+            framework_logger_name = f"agent_framework.{name}"
+            return get_logger(framework_logger_name)
+        else:
+            # Fallback to standard logging when agent framework is not available
+            logger_name = f"loan_avengers.{name}"
+            return logging.getLogger(logger_name)
 
     @classmethod
     def is_application_insights_enabled(cls) -> bool:

@@ -69,20 +69,15 @@ Claude has access to specialized development agents that MUST be used proactivel
    - USE WHEN: After writing significant code, before committing changes
    - PROVIDES: Best practices feedback, architecture alignment, code quality review
 
-5. **agent-sync-coordinator** (Claude agent: `.claude/agents/`):
+5. **sync-coordinator** (`.claude/agents/sync-coordinator.md`):
    - USE WHEN: **MANDATORY before ANY commit** that modifies instruction files, ADRs, or developer agents
    - PROVIDES: Ensures consistency across CLAUDE.md, GitHub Copilot instructions, and Cursor rules
    - **CRITICAL**: If you modify CLAUDE.md, ADRs, or developer agents, you MUST run this agent before committing
-   - **HOW TO USE**: Use Task tool with `subagent_type: agent-sync-coordinator`
+   - **HOW TO USE**: Use Task tool with `subagent_type: sync-coordinator`
 
-5. **gitops-ci-specialist**:
+6. **gitops-ci-specialist**:
    - USE WHEN: Committing code, troubleshooting CI/CD issues, optimizing pipelines
    - PROVIDES: Git workflow guidance, CI/CD pipeline optimization, deployment strategies
-
-6. **sync-coordinator**:
-   - USE WHEN: Instruction files need synchronization, ADRs are added/changed
-   - PROVIDES: Manual synchronization of instruction files across tools
-   - NOTE: Developer-side only - run before committing instruction changes
 
 ### When to Use Support Agents
 
@@ -91,7 +86,7 @@ Claude has access to specialized development agents that MUST be used proactivel
 - **After Code Writing**: Use code-reviewer for all significant code changes
 - **For UI Changes**: Use ux-ui-designer for any user-facing components
 - **For Requirements**: Use product-manager-advisor when creating features or issues
-- **Before ANY Commit with Instruction/ADR/Agent Changes**: Use agent-sync-coordinator to ensure consistency
+- **Before ANY Commit with Instruction/ADR/Agent Changes**: Use sync-coordinator to ensure consistency
 
 #### Proactive Usage Pattern:
 ```
@@ -134,13 +129,14 @@ Claude has access to specialized development agents that MUST be used proactivel
 
 ### Directory Structure
 ```
-loan_processing/
+loan_avengers/
 ├── models/                           # Business data models (Pydantic v2)
 │   ├── application.py               # LoanApplication model
 │   ├── assessment.py               # Assessment result models
 │   └── decision.py                 # LoanDecision model
 ├── agents/
 │   └── agent-persona/              # Agent instruction markdown files
+│       ├── coordinator-persona.md
 │       ├── intake-agent-persona.md
 │       ├── credit-agent-persona.md
 │       ├── income-agent-persona.md
@@ -160,12 +156,12 @@ loan_processing/
 ### Microsoft Agent Framework Integration
 The system is designed for Microsoft Agent Framework with direct agent persona loading:
 
-**Agent Personas**: Located in `loan_processing/agents/agent-persona/`
+**Agent Personas**: Located in `loan_avengers/agents/agent-persona/`
 - Load directly as ChatClientAgent instructions
 - Each persona contains specialized domain knowledge
 - Optimized for token efficiency (300-500 lines each)
 
-**Configuration**: See `loan_processing/config/agents.yaml`
+**Configuration**: See `loan_avengers/config/agents.yaml`
 - Maps agents to their required MCP servers
 - Defines agent capabilities and output formats
 - Used for tool configuration in Microsoft Agent Framework
@@ -173,7 +169,7 @@ The system is designed for Microsoft Agent Framework with direct agent persona l
 ### Agent Integration Pattern
 ```python
 from microsoft_agent_framework import ChatClientAgent
-from loan_processing.agents import get_persona_path
+from loan_avengers.agents import get_persona_path
 
 # Load agent persona
 persona = open(get_persona_path("credit")).read()
@@ -242,12 +238,12 @@ Project rules structure:
    - `.cursor/rules/*.mdc` (Cursor implementations)
    - `.github/instructions/copilot-instructions.md`
 
-2. **If yes, run agent-sync-coordinator**:
-   - Use the Task tool with `subagent_type: agent-sync-coordinator`
+2. **If yes, run sync-coordinator**:
+   - Use the Task tool with `subagent_type: sync-coordinator`
    - Provide list of changed files and nature of changes
    - Apply any synchronization updates it recommends
    - Include sync changes in your commit
-   - Agent location: `.claude/agents/agent-sync-coordinator.md`
+   - Agent location: `.claude/agents/sync-coordinator.md`
    - Syncs between: `.claude/agents/`, `.github/chatmodes/`, `.cursor/rules/`
 
 3. **Skip sync only if**:
@@ -442,7 +438,7 @@ This repository uses **developer-side synchronization** to maintain consistency 
    - `.claude/agents/*.md` or `.github/chatmodes/*.md`
 
 2. **Manual Sync Process**: Developer runs sync agent and:
-   - Uses Task tool with `subagent_type: agent-sync-coordinator`
+   - Uses Task tool with `subagent_type: sync-coordinator`
    - Agent analyzes git changes and recommends updates
    - Developer applies suggested changes
    - Commits all changes together in single commit
@@ -850,11 +846,11 @@ decision = await orchestrator_agent.run({
 ## Quick Reference
 
 ### Key Files
-- Agent Personas: `loan_processing/agents/agent-persona/*.md`
-- Data Models: `loan_processing/models/*.py`
-- Agent Configuration: `loan_processing/config/agents.yaml`
-- MCP Servers: `loan_processing/tools/mcp_servers/*/server.py`
-- Business Utils: `loan_processing/utils/*.py`
+- Agent Personas: `loan_avengers/agents/agent-persona/*.md`
+- Data Models: `loan_avengers/models/*.py`
+- Agent Configuration: `loan_avengers/config/agents.yaml`
+- MCP Servers: `loan_avengers/tools/mcp_servers/*/server.py`
+- Business Utils: `loan_avengers/utils/*.py`
 
 ### Common Commands
 ```bash
@@ -864,14 +860,14 @@ uv add package_name        # Add new dependency
 uv add --dev package_name  # Add development dependency
 
 # Run MCP servers
-uv run python -m loan_processing.tools.mcp_servers.application_verification.server
-uv run python -m loan_processing.tools.mcp_servers.document_processing.server
-uv run python -m loan_processing.tools.mcp_servers.financial_calculations.server
+uv run python -m loan_avengers.tools.mcp_servers.application_verification.server
+uv run python -m loan_avengers.tools.mcp_servers.document_processing.server
+uv run python -m loan_avengers.tools.mcp_servers.financial_calculations.server
 
 # Run tests
 uv run pytest tests/ -v                                    # All tests
-uv run pytest tests/test_models.py -v                     # Data model tests
-uv run pytest tests/ --cov=loan_processing                # With coverage
+uv run pytest tests/unit/models/test_application_models.py -v  # Data model tests
+uv run pytest tests/ --cov=loan_avengers                   # With coverage
 
 # Test validation
 uv run python scripts/validate_ci_fix.py                  # Quick validation

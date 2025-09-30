@@ -2,7 +2,7 @@
 
 ## User Persona: The Digital-First Borrower
 
-**Who**: Sarah Chen, 31, Software Engineer, San Francisco
+**Who**: Hawk-Income Chen, 31, Software Engineer, San Francisco
 - **Income**: $120K, tech-savvy, mobile-first user
 - **Experience**: First-time homebuyer, comfortable with AI assistants
 - **Goal**: Get approved for a mortgage to buy a condo
@@ -51,18 +51,18 @@
 - **Trigger**: Sees ad "Meet Your AI Loan Dream Team"
 - **Action**: Clicks to learn about conversational loan experience
 - **Experience**:
-  - Landing page shows AI team: "Meet Sarah (Credit Expert), Marcus (Income Specialist), Alex (Risk Advisor), Riley (Loan Orchestrator)"
+  - Landing page shows AI team: "Meet Hawk-Income (Credit Expert), Scarlet Witch-Credit (Income Specialist), Doctor Strange-Risk (Risk Advisor), Cap-ital America (Loan Orchestrator)"
   - 30-second video: "No forms. No waiting. Just conversation."
   - Social proof: "95% of users complete their application in one session"
 - **Emotion**: Intrigued and excited
 - **Success Metric**: 80% click-through to start process
 
 ### 2. AI Team Introduction (Welcomed)
-- **Action**: Starts conversation with Riley (Orchestrator)
+- **Action**: Starts conversation with Cap-ital America (Orchestrator)
 - **Experience**:
-  - Riley: "Hi! I'm Riley, your personal loan orchestrator. I work with three amazing specialists to get you the perfect loan. What's your name?"
-  - User: "Sarah"
-  - Riley: "Great to meet you, Sarah! I'm going to connect you with my team. First, let me ask - are you looking to buy your first home, refinance, or invest in property?"
+  - Cap-ital America: "Hi! I'm Cap-ital America, your personal loan orchestrator. I work with three amazing specialists to get you the perfect loan. What's your name?"
+  - User: "Hawk-Income"
+  - Cap-ital America: "Great to meet you, Hawk-Income! I'm going to connect you with my team. First, let me ask - are you looking to buy your first home, refinance, or invest in property?"
 - **Innovation**:
   - Natural conversation vs form fields
   - Personalization from first interaction
@@ -73,9 +73,9 @@
 ### 3. Personalized Assessment (Confident)
 - **Action**: Conversational loan qualification
 - **Experience**:
-  - Sarah (Credit): "I'm Sarah, your credit specialist! I can see from your profile you have excellent payment history. Based on your income and credit, you qualify for rates as low as 6.2%. Want to see what that means for your monthly payments?"
-  - Marcus (Income): "This is Marcus! I verified your employment - nice work at TechCorp! Your income is solid for the loan amount you're considering."
-  - Alex (Risk): "Hey, I'm Alex! I've analyzed your financial profile and see zero red flags. You're in great shape for approval."
+  - Hawk-Income (Credit): "I'm Hawk-Income, your credit specialist! I can see from your profile you have excellent payment history. Based on your income and credit, you qualify for rates as low as 6.2%. Want to see what that means for your monthly payments?"
+  - Scarlet Witch-Credit (Income): "This is Scarlet Witch-Credit! I verified your employment - nice work at TechCorp! Your income is solid for the loan amount you're considering."
+  - Doctor Strange-Risk (Risk): "Hey, I'm Doctor Strange-Risk! I've analyzed your financial profile and see zero red flags. You're in great shape for approval."
 - **Innovation**:
   - Pre-populated data eliminates re-entry
   - Specialists explain their role and findings
@@ -87,12 +87,12 @@
 ### 4. Interactive Loan Building (Excited)
 - **Action**: Loan customization through conversation
 - **Experience**:
-  - Riley: "Let's build your perfect loan! I'm showing you three options:"
+  - Cap-ital America: "Let's build your perfect loan! I'm showing you three options:"
     - "30-year fixed at 6.2% = $1,847/month"
     - "15-year fixed at 5.9% = $2,521/month"
     - "ARM starting at 5.8% = $1,759/month"
   - Visual: Animated cards showing loan options with key details
-  - Riley: "Which payment fits your budget best?"
+  - Cap-ital America: "Which payment fits your budget best?"
   - Interactive sliders: "Want to see how a larger down payment changes things?"
 - **Innovation**:
   - Visual loan building vs static forms
@@ -105,10 +105,10 @@
 ### 5. Streamlined Documentation (Efficient)
 - **Action**: Document verification and final details
 - **Experience**:
-  - Riley: "Perfect choice! I need three quick documents to finalize everything:"
+  - Cap-ital America: "Perfect choice! I need three quick documents to finalize everything:"
   - Smart document requests: "I can see your bank account from your profile. Just need to verify your last two pay stubs and we're set!"
   - Document upload: Drag & drop or mobile photo capture
-  - Real-time processing: "Got it! Sarah is verifying your income now..."
+  - Real-time processing: "Got it! Hawk-Income is verifying your income now..."
 - **Innovation**:
   - Minimal document requests using existing data
   - Smart document recognition
@@ -121,10 +121,10 @@
 - **Action**: Loan processing with live updates
 - **Experience**:
   - Animated progress cards showing each specialist working:
-    - Sarah: "Credit analysis complete ✓ (30 seconds)"
-    - Marcus: "Income verification done ✓ (45 seconds)"
-    - Alex: "Risk assessment finished ✓ (60 seconds)"
-    - Riley: "Final approval processing... ✓ (90 seconds)"
+    - Hawk-Income: "Credit analysis complete ✓ (30 seconds)"
+    - Scarlet Witch-Credit: "Income verification done ✓ (45 seconds)"
+    - Doctor Strange-Risk: "Risk assessment finished ✓ (60 seconds)"
+    - Cap-ital America: "Final approval processing... ✓ (90 seconds)"
   - Educational content during wait: "Did you know your credit score puts you in the top 15% of borrowers?"
   - Progress bar: "Your loan is 75% approved..."
 - **Innovation**:
@@ -139,7 +139,7 @@
 - **Action**: Approval delivery and celebration
 - **Experience**:
   - Confetti animation and celebration music
-  - Riley: "Congratulations! You're approved for $485,000 at 6.2%!"
+  - Cap-ital America: "Congratulations! You're approved for $485,000 at 6.2%!"
   - Team congratulations from each specialist
   - Immediate next steps: "Your closing coordinator Maria will contact you within 24 hours"
   - Share moment: "Want to share this exciting news?"

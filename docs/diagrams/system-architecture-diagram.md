@@ -31,29 +31,29 @@ graph TB
     subgraph "🦸‍♂️ Microsoft Agent Framework - Sequential Workflow"
         direction LR
 
-        subgraph "🦅 John - Eagle Eye Validator"
-            John[👁️ John "Eagle Eye"<br/>Lightning Validation<br/>&lt;5 seconds]
+        subgraph "🦅 Intake Agent "The Eagle Eye" Validator"
+            Intake Agent[👁️ Intake Agent "The Eagle Eye"<br/>Lightning Validation<br/>&lt;5 seconds]
             JohnPersona[📋 Persona: intake-agent-persona.md<br/>🎯 Mission: Validate & Route<br/>⚡ Tools: None (Speed optimized)]
         end
 
-        subgraph "💼 Sarah - Income Specialist"
-            Sarah[💼 Sarah - Income Specialist<br/>Employment Verification<br/>&lt;30 seconds]
+        subgraph "💼 Hawk-Income - Income Specialist"
+            Hawk-Income[💼 Hawk-Income - Income Specialist<br/>Employment Verification<br/>&lt;30 seconds]
             SarahPersona[📋 Persona: income-agent-persona.md<br/>🎯 Mission: Income Analysis<br/>🔧 Tools: Document + Financial]
         end
 
-        subgraph "📊 Marcus - Credit Analyst"
-            Marcus[📊 Marcus - Credit Analyst<br/>Credit Assessment<br/>&lt;60 seconds]
+        subgraph "📊 Scarlet Witch-Credit - Credit Analyst"
+            Scarlet Witch-Credit[📊 Scarlet Witch-Credit - Credit Analyst<br/>Credit Assessment<br/>&lt;60 seconds]
             MarcusPersona[📋 Persona: credit-agent-persona.md<br/>🎯 Mission: Credit Evaluation<br/>🔧 Tools: Application + Financial]
         end
 
-        subgraph "🛡️ Alex - Risk Assessor"
-            Alex[🛡️ Alex - Risk Assessor<br/>Final Decision<br/>&lt;90 seconds]
+        subgraph "🛡️ Doctor Strange-Risk - Risk Assessor"
+            Doctor Strange-Risk[🛡️ Doctor Strange-Risk - Risk Assessor<br/>Final Decision<br/>&lt;90 seconds]
             AlexPersona[📋 Persona: risk-agent-persona.md<br/>🎯 Mission: Risk Analysis<br/>🔧 Tools: All MCP Servers]
         end
 
-        John --> Sarah
-        Sarah --> Marcus
-        Marcus --> Alex
+        Intake Agent --> Hawk-Income
+        Hawk-Income --> Scarlet Witch-Credit
+        Scarlet Witch-Credit --> Doctor Strange-Risk
     end
 
     %% MCP Tool Layer
@@ -108,19 +108,19 @@ graph TB
     FastAPI --> Stream
     FastAPI --> ThreadMgr
 
-    ThreadMgr --> John
-    John --> Sarah
-    Sarah --> Marcus
-    Marcus --> Alex
+    ThreadMgr --> Intake Agent
+    Intake Agent --> Hawk-Income
+    Hawk-Income --> Scarlet Witch-Credit
+    Scarlet Witch-Credit --> Doctor Strange-Risk
 
     %% Agent to MCP connections
-    Sarah --> MCP2
-    Sarah --> MCP3
-    Marcus --> MCP1
-    Marcus --> MCP3
-    Alex --> MCP1
-    Alex --> MCP2
-    Alex --> MCP3
+    Hawk-Income --> MCP2
+    Hawk-Income --> MCP3
+    Scarlet Witch-Credit --> MCP1
+    Scarlet Witch-Credit --> MCP3
+    Doctor Strange-Risk --> MCP1
+    Doctor Strange-Risk --> MCP2
+    Doctor Strange-Risk --> MCP3
 
     %% MCP to External Services
     MCP1 --> CreditAPI
@@ -133,13 +133,13 @@ graph TB
     ThreadMgr --> AgentThread
     AgentThread --> Cache
     FastAPI --> LoanApp
-    John --> Assessment
-    Sarah --> Assessment
-    Marcus --> Assessment
-    Alex --> Decision
+    Intake Agent --> Assessment
+    Hawk-Income --> Assessment
+    Scarlet Witch-Credit --> Assessment
+    Doctor Strange-Risk --> Decision
 
     %% Real-time Updates
-    Alex --> Stream
+    Doctor Strange-Risk --> Stream
     Stream --> Progress
     Decision --> Confetti
 
@@ -155,7 +155,7 @@ graph TB
     class User,Browser userLayer
     class UI,ThemeToggle,Progress,Confetti uiLayer
     class FastAPI,Stream,ThreadMgr apiLayer
-    class John,Sarah,Marcus,Alex,JohnPersona,SarahPersona,MarcusPersona,AlexPersona agentLayer
+    class Intake Agent,Hawk-Income,Scarlet Witch-Credit,Doctor Strange-Risk,JohnPersona,SarahPersona,MarcusPersona,AlexPersona agentLayer
     class MCP1,MCP2,MCP3,Tools1,Tools2,Tools3 mcpLayer
     class LoanApp,Assessment,Decision,AgentThread,Cache dataLayer
     class AOAI,CreditAPI,BankAPI,DocStorage externalLayer
@@ -169,10 +169,10 @@ sequenceDiagram
     participant A as 🌟 Alisha (UI)
     participant API as 🚀 FastAPI
     participant T as 🧵 AgentThread
-    participant J as 🦅 John (Validator)
-    participant S as 💼 Sarah (Income)
-    participant M as 📊 Marcus (Credit)
-    participant X as 🛡️ Alex (Risk)
+    participant J as 🦅 Intake Agent (Validator)
+    participant S as 💼 Hawk-Income (Income)
+    participant M as 📊 Scarlet Witch-Credit (Credit)
+    participant X as 🛡️ Doctor Strange-Risk (Risk)
     participant MCP as 🔧 MCP Servers
     participant AOI as 🧠 Azure OpenAI
 
@@ -183,27 +183,27 @@ sequenceDiagram
     Note over A: 🌟 Alisha introduces the Dream Team
     A-->>U: "Let me get my Dream Team! AVENGERS, ASSEMBLE!"
 
-    API->>J: Invoke John with LoanApplication
+    API->>J: Invoke Intake Agent with LoanApplication
     J->>AOI: Process validation with persona context
     J->>T: Update context with validation results
     J-->>A: "Eagle eyes engaged! 🦅 Application looks pristine!"
     A-->>U: Real-time status update
 
-    T->>S: Pass context + application to Sarah
+    T->>S: Pass context + application to Hawk-Income
     S->>MCP: Call document processing & financial tools
     S->>AOI: Analyze income with persona context
     S->>T: Update context with income assessment
     S-->>A: "You're crushing it with your $85K income!"
     A-->>U: Real-time status update
 
-    T->>M: Pass enriched context to Marcus
+    T->>M: Pass enriched context to Scarlet Witch-Credit
     M->>MCP: Call application verification & financial tools
     M->>AOI: Analyze credit with persona context
     M->>T: Update context with credit assessment
     M-->>A: "Your 740 credit score is opening doors!"
     A-->>U: Real-time status update
 
-    T->>X: Pass complete context to Alex
+    T->>X: Pass complete context to Doctor Strange-Risk
     X->>MCP: Call all available tools for comprehensive analysis
     X->>AOI: Final risk assessment with all context
     X->>T: Update with final decision
@@ -216,10 +216,10 @@ sequenceDiagram
 ## Architecture Principles
 
 ### **🎯 Agent Specialization**
-- **John (Validator)**: Ultra-fast triage and routing (<5 seconds)
-- **Sarah (Income)**: Deep income and employment analysis
-- **Marcus (Credit)**: Comprehensive credit evaluation
-- **Alex (Risk)**: Final synthesis and decision making
+- **Intake Agent (Validator)**: Ultra-fast triage and routing (<5 seconds)
+- **Hawk-Income (Income)**: Deep income and employment analysis
+- **Scarlet Witch-Credit (Credit)**: Comprehensive credit evaluation
+- **Doctor Strange-Risk (Risk)**: Final synthesis and decision making
 
 ### **🔄 Sequential Workflow Benefits**
 - **Context Accumulation**: Each agent builds on previous assessments

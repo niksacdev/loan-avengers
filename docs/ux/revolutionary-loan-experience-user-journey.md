@@ -6,7 +6,7 @@ This user journey transforms the traditional loan application from a form-based,
 
 ## User Persona
 
-**Primary User**: Sarah, 32, Software Engineer
+**Primary User**: Hawk-Income, 32, Software Engineer
 - **Goal**: Purchase a $450K home
 - **Current Situation**: Excellent credit (780), stable income, tech-savvy
 - **Expectations**: Consumer-grade digital experience (Netflix, Uber level)
@@ -24,7 +24,7 @@ This user journey transforms the traditional loan application from a form-based,
 - **Interface**: Clean dashboard with personalized greeting
 - **User Sees**:
   ```
-  "Welcome back, Sarah! 👋
+  "Welcome back, Hawk-Income! 👋
   Ready to make your homeownership dreams reality?
   What's on your mind today?"
 
@@ -78,7 +78,7 @@ This user journey transforms the traditional loan application from a form-based,
 
 #### Step 2.3: Trust Building
 - **Privacy Assurance**: "Your information is secure and only used for your loan assessment"
-- **Human Backup**: "Need to talk to someone? Sarah (Loan Officer) is available"
+- **Human Backup**: "Need to talk to someone? Hawk-Income (Loan Officer) is available"
 - **Transparency**: "Here's exactly what we'll check and why"
 
 ### Phase 3: AI-Powered Assessment (30-60 seconds)
@@ -88,10 +88,10 @@ This user journey transforms the traditional loan application from a form-based,
 - **Not a spinner**: "Your AI Dream Team" visualization
 - **The Team**:
   ```
-  👩‍💼 Sarah - Income Specialist: "Verifying your excellent earnings..."
-  👨‍💻 Marcus - Credit Analyst: "Your 780 score is impressive!"
-  ⚖️ Alex - Risk Assessor: "Ensuring this fits your goals perfectly"
-  🎯 Riley - Decision Coordinator: "Putting together your best offer"
+  👩‍💼 Hawk-Income - Income Specialist: "Verifying your excellent earnings..."
+  👨‍💻 Scarlet Witch-Credit - Credit Analyst: "Your 780 score is impressive!"
+  ⚖️ Doctor Strange-Risk - Risk Assessor: "Ensuring this fits your goals perfectly"
+  🎯 Cap-ital America - Decision Coordinator: "Putting together your best offer"
   ```
 
 #### Step 3.2: Real-time Progress Updates
@@ -117,7 +117,7 @@ This user journey transforms the traditional loan application from a form-based,
 - **Celebration**: Confetti animation for approvals
 - **Clear Results**:
   ```
-  🎉 Congratulations Sarah!
+  🎉 Congratulations Hawk-Income!
 
   You're APPROVED for $425,000 at 6.2% APR
   Monthly payment: $2,847

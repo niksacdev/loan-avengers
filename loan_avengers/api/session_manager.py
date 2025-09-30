@@ -37,7 +37,21 @@ class ConversationSession:
 
         Args:
             session_id: Optional existing session ID, generates new if None
+
+        Raises:
+            ValueError: If provided session_id is not a valid UUID format
         """
+        if session_id is not None:
+            # Validate session_id is a valid UUID to prevent injection attacks
+            try:
+                uuid.UUID(session_id)
+            except ValueError as e:
+                logger.error(
+                    "Invalid session_id format provided",
+                    extra={"session_id": session_id, "error": str(e)},
+                )
+                raise ValueError(f"Invalid session_id format: must be a valid UUID") from e
+
         self.session_id = session_id or str(uuid.uuid4())
         self.created_at = datetime.now(timezone.utc)
         self.last_activity = datetime.now(timezone.utc)

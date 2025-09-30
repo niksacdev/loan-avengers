@@ -19,9 +19,12 @@ class TestConversationSessionReal:
 
     def test_session_init_with_provided_id(self):
         """Test session uses provided ID."""
-        session = ConversationSession(session_id="custom-id-123")
+        import uuid
 
-        assert session.session_id == "custom-id-123"
+        valid_uuid = str(uuid.uuid4())
+        session = ConversationSession(session_id=valid_uuid)
+
+        assert session.session_id == valid_uuid
 
     def test_session_has_timestamps(self):
         """Test session has created_at and last_activity."""
@@ -137,13 +140,16 @@ class TestSessionManagerReal:
 
     def test_manager_creates_new_session_for_nonexistent_id(self):
         """Test creates new session if ID doesn't exist."""
+        import uuid
+
         manager = SessionManager()
 
-        session = manager.get_or_create_session("nonexistent-id-789")
+        nonexistent_uuid = str(uuid.uuid4())
+        session = manager.get_or_create_session(nonexistent_uuid)
 
-        # Should create new session
+        # Should create new session with the provided ID
         assert session is not None
-        assert session.session_id is not None
+        assert session.session_id == nonexistent_uuid
 
     def test_manager_list_sessions(self):
         """Test listing all sessions."""
@@ -284,3 +290,43 @@ class TestSessionManagerReal:
 
         session.workflow_phase = "processing"
         assert session.workflow_phase == "processing"
+
+
+class TestConversationSessionSecurity:
+    """Test security validation in ConversationSession."""
+
+    def test_invalid_session_id_raises_error(self):
+        """Test that invalid session_id format raises ValueError."""
+        with pytest.raises(ValueError, match="Invalid session_id format"):
+            ConversationSession(session_id="not-a-valid-uuid")
+
+    def test_injection_attempt_blocked(self):
+        """Test that injection attempts are blocked."""
+        malicious_ids = [
+            "'; DROP TABLE sessions; --",
+            "<script>alert('xss')</script>",
+            "../../../etc/passwd",
+            "malicious-id-123",
+        ]
+
+        for bad_id in malicious_ids:
+            with pytest.raises(ValueError, match="Invalid session_id format"):
+                ConversationSession(session_id=bad_id)
+
+    def test_valid_uuid_accepted(self):
+        """Test that valid UUID format is accepted."""
+        import uuid
+
+        valid_uuid = str(uuid.uuid4())
+        session = ConversationSession(session_id=valid_uuid)
+
+        assert session.session_id == valid_uuid
+
+    def test_none_session_id_generates_uuid(self):
+        """Test that None session_id generates valid UUID."""
+        session = ConversationSession(session_id=None)
+
+        # Should be a valid UUID
+        import uuid
+
+        uuid.UUID(session.session_id)  # Raises ValueError if invalid

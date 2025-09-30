@@ -14,6 +14,7 @@ Architecture:
 
 from __future__ import annotations
 
+import uuid
 from collections.abc import AsyncGenerator
 from typing import Any
 
@@ -360,12 +361,20 @@ class SequentialLoanWorkflow:
             ValueError: If required data is missing or invalid
         """
         try:
+            # Generate proper UUID for applicant_id
+            applicant_id = str(uuid.uuid4())
+
+            # Generate application_id in format LN + 10 digits
+            # Use uuid4's int to get a stable 10-digit number
+            app_id_num = abs(uuid.uuid4().int) % 10000000000  # Ensure 10 digits
+            application_id = f"LN{app_id_num:010d}"
+
             # Implementation similar to coordinator's create_loan_application
             # but extracted for reuse in unified workflow
             application_data = {
-                "application_id": f"LN{hash(collected_data.get('email', 'unknown'))}"[-10:],
+                "application_id": application_id,
                 "applicant_name": collected_data.get("applicant_name"),
-                "applicant_id": str(hash(collected_data.get("email", "unknown"))),
+                "applicant_id": applicant_id,
                 "email": collected_data.get("email"),
                 "phone": collected_data.get("phone"),
                 "date_of_birth": collected_data.get("date_of_birth"),

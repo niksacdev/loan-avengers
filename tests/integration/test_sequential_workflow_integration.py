@@ -155,7 +155,7 @@ class TestSequentialLoanWorkflowIntegration:
         collected_data = {
             "applicant_name": "Integration Test User",
             "email": "integration@example.com",
-            "phone": "555-9999",
+            "phone": "5559999999",
             "date_of_birth": "1989-09-09",
             "loan_amount": 280000,
             "loan_purpose": "home_purchase",
@@ -168,10 +168,10 @@ class TestSequentialLoanWorkflowIntegration:
 
         loan_app = workflow.create_loan_application(collected_data)
 
-        assert loan_app.applicant.full_name == "Integration Test User"
-        assert loan_app.applicant.email == "integration@example.com"
+        assert loan_app.applicant_name == "Integration Test User"
+        assert loan_app.email == "integration@example.com"
         assert loan_app.loan_amount == 280000
-        assert loan_app.employment.annual_income == 82000
+        assert loan_app.annual_income == 82000
 
     def test_create_loan_application_with_invalid_data_raises_error(
         self, mock_chat_client, mock_agent_framework, mock_persona_loader
@@ -314,10 +314,10 @@ class TestSequentialWorkflowDataTransformation:
         data = {
             "applicant_name": "Field Mapping Test",
             "email": "fieldmap@example.com",
-            "phone": "555-8888",
+            "phone": "5558888888",
             "date_of_birth": "1991-11-11",
             "loan_amount": 265000,
-            "loan_purpose": "refinance",
+            "loan_purpose": "home_refinance",
             "loan_term_months": 180,
             "annual_income": 78000,
             "employment_status": "self_employed",
@@ -328,20 +328,20 @@ class TestSequentialWorkflowDataTransformation:
         loan_app = workflow.create_loan_application(data)
 
         # Verify all fields mapped correctly
-        assert loan_app.applicant.full_name == data["applicant_name"]
-        assert loan_app.applicant.email == data["email"]
-        assert loan_app.applicant.phone == data["phone"]
+        assert loan_app.applicant_name == data["applicant_name"]
+        assert loan_app.email == data["email"]
+        assert loan_app.phone == data["phone"]
         assert loan_app.loan_amount == data["loan_amount"]
         assert loan_app.loan_term_months == data["loan_term_months"]
-        assert loan_app.employment.annual_income == data["annual_income"]
-        assert loan_app.employment.employer_name == data["employer_name"]
+        assert loan_app.annual_income == data["annual_income"]
+        assert loan_app.employer_name == data["employer_name"]
 
     def test_create_loan_application_handles_home_purchase(self, workflow):
         """Test creating application with home_purchase purpose."""
         data = {
             "applicant_name": "Home Buyer",
             "email": "buyer@example.com",
-            "phone": "555-7777",
+            "phone": "5557777777",
             "date_of_birth": "1986-06-06",
             "loan_amount": 350000,
             "loan_purpose": "home_purchase",
@@ -361,10 +361,10 @@ class TestSequentialWorkflowDataTransformation:
         data = {
             "applicant_name": "Refinancer",
             "email": "refi@example.com",
-            "phone": "555-6666",
+            "phone": "5556666666",
             "date_of_birth": "1984-04-04",
             "loan_amount": 280000,
-            "loan_purpose": "refinance",
+            "loan_purpose": "home_refinance",
             "loan_term_months": 360,
             "annual_income": 88000,
             "employment_status": "employed",
@@ -374,4 +374,4 @@ class TestSequentialWorkflowDataTransformation:
 
         loan_app = workflow.create_loan_application(data)
 
-        assert loan_app.loan_purpose.value == "refinance"
+        assert loan_app.loan_purpose.value == "home_refinance"

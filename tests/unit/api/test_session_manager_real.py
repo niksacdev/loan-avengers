@@ -1,7 +1,8 @@
 """Tests for session manager matching actual implementation."""
 
-import pytest
 from datetime import datetime, timedelta, timezone
+
+import pytest
 
 from loan_avengers.api.session_manager import ConversationSession, SessionManager
 
@@ -156,8 +157,8 @@ class TestSessionManagerReal:
         manager = SessionManager()
 
         # Create some sessions
-        session1 = manager.get_or_create_session(None)
-        session2 = manager.get_or_create_session(None)
+        manager.get_or_create_session(None)
+        manager.get_or_create_session(None)
 
         sessions = manager.list_sessions()
 
@@ -253,6 +254,7 @@ class TestSessionManagerReal:
         original_time = session.last_activity
 
         import time
+
         time.sleep(0.01)
 
         # Update data

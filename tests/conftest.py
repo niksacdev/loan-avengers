@@ -30,8 +30,15 @@ def setup_test_environment() -> None:
 
 
 @pytest.fixture(scope="function", autouse=True)
-def setup_unit_test_environment(request):
-    """Override Foundry config for unit tests only (not integration tests)."""
+def setup_unit_test_environment(request) -> None:
+    """Override Foundry config for unit tests only (not integration tests).
+
+    Args:
+        request: Pytest request fixture
+
+    Yields:
+        None: Fixture provides environment configuration context
+    """
     from unittest.mock import patch
 
     # Check if this is an integration test

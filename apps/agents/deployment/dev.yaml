@@ -1,0 +1,45 @@
+# Development Environment Configuration
+# Azure Agent Service deployment settings for dev environment
+
+environment: dev
+region: eastus
+
+# Agent service settings
+agentService:
+  resourceGroup: loan-avengers-dev-rg
+  name: loan-avengers-agents-dev
+  sku: basic
+
+# Container Registry
+containerRegistry:
+  name: loanavengersdevacr
+  loginServer: loanavengersdevacr.azurecr.io
+
+# API Backend connection
+apiBackend:
+  endpoint: https://loan-avengers-api-dev.azurewebsites.net
+  timeout: 120s
+
+# Environment variables
+environmentVariables:
+  APP_DEBUG: "true"
+  APP_LOG_LEVEL: "DEBUG"
+  AGENT_FRAMEWORK_LOG_LEVEL: "DEBUG"
+
+# Scaling configuration (dev has lower limits)
+scaling:
+  minReplicas: 1
+  maxReplicas: 3
+
+# Monitoring
+monitoring:
+  logAnalyticsWorkspace: loan-avengers-dev-logs
+  applicationInsights: loan-avengers-dev-insights
+  alertsEnabled: false
+
+# Cost management (dev uses spot instances)
+costOptimization:
+  useSpotInstances: true
+  autoShutdown:
+    enabled: true
+    schedule: "0 18 * * 1-5"  # 6 PM weekdays

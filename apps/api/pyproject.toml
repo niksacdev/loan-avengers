@@ -1,0 +1,221 @@
+[project]
+name = "loan-avengers-api"
+version = "0.1.0"
+description = "🦸‍♂️ Loan Avengers API - FastAPI backend for multi-agent loan processing"
+authors = [
+    { name = "niksacdev", email = "niksac@microsoft.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+dependencies = [
+    # Microsoft Agent Framework with key integrations
+    "agent-framework-core",
+    "agent-framework-azure-ai",
+    "agent-framework-copilotstudio",
+
+    # Core business logic dependencies
+    "pydantic>=2.5.0", # Data model validation
+    "pydantic-settings>=2.0.0", # Environment-based settings
+    "PyYAML>=6.0.0", # Configuration file parsing
+
+    # MCP server dependencies
+    "mcp[cli]>=1.12.3", # Model Context Protocol for agent tools
+    "uvicorn>=0.35.0", # ASGI server for MCP servers
+    "httpx>=0.27.0", # HTTP client for external integrations
+    "requests>=2.32.4", # HTTP requests for MCP tools
+
+    # API server dependencies
+    "fastapi>=0.115.0", # FastAPI web framework
+    "uvicorn[standard]>=0.32.0", # ASGI server with performance extras
+
+    # Configuration and environment
+    "python-dotenv>=1.0.0", # Environment configuration
+]
+
+[project.optional-dependencies]
+# Future AI provider options
+openai = [
+    "openai>=1.0.0",
+]
+azure = [
+    "azure-monitor-opentelemetry>=1.6.13", # Azure Application Insights integration
+    "opentelemetry-instrumentation-logging", # Auto trace context injection
+]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
+    "black>=24.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.8.0",
+    "pytest-cov>=6.2.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+prerelease = "if-necessary-or-explicit"
+dev-dependencies = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
+    "black>=24.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.8.0",
+    "pytest-cov>=7.0.0",
+]
+
+# [tool.uv.sources]
+# Microsoft Agent Framework packages are installed in parent .venv
+# Use parent .venv by setting VIRTUAL_ENV or running from parent directory
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+extend-select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["loan_avengers"]
+known-third-party = ["agents"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["../../tests"]
+python_files = ["test_*.py", "*_test.py"]
+markers = [
+    "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+    "performance: marks tests as performance tests",
+    "slow: marks tests as slow running",
+]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--disable-warnings",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["loan_avengers"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/migrations/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/examples/*",
+    "*/scripts/*",
+    "*/docs/*",
+]
+parallel = true
+
+[tool.coverage.paths]
+source = [
+    "loan_avengers/",
+    "/workspaces/loan-avengers/apps/api/loan_avengers/",
+    "*/loan_avengers/",
+]
+
+[tool.coverage.report]
+# Target coverage levels
+precision = 2
+show_missing = true
+skip_covered = false
+skip_empty = false
+
+# Coverage thresholds for different modules
+fail_under = 85.0
+exclude_lines = [
+    # Standard pragmas
+    "pragma: no cover",
+    "pragma: nocover",
+
+    # Don't complain about missing debug-only code
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run
+    "if 0:",
+    "if False:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run
+    "@(abc\\.)?abstractmethod",
+
+    # Don't complain about type checking code
+    "if TYPE_CHECKING:",
+
+    # Don't complain about platform specific code
+    "pragma: (.*\\s)?platform",
+]
+
+[tool.coverage.html]
+directory = "../../htmlcov"
+title = "Loan Avengers API Coverage Report"
+show_contexts = true
+
+[tool.coverage.xml]
+output = "../../coverage.xml"
+
+[tool.coverage.json]
+output = "../../coverage.json"
+show_contexts = true
+
+[tool.uv.sources]
+# Microsoft Agent Framework packages from GitHub (using correct package names and subdirectories)
+"agent-framework-core" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/core" }
+"agent-framework-azure-ai" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure-ai" }
+"agent-framework-copilotstudio" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/copilotstudio" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["loan_avengers"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "loan_avengers",
+  "README.md",
+  "../../LICENSE",
+  "../../docs",
+  "pyproject.toml",
+]

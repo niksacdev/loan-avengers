@@ -1,0 +1,140 @@
+site_name: Loan Avengers Documentation
+site_url: https://niksacdev.github.io/loan-avengers/
+site_description: Multi-agent loan processing system powered by Microsoft Agent Framework
+site_author: Niksac Development Team
+repo_name: niksacdev/loan-avengers
+repo_url: https://github.com/niksacdev/loan-avengers
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/library
+  # logo: assets/logo.png
+  # favicon: assets/favicon.png
+
+plugins:
+  - search:
+      lang: en
+  - tags
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - footnotes
+  - attr_list
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/niksacdev/loan-avengers
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/niksac
+  version:
+    provider: mike
+
+nav:
+  - Home: index.md
+
+  - Getting Started:
+      - Quick Start: getting-started/quickstart.md
+      - Installation: getting-started/installation.md
+      - First Loan Application: getting-started/first-loan.md
+      - Architecture Overview: getting-started/architecture.md
+
+  - User Guide:
+      - Overview: user-guide/index.md
+      - Product Vision: user-guide/product-vision.md
+      - User Experience Flow: user-guide/ux-flow.md
+      - Demo & Screenshots: user-guide/demo.md
+
+  - Developer Guide:
+      - Overview: developer-guide/index.md
+      - Development Setup: developer-guide/setup.md
+      - Project Structure: developer-guide/project-structure.md
+      - API Reference: developer-guide/api-reference.md
+      - Testing Guide: developer-guide/testing.md
+      - Contributing: developer-guide/contributing.md
+
+  - Architecture:
+      - Overview: architecture/index.md
+      - System Architecture: architecture/system-architecture.md
+      - Agent Framework: architecture/agent-framework.md
+      - MCP Servers: architecture/mcp-servers.md
+      - Data Models: architecture/data-models.md
+      - Workflow Orchestration: architecture/orchestration.md
+      - Design Decisions (ADRs): architecture/adrs.md
+
+  - Deployment:
+      - Overview: deployment/index.md
+      - Azure Deployment: deployment/azure-deployment.md
+      - Infrastructure as Code: deployment/infrastructure.md
+      - CI/CD Pipeline: deployment/cicd.md
+      - Monitoring & Observability: deployment/monitoring.md
+
+  - AI Development:
+      - Overview: ai-development/index.md
+      - AI-Augmented Workflow: ai-development/workflow.md
+      - Development Philosophy: ai-development/philosophy.md
+      - Developer Agents: ai-development/developer-agents.md
+      - Responsible AI: ai-development/responsible-ai.md
+
+  - Reference:
+      - Code Review Guidelines: reference/code-review.md
+      - Notes & Tips: reference/notes.md
+      - Troubleshooting: reference/troubleshooting.md
+      - FAQ: reference/faq.md
+
+copyright: Copyright &copy; 2025 Niksac Development Team

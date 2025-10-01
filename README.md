@@ -3,6 +3,20 @@
 A multi-agent loan processing system built that transforms traditional loan applications into a conversational experience using personality-driven AI agents.
 
 > **⚠️ Experimental Application**: This is a sample demonstrating **Microsoft Agent Framework** and **Azure AI Foundry** capabilities through a practical multi-agent loan processing scenario. It highlights AI agent architecture patterns, secure cloud deployment, and AI-augmented agent development practices.
+
+## 🎨 **Experience the Demo**
+
+### Landing Page - Meet Your AI Dream Team
+![Loan Avengers Landing Page](docs/assets/landing_home.png)
+*The home page introduces the AI Dream Team of specialized loan processing agents*
+
+### Live Agent Workflow - Watch the Magic Happen
+![Agent Workflow in Action](docs/assets/loan_workflow_agents.png)
+*Real-time agent coordination as each specialist processes your application*
+
+### Instant Results - Loan Approved! 🎉
+![Loan Approval Results](docs/assets/loan_approved.png)
+*Complete loan decision with full transparency and agent recommendations*
 ## 🎬 **How It Works**
 
 ### **The Avengers Assembly Sequence**
@@ -141,9 +155,15 @@ uv run test_intake_agent.py
 ```
 ## 📚 **Documentation**
 
-- **[Technical Specification](docs/technical-specification.md)** - Complete system architecture
-- **[Business Case](docs/product/business-case.md)** - Implementation strategy and ROI
-- **[Agent Personas](loan_avengers/agents/agent-persona/)** - Individual agent instructions
+**🌐 [Full Documentation Site](https://niksacdev.github.io/loan-avengers/)** - Complete guides, architecture, and API reference
+
+### Quick Links
+- **[Quick Start Guide](https://niksacdev.github.io/loan-avengers/getting-started/quickstart/)** - Get running in 10 minutes
+- **[System Architecture](https://niksacdev.github.io/loan-avengers/architecture/system-architecture/)** - Technical design and patterns
+- **[Agent Framework Guide](https://niksacdev.github.io/loan-avengers/architecture/agent-framework/)** - Multi-agent implementation
+- **[API Reference](https://niksacdev.github.io/loan-avengers/developer-guide/api-reference/)** - REST API documentation
+- **[Deployment Guide](https://niksacdev.github.io/loan-avengers/deployment/azure-deployment/)** - Azure deployment instructions
+- **[ADRs](https://niksacdev.github.io/loan-avengers/architecture/adrs/)** - Architecture decision records
 
 ## 🎯 **Future Enhancements**
 

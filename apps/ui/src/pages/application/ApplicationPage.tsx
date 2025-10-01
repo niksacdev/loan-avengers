@@ -283,15 +283,15 @@ export function ApplicationPage() {
                 <span className="absolute -bottom-1 -left-2 text-sm animate-pulse delay-300">💫</span>
               </div>
 
-              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                Your{' '}
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6 tracking-tight">
+                <span className="text-gray-900 dark:text-gray-100">Your</span>{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-brand-600 via-accent-600 to-brand-500 bg-clip-text text-transparent">
                     AI Team
                   </span>
                   <span className="absolute -top-1 -right-3 text-lg animate-spin">⭐</span>
                 </span>
-                {' '}is Working Their{' '}
+                {' '}<span className="text-gray-900 dark:text-gray-100">is Working Their</span>{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-warning-500 via-brand-500 to-accent-600 bg-clip-text text-transparent">
                     Magic!

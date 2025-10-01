@@ -1,5 +1,5 @@
 """
-Loan Processing Pipeline - Automated loan assessment workflow.
+Sequential Pipeline - Automated loan assessment workflow.
 
 Sequential agent pipeline: Intake → Credit → Income → Risk
 
@@ -8,6 +8,9 @@ Pattern: Sequential Orchestration
 - Executes specialized agents in predefined order
 - Each agent passes context to next stage
 - Produces structured assessment and final decision
+
+Note: This is the sequential implementation. A parallel pipeline
+will be added in the future for comparison.
 """
 
 from __future__ import annotations
@@ -23,10 +26,10 @@ from loan_avengers.models.responses import FinalDecisionResponse, ProcessingUpda
 from loan_avengers.utils.observability import Observability
 from loan_avengers.utils.persona_loader import PersonaLoader
 
-logger = Observability.get_logger("loan_processing_pipeline")
+logger = Observability.get_logger("sequential_pipeline")
 
 
-class LoanProcessingPipeline:
+class SequentialPipeline:
     """
     Sequential agent pipeline for loan application assessment.
 
@@ -243,6 +246,7 @@ Please assess this application and provide your recommendation."""
 
                 # Simulate agent processing time for smooth UX
                 import asyncio
+
                 await asyncio.sleep(2)
 
             # Execute the actual workflow (all agents run)
@@ -339,4 +343,4 @@ Please assess this application and provide your recommendation."""
             return None
 
 
-__all__ = ["LoanProcessingPipeline"]
+__all__ = ["SequentialPipeline"]

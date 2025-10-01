@@ -60,6 +60,15 @@ class ConversationSession:
         self.status = "active"  # active|completed|processing|error
         self.workflow_phase = "collecting"  # collecting|validating|assessing|deciding
 
+        # Processing status tracking for adaptive timing
+        self.processing_status: dict[str, Any] = {
+            "current_agent": None,
+            "current_phase": None,
+            "message": None,
+            "started_at": None,
+            "completed_agents": [],
+        }
+
         # AgentThread for conversation continuity
         self.agent_thread: AgentThread | None = None
 
@@ -154,6 +163,44 @@ class ConversationSession:
             },
         )
 
+    def update_processing_status(self, agent_name: str, phase: str, message: str, status: str = "in_progress") -> None:
+        """
+        Update processing status for adaptive timing.
+
+        Args:
+            agent_name: Name of currently processing agent
+            phase: Current processing phase (intake, credit, income, risk)
+            message: Status message from agent
+            status: Processing status (in_progress, completed)
+        """
+        if status == "in_progress" and self.processing_status["current_agent"] != agent_name:
+            # New agent started
+            self.processing_status["started_at"] = datetime.now(timezone.utc)
+
+        self.processing_status.update(
+            {
+                "current_agent": agent_name,
+                "current_phase": phase,
+                "message": message,
+                "status": status,
+            }
+        )
+
+        if status == "completed" and agent_name not in self.processing_status["completed_agents"]:
+            self.processing_status["completed_agents"].append(agent_name)
+
+        self.last_activity = datetime.now(timezone.utc)
+
+        logger.debug(
+            "Processing status updated",
+            extra={
+                "session_id": self.session_id[:8] + "***",
+                "agent": agent_name,
+                "phase": phase,
+                "status": status,
+            },
+        )
+
     def to_dict(self) -> dict[str, Any]:
         """Convert session to dictionary for API responses."""
         return {
@@ -164,6 +211,7 @@ class ConversationSession:
             "collected_data": self.collected_data,
             "status": self.status,
             "workflow_phase": self.workflow_phase,
+            "processing_status": self.processing_status,
         }
 
 

@@ -7,8 +7,12 @@ from loan_avengers.api.app import app
 
 
 @pytest.fixture
-def client():
-    """Create test client."""
+def client() -> TestClient:
+    """Create test client for FastAPI app.
+
+    Returns:
+        TestClient: Configured test client for making API requests
+    """
     return TestClient(app)
 
 

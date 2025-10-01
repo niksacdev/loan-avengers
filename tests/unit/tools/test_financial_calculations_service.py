@@ -14,8 +14,12 @@ class TestFinancialCalculationsServiceImpl:
     """Test FinancialCalculationsServiceImpl methods."""
 
     @pytest.fixture
-    def service(self):
-        """Create service instance for testing."""
+    def service(self) -> FinancialCalculationsServiceImpl:
+        """Create service instance for testing.
+
+        Returns:
+            FinancialCalculationsServiceImpl: Service instance for testing financial calculations
+        """
         return FinancialCalculationsServiceImpl()
 
     async def test_calculate_debt_to_income_ratio_excellent(self, service):

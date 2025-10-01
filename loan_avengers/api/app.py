@@ -17,15 +17,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 try:
     from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
-    from loan_avengers.agents.loan_processing_pipeline import LoanProcessingPipeline
+    from loan_avengers.agents.sequential_pipeline import SequentialPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = True
 except ImportError:
     # Use mock implementation when agent_framework is not available
-    from loan_avengers.agents.mock_sequential_workflow import LoanProcessingPipeline
     from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as ConversationOrchestrator
+    from loan_avengers.agents.mock_sequential_workflow import SequentialPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = False
+from loan_avengers.api.config import settings
 from loan_avengers.api.models import (
     ConversationRequest,
     ConversationResponse,
@@ -37,44 +38,36 @@ from loan_avengers.utils.observability import Observability
 
 logger = Observability.get_logger("api")
 
-# Create FastAPI application
+# Create FastAPI application with configuration from settings
 app = FastAPI(
-    title="Loan Avengers API",
-    description="Multi-agent loan processing system with conversational interface",
-    version="1.0.0",
+    title=settings.title,
+    description=settings.description,
+    version=settings.version,
+    debug=settings.debug,
     docs_url="/docs",
     redoc_url="/redoc",
 )
 
-# Configure CORS for development
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:5175",
-        "http://localhost:5176",
-        "http://localhost:5177",
-        "http://localhost:3000",
-    ],  # React dev servers
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Configure CORS from environment settings
+app.add_middleware(CORSMiddleware, **settings.get_cors_config())
 
-# Initialize conversation orchestrator and processing pipeline
+# Initialize conversation orchestrator and sequential processing pipeline
 conversation_orchestrator = ConversationOrchestrator()
-processing_pipeline = LoanProcessingPipeline()
+sequential_pipeline = SequentialPipeline()
 
 
 @app.get("/health", response_model=HealthResponse)
-async def health_check():
-    """Health check endpoint."""
+async def health_check() -> HealthResponse:
+    """Health check endpoint.
+
+    Returns:
+        HealthResponse: Service health status and availability
+    """
     return HealthResponse(
         status="healthy",
         services={
             "conversation_orchestrator": "available",
-            "processing_pipeline": "available",
+            "sequential_pipeline": "available",
             "session_manager": "available",
             "agent_framework": "available" if AGENT_FRAMEWORK_AVAILABLE else "mock",
         },
@@ -83,7 +76,7 @@ async def health_check():
 
 
 @app.post("/api/chat", response_model=ConversationResponse)
-async def handle_unified_chat(request: ConversationRequest):
+async def handle_unified_chat(request: ConversationRequest) -> ConversationResponse:
     """
     Handle conversation and processing with direct orchestrator usage.
 
@@ -95,6 +88,15 @@ async def handle_unified_chat(request: ConversationRequest):
     Flow:
         User → ConversationOrchestrator → Parse/Validate → State Update
         → If complete: Create LoanApplication → LoanProcessingPipeline → Decision
+
+    Args:
+        request: ConversationRequest with user message and session ID
+
+    Returns:
+        ConversationResponse: Agent response with collected data and next steps
+
+    Raises:
+        HTTPException: If processing fails
     """
     try:
         # Get or create conversation session
@@ -131,40 +133,51 @@ async def handle_unified_chat(request: ConversationRequest):
         if conversation_response.action == "ready_for_processing":
             logger.info("Conversation complete, starting processing pipeline")
 
+            # Mark session as processing
+            session.mark_processing()
+
             # Create LoanApplication from collected data
             application = conversation_orchestrator.create_loan_application(conversation_response.collected_data)
 
-            # Process through automated pipeline (streaming agent updates)
-            async for processing_update in processing_pipeline.process_application(application):
-                    # Transform processing updates to conversation responses for UI
-                    agent_update_response = ConversationResponse(
-                        agent_name=processing_update.agent_name,
-                        message=processing_update.message,
-                        action="processing",
-                        collected_data=conversation_response.collected_data,
-                        next_step=processing_update.phase,
-                        completion_percentage=100,  # Already at 100%, now processing
-                        metadata={
-                            "processing_phase": processing_update.phase,
-                            "agent": processing_update.agent_name,
-                        },
-                        session_id=session.session_id,
-                    )
+            # Process through automated sequential pipeline (streaming agent updates)
+            async for processing_update in sequential_pipeline.process_application(application):
+                # Update session processing status for adaptive timing
+                session.update_processing_status(
+                    agent_name=processing_update.agent_name,
+                    phase=processing_update.phase,
+                    message=processing_update.message,
+                    status=processing_update.status,
+                )
 
-                    # Append to responses so UI receives all updates
-                    conversation_responses.append(agent_update_response)
+                # Transform processing updates to conversation responses for UI
+                agent_update_response = ConversationResponse(
+                    agent_name=processing_update.agent_name,
+                    message=processing_update.message,
+                    action="processing",
+                    collected_data=conversation_response.collected_data,
+                    next_step=processing_update.phase,
+                    completion_percentage=100,  # Already at 100%, now processing
+                    metadata={
+                        "processing_phase": processing_update.phase,
+                        "agent": processing_update.agent_name,
+                    },
+                    session_id=session.session_id,
+                )
 
-                    logger.info(
-                        "Processing update streamed to UI",
-                        extra={
-                            "phase": processing_update.phase,
-                            "agent": processing_update.agent_name,
-                            "message_preview": processing_update.message[:100],
-                        },
-                    )
+                # Append to responses so UI receives all updates
+                conversation_responses.append(agent_update_response)
 
-                    if processing_update.status == "completed":
-                        session.mark_completed()
+                logger.info(
+                    "Processing update streamed to UI",
+                    extra={
+                        "phase": processing_update.phase,
+                        "agent": processing_update.agent_name,
+                        "message_preview": processing_update.message[:100],
+                    },
+                )
+
+                if processing_update.status == "completed":
+                    session.mark_completed()
 
         # Get the latest response for the API response
         if conversation_responses:
@@ -220,8 +233,18 @@ async def handle_unified_chat(request: ConversationRequest):
 
 
 @app.get("/api/sessions/{session_id}", response_model=SessionInfo)
-async def get_session_info(session_id: str):
-    """Get information about a conversation session."""
+async def get_session_info(session_id: str) -> SessionInfo:
+    """Get information about a conversation session.
+
+    Args:
+        session_id: Unique session identifier
+
+    Returns:
+        SessionInfo: Session data including collected information and progress
+
+    Raises:
+        HTTPException: If session not found
+    """
     session = session_manager.get_session(session_id)
     if not session:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Session {session_id} not found")
@@ -230,8 +253,18 @@ async def get_session_info(session_id: str):
 
 
 @app.delete("/api/sessions/{session_id}")
-async def delete_session(session_id: str):
-    """Delete a conversation session."""
+async def delete_session(session_id: str) -> dict[str, str]:
+    """Delete a conversation session.
+
+    Args:
+        session_id: Unique session identifier
+
+    Returns:
+        dict: Success message
+
+    Raises:
+        HTTPException: If session not found
+    """
     if not session_manager.delete_session(session_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Session {session_id} not found")
 
@@ -239,22 +272,41 @@ async def delete_session(session_id: str):
 
 
 @app.get("/api/sessions")
-async def list_sessions():
-    """List all active conversation sessions."""
+async def list_sessions() -> dict[str, list[dict]]:
+    """List all active conversation sessions.
+
+    Returns:
+        dict: Dictionary containing list of session data
+    """
     return {"sessions": session_manager.list_sessions()}
 
 
 @app.post("/api/sessions/cleanup")
-async def cleanup_old_sessions(max_age_hours: int = 24):
-    """Clean up old conversation sessions."""
+async def cleanup_old_sessions(max_age_hours: int = 24) -> dict[str, str]:
+    """Clean up old conversation sessions.
+
+    Args:
+        max_age_hours: Maximum age in hours before cleanup (default: 24)
+
+    Returns:
+        dict: Message with count of cleaned sessions
+    """
     cleaned_count = session_manager.cleanup_old_sessions(max_age_hours)
     return {"message": f"Cleaned up {cleaned_count} old sessions"}
 
 
 # Error handlers
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
-    """Global exception handler."""
+async def global_exception_handler(request: any, exc: Exception) -> HTTPException:
+    """Global exception handler for unhandled errors.
+
+    Args:
+        request: FastAPI request object
+        exc: Exception that was raised
+
+    Returns:
+        HTTPException: 500 Internal Server Error response
+    """
     logger.error(
         "Unhandled exception",
         extra={

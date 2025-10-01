@@ -1,5 +1,6 @@
 """Integration tests for MockSequentialLoanWorkflow (placeholder for future real workflow)."""
 
+from collections.abc import Generator
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -14,14 +15,22 @@ class TestSequentialLoanWorkflowIntegration:
     """Integration tests for MockSequentialLoanWorkflow."""
 
     @pytest.fixture
-    def mock_chat_client(self):
-        """Create mock chat client."""
+    def mock_chat_client(self) -> Mock:
+        """Create mock chat client.
+
+        Returns:
+            Mock: Mock chat client for testing workflows
+        """
         mock_client = Mock()
         return mock_client
 
     @pytest.fixture
-    def mock_agent_framework(self):
-        """Mock agent framework components."""
+    def mock_agent_framework(self) -> dict:
+        """Mock agent framework components.
+
+        Yields:
+            dict: Dictionary containing mocked ChatAgent and SequentialBuilder
+        """
         with (
             patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
             patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
@@ -31,8 +40,12 @@ class TestSequentialLoanWorkflowIntegration:
             yield {"ChatAgent": mock_chat_agent, "SequentialBuilder": mock_builder}
 
     @pytest.fixture
-    def mock_persona_loader(self):
-        """Mock persona loader."""
+    def mock_persona_loader(self) -> Mock:
+        """Mock persona loader.
+
+        Yields:
+            Mock: Mocked PersonaLoader with default persona instructions
+        """
         with patch("loan_avengers.agents.mock_sequential_workflow.PersonaLoader") as mock_loader:
             mock_loader.load_persona.return_value = "Mock persona instructions"
             yield mock_loader
@@ -252,8 +265,12 @@ class TestSequentialWorkflowAgentCreation:
     """Test individual agent creation methods."""
 
     @pytest.fixture
-    def workflow_with_mocks(self):
-        """Create workflow with all mocks."""
+    def workflow_with_mocks(self) -> Generator:
+        """Create workflow with all mocks.
+
+        Yields:
+            MockSequentialLoanWorkflow: Workflow instance with all dependencies mocked
+        """
         with (
             patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
             patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
@@ -300,8 +317,12 @@ class TestSequentialWorkflowDataTransformation:
     """Test data transformation logic."""
 
     @pytest.fixture
-    def workflow(self):
-        """Create workflow with mocked dependencies."""
+    def workflow(self) -> "MockSequentialLoanWorkflow":
+        """Create workflow with mocked dependencies.
+
+        Returns:
+            MockSequentialLoanWorkflow: Workflow instance with mocked framework dependencies
+        """
         with (
             patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent"),
             patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder"),

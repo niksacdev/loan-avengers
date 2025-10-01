@@ -40,11 +40,11 @@ export function Confetti({ active = false, count = 100, duration = 5000 }: Confe
       newParticles.push({
         id: i,
         x: Math.random() * window.innerWidth,
-        y: -20 - Math.random() * 100, // Start above viewport with stagger
-        vx: (Math.random() - 0.5) * 8, // Horizontal velocity
-        vy: Math.random() * 3 + 2, // Initial downward velocity
+        y: -20 - Math.random() * 200, // Start higher above viewport with more stagger
+        vx: (Math.random() - 0.5) * 5, // Reduced horizontal velocity
+        vy: Math.random() * 2 + 1, // Slower initial downward velocity
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 10,
+        rotationSpeed: (Math.random() - 0.5) * 8,
         emoji: CONFETTI_EMOJIS[Math.floor(Math.random() * CONFETTI_EMOJIS.length)],
         size: Math.random() * 20 + 15, // Size between 15-35px
         opacity: 1,
@@ -71,9 +71,9 @@ export function Confetti({ active = false, count = 100, duration = 5000 }: Confe
           x: particle.x + particle.vx,
           y: particle.y + particle.vy,
           rotation: particle.rotation + particle.rotationSpeed,
-          vy: particle.vy + 0.3, // Gravity acceleration
-          vx: particle.vx * 0.99, // Air resistance
-          opacity: Math.max(0, 1 - progress * 0.8), // Fade out towards end
+          vy: particle.vy + 0.15, // Reduced gravity acceleration (was 0.3)
+          vx: particle.vx * 0.98, // Slightly more air resistance
+          opacity: Math.max(0, 1 - progress * 0.6), // Slower fade out (was 0.8)
         })).filter((particle) =>
           particle.y < window.innerHeight + 50 &&
           particle.opacity > 0.1 &&

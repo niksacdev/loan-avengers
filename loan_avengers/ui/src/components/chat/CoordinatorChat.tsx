@@ -3,7 +3,7 @@ import type { ChatMessage, CoordinatorResponse, QuickReplyOption } from '../../t
 import { LogViewer } from './LogViewer';
 
 interface CoordinatorChatProps {
-  onApplicationComplete: (applicationData: Record<string, any>) => void;
+  onApplicationComplete: (applicationData: Record<string, any>, sessionId: string) => void;
   onProgressUpdate: (percentage: number) => void;
 }
 
@@ -130,7 +130,7 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
 
       // Check if application is complete
       if (data.action === 'completed' && data.completion_percentage === 100) {
-        onApplicationComplete(data.collected_data);
+        onApplicationComplete(data.collected_data, data.session_id || sessionId || '');
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -254,7 +254,7 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
 
       // Trigger application complete with collected data
       if (data.action === 'ready_for_processing' || data.completion_percentage === 100) {
-        onApplicationComplete(data.collected_data);
+        onApplicationComplete(data.collected_data, data.session_id || sessionId || '');
       }
     } catch (error) {
       console.error('Failed to submit form:', error);
@@ -280,12 +280,12 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
       {/* Chat Header */}
       <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-brand-600 to-primary-600 text-white rounded-t-lg shadow-md">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl animate-bounce-gentle">
+          <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-3xl animate-bounce-gentle">
             🦸‍♂️
           </div>
           <div>
-            <h3 className="font-bold text-lg text-white">Cap-ital America - Your Loan Coordinator</h3>
-            <p className="text-sm text-white/95">Online and ready to assemble your loan!</p>
+            <h3 className="font-marvel font-bold text-2xl text-white tracking-wide">CAP-ITAL AMERICA</h3>
+            <p className="text-base text-white/95 font-medium">Your Loan Coordinator • Ready to Assemble!</p>
           </div>
         </div>
 
@@ -322,17 +322,17 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
             >
               {msg.sender === 'coordinator' && !msg.typing && (
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="text-lg">🦸‍♂️</span>
-                  <span className="font-bold text-xs text-brand-600 dark:text-brand-300">
+                  <span className="text-xl">🦸‍♂️</span>
+                  <span className="font-marvel font-bold text-sm text-brand-600 dark:text-brand-300 tracking-wide uppercase">
                     Cap-ital America
                   </span>
                 </div>
               )}
-              <p className={`text-sm leading-relaxed whitespace-pre-wrap font-normal ${
+              <p className={`text-base leading-relaxed whitespace-pre-wrap ${
                 msg.sender === 'user'
-                  ? 'text-white'
+                  ? 'text-white font-medium'
                   : msg.typing
-                  ? 'text-gray-700 dark:!text-white'
+                  ? 'text-gray-700 dark:!text-white italic'
                   : 'text-gray-900 dark:!text-white'
               }`}>{msg.message}</p>
               <span className={`text-xs mt-2 block ${
@@ -350,18 +350,18 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
 
       {/* Quick Reply Buttons */}
       {quickReplies.length > 0 && (
-        <div className="px-6 py-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-dark-bg-card border-t border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 font-semibold">Quick choices:</p>
+        <div className="px-6 py-5 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-dark-bg-card border-t border-gray-200 dark:border-gray-700">
+          <p className="text-base text-gray-600 dark:text-gray-300 mb-4 font-bold font-marvel tracking-wide uppercase">Choose Your Option:</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {quickReplies.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleQuickReply(option)}
                 disabled={isLoading}
-                className="px-5 py-3 bg-white dark:bg-dark-bg-tertiary border-2 border-brand-500 dark:border-brand-400 text-brand-700 dark:text-brand-200 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:border-brand-600 dark:hover:border-brand-300 transition-all duration-200 text-base font-semibold shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                className="px-5 py-4 bg-white dark:bg-dark-bg-tertiary border-2 border-brand-500 dark:border-brand-400 text-brand-700 dark:text-brand-200 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-900/30 hover:border-brand-600 dark:hover:border-brand-300 transition-all duration-200 text-lg font-bold shadow-md hover:shadow-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
-                {option.icon && <span className="text-xl">{option.icon}</span>}
-                <span className="text-brand-700 dark:text-white">{option.label}</span>
+                {option.icon && <span className="text-2xl">{option.icon}</span>}
+                <span className="text-brand-700 dark:text-white font-semibold">{option.label}</span>
               </button>
             ))}
           </div>
@@ -373,8 +373,8 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
         <div className="px-6 py-6 bg-gradient-to-b from-brand-50 to-white dark:from-brand-900/20 dark:to-dark-bg-card border-t border-b border-brand-200 dark:border-brand-700 relative z-10">
           <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-brand-700 dark:text-brand-300 flex items-center space-x-2">
-                <span>🦸‍♂️</span>
+              <h3 className="text-xl font-bold text-brand-700 dark:text-brand-300 flex items-center space-x-2 font-marvel tracking-wide uppercase">
+                <span className="text-2xl">🦸‍♂️</span>
                 <span>Final Step: Your Personal Information</span>
               </h3>
               <button

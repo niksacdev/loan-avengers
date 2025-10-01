@@ -260,6 +260,50 @@
     animation: progress 2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Message fade animations for processing workflow */
+  .message-fade-out {
+    animation: messageFadeOut 0.2s ease-out forwards;
+  }
+
+  .message-fade-in {
+    animation: messageFadeIn 0.3s ease-in forwards;
+  }
+
+  /* Processing dots animation */
+  .processing-dots::after {
+    content: '';
+    animation: processingDots 1.5s steps(4, end) infinite;
+  }
+
+  @keyframes messageFadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes messageFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes processingDots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+  }
+
   /* Stagger animations for lists */
   .animate-stagger-1 {
     animation-delay: 0.1s;
@@ -336,7 +380,10 @@
   .animate-workflow-step,
   .animate-confetti,
   .animate-shake,
-  .animate-progress {
+  .animate-progress,
+  .message-fade-out,
+  .message-fade-in,
+  .processing-dots::after {
     animation: none;
   }
 

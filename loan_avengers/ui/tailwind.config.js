@@ -187,6 +187,9 @@ export default {
           'Roboto Mono',
           'monospace'
         ],
+        // Marvel-themed fonts
+        'marvel': ['Teko', 'sans-serif'],
+        'hero': ['Bangers', 'cursive'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],

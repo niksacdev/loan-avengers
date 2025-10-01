@@ -230,8 +230,12 @@ class ConversationOrchestrator:
             )
             raise ValueError(f"Invalid conversation data for loan application: {str(e)}") from e
 
-    def reset(self):
-        """Reset orchestrator state machine."""
+    def reset(self) -> None:
+        """Reset orchestrator state machine to initial state.
+
+        Clears all conversation state and collected data, allowing
+        the orchestrator to be reused for a new conversation.
+        """
         self.state_machine.reset()
         logger.info("Orchestrator reset to initial state")
 

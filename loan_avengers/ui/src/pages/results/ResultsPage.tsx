@@ -1,12 +1,19 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import { ExperimentalDisclaimer } from '../../components/ui/ExperimentalDisclaimer';
+import { Confetti } from '../../components/ui/Confetti';
 
 /**
  * Results page component - displays loan decision and celebration.
  * Shows the final outcome of the AI team's assessment.
  */
 export function ResultsPage() {
+  const scrollToDetails = () => {
+    const detailsSection = document.getElementById('loan-details');
+    if (detailsSection) {
+      detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   // Mock data for demonstration - in real app, this would come from API/state
   const mockDecision = {
     status: 'approved' as const,
@@ -23,40 +30,12 @@ export function ResultsPage() {
     ]
   };
 
-  const agentMessages = [
-    {
-      name: 'Sarah',
-      role: 'Credit Specialist',
-      emoji: '🦸‍♀️',
-      message: 'Your credit profile is excellent! You qualify for our best rates.',
-      score: 'A+'
-    },
-    {
-      name: 'Marcus',
-      role: 'Income Specialist',
-      emoji: '🦸',
-      message: 'Your income is well-documented and stable. Great job!',
-      score: 'A'
-    },
-    {
-      name: 'Alex',
-      role: 'Risk Advisor',
-      emoji: '🦹‍♂️',
-      message: 'Low risk profile with strong financial fundamentals.',
-      score: 'A+'
-    },
-    {
-      name: 'Cap-ital America',
-      role: 'Loan Orchestrator',
-      emoji: '🦸‍♂️',
-      message: 'Congratulations! The team unanimously approves your loan!',
-      score: 'APPROVED'
-    }
-  ];
-
   return (
     <Layout title="Your Loan Results">
       <div className="animate-fade-in">
+        {/* Confetti Animation */}
+        <Confetti active={true} count={150} duration={8000} />
+
         {/* Experimental Disclaimer */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <ExperimentalDisclaimer />
@@ -101,15 +80,26 @@ export function ResultsPage() {
               Your loan has been approved!
             </div>
 
-            <p className="text-xl lg:text-2xl text-gray-600 dark:text-dark-text-secondary max-w-3xl mx-auto leading-relaxed transition-colors duration-300">
+            <p className="text-xl lg:text-2xl text-gray-600 dark:text-dark-text-secondary max-w-3xl mx-auto leading-relaxed mb-8 transition-colors duration-300">
               Your AI Dream Team has worked together to get you the perfect loan.
               Here are the exciting details!
             </p>
+
+            {/* View Details Button */}
+            <button
+              onClick={scrollToDetails}
+              className="btn-primary text-lg px-8 py-4 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 mx-auto"
+            >
+              <span>View Details</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           </div>
         </section>
 
         {/* Loan Details */}
-        <section className="py-16 bg-white dark:bg-dark-bg-secondary transition-colors duration-300">
+        <section id="loan-details" className="py-16 bg-white dark:bg-dark-bg-secondary transition-colors duration-300">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="card dark:bg-dark-bg-card transition-colors duration-300">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-6 text-center transition-colors duration-300">
@@ -149,57 +139,8 @@ export function ResultsPage() {
           </div>
         </section>
 
-        {/* AI Team Assessments */}
-        <section className="py-16 bg-gray-50 dark:bg-dark-bg-primary transition-colors duration-300">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-dark-text-primary mb-4 transition-colors duration-300">
-                What Your AI Team Says
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-dark-text-secondary transition-colors duration-300">
-                Each specialist has reviewed your application and given you their assessment.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {agentMessages.map((agent, index) => (
-                <div
-                  key={agent.name}
-                  className={`agent-card animate-fade-in-up animate-stagger-${index + 1} bg-gradient-to-br from-white to-gray-50/50`}
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-brand-100 to-brand-200 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-2xl" aria-hidden="true">
-                      {agent.emoji}
-                    </span>
-                  </div>
-
-                  <h3 className="font-semibold text-gray-900 dark:text-dark-text-primary mb-2 text-lg transition-colors duration-300">
-                    {agent.name}
-                  </h3>
-
-                  <div className="inline-flex items-center px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-sm font-medium mb-4">
-                    {agent.role}
-                  </div>
-
-                  <div className={`inline-block px-4 py-2 rounded-xl text-sm font-semibold mb-4 ${
-                    agent.score === 'APPROVED'
-                      ? 'bg-success-100 text-success-800 border border-success-200'
-                      : 'bg-brand-100 text-brand-800 border border-brand-200'
-                  }`}>
-                    {agent.score === 'APPROVED' ? '✅ ' : '⭐ '}{agent.score}
-                  </div>
-
-                  <blockquote className="text-gray-600 dark:text-dark-text-secondary text-sm leading-relaxed italic border-l-3 border-brand-200 dark:border-dark-bg-tertiary pl-3 transition-colors duration-300">
-                    "{agent.message}"
-                  </blockquote>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Next Steps */}
-        <section className="py-16 bg-white">
+        <section id="next-steps" className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="card">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">

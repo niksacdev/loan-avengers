@@ -305,13 +305,15 @@ class ConversationStateMachine:
                 agent_name="Cap-ital America",
                 message=(
                     "🦸‍♂️⚡ **AVENGERS... ASSEMBLE!** ⚡🦸‍♂️\n\n"
-                    f"{self.collected_data['applicant_name']}, your application is complete and ready for deployment! 🛡️\n\n"
+                    f"{self.collected_data['applicant_name']}, your application is complete "
+                    f"and ready for deployment! 🛡️\n\n"
                     f"My specialist team is suited up and standing by:\n"
                     f"• 🔍 **Intake Agent** - Application validation\n"
                     f"• 💳 **Credit Agent** - Credit assessment\n"
                     f"• 💼 **Income Agent** - Employment verification\n"
                     f"• ⚖️ **Risk Agent** - Comprehensive risk evaluation\n\n"
-                    f"**I can do this all day...** and I'll have your decision back faster than you can say 'Wakanda Forever'! ⏱️\n\n"
+                    f"**I can do this all day...** and I'll have your decision back faster "
+                    f"than you can say 'Wakanda Forever'! ⏱️\n\n"
                     f"Hang tight, soldier! The team is on it! 💪🌟"
                 ),
                 action="ready_for_processing",  # This triggers LoanProcessingPipeline
@@ -320,7 +322,7 @@ class ConversationStateMachine:
                 completion_percentage=100,
             )
 
-        except (json.JSONDecodeError, KeyError) as e:
+        except (json.JSONDecodeError, KeyError):
             logger.error(f"Invalid personal info data: {user_input}", exc_info=True)
             return ConversationResponse(
                 agent_name="Cap-ital America",
@@ -334,8 +336,12 @@ class ConversationStateMachine:
                 completion_percentage=75,
             )
 
-    def reset(self):
-        """Reset state machine to initial state."""
+    def reset(self) -> None:
+        """Reset state machine to initial state.
+
+        Clears all collected data and returns to INITIAL state,
+        ready for a new conversation flow.
+        """
         self.state = ConversationState.INITIAL
         self.collected_data = {}
         logger.info("State machine reset to INITIAL")

@@ -24,7 +24,13 @@ class MockAgentThread:
         self.thread_id = f"thread_{datetime.now().strftime('%H%M%S')}"
         self.conversation_history = []
 
-    def add_message(self, role: str, content: str):
+    def add_message(self, role: str, content: str) -> None:
+        """Add a message to conversation history.
+
+        Args:
+            role: Message role (e.g., 'user', 'assistant')
+            content: Message content
+        """
         self.conversation_history.append({"role": role, "content": content, "timestamp": datetime.now().isoformat()})
 
 
@@ -327,8 +333,12 @@ class MockSequentialLoanWorkflow:
         return data
 
 
+# Alias for compatibility with sequential_pipeline naming
+SequentialPipeline = MockSequentialLoanWorkflow
+
 __all__ = [
     "MockSequentialLoanWorkflow",
+    "SequentialPipeline",  # Alias for new naming convention
     "WorkflowResponse",
     "MockAgentThread",
     "MockSharedState",

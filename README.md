@@ -1,8 +1,16 @@
 # 🦸‍♂️ The Loan Avengers
 
+[![Build Status](https://github.com/niksacdev/loan-avengers/actions/workflows/test-apps.yml/badge.svg)](https://github.com/niksacdev/loan-avengers/actions/workflows/test-apps.yml)
+[![Documentation](https://github.com/niksacdev/loan-avengers/actions/workflows/docs.yml/badge.svg)](https://niksacdev.github.io/loan-avengers/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+
 A multi-agent loan processing system built that transforms traditional loan applications into a conversational experience using personality-driven AI agents.
 
-> **⚠️ Experimental Application**: This is a sample demonstrating **Microsoft Agent Framework** and **Azure AI Foundry** capabilities through a practical multi-agent loan processing scenario. It highlights AI agent architecture patterns, secure cloud deployment, and AI-augmented agent development practices.
+> **📚 For complete documentation, guides, and API reference, visit [niksacdev.github.io/loan-avengers](https://niksacdev.github.io/loan-avengers/)**
+
+> **⚠️ Experimental Application**: This is a sample demonstrating **[Microsoft Agent Framework](https://github.com/microsoft/agent-framework)** and **[Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-studio/)** capabilities through a practical multi-agent loan processing scenario. It highlights AI agent architecture patterns, secure cloud deployment, and AI-augmented agent development practices.
 
 ## 🎨 **Experience the Demo**
 
@@ -68,71 +76,15 @@ User: "I need 250K for this house I'm looking at"
 - **Tools**: All MCP servers for complete risk assessment
 - **Note**: AI system providing advisory risk recommendations
 
-## 🚀 **Capabilities**
+## 🚀 **Key Features**
 
-### **🔄 Agent Framework Workflow**
-Built with Microsoft Agent Framework leveraging Workflows, Agents, and Threads for orchestrated multi-agent collaboration
-- Sequential agent coordination with automatic handoffs
-- Context-aware processing across specialized agents
-- Real-time state management and progress tracking
+- **🔄 Multi-Agent Workflow**: Sequential agent coordination using [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
+- **🔧 MCP Tool Integration**: 3 specialized MCP servers for verification and calculations
+- **🔒 Azure Deployment**: Production-ready architecture on [Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-studio/)
+- **🤖 AI-Augmented Development**: Built using specialized developer AI agents
+- **⚡ Real-time Processing**: <3 minutes end-to-end vs traditional 24-48 hours
 
-### **🔧 Agent-to-MCP Tools Integration**
-Seamless integration between AI agents and Model Context Protocol (MCP) servers for specialized tool capabilities
-- **3 specialized MCP servers**: Application verification, document processing, financial calculations
-- **Streamable HTTP transport**: Real-time progress updates during agent execution
-- **Autonomous tool selection**: Agents independently choose appropriate tools based on their assessment needs
-
-### **🔒 Secure Azure Deployment**
-Production-ready deployment architecture using Azure Container Apps with enterprise-grade security
-- **Azure Container Apps**: Scalable, serverless container hosting
-- **Entra ID authentication**: Enterprise identity and access management
-- **Managed identities**: Secure, credential-free service authentication
-- **Agent Framework observability**: Built-in telemetry and performance tracking across all agents
-
-### **🤖 Agents Built by Agents**
-Revolutionary AI-augmented development workflow using specialized developer agents
-- **Multi-platform AI support**: Compatible with GitHub Copilot, Claude Code, Cursor, and universal AGENTS.md format
-- **System architecture review**: AI agents validate design decisions and architectural patterns
-- **Automated code review**: AI agents ensure best practices and code quality standards
-- **Single developer productivity**: Achieves 8-12 person team output through AI-augmented workflow
-
-### **Multi-Agent Workflow System**
-Built on **Microsoft Agent Framework** with sequential agent processing:
-
-```
-Web App → Loan Coordinator → Intake Agent (Validation) → Income Agent → Credit Agent → Risk Agent → Result
-```
-
-### **Core Technologies**
-- **Microsoft Agent Framework**: Multi-agent orchestration and workflow management
-- **Pydantic v2**: Type-safe data models with comprehensive validation
-- **MCP Servers**: External tool integration for verification and calculations
-- **Real-time Streaming**: Live progress updates during agent processing
-- **Agent Framework Observability**: Built-in telemetry and performance tracking
-
-### **Microsoft Agent Framework Capabilities Used**
-- **ChatAgent**: Personality-driven agent creation with structured responses
-- **AgentThread**: Conversation context management for multi-turn interactions
-- **Workflow Orchestration**: Sequential agent processing with automatic handoffs
-- **Real-time Streaming**: Live progress updates during agent execution
-- **Built-in Observability**: Automatic telemetry, usage tracking, and performance monitoring
-- **Pydantic Integration**: Type-safe response parsing with `response_format` parameter
-- **MCP Tool Integration**: External service connections for verification and calculations
-
-## 🎯 **Performance Goals**
-
-### **Loan Processing Targets**
-- **Intake Agent (Validation)**: <5 seconds application validation and routing
-- **Income Agent**: <30 seconds income verification and employment validation
-- **Credit Agent**: <60 seconds credit assessment and scoring
-- **Risk Agent**: <90 seconds comprehensive risk analysis and decision
-- **Total Workflow**: <3 minutes end-to-end processing vs traditional 24-48 hours
-
-### **Technical Benefits**
-- **Agent Specialization**: Each agent focused on specific domain expertise
-- **Workflow Orchestration**: Microsoft Agent Framework handles complex coordination
-- **Observability**: Built-in telemetry and performance monitoring
-- **Scalability**: Independent agent scaling based on processing bottlenecks
+**Technologies**: Python 3.10+, FastAPI, Microsoft Agent Framework, Pydantic v2, MCP Servers
 
 ## 🚀 **Quick Start**
 
@@ -155,21 +107,17 @@ uv run test_intake_agent.py
 ```
 ## 📚 **Documentation**
 
-**🌐 [Full Documentation Site](https://niksacdev.github.io/loan-avengers/)** - Complete guides, architecture, and API reference
+Visit **[niksacdev.github.io/loan-avengers](https://niksacdev.github.io/loan-avengers/)** for complete documentation including:
+- Quick Start Guide
+- System Architecture
+- API Reference
+- Deployment Guide
+- Architecture Decision Records
 
-### Quick Links
-- **[Quick Start Guide](https://niksacdev.github.io/loan-avengers/getting-started/quickstart/)** - Get running in 10 minutes
-- **[System Architecture](https://niksacdev.github.io/loan-avengers/architecture/system-architecture/)** - Technical design and patterns
-- **[Agent Framework Guide](https://niksacdev.github.io/loan-avengers/architecture/agent-framework/)** - Multi-agent implementation
-- **[API Reference](https://niksacdev.github.io/loan-avengers/developer-guide/api-reference/)** - REST API documentation
-- **[Deployment Guide](https://niksacdev.github.io/loan-avengers/deployment/azure-deployment/)** - Azure deployment instructions
-- **[ADRs](https://niksacdev.github.io/loan-avengers/architecture/adrs/)** - Architecture decision records
+## 🔗 **Resources**
 
-## 🎯 **Future Enhancements**
-
-- **Voice Integration**: Voice-activated agent assembly
-- **Advanced Workflows**: Complex loan types and conditional processing
-- **Additional Agents**: Specialized agents for different financial products
+- **[Microsoft Agent Framework](https://github.com/microsoft/agent-framework)** - Multi-agent orchestration framework
+- **[Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-studio/)** - Enterprise AI platform
 
 ---
 

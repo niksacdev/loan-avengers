@@ -13,9 +13,9 @@ Loan Avengers is a demonstration of **multi-agent AI orchestration** where speci
 
 ## ✨ Key Features
 
-### 🤖 Microsoft Agent Framework
+### 🤖 [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
 - **5 specialized agents** with distinct personalities and expertise
-- **Autonomous decision-making** powered by Azure AI
+- **Autonomous decision-making** powered by [Azure AI](https://learn.microsoft.com/en-us/azure/ai-studio/)
 - **Real-time coordination** through agent threads
 - **Tool integration** via MCP (Model Context Protocol) servers
 
@@ -165,9 +165,10 @@ We welcome contributions! See our [Contributing Guide](developer-guide/contribut
 ## 🎓 Learning Resources
 
 ### Microsoft Technologies
-- [Microsoft Agent Framework Documentation](https://docs.microsoft.com/azure/ai-services/agent-framework)
-- [Azure AI Foundry](https://azure.microsoft.com/products/ai-foundry)
-- [Model Context Protocol](https://spec.modelcontextprotocol.io/)
+- [Microsoft Agent Framework GitHub](https://github.com/microsoft/agent-framework) - Multi-agent orchestration framework
+- [Microsoft Agent Framework Documentation](https://microsoft.github.io/agent-framework/) - Official framework documentation
+- [Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-studio/) - Enterprise AI platform and services
+- [Model Context Protocol](https://spec.modelcontextprotocol.io/) - Tool integration specification
 
 ### Project-Specific
 - [Development Philosophy](ai-development/philosophy.md) - AI-augmented development approach

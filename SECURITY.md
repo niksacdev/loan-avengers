@@ -15,24 +15,25 @@ We take the security of Loan Avengers seriously. If you believe you have found a
 
 ### Where to Report
 
-**Please do NOT report security vulnerabilities through public GitHub issues.**
+**For security vulnerabilities, please use GitHub Issues with the `security` label:**
 
-Instead, please report them using one of the following methods:
+1. **Create a GitHub Issue (Preferred)**:
+   - Go to [Issues](https://github.com/niksacdev/loan-avengers/issues/new)
+   - Add the `security` label
+   - Provide detailed information about the vulnerability
+   - If you have a fix, submit a PR and reference the issue
 
-1. **GitHub Security Advisories (Preferred)**:
-   - Navigate to the [Security tab](https://github.com/niksacdev/loan-avengers/security/advisories) of this repository
-   - Click "Report a vulnerability"
-   - Fill out the form with details about the vulnerability
-
-2. **Direct Email**:
-   - Email: niksac@microsoft.com
-   - Subject line: "[SECURITY] Loan Avengers Vulnerability Report"
+2. **Submit a Pull Request with Fix**:
+   - Create a PR with your security fix
+   - Add the `security` label to the PR
+   - Reference the related security issue
+   - Describe the vulnerability and your solution
 
 ### What to Include in Your Report
 
 Please include as much of the following information as possible:
 
-- Type of vulnerability (e.g., SQL injection, XSS, authentication bypass, etc.)
+- Type of vulnerability (e.g., SQL injection, XSS, authentication bypass, prompt injection, etc.)
 - Full paths of source file(s) related to the vulnerability
 - Location of the affected source code (tag/branch/commit or direct URL)
 - Step-by-step instructions to reproduce the issue
@@ -42,20 +43,20 @@ Please include as much of the following information as possible:
 
 ### Response Timeline
 
-- **Initial Response**: We will acknowledge your email within 48 hours
+- **Initial Response**: We will acknowledge your issue within 48 hours
 - **Investigation**: We will investigate and validate the issue within 7 days
 - **Fix Development**: Critical issues will be patched within 14 days; other issues within 30 days
-- **Disclosure**: We will coordinate with you on public disclosure timing
+- **Recognition**: Contributors will be credited in release notes and issue comments
 
 ### What to Expect
 
-After submitting a vulnerability report:
+After submitting a security issue or PR:
 
-1. You will receive an acknowledgment within 48 hours
+1. You will receive an acknowledgment comment within 48 hours
 2. We will confirm the vulnerability and determine its severity
-3. We will develop and test a fix
-4. We will release a security advisory and patched version
-5. We will credit you in the security advisory (unless you prefer to remain anonymous)
+3. We will review your PR (if submitted) or develop a fix
+4. We will merge the fix and create a release with security notes
+5. You will be credited as a security contributor (unless you prefer to remain anonymous)
 
 ## Security Best Practices for Contributors
 

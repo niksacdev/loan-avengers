@@ -88,6 +88,35 @@ class IntakeAgent:
 
         logger.info("IntakeAgent initialized", extra={"agent": "intake"})
 
+    async def create_chat_agent(self) -> ChatAgent:
+        """
+        Create a ChatAgent with connected MCP tools for use in workflows.
+
+        This method connects the MCP tools and returns a configured ChatAgent
+        that can be used with SequentialBuilder or other workflow patterns.
+
+        Returns:
+            ChatAgent: Configured agent with connected MCP tools
+
+        Note:
+            The returned ChatAgent is already within the MCP tool async context.
+            The caller must await the agent within the same async context.
+        """
+        # Connect MCP tool
+        await self.mcp_tool.__aenter__()
+
+        # Create and return ChatAgent
+        return ChatAgent(
+            chat_client=self.chat_client,
+            instructions=self.instructions,
+            name="Intake_Agent",
+            description="Sharp-eyed application validator with efficient humor",
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            response_format=IntakeAssessment,
+            tools=[self.mcp_tool],
+        )
+
     async def process_application(
         self, application: LoanApplication, thread: AgentThread | None = None
     ) -> AgentResponse[IntakeAssessment]:

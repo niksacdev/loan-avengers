@@ -15,9 +15,10 @@ will be added in the future for comparison.
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncGenerator
 
-from agent_framework import AgentThread
+from agent_framework import SequentialBuilder
 from agent_framework_azure_ai import AzureAIAgentClient
 from azure.identity.aio import DefaultAzureCredential
 
@@ -95,8 +96,14 @@ class SequentialPipeline:
         """
         Process loan application through automated assessment workflow.
 
-        This method runs the application through the sequential processing
-        pipeline and yields status updates as each agent completes their assessment.
+        This method uses Microsoft Agent Framework's SequentialBuilder to orchestrate
+        the sequential processing pipeline. Each standalone agent class provides a
+        ChatAgent via create_chat_agent() method with MCP tools already connected.
+
+        Architecture:
+        - Standalone agent classes manage construction (MCP tools, personas)
+        - SequentialBuilder manages orchestration (sequential execution)
+        - Separation of concerns maintained
 
         Args:
             application: Validated LoanApplication to process
@@ -105,8 +112,6 @@ class SequentialPipeline:
             ProcessingUpdate events during processing
             FinalDecisionResponse when processing is complete
         """
-        import asyncio
-
         try:
             logger.info(
                 "Starting sequential workflow processing",
@@ -120,9 +125,6 @@ class SequentialPipeline:
                     "agents_sequence": ["intake", "credit", "income", "risk"],
                 },
             )
-
-            # Create a new thread for conversation context across agents
-            thread = AgentThread()
 
             # Agent processing phases with handoff logging
             phases = [
@@ -143,114 +145,73 @@ class SequentialPipeline:
                 },
             )
 
-            # Store assessments from each agent for context passing
-            previous_assessments = []
+            # Yield progress updates for each agent
+            for idx, (agent_name, phase, phase_name, completion) in enumerate(phases):
+                if idx > 0:
+                    prev_agent = phases[idx - 1][1]
+                    logger.info(
+                        "Agent handoff",
+                        extra={
+                            "from_agent": prev_agent,
+                            "to_agent": phase,
+                            "application_id": Observability.mask_application_id(application.application_id),
+                            "workflow_phase": phase_name,
+                            "completion_percentage": completion,
+                        },
+                    )
 
-            # Phase 1: Intake Agent - Validates application data
-            yield ProcessingUpdate(
-                agent_name="Intake_Validator",
-                message="🔄 Intake Validator is analyzing your application...",
-                phase="validating",
-                completion_percentage=25,
-                status="in_progress",
-                assessment_data={"application_id": application.application_id},
-                metadata={"stage": "intake", "agent": "Intake_Validator"},
-            )
-            await asyncio.sleep(0.5)
+                yield ProcessingUpdate(
+                    agent_name=agent_name,
+                    message=f"🔄 {agent_name.replace('_', ' ')} is analyzing your application...",
+                    phase=phase_name,
+                    completion_percentage=completion,
+                    status="in_progress",
+                    assessment_data={"application_id": application.application_id},
+                    metadata={"stage": phase, "agent": agent_name},
+                )
+                await asyncio.sleep(0.5)
 
-            intake_result = await self.intake_agent.process_application(application, thread=thread)
-            previous_assessments.append(intake_result)
+            # Create ChatAgents from standalone agent classes with MCP tools connected
+            intake_chat = await self.intake_agent.create_chat_agent()
+            credit_chat = await self.credit_agent.create_chat_agent()
+            income_chat = await self.income_agent.create_chat_agent()
+            risk_chat = await self.risk_agent.create_chat_agent()
 
-            # Log handoff to credit agent
+            # Build sequential workflow using SequentialBuilder
+            workflow = SequentialBuilder().participants([intake_chat, credit_chat, income_chat, risk_chat]).build()
+
+            # Format application data as input message
+            application_input = f"""Process this loan application:
+
+Application ID: {application.application_id}
+Applicant: {application.applicant_name}
+Email: {application.email}
+Loan Amount: ${application.loan_amount:,.2f}
+Purpose: {application.loan_purpose}
+Annual Income: ${application.annual_income:,.2f}
+Employment: {application.employment_status}
+Down Payment: ${application.down_payment:,.2f if application.down_payment else 0.00}
+
+Please assess this application and provide your recommendation."""
+
+            # Execute sequential workflow
             logger.info(
-                "Agent handoff",
+                "Executing SequentialBuilder workflow",
                 extra={
-                    "from_agent": "intake",
-                    "to_agent": "credit",
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "workflow_phase": "assessing_credit",
+                    "agents_count": len(phases),
                 },
             )
 
-            # Phase 2: Credit Agent - Analyzes creditworthiness
-            yield ProcessingUpdate(
-                agent_name="Credit_Assessor",
-                message="🔄 Credit Assessor is analyzing your application...",
-                phase="assessing_credit",
-                completion_percentage=50,
-                status="in_progress",
-                assessment_data={"application_id": application.application_id},
-                metadata={"stage": "credit", "agent": "Credit_Assessor"},
-            )
-            await asyncio.sleep(0.5)
-
-            credit_result = await self.credit_agent.process_application(
-                application, thread=thread, previous_assessments=previous_assessments
-            )
-            previous_assessments.append(credit_result)
-
-            # Log handoff to income agent
-            logger.info(
-                "Agent handoff",
-                extra={
-                    "from_agent": "credit",
-                    "to_agent": "income",
-                    "application_id": Observability.mask_application_id(application.application_id),
-                    "workflow_phase": "verifying_income",
-                },
-            )
-
-            # Phase 3: Income Agent - Verifies employment and income
-            yield ProcessingUpdate(
-                agent_name="Income_Verifier",
-                message="🔄 Income Verifier is analyzing your application...",
-                phase="verifying_income",
-                completion_percentage=75,
-                status="in_progress",
-                assessment_data={"application_id": application.application_id},
-                metadata={"stage": "income", "agent": "Income_Verifier"},
-            )
-            await asyncio.sleep(0.5)
-
-            income_result = await self.income_agent.process_application(
-                application, thread=thread, previous_assessments=previous_assessments
-            )
-            previous_assessments.append(income_result)
-
-            # Log handoff to risk agent
-            logger.info(
-                "Agent handoff",
-                extra={
-                    "from_agent": "income",
-                    "to_agent": "risk",
-                    "application_id": Observability.mask_application_id(application.application_id),
-                    "workflow_phase": "deciding",
-                },
-            )
-
-            # Phase 4: Risk Agent - Makes final recommendation
-            yield ProcessingUpdate(
-                agent_name="Risk_Analyzer",
-                message="🔄 Risk Analyzer is analyzing your application...",
-                phase="deciding",
-                completion_percentage=100,
-                status="in_progress",
-                assessment_data={"application_id": application.application_id},
-                metadata={"stage": "risk", "agent": "Risk_Analyzer"},
-            )
-            await asyncio.sleep(0.5)
-
-            risk_result = await self.risk_agent.process_application(
-                application, thread=thread, previous_assessments=previous_assessments
-            )
+            result = await workflow.run(application_input)
 
             # Process workflow result and log completion
             logger.info(
                 "Sequential workflow completed",
                 extra={
                     "application_id": Observability.mask_application_id(application.application_id),
+                    "result_type": type(result).__name__,
                     "total_agents": len(phases),
-                    "final_recommendation": risk_result.assessment.loan_recommendation,
                 },
             )
 
@@ -262,10 +223,7 @@ class SequentialPipeline:
                 completion_percentage=100,
                 status="completed",
                 assessment_data={"application_id": application.application_id},
-                metadata={
-                    "final_recommendation": risk_result.assessment.loan_recommendation,
-                    "overall_risk": risk_result.assessment.overall_risk,
-                },
+                metadata={"workflow_result": str(result)[:200]},
             )
 
             logger.info(

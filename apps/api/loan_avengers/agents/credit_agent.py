@@ -104,6 +104,36 @@ class CreditAgent:
             extra={"agent": "credit", "mcp_servers": ["application_verification", "financial_calculations"]},
         )
 
+    async def create_chat_agent(self) -> ChatAgent:
+        """
+        Create a ChatAgent with connected MCP tools for use in workflows.
+
+        This method connects the MCP tools and returns a configured ChatAgent
+        that can be used with SequentialBuilder or other workflow patterns.
+
+        Returns:
+            ChatAgent: Configured agent with connected MCP tools
+
+        Note:
+            The returned ChatAgent is already within the MCP tool async context.
+            The caller must await the agent within the same async context.
+        """
+        # Connect MCP tools
+        await self.verification_tool.__aenter__()
+        await self.calculations_tool.__aenter__()
+
+        # Create and return ChatAgent
+        return ChatAgent(
+            chat_client=self.chat_client,
+            instructions=self.instructions,
+            name="Credit_Assessor",
+            description="Expert credit analyst with celebratory personality",
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            response_format=CreditAssessment,
+            tools=[self.verification_tool, self.calculations_tool],
+        )
+
     async def process_application(
         self,
         application: LoanApplication,

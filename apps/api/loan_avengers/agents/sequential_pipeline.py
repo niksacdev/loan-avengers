@@ -15,7 +15,6 @@ will be added in the future for comparison.
 
 from __future__ import annotations
 
-import asyncio
 from collections.abc import AsyncGenerator
 
 from agent_framework import SequentialBuilder
@@ -126,51 +125,6 @@ class SequentialPipeline:
                 },
             )
 
-            # Agent processing phases with handoff logging
-            phases = [
-                ("Intake_Validator", "intake", "validating", 25),
-                ("Credit_Assessor", "credit", "assessing_credit", 50),
-                ("Income_Verifier", "income", "verifying_income", 75),
-                ("Risk_Analyzer", "risk", "deciding", 100),
-            ]
-
-            # Log start of sequential workflow
-            logger.info(
-                "Agent handoff",
-                extra={
-                    "from_agent": "START",
-                    "to_agent": "intake",
-                    "application_id": Observability.mask_application_id(application.application_id),
-                    "workflow_phase": "validating",
-                },
-            )
-
-            # Yield progress updates for each agent
-            for idx, (agent_name, phase, phase_name, completion) in enumerate(phases):
-                if idx > 0:
-                    prev_agent = phases[idx - 1][1]
-                    logger.info(
-                        "Agent handoff",
-                        extra={
-                            "from_agent": prev_agent,
-                            "to_agent": phase,
-                            "application_id": Observability.mask_application_id(application.application_id),
-                            "workflow_phase": phase_name,
-                            "completion_percentage": completion,
-                        },
-                    )
-
-                yield ProcessingUpdate(
-                    agent_name=agent_name,
-                    message=f"🔄 {agent_name.replace('_', ' ')} is analyzing your application...",
-                    phase=phase_name,
-                    completion_percentage=completion,
-                    status="in_progress",
-                    assessment_data={"application_id": application.application_id},
-                    metadata={"stage": phase, "agent": agent_name},
-                )
-                await asyncio.sleep(0.5)
-
             # Create ChatAgents from standalone agent classes
             # Framework handles MCP tool lifecycle automatically
             intake_chat = self.intake_agent.create_agent()
@@ -195,24 +149,57 @@ Down Payment: ${application.down_payment:,.2f if application.down_payment else 0
 
 Please assess this application and provide your recommendation."""
 
-            # Execute sequential workflow
+            # Execute sequential workflow with streaming events
             logger.info(
                 "Executing SequentialBuilder workflow",
                 extra={
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "agents_count": len(phases),
+                    "agents_count": 4,
                 },
             )
 
-            result = await workflow.run(application_input)
+            # Agent name mapping for progress updates
+            agent_names = {
+                "Intake_Agent": ("intake", "validating", 25),
+                "Credit_Assessor": ("credit", "assessing_credit", 50),
+                "Income_Verifier": ("income", "verifying_income", 75),
+                "Risk_Analyzer": ("risk", "deciding", 100),
+            }
 
-            # Process workflow result and log completion
+            # Stream workflow events and convert to ProcessingUpdate
+            async for event in workflow.run_stream(application_input):
+                # Extract agent information from workflow event
+                event_type = type(event).__name__
+
+                logger.debug(
+                    "Workflow event received",
+                    extra={
+                        "event_type": event_type,
+                        "application_id": Observability.mask_application_id(application.application_id),
+                    },
+                )
+
+                # Convert workflow events to ProcessingUpdate for UI
+                if hasattr(event, "executor_id"):
+                    executor_id = str(event.executor_id)
+                    if executor_id in agent_names:
+                        phase, phase_name, completion = agent_names[executor_id]
+
+                        yield ProcessingUpdate(
+                            agent_name=executor_id,
+                            message=f"🔄 {executor_id.replace('_', ' ')} is analyzing your application...",
+                            phase=phase_name,
+                            completion_percentage=completion,
+                            status="in_progress",
+                            assessment_data={"application_id": application.application_id},
+                            metadata={"event_type": event_type, "executor_id": executor_id},
+                        )
+
+            # Log workflow completion
             logger.info(
                 "Sequential workflow completed",
                 extra={
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "result_type": type(result).__name__,
-                    "total_agents": len(phases),
                 },
             )
 
@@ -224,7 +211,7 @@ Please assess this application and provide your recommendation."""
                 completion_percentage=100,
                 status="completed",
                 assessment_data={"application_id": application.application_id},
-                metadata={"workflow_result": str(result)[:200]},
+                metadata={},
             )
 
             logger.info(

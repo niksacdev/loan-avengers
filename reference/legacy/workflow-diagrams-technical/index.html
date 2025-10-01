@@ -1,0 +1,2803 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Multi-agent loan processing system powered by Microsoft Agent Framework">
+      
+      
+        <meta name="author" content="Niksac Development Team">
+      
+      
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/reference/legacy/workflow-diagrams-technical/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Technical Workflow Diagrams: AI-Augmented Development - Loan Avengers Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#technical-workflow-diagrams-ai-augmented-development" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-header__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Loan Avengers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Technical Workflow Diagrams: AI-Augmented Development
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/quickstart/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../user-guide/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer-guide/" class="md-tabs__link">
+          
+  
+  
+  Developer Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deployment/" class="md-tabs__link">
+          
+  
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ai-development/" class="md-tabs__link">
+          
+  
+  
+  AI Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../code-review/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-nav__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Loan Avengers Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/first-loan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    First Loan Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/product-vision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/ux-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Experience Flow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demo & Screenshots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/project-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/system-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Strategy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/mcp-servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP Servers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Orchestration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/adrs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design Decisions (ADRs)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/azure-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Deployment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Monitoring & Observability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AI Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            AI Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI-Augmented Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Philosophy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/developer-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/responsible-ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Responsible AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Review Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migration-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Migration Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes & Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README-old/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Legacy Docs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agent-orchestration-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Orchestration Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Orchestration Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-platform-agent-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Platform Agent Ecosystem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-communication-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Communication Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-phase-deep-dives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Phase Deep-Dives
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Phase Deep-Dives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-creation-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue Creation Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallel-development-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel Development Orchestration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-review-multi-layer-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Review Multi-Layer Process
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-specialization-technical-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Specialization Technical Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent Specialization Technical Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-architecture-reviewer-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Architecture Reviewer Agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-manager-advisor-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Product Manager Advisor Agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-reviewer-agent-technical-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Reviewer Agent Technical Process
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcp-server-integration-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP Server Integration Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-platform-synchronization-technical-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-Platform Synchronization Technical Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-gate-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality Gate Automation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-optimization-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization Patterns
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Optimization Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-usage-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Usage Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context-management-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Management Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment &amp; Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment &amp; Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cicd-pipeline-with-ai-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      CI/CD Pipeline with AI Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Observability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-evolution-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Evolution Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Evolution Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-generation-agent-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next-Generation Agent Capabilities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalability Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="technical-workflow-diagrams-ai-augmented-development">Technical Workflow Diagrams: AI-Augmented Development</h1>
+<blockquote>
+<p><strong>Technical Deep-Dive</strong>: Detailed Mermaid diagrams showcasing the technical implementation of AI-augmented development workflows, based on actual Loan Avengers repository patterns.</p>
+</blockquote>
+<h2 id="agent-orchestration-architecture">Agent Orchestration Architecture</h2>
+<h3 id="multi-platform-agent-ecosystem">Multi-Platform Agent Ecosystem</h3>
+<pre class="mermaid"><code>graph TB
+    %% Human Orchestrator
+    subgraph "Human Developer"
+        DEV[Strategic Orchestrator&lt;br/&gt;Architecture Decisions&lt;br/&gt;Quality Control]
+    end
+
+    %% Claude Ecosystem  
+    subgraph "Claude Code Platform"
+        CA[Claude Agents]
+        CA1[system-architecture-reviewer]
+        CA2[product-manager-advisor] 
+        CA3[code-reviewer]
+        CA4[ux-ui-designer]
+        CA5[gitops-ci-specialist]
+        CA6[agent-sync-coordinator]
+
+        CA --&gt; CA1
+        CA --&gt; CA2
+        CA --&gt; CA3
+        CA --&gt; CA4
+        CA --&gt; CA5
+        CA --&gt; CA6
+    end
+
+    %% GitHub Copilot Ecosystem
+    subgraph "GitHub Copilot Platform"  
+        GC[GitHub Chatmodes]
+        GC1[architecture-reviewer.chatmode]
+        GC2[product-manager.chatmode]
+        GC3[code-reviewer.chatmode]
+        GC4[ux-designer.chatmode]
+        GC5[gitops-ci-specialist.chatmode]
+
+        GC --&gt; GC1
+        GC --&gt; GC2
+        GC --&gt; GC3
+        GC --&gt; GC4
+        GC --&gt; GC5
+    end
+
+    %% Cursor Ecosystem
+    subgraph "Cursor IDE Platform"
+        CR[Cursor Rules]
+        CR1[project-rules.mdc]
+        CR2[agent-development.mdc]
+        CR3[testing.mdc]
+        CR4[security.mdc]
+
+        CR --&gt; CR1
+        CR --&gt; CR2
+        CR --&gt; CR3
+        CR --&gt; CR4
+    end
+
+    %% Cross-Platform Synchronization
+    SYNC[Agent Sync Coordinator&lt;br/&gt;Cross-Platform Consistency]
+
+    DEV --&gt; CA
+    DEV --&gt; GC  
+    DEV --&gt; CR
+    DEV --&gt; SYNC
+
+    SYNC -.-&gt; CA
+    SYNC -.-&gt; GC
+    SYNC -.-&gt; CR
+
+    classDef human fill:#ccffcc,stroke:#00cc00,stroke-width:3px
+    classDef claude fill:#ff9999,stroke:#cc0000,stroke-width:2px
+    classDef github fill:#9999ff,stroke:#0000cc,stroke-width:2px
+    classDef cursor fill:#ffcc99,stroke:#ff8800,stroke-width:2px
+    classDef sync fill:#cc99ff,stroke:#8800cc,stroke-width:3px
+
+    class DEV human
+    class CA,CA1,CA2,CA3,CA4,CA5,CA6 claude
+    class GC,GC1,GC2,GC3,GC4,GC5 github  
+    class CR,CR1,CR2,CR3,CR4 cursor
+    class SYNC sync</code></pre>
+<h3 id="agent-communication-flow">Agent Communication Flow</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant DEV as Human Developer
+    participant PMA as Product Manager Advisor
+    participant SAR as System Architecture Reviewer
+    participant CRA as Code Reviewer Agent
+    participant UXA as UX Designer Agent
+    participant ASC as Agent Sync Coordinator
+
+    Note over DEV,ASC: Feature Development Workflow
+
+    %% Phase 1: Requirements &amp; Planning
+    DEV-&gt;&gt;PMA: Create feature requirements
+    PMA-&gt;&gt;DEV: GitHub issues + acceptance criteria
+
+    DEV-&gt;&gt;SAR: Architecture consultation
+    SAR-&gt;&gt;DEV: Design validation + recommendations
+
+    %% Phase 2: Implementation
+    DEV-&gt;&gt;DEV: Implement critical path code
+    Note over DEV: Human handles core business logic
+
+    %% Phase 3: Parallel AI Work
+    par Parallel Agent Execution
+        DEV-&gt;&gt;CRA: Code review request
+        CRA--&gt;&gt;DEV: Technical feedback (5 min)
+    and
+        DEV-&gt;&gt;UXA: UI/UX validation
+        UXA--&gt;&gt;DEV: Design improvements (10 min)
+    end
+
+    %% Phase 4: Integration &amp; Sync
+    DEV-&gt;&gt;ASC: Synchronize across platforms
+    ASC-&gt;&gt;ASC: Update Claude + Copilot + Cursor instructions
+    ASC--&gt;&gt;DEV: Platform consistency confirmed
+
+    DEV-&gt;&gt;DEV: Final integration + deployment</code></pre>
+<h2 id="development-phase-deep-dives">Development Phase Deep-Dives</h2>
+<h3 id="issue-creation-automation">Issue Creation Automation</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Human: High-Level Feature Idea] --&gt; B[Product Manager Advisor Agent]
+
+    B --&gt; C{Analysis Phase}
+    C --&gt; C1[Business Value Assessment]
+    C --&gt; C2[Technical Complexity Analysis] 
+    C --&gt; C3[User Story Generation]
+    C --&gt; C4[Acceptance Criteria Definition]
+
+    C1 --&gt; D[Issue Template Generation]
+    C2 --&gt; D
+    C3 --&gt; D
+    C4 --&gt; D
+
+    D --&gt; E[GitHub Issue Creation]
+    E --&gt; F[Automatic Labeling]
+    F --&gt; G[Milestone Assignment]
+    G --&gt; H[Dependency Mapping]
+
+    H --&gt; I[Ready for Development]
+
+    %% Parallel Documentation
+    D --&gt; J[Documentation Updates]
+    J --&gt; K[ADR Creation if Needed]
+
+    classDef human fill:#ccffcc,stroke:#00cc00
+    classDef agent fill:#ccccff,stroke:#0000cc  
+    classDef output fill:#ffffcc,stroke:#cccc00
+
+    class A human
+    class B,C1,C2,C3,C4 agent
+    class E,F,G,H,I,J,K output</code></pre>
+<h3 id="parallel-development-orchestration">Parallel Development Orchestration</h3>
+<pre class="mermaid"><code>timeline
+    title AI-Augmented Parallel Development Timeline
+
+    Hour 0 : Human Strategic Planning
+           : Architecture Decision
+           : Agent Task Distribution
+
+    Hour 1 : UI Agent - Component Generation
+           : Test Agent - Unit Test Creation
+           : Docs Agent - API Documentation
+           : Human - Core Business Logic
+
+    Hour 2 : Integration Testing
+           : Cross-Component Validation
+           : Performance Optimization
+           : Human Quality Review
+
+    Hour 3 : Multi-Agent Code Review
+           : Architecture Validation
+           : UX/UI Assessment
+           : Final Integration
+
+    Hour 4 : Deployment Pipeline
+           : Documentation Sync
+           : Production Release
+           : Monitoring Setup</code></pre>
+<h3 id="code-review-multi-layer-process">Code Review Multi-Layer Process</h3>
+<pre class="mermaid"><code>flowchart LR
+    A[Code Commit] --&gt; B[Automated Quality Gates]
+
+    B --&gt; C{Pre-Commit Checks}
+    C --&gt; C1[Ruff Linting]
+    C --&gt; C2[Type Checking]
+    C --&gt; C3[Test Coverage ≥85%]
+    C --&gt; C4[Security Scan]
+
+    C1 --&gt; D{All Checks Pass?}
+    C2 --&gt; D
+    C3 --&gt; D
+    C4 --&gt; D
+
+    D --&gt;|No| E[Fix Issues Locally]
+    E --&gt; A
+
+    D --&gt;|Yes| F[Multi-Agent Review]
+
+    F --&gt; G[Technical Review Agent]
+    F --&gt; H[Architecture Review Agent]  
+    F --&gt; I[UX Review Agent]
+    F --&gt; J[Security Review Agent]
+
+    G --&gt; K[Human Strategic Review]
+    H --&gt; K
+    I --&gt; K
+    J --&gt; K
+
+    K --&gt; L{Human Approval?}
+    L --&gt;|Changes Needed| M[Agent-Assisted Fixes]
+    M --&gt; F
+
+    L --&gt;|Approved| N[Merge to Main]
+    N --&gt; O[Auto-Deploy Pipeline]
+
+    classDef auto fill:#ccffcc,stroke:#00cc00
+    classDef agent fill:#ccccff,stroke:#0000cc
+    classDef human fill:#ffcccc,stroke:#cc0000
+    classDef output fill:#ffffcc,stroke:#cccc00
+
+    class C1,C2,C3,C4,O auto
+    class G,H,I,J,M agent
+    class K,L human
+    class N output</code></pre>
+<h2 id="agent-specialization-technical-details">Agent Specialization Technical Details</h2>
+<h3 id="system-architecture-reviewer-agent">System Architecture Reviewer Agent</h3>
+<pre class="mermaid"><code>mindmap
+  root((System Architecture&lt;br/&gt;Reviewer Agent))
+    Input Analysis
+      Code Changes
+        Impact Assessment
+        Dependency Analysis
+        Breaking Change Detection
+      Architecture Documents
+        ADR Compliance
+        Design Pattern Validation
+        Technology Stack Alignment
+    Validation Processes
+      Design Principles
+        SOLID Compliance
+        Clean Architecture
+        Domain-Driven Design
+      Performance Implications
+        Scalability Impact
+        Resource Utilization
+        Bottleneck Identification
+    Output Generation
+      Architecture Feedback
+        Improvement Recommendations
+        Risk Assessment
+        Alternative Approaches
+      Documentation Updates
+        ADR Suggestions
+        Diagram Updates
+        Decision Rationale</code></pre>
+<h3 id="product-manager-advisor-agent">Product Manager Advisor Agent</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Feature Request Input] --&gt; B[Business Analysis]
+
+    B --&gt; C[User Story Generation]
+    B --&gt; D[Market Research]
+    B --&gt; E[Competitive Analysis]
+    B --&gt; F[Technical Feasibility]
+
+    C --&gt; G[Acceptance Criteria]
+    D --&gt; H[Business Value Score]
+    E --&gt; I[Competitive Advantage]
+    F --&gt; J[Implementation Complexity]
+
+    G --&gt; K[GitHub Issue Template]
+    H --&gt; K
+    I --&gt; K
+    J --&gt; K
+
+    K --&gt; L[Size Estimation]
+    L --&gt; M[Milestone Assignment]
+    M --&gt; N[Dependency Mapping]
+    N --&gt; O[Development Ready Issue]
+
+    %% Feedback Loop
+    O --&gt; P[Development Progress Tracking]
+    P --&gt; Q[Requirement Refinement]
+    Q --&gt; B
+
+    classDef analysis fill:#e1f5fe,stroke:#01579b
+    classDef generation fill:#f3e5f5,stroke:#4a148c
+    classDef output fill:#e8f5e8,stroke:#1b5e20
+
+    class B,C,D,E,F analysis
+    class G,H,I,J,K,L generation
+    class M,N,O,P,Q output</code></pre>
+<h3 id="code-reviewer-agent-technical-process">Code Reviewer Agent Technical Process</h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Code Analysis Engine"
+        A[Code Diff Input] --&gt; B[Static Analysis]
+        B --&gt; C[Pattern Detection]
+        C --&gt; D[Quality Metrics]
+        D --&gt; E[Security Assessment]
+    end
+
+    subgraph "Review Categories"
+        F[Code Quality]
+        G[Architecture Compliance]
+        H[Performance Impact]
+        I[Security Vulnerabilities]
+        J[Test Coverage]
+        K[Documentation]
+    end
+
+    subgraph "Feedback Generation"
+        L[Prioritized Issues]
+        M[Improvement Suggestions]
+        N[Code Examples]
+        O[Educational Content]
+    end
+
+    E --&gt; F
+    E --&gt; G
+    E --&gt; H
+    E --&gt; I
+    E --&gt; J
+    E --&gt; K
+
+    F --&gt; L
+    G --&gt; M
+    H --&gt; N
+    I --&gt; L
+    J --&gt; M
+    K --&gt; O
+
+    L --&gt; P[GitHub Review Comments]
+    M --&gt; P
+    N --&gt; P
+    O --&gt; P
+
+    classDef engine fill:#ffecb3,stroke:#ff8f00
+    classDef category fill:#e3f2fd,stroke:#0277bd
+    classDef feedback fill:#f1f8e9,stroke:#33691e
+
+    class A,B,C,D,E engine
+    class F,G,H,I,J,K category
+    class L,M,N,O,P feedback</code></pre>
+<h2 id="technical-infrastructure">Technical Infrastructure</h2>
+<h3 id="mcp-server-integration-architecture">MCP Server Integration Architecture</h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Loan Avengers Application Layer"
+        A[IntakeAgent] 
+        B[CreditAgent]
+        C[IncomeAgent]
+        D[RiskAgent]
+    end
+
+    subgraph "MCP Server Layer"
+        E[Application Verification&lt;br/&gt;Port 8010]
+        F[Document Processing&lt;br/&gt;Port 8011]
+        G[Financial Calculations&lt;br/&gt;Port 8012]
+    end
+
+    subgraph "Microsoft Agent Framework"
+        H[ChatClientAgent]
+        I[MCPStreamableHTTPTool] 
+        J[AgentThread]
+    end
+
+    A --&gt; H
+    B --&gt; H
+    C --&gt; H
+    D --&gt; H
+
+    H --&gt; I
+    I --&gt; E
+    I --&gt; F
+    I --&gt; G
+
+    H --&gt; J
+
+    E --&gt; K[Identity Verification]
+    E --&gt; L[Employment Validation]
+    F --&gt; M[Document Extraction]
+    F --&gt; N[Data Validation]
+    G --&gt; O[DTI Calculation]
+    G --&gt; P[Payment Calculation]
+
+    classDef agent fill:#e1f5fe,stroke:#01579b
+    classDef mcp fill:#f3e5f5,stroke:#4a148c
+    classDef framework fill:#e8f5e8,stroke:#1b5e20
+    classDef service fill:#fff3e0,stroke:#e65100
+
+    class A,B,C,D agent
+    class E,F,G mcp
+    class H,I,J framework
+    class K,L,M,N,O,P service</code></pre>
+<h3 id="cross-platform-synchronization-technical-flow">Cross-Platform Synchronization Technical Flow</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant DEV as Developer
+    participant ASC as Agent Sync Coordinator
+    participant CLAUDE as CLAUDE.md
+    participant COPILOT as GitHub Copilot Instructions
+    participant CURSOR as Cursor Rules
+    participant GIT as Git Repository
+
+    Note over DEV,GIT: Instruction Synchronization Process
+
+    DEV-&gt;&gt;CLAUDE: Update development guidelines
+    DEV-&gt;&gt;ASC: Request synchronization
+
+    ASC-&gt;&gt;CLAUDE: Analyze changes
+    ASC-&gt;&gt;ASC: Identify sync requirements
+
+    par Parallel Platform Updates
+        ASC-&gt;&gt;COPILOT: Generate Copilot-specific instructions
+        ASC-&gt;&gt;CURSOR: Generate Cursor-specific rules
+    end
+
+    ASC-&gt;&gt;DEV: Present synchronization changes
+    DEV-&gt;&gt;DEV: Review and approve changes
+
+    DEV-&gt;&gt;GIT: Commit synchronized instructions
+    Note over DEV,GIT: Single commit with all platform updates
+
+    GIT--&gt;&gt;CLAUDE: Updated master reference
+    GIT--&gt;&gt;COPILOT: Updated Copilot instructions  
+    GIT--&gt;&gt;CURSOR: Updated Cursor rules
+
+    Note over DEV,GIT: Perfect cross-platform consistency</code></pre>
+<h3 id="quality-gate-automation">Quality Gate Automation</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Code Change] --&gt; B[Local Quality Checks]
+
+    B --&gt; C[Ruff Linting]
+    B --&gt; D[Ruff Formatting]
+    B --&gt; E[Type Checking]
+    B --&gt; F[Unit Tests]
+    B --&gt; G[Coverage Analysis]
+
+    C --&gt; H{All Local Checks Pass?}
+    D --&gt; H
+    E --&gt; H
+    F --&gt; H
+    G --&gt; H
+
+    H --&gt;|No| I[Fix Issues Locally]
+    I --&gt; B
+
+    H --&gt;|Yes| J[Agent Code Review]
+
+    J --&gt; K[Technical Validation]
+    J --&gt; L[Architecture Review]
+    J --&gt; M[Security Assessment]
+    J --&gt; N[Performance Analysis]
+
+    K --&gt; O{Agent Review Pass?}
+    L --&gt; O
+    M --&gt; O
+    N --&gt; O
+
+    O --&gt;|Issues Found| P[Agent-Suggested Fixes]
+    P --&gt; Q[Apply Fixes]
+    Q --&gt; B
+
+    O --&gt;|Pass| R[Human Strategic Review]
+
+    R --&gt; S{Human Approval?}
+    S --&gt;|Changes Needed| T[Human-Directed Iteration]
+    T --&gt; J
+
+    S --&gt;|Approved| U[Merge to Main]
+    U --&gt; V[CI/CD Pipeline]
+    V --&gt; W[Production Deployment]
+
+    classDef local fill:#e8f5e8,stroke:#2e7d32
+    classDef agent fill:#e3f2fd,stroke:#1565c0
+    classDef human fill:#fce4ec,stroke:#c2185b
+    classDef deploy fill:#fff8e1,stroke:#f57c00
+
+    class B,C,D,E,F,G,I local
+    class J,K,L,M,N,P,Q agent
+    class R,S,T human
+    class U,V,W deploy</code></pre>
+<h2 id="performance-optimization-patterns">Performance Optimization Patterns</h2>
+<h3 id="token-usage-optimization">Token Usage Optimization</h3>
+<pre class="mermaid"><code>graph LR
+    subgraph "Token Optimization Strategy"
+        A[Persona Optimization&lt;br/&gt;300-500 lines] --&gt; B[75% Token Reduction]
+        C[File References&lt;br/&gt;vs Inline Code] --&gt; D[Context Window Efficiency]
+        E[Cross-References&lt;br/&gt;vs Duplication] --&gt; F[Coherent Instructions]
+        G[Concise Directives&lt;br/&gt;vs Verbose Explanations] --&gt; H[10x Faster Responses]
+    end
+
+    subgraph "Cost Impact"
+        B --&gt; I[$100/month → $25/month]
+        D --&gt; J[30s responses → 3s responses]
+        F --&gt; K[Consistent Agent Behavior]
+        H --&gt; L[Higher Developer Productivity]
+    end
+
+    classDef optimization fill:#e8f5e8,stroke:#2e7d32
+    classDef impact fill:#e3f2fd,stroke:#1565c0
+
+    class A,C,E,G optimization
+    class B,D,F,H,I,J,K,L impact</code></pre>
+<h3 id="context-management-strategy">Context Management Strategy</h3>
+<pre class="mermaid"><code>timeline
+    title Context Loss Prevention Strategy
+
+    Session Start : Clean Repository State
+                  : Load Agent Instructions
+                  : Initialize Working Context
+
+    2-3 Hours    : Active Development
+                 : Agent Collaboration
+                 : Iterative Improvements
+
+    Context Check : /compact Command
+                  : Git Checkpoint Commit
+                  : Context Consolidation
+
+    Session End  : Summary Documentation
+                 : ADR Updates if Needed
+                 : Clean Session Closure
+
+    Next Session : Context Anchoring
+                 : Previous Session Review
+                 : Strategic Continuity</code></pre>
+<h2 id="deployment-operations">Deployment &amp; Operations</h2>
+<h3 id="cicd-pipeline-with-ai-integration">CI/CD Pipeline with AI Integration</h3>
+<pre class="mermaid"><code>flowchart TD
+    A[Code Commit] --&gt; B[GitHub Actions Trigger]
+
+    B --&gt; C[Quality Gates]
+    C --&gt; D[Ruff Linting]
+    C --&gt; E[Type Checking] 
+    C --&gt; F[Unit Tests]
+    C --&gt; G[Coverage Report]
+
+    D --&gt; H{Quality Check Pass?}
+    E --&gt; H
+    F --&gt; H
+    G --&gt; H
+
+    H --&gt;|Fail| I[Notify Developer]
+    I --&gt; J[Agent-Suggested Fixes]
+    J --&gt; A
+
+    H --&gt;|Pass| K[Integration Tests]
+    K --&gt; L[Security Scan]
+    L --&gt; M[Performance Tests]
+
+    M --&gt; N{All Tests Pass?}
+    N --&gt;|Fail| O[Agent Root Cause Analysis]
+    O --&gt; P[Automated Fix Attempt]
+    P --&gt; A
+
+    N --&gt;|Pass| Q[Staging Deployment]
+    Q --&gt; R[Agent Smoke Tests]
+    R --&gt; S[Performance Validation]
+
+    S --&gt; T{Staging Validation?}
+    T --&gt;|Fail| U[Agent Rollback]
+    U --&gt; V[Issue Analysis]
+
+    T --&gt;|Pass| W[Production Deployment]
+    W --&gt; X[Agent Health Monitoring]
+    X --&gt; Y[Performance Tracking]
+
+    classDef quality fill:#e8f5e8,stroke:#2e7d32
+    classDef agent fill:#e3f2fd,stroke:#1565c0
+    classDef deploy fill:#fff8e1,stroke:#f57c00
+    classDef monitor fill:#f3e5f5,stroke:#7b1fa2
+
+    class C,D,E,F,G,H quality
+    class I,J,O,P,R,U,V,X agent
+    class K,L,M,Q,W deploy
+    class S,Y monitor</code></pre>
+<h3 id="monitoring-observability">Monitoring &amp; Observability</h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Application Metrics"
+        A1[Response Times]
+        A2[Error Rates]
+        A3[Throughput]
+        A4[User Experience]
+    end
+
+    subgraph "Agent Performance"
+        B1[Token Usage]
+        B2[Processing Time]
+        B3[Quality Scores]
+        B4[Success Rates]
+    end
+
+    subgraph "Infrastructure Health"
+        C1[Server Resources]
+        C2[MCP Server Status]
+        C3[Database Performance]
+        C4[Network Latency]
+    end
+
+    subgraph "Business Intelligence"
+        D1[Development Velocity]
+        D2[Quality Trends]
+        D3[Cost Efficiency]
+        D4[Team Productivity]
+    end
+
+    A1 --&gt; E[Azure Monitor]
+    A2 --&gt; E
+    A3 --&gt; E
+    A4 --&gt; E
+
+    B1 --&gt; F[Agent Analytics]
+    B2 --&gt; F
+    B3 --&gt; F
+    B4 --&gt; F
+
+    C1 --&gt; G[Infrastructure Monitoring]
+    C2 --&gt; G
+    C3 --&gt; G
+    C4 --&gt; G
+
+    D1 --&gt; H[Business Dashboard]
+    D2 --&gt; H
+    D3 --&gt; H
+    D4 --&gt; H
+
+    E --&gt; I[Unified Dashboard]
+    F --&gt; I
+    G --&gt; I
+    H --&gt; I
+
+    I --&gt; J[Automated Alerting]
+    I --&gt; K[Performance Optimization]
+    I --&gt; L[Predictive Scaling]
+
+    classDef app fill:#e8f5e8,stroke:#2e7d32
+    classDef agent fill:#e3f2fd,stroke:#1565c0
+    classDef infra fill:#fff8e1,stroke:#f57c00
+    classDef business fill:#f3e5f5,stroke:#7b1fa2
+    classDef unified fill:#ffebee,stroke:#d32f2f
+
+    class A1,A2,A3,A4 app
+    class B1,B2,B3,B4 agent
+    class C1,C2,C3,C4 infra
+    class D1,D2,D3,D4 business
+    class I,J,K,L unified</code></pre>
+<h2 id="future-evolution-architecture">Future Evolution Architecture</h2>
+<h3 id="next-generation-agent-capabilities">Next-Generation Agent Capabilities</h3>
+<pre class="mermaid"><code>roadmap
+    title Agent Evolution Roadmap
+
+    Current (2024Q4) : 6 Specialized Agents
+                     : Manual Orchestration
+                     : Human Strategic Control
+
+    Q1 2025         : 12+ Domain Agents
+                    : Improved Autonomy
+                    : Enhanced Quality Gates
+
+    Q2 2025         : Agent-to-Agent Communication
+                    : Autonomous Planning
+                    : Self-Optimization
+
+    Q3 2025         : Predictive Development
+                    : Cross-Project Learning
+                    : Market Intelligence Integration
+
+    Q4 2025         : Self-Evolving Architecture
+                    : Autonomous Decision Making
+                    : Human Partnership Model</code></pre>
+<h3 id="scalability-architecture">Scalability Architecture</h3>
+<pre class="mermaid"><code>graph TB
+    subgraph "Current Scale (Single Developer)"
+        A[1 Human Developer]
+        B[6 AI Agents]
+        C[3 MCP Servers]
+        D[1 Application Domain]
+    end
+
+    subgraph "Team Scale (2-3 Developers)"
+        E[2-3 Human Developers]
+        F[12+ AI Agents]
+        G[6+ MCP Servers]
+        H[Multiple Application Domains]
+    end
+
+    subgraph "Enterprise Scale (5-10 Developers)"
+        I[5-10 Human Developers]
+        J[50+ AI Agents]
+        K[20+ MCP Servers]
+        L[Cross-Project Intelligence]
+    end
+
+    A --&gt; E
+    B --&gt; F
+    C --&gt; G
+    D --&gt; H
+
+    E --&gt; I
+    F --&gt; J
+    G --&gt; K
+    H --&gt; L
+
+    classDef current fill:#e8f5e8,stroke:#2e7d32
+    classDef team fill:#e3f2fd,stroke:#1565c0
+    classDef enterprise fill:#fff8e1,stroke:#f57c00
+
+    class A,B,C,D current
+    class E,F,G,H team
+    class I,J,K,L enterprise</code></pre>
+<hr />
+<p><strong>Technical Implementation Notes:</strong>
+- All diagrams based on actual Loan Avengers repository patterns
+- MCP server architecture matches implemented system
+- Agent specialization reflects current <code>.claude/agents/</code> and <code>.github/chatmodes/</code>
+- Quality gates match current CI/CD pipeline in <code>.github/workflows/</code>
+- Performance metrics based on actual development velocity observed
+- Scalability projections based on demonstrated patterns and capabilities</p>
+<p><em>These technical diagrams complement the strategic analysis in <code>ai-augmented-workflow-comparison.md</code> with implementation-specific details and architectural patterns.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Niksac Development Team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/niksacdev/loan-avengers" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/niksac" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

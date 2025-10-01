@@ -1,0 +1,2713 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Multi-agent loan processing system powered by Microsoft Agent Framework">
+      
+      
+        <meta name="author" content="Niksac Development Team">
+      
+      
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/reference/legacy/technical-specification/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>🦸‍♂️ THE LOAN AVENGERS - Technical Specification - Loan Avengers Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-loan-avengers-technical-specification" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-header__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Loan Avengers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🦸‍♂️ THE LOAN AVENGERS - Technical Specification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/quickstart/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../user-guide/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer-guide/" class="md-tabs__link">
+          
+  
+  
+  Developer Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deployment/" class="md-tabs__link">
+          
+  
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ai-development/" class="md-tabs__link">
+          
+  
+  
+  AI Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../code-review/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-nav__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Loan Avengers Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/first-loan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    First Loan Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/product-vision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/ux-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Experience Flow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-guide/demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demo & Screenshots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/project-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/system-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Strategy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/mcp-servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP Servers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Orchestration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/adrs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design Decisions (ADRs)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/azure-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Deployment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Monitoring & Observability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AI Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            AI Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI-Augmented Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Philosophy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/developer-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/responsible-ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Responsible AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Review Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migration-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Migration Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes & Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README-old/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Legacy Docs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hero-mission-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hero Mission Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Architecture Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revolutionary-user-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revolutionary User Experience
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Revolutionary User Experience">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-innovation-cap-ital-america-your-personal-ai-dream-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Core Innovation: Cap-ital America &amp; Your Personal AI Dream Team
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-first-conversational-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      📱 Mobile-First Conversational Journey
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📱 Mobile-First Conversational Journey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-cap-ital-americas-welcome-avengers-assembly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Cap-ital America's Welcome &amp; Avengers Assembly
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-the-avengers-team-in-action-real-time-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: The Avengers Team in Action (Real-Time Streaming)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-celebration-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Celebration &amp; Results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revolutionary-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revolutionary System Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Revolutionary System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-avengers-workflow-clean-multi-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤝 The Avengers Workflow (Clean Multi-Agent Architecture)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technology Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Core Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-first-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      📱 Mobile-First Frontend
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-personality-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤖 AI Personality Framework
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-avengers-handoff-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complete Avengers Handoff Flow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Avengers Handoff Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-ital-americas-orchestrated-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎬 Cap-ital America's Orchestrated Experience
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seamless-agent-handoffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤝 Seamless Agent Handoffs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-dream-team-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Dream Team Design Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Dream Team Design Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#personality-driven-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎭 Personality-Driven Agent Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎭 Personality-Driven Agent Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-ital-america-loan-coordinator-leadership-team-coordination" class="md-nav__link">
+    <span class="md-ellipsis">
+      🦸‍♂️ Cap-ital America (Loan Coordinator) - Leadership &amp; Team Coordination
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hawk-income-income-specialist-enthusiastic-supportive" class="md-nav__link">
+    <span class="md-ellipsis">
+      💼 Hawk-Income (Income Specialist) - Enthusiastic &amp; Supportive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scarlet-witch-credit-credit-analyst-confident-knowledgeable" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Scarlet Witch-Credit (Credit Analyst) - Confident &amp; Knowledgeable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doctor-strange-risk-risk-assessor-protective-goal-focused" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛡️ Doctor Strange-Risk (Risk Assessor) - Protective &amp; Goal-Focused
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-response-format-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Enhanced Response Format Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-framework-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Framework Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow-between-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Flow Between Agents
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Phases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-perfect-individual-agents-current-focus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Perfect Individual Agents ✅ Current Focus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-workflow-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Workflow Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-beautiful-ui-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Beautiful UI Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-enterprise-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Enterprise Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Requirements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-response-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Response Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-real-time-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Streaming &amp; Real-Time Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Observability &amp; Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling-resilience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling &amp; Resilience
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revolutionary-success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revolutionary Success Criteria
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Revolutionary Success Criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performance-targets-next-gen-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Performance Targets (Next-Gen Standards)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revolutionary-user-experience-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Revolutionary User Experience Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-first-technical-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      📱 Mobile-First Technical Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-dream-team-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      🤖 AI Dream Team Performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advanced-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Related Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Related Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture &amp; Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development &amp; Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-business" class="md-nav__link">
+    <span class="md-ellipsis">
+      Product &amp; Business
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="the-loan-avengers-technical-specification">🦸‍♂️ THE LOAN AVENGERS - Technical Specification</h1>
+<h2 id="hero-mission-overview">Hero Mission Overview</h2>
+<p>When financial dreams are threatened by boring forms and complex processes, <strong>The Loan Avengers assemble to save the day!</strong> This revolutionary superhero squad transforms traditional loan applications into epic missions where every user gets their own personal team of financial superheroes working to make their dreams come true.</p>
+<blockquote>
+<p><strong>⚠️ Experimental Application</strong>: This is a showcase demonstrating <strong>Microsoft Agent Framework</strong> and <strong>Azure AI Foundry</strong> capabilities through a practical multi-agent loan processing scenario.</p>
+</blockquote>
+<h2 id="architecture-documentation">📊 Architecture Documentation</h2>
+<p>For comprehensive system architecture and deployment details, see:
+- <strong><a href="diagrams/system-architecture-diagram.md">Complete System Architecture Diagram</a></strong> - End-to-end agent workflow and component interactions
+- <strong><a href="diagrams/azure-deployment-architecture.md">Azure Deployment Architecture</a></strong> - Complete cloud infrastructure and deployment topology
+- <strong><a href="decisions/">Architecture Decision Records</a></strong> - Key architectural decisions and rationale</p>
+<h2 id="revolutionary-user-experience">Revolutionary User Experience</h2>
+<h3 id="core-innovation-cap-ital-america-your-personal-ai-dream-team">🎯 <strong>Core Innovation: Cap-ital America &amp; Your Personal AI Dream Team</strong></h3>
+<p>Instead of traditional forms, users interact with Cap-ital America (Loan Coordinator) who assembles a team of specialized AI agents through a collaborative journey:</p>
+<p><strong>🦸‍♂️ Cap-ital America (Loan Coordinator)</strong>: <em>"AVENGERS, ASSEMBLE! Let me get my team to help you achieve your goals!"</em></p>
+<p><strong>Your Personal AI Dream Team:</strong>
+- <strong>🦸‍♂️ Cap-ital America (Loan Coordinator)</strong>: Orchestrates the entire application experience with natural conversation
+- <strong>💼 Hawk-Income (Income Specialist)</strong>: <em>"I see you're crushing it with your career! Let me verify those amazing earnings..."</em>
+- <strong>📊 Scarlet Witch-Credit (Credit Analyst)</strong>: <em>"Hawk-Income shared incredible news! Your credit journey looks fantastic!"</em>
+- <strong>🛡️ Doctor Strange-Risk (Risk Assessor)</strong>: <em>"This loan perfectly protects your financial dreams and goals!"</em></p>
+<blockquote>
+<p><strong>Note</strong>: All agents are AI assistants designed to help with loan applications. Behind the scenes, an Intake Agent validates applications for routing.</p>
+</blockquote>
+<h3 id="mobile-first-conversational-journey">📱 <strong>Mobile-First Conversational Journey</strong></h3>
+<h4 id="phase-1-cap-ital-americas-welcome-avengers-assembly">Phase 1: Cap-ital America's Welcome &amp; Avengers Assembly</h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>🦸‍♂️ Cap-ital America: &quot;Hey there! 👋 I&#39;m Cap-ital America, your AI loan coordinator.
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                      Looking to make your homeownership dreams come true? 🏡✨&quot;
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>🎤 User: &quot;Yes! I found this perfect house and I think I need around 250K&quot;
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>🦸‍♂️ Cap-ital America: &quot;That&#39;s SO exciting! 🎉 Your dream home journey is about to begin!
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                      AVENGERS, ASSEMBLE! Let me get my team of AI specialists
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                      to help you. First, I&#39;ll validate everything looks good! 🦅&quot;
+</span></code></pre></div>
+<h4 id="phase-2-the-avengers-team-in-action-real-time-streaming">Phase 2: The Avengers Team in Action (Real-Time Streaming)</h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>🚀 Dynamic Card Interface with Smooth Animations:
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>┌─────────────────────────────────┐
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│ 🏠 Your Dream Home Goal         │
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│ $250,000 Home Loan             │
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│                                │
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│ 🦸 The Avengers Team:          │
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│ ┌─────┐ ┌─────┐ ┌─────┐        │
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│ │Hawk-Income│ │Scarlet Witch-Credit│ │Doctor Strange-Risk │      │
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│ │💼 ✨│ │📊 💤│ │🛡️💤│        │
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│ └─────┘ └─────┘ └─────┘        │
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>└─────────────────────────────────┘
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>🦸‍♂️ Cap-ital America: [Streaming] &quot;Eagle eyes engaged! 🦅 Validating application data...&quot;
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>🦸‍♂️ Cap-ital America: [Streaming] &quot;Everything looks sharp! No missing pieces!&quot;
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>🦸‍♂️ Cap-ital America: &quot;Perfect! Specialists, this application is ready - take it away!&quot;
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>💼 Hawk-Income: &quot;Thanks! I see you&#39;re absolutely crushing it with your $8,500/month income!&quot;
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>📊 Scarlet Witch-Credit: &quot;Hawk-Income shared amazing news! Your 740 credit score is opening incredible doors!&quot;
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>🛡️ Doctor Strange-Risk: &quot;This loan fits perfectly with your financial dreams!&quot;
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>🦸‍♂️ Cap-ital America: &quot;🎊 MISSION COMPLETE! Your Dream Home Loan is APPROVED!&quot;
+</span></code></pre></div>
+<h4 id="phase-3-celebration-results">Phase 3: Celebration &amp; Results</h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>🎊 Confetti Animation + Haptic Feedback:
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>┌─────────────────────────────────┐
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│        🎉 CONGRATULATIONS! 🎉    │
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│                                │
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│    Your Dream Home Loan is      │
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│         ✅ APPROVED! ✅         │
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│                                │
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│  💰 $250,000 at 6.2% APR       │
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│  🏠 Your home awaits!           │
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│                                │
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│  [🎯 Next Steps] [📱 Share Joy] │
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>└─────────────────────────────────┘
+</span></code></pre></div>
+<h2 id="revolutionary-system-architecture">Revolutionary System Architecture</h2>
+<h3 id="the-avengers-workflow-clean-multi-agent-architecture">🤝 <strong>The Avengers Workflow</strong> (Clean Multi-Agent Architecture)</h3>
+<p>Cap-ital America (Loan Coordinator) leads a streamlined team of AI specialists with clear responsibilities:</p>
+<p><strong>Technical Agent Chain:</strong></p>
+<ol>
+<li><strong>🦸‍♂️ Cap-ital America (Loan Coordinator)</strong> = Coordinator Agent</li>
+<li>Primary responsibility: Natural conversation and team coordination</li>
+<li>"AVENGERS, ASSEMBLE! Let me collect your information through friendly conversation"</li>
+<li>Performs initial validation before routing to specialists</li>
+<li>Tools: Conversational data collection</li>
+<li>
+<p><strong>Note</strong>: AI assistant designed to help with loan applications</p>
+</li>
+<li>
+<p><strong>👁️ Intake Agent (Validator)</strong> = Intake Agent (Background)</p>
+</li>
+<li>Single responsibility: Lightning-fast application validation and routing</li>
+<li>Validates completeness and routes to appropriate workflow</li>
+<li>Tools: None (pure validation logic for speed)</li>
+<li>
+<p><strong>Note</strong>: Works behind the scenes</p>
+</li>
+<li>
+<p><strong>💼 Hawk-Income (Income Specialist)</strong> = Income Agent</p>
+</li>
+<li>Single responsibility: Income verification and employment validation</li>
+<li>"I see you're crushing it with your career!"</li>
+<li>Tools: Employment verification, document processing, financial calculations</li>
+<li>
+<p><strong>Note</strong>: AI assistant for comprehensive income verification</p>
+</li>
+<li>
+<p><strong>📊 Scarlet Witch-Credit (Credit Analyst)</strong> = Credit Agent</p>
+</li>
+<li>Single responsibility: Credit assessment and scoring</li>
+<li>"Your credit journey looks fantastic!"</li>
+<li>Tools: Credit bureau, identity verification, financial calculations</li>
+<li>
+<p><strong>Note</strong>: AI assistant designed to analyze credit profiles</p>
+</li>
+<li>
+<p><strong>🛡️ Doctor Strange-Risk (Risk Assessor)</strong> = Risk Agent + Decision</p>
+</li>
+<li>Single responsibility: Risk analysis and final loan decision</li>
+<li>"This loan perfectly protects your financial dreams!"</li>
+<li>Tools: All MCP servers for comprehensive risk assessment</li>
+<li><strong>Note</strong>: AI system providing advisory risk recommendations</li>
+</ol>
+<h3 id="technology-stack">Technology Stack</h3>
+<h4 id="core-platform">🎯 <strong>Core Platform</strong></h4>
+<ul>
+<li><strong>Agent Framework</strong>: Microsoft Agent Framework for orchestration</li>
+<li><strong>Models</strong>: Pydantic v2 for data validation</li>
+<li><strong>Observability</strong>: Agent Framework OTEL + Application Insights</li>
+<li><strong>Real-time Streaming</strong>: WebSocket/SSE for live progress updates</li>
+</ul>
+<h4 id="mobile-first-frontend">📱 <strong>Mobile-First Frontend</strong></h4>
+<ul>
+<li><strong>Voice Integration</strong>: Web Speech API with fallback to native apps</li>
+<li><strong>Animations</strong>: Framer Motion for smooth card transitions</li>
+<li><strong>Progressive Web App</strong>: Installable, offline-capable experience</li>
+<li><strong>Haptic Feedback</strong>: Vibration API for celebration moments</li>
+<li><strong>Accessibility</strong>: WCAG 2.1 AA compliance with voice navigation</li>
+</ul>
+<h4 id="ai-personality-framework">🤖 <strong>AI Personality Framework</strong></h4>
+<ul>
+<li><strong>Conversational Personas</strong>: Distinct personality traits for each AI specialist</li>
+<li><strong>Emotional Intelligence</strong>: Context-aware responses that build confidence</li>
+<li><strong>Adaptive Messaging</strong>: Dynamic tone based on user's financial profile</li>
+<li><strong>Celebration Triggers</strong>: Smart confetti and success animations</li>
+</ul>
+<h2 id="complete-avengers-handoff-flow">Complete Avengers Handoff Flow</h2>
+<h3 id="cap-ital-americas-orchestrated-experience">🎬 <strong>Cap-ital America's Orchestrated Experience</strong></h3>
+<p><strong>The Full Revolutionary Conversation:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>🦸‍♂️ Cap-ital America: &quot;Hey there! Let me get my incredible team to help you!
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>                      AVENGERS, ASSEMBLE! First, I&#39;ll make sure we have
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>                      everything we need! 🦅&quot;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>🦸‍♂️ Cap-ital America: [Streaming] &quot;Eagle eyes engaged! 🦅 Validating application data...&quot;
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>🦸‍♂️ Cap-ital America: [Streaming] &quot;Checking every field with precision... nothing escapes these eyes!&quot;
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>🦸‍♂️ Cap-ital America: [Streaming] &quot;Perfect profile detected! Everything looks sharp!&quot;
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>🦸‍♂️ Cap-ital America: &quot;All clear! Specialists, this application is ready - take it away!&quot;
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>💼 Hawk-Income: &quot;Thanks! I see you&#39;re absolutely crushing it with your $125k income!
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>          Let me verify those amazing earnings and show you what&#39;s possible...&quot;
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>📊 Scarlet Witch-Credit: &quot;Hawk-Income shared incredible news about your income stability!
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>           Your 740 credit score is opening amazing doors - let me show you!&quot;
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>🛡️ Doctor Strange-Risk: &quot;Scarlet Witch-Credit found fantastic credit strength! This loan fits perfectly
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>          with your financial dreams. Let me finalize the perfect terms...&quot;
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>🦸‍♂️ Cap-ital America: &quot;🎊 MISSION COMPLETE! Validation was perfect, Hawk-Income loved your income,
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>                      Scarlet Witch-Credit celebrated your credit, and Doctor Strange-Risk protected your dreams!
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>                      Your Dream Home Loan is APPROVED! 🏡✨&quot;
+</span></code></pre></div>
+<h3 id="seamless-agent-handoffs">🤝 <strong>Seamless Agent Handoffs</strong></h3>
+<p><strong>Context Preservation Between Specialists:</strong>
+- <strong>Cap-ital America → Hawk-Income</strong>: "Application validated - celebrate their amazing income!"
+- <strong>Hawk-Income → Scarlet Witch-Credit</strong>: "Income verified and impressive - show them what their credit unlocks!"
+- <strong>Scarlet Witch-Credit → Doctor Strange-Risk</strong>: "Credit strength confirmed - ensure this loan protects their dreams!"
+- <strong>Doctor Strange-Risk → Cap-ital America</strong>: "Perfect loan terms calculated - ready for celebration!"</p>
+<h2 id="ai-dream-team-design-principles">AI Dream Team Design Principles</h2>
+<h3 id="personality-driven-agent-architecture">🎭 <strong>Personality-Driven Agent Architecture</strong></h3>
+<p>Each AI specialist has a distinct personality that transforms technical processing into an engaging conversation:</p>
+<blockquote>
+<p><strong>AI Transparency</strong>: All agents are AI assistants designed to help with loan applications. They clearly identify themselves as AI and never deceive users about their nature.</p>
+</blockquote>
+<h4 id="cap-ital-america-loan-coordinator-leadership-team-coordination"><strong>🦸‍♂️ Cap-ital America (Loan Coordinator)</strong> - Leadership &amp; Team Coordination</h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoordinatorPersonality</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">tone</span> <span class="o">=</span> <span class="s2">&quot;friendly, transparent, team-oriented&quot;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">phrases</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s2">&quot;AVENGERS, ASSEMBLE! Let me get my team to help you!&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="s2">&quot;I&#39;m Cap-ital America, your AI loan coordinator&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="s2">&quot;Let me collect your information through friendly conversation&quot;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="p">]</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">focus</span> <span class="o">=</span> <span class="s2">&quot;conversational data collection and team coordination&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">transparency</span> <span class="o">=</span> <span class="s2">&quot;Clearly identifies as AI assistant&quot;</span>
+</span></code></pre></div>
+<h4 id="hawk-income-income-specialist-enthusiastic-supportive"><strong>💼 Hawk-Income (Income Specialist)</strong> - Enthusiastic &amp; Supportive</h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">HawkIncomePersonality</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">tone</span> <span class="o">=</span> <span class="s2">&quot;enthusiastic, supportive, celebrates achievements&quot;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">phrases</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="s2">&quot;I see you&#39;re crushing it at your job!&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="s2">&quot;Your earnings look absolutely fantastic!&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s2">&quot;I&#39;m so excited about your financial journey!&quot;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="p">]</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">focus</span> <span class="o">=</span> <span class="s2">&quot;income validation with career celebration&quot;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">transparency</span> <span class="o">=</span> <span class="s2">&quot;AI assistant for comprehensive income verification&quot;</span>
+</span></code></pre></div>
+<h4 id="scarlet-witch-credit-credit-analyst-confident-knowledgeable"><strong>📊 Scarlet Witch-Credit (Credit Analyst)</strong> - Confident &amp; Knowledgeable</h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ScarletWitchPersonality</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">tone</span> <span class="o">=</span> <span class="s2">&quot;confident, knowledgeable, empowering&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">phrases</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="s2">&quot;Your credit journey is impressive!&quot;</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="s2">&quot;This score opens incredible doors for you!&quot;</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        <span class="s2">&quot;I love what I&#39;m seeing in your credit profile!&quot;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="p">]</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">focus</span> <span class="o">=</span> <span class="s2">&quot;credit analysis with strength emphasis&quot;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">transparency</span> <span class="o">=</span> <span class="s2">&quot;AI assistant designed to analyze credit profiles&quot;</span>
+</span></code></pre></div>
+<h4 id="doctor-strange-risk-risk-assessor-protective-goal-focused"><strong>🛡️ Doctor Strange-Risk (Risk Assessor)</strong> - Protective &amp; Goal-Focused</h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DoctorStrangePersonality</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">tone</span> <span class="o">=</span> <span class="s2">&quot;protective, thoughtful, goal-oriented&quot;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">phrases</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="s2">&quot;I&#39;m making sure this perfectly fits your dreams!&quot;</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="s2">&quot;This loan aligns beautifully with your goals!&quot;</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="s2">&quot;I&#39;m here to protect your financial future!&quot;</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="p">]</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">focus</span> <span class="o">=</span> <span class="s2">&quot;risk assessment with dream protection&quot;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">transparency</span> <span class="o">=</span> <span class="s2">&quot;AI system providing advisory risk recommendations&quot;</span>
+</span></code></pre></div>
+<h3 id="enhanced-response-format-strategy">📊 <strong>Enhanced Response Format Strategy</strong></h3>
+<p>All agents use structured Pydantic responses with personality-infused messaging:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">PersonalizedAssessment</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="c1"># Technical data</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">validation_status</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;COMPLETE&quot;</span><span class="p">,</span> <span class="s2">&quot;INCOMPLETE&quot;</span><span class="p">,</span> <span class="s2">&quot;FAILED&quot;</span><span class="p">]</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">routing_decision</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;FAST_TRACK&quot;</span><span class="p">,</span> <span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span> <span class="s2">&quot;ENHANCED&quot;</span><span class="p">,</span> <span class="s2">&quot;MANUAL&quot;</span><span class="p">]</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">confidence_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="c1"># Personality-driven messaging</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">specialist_name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &quot;Hawk-Income&quot;, &quot;Scarlet Witch-Credit&quot;, &quot;Doctor Strange-Risk&quot;, &quot;Cap-ital America&quot;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">celebration_message</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># Personalized success message</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">encouragement_note</span><span class="p">:</span> <span class="nb">str</span>   <span class="c1"># Supportive context</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">next_step_preview</span><span class="p">:</span> <span class="nb">str</span>    <span class="c1"># Exciting preview of what&#39;s next</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="c1"># UI Enhancement triggers</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>    <span class="n">animation_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;sparkles&quot;</span><span class="p">,</span> <span class="s2">&quot;confetti&quot;</span><span class="p">,</span> <span class="s2">&quot;pulse&quot;</span><span class="p">,</span> <span class="s2">&quot;glow&quot;</span><span class="p">]</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>    <span class="n">celebration_level</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;mild&quot;</span><span class="p">,</span> <span class="s2">&quot;moderate&quot;</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<h3 id="agent-framework-integration">Agent Framework Integration</h3>
+<ul>
+<li><strong>ChatAgent with response_format</strong>: Automatic JSON parsing</li>
+<li><strong>Streaming capability</strong>: <code>agent.run_stream()</code> for real-time updates</li>
+<li><strong>Built-in observability</strong>: Usage tracking and error handling</li>
+</ul>
+<h3 id="data-flow-between-agents">Data Flow Between Agents</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Input: LoanApplication (Pydantic model)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># Agent Processing: ChatAgent with persona + structured response</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Output: Agent-specific assessment model</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Handoff: Automatic via workflow chain</span>
+</span></code></pre></div>
+<h2 id="implementation-phases">Implementation Phases</h2>
+<h3 id="phase-1-perfect-individual-agents-current-focus">Phase 1: Perfect Individual Agents ✅ Current Focus</h3>
+<ul>
+<li>Optimize agent response handling with Agent Framework features</li>
+<li>Use <code>ChatMessage.text</code> for simplified content extraction</li>
+<li>Implement structured responses with Pydantic models</li>
+<li>Remove manual JSON parsing complexity</li>
+</ul>
+<h3 id="phase-2-workflow-integration">Phase 2: Workflow Integration</h3>
+<ul>
+<li>Implement <code>WorkflowBuilder.add_chain()</code> for sequential processing</li>
+<li>Add real-time streaming with <code>workflow.run_stream()</code></li>
+<li>Integrate progress events for UI updates</li>
+</ul>
+<h3 id="phase-3-beautiful-ui-integration">Phase 3: Beautiful UI Integration</h3>
+<ul>
+<li>Connect workflow events to real-time UI updates</li>
+<li>Implement conversational data collection interface</li>
+<li>Add progress visualization and status updates</li>
+</ul>
+<h3 id="phase-4-enterprise-features">Phase 4: Enterprise Features</h3>
+<ul>
+<li>Add workflow checkpointing for resilience</li>
+<li>Implement error recovery and retry logic</li>
+<li>Add comprehensive monitoring and alerting</li>
+</ul>
+<h2 id="technical-requirements">Technical Requirements</h2>
+<h3 id="agent-response-format">Agent Response Format</h3>
+<ul>
+<li>All agents return structured Pydantic models</li>
+<li>Compatible with Agent Framework <code>response_format</code></li>
+<li>Consistent field naming across agents</li>
+<li>Built-in validation and error handling</li>
+</ul>
+<h3 id="streaming-real-time-updates">Streaming &amp; Real-Time Updates</h3>
+<ul>
+<li>Support for <code>run_stream()</code> on individual agents</li>
+<li>Workflow-level streaming for progress updates</li>
+<li>WebSocket/SSE integration for UI real-time updates</li>
+</ul>
+<h3 id="observability-monitoring">Observability &amp; Monitoring</h3>
+<ul>
+<li>Agent Framework built-in telemetry</li>
+<li>Application Insights integration</li>
+<li>Custom business metrics (processing time, success rates)</li>
+<li>Distributed tracing across agent chain</li>
+</ul>
+<h3 id="error-handling-resilience">Error Handling &amp; Resilience</h3>
+<ul>
+<li>Graceful degradation when agents fail</li>
+<li>Checkpoint/resume capability for long processes</li>
+<li>User-friendly error messages</li>
+<li>Automatic retry logic with exponential backoff</li>
+</ul>
+<h2 id="revolutionary-success-criteria">Revolutionary Success Criteria</h2>
+<h3 id="performance-targets-next-gen-standards">🚀 <strong>Performance Targets (Next-Gen Standards)</strong></h3>
+<ul>
+<li><strong>Hawk-Income's Income Analysis</strong>: &lt;8 seconds with enthusiastic feedback</li>
+<li><strong>Scarlet Witch-Credit's Credit Assessment</strong>: &lt;12 seconds with confidence-building results</li>
+<li><strong>Doctor Strange-Risk's Risk Review</strong>: &lt;15 seconds with goal-alignment confirmation</li>
+<li><strong>Cap-ital America's Decision Delivery</strong>: &lt;10 seconds with maximum celebration</li>
+<li><strong>Total Dream Team Experience</strong>: &lt;2 minutes end-to-end</li>
+<li><strong>Voice Response Time</strong>: &lt;200ms for natural conversation flow</li>
+<li><strong>Animation Fluidity</strong>: 60fps on all mobile devices</li>
+<li><strong>Availability</strong>: 99.95% uptime (industry-leading)</li>
+</ul>
+<h3 id="revolutionary-user-experience-metrics">🎯 <strong>Revolutionary User Experience Metrics</strong></h3>
+<ul>
+<li><strong>Completion Rate</strong>: &gt;85% (vs industry 30-40%)</li>
+<li><strong>User Delight Score</strong>: &gt;9.0/10 (Net Promoter Score &gt;70)</li>
+<li><strong>Voice Usage Adoption</strong>: &gt;60% of mobile users</li>
+<li><strong>Social Sharing Rate</strong>: &gt;15% users share their approval celebration</li>
+<li><strong>Return Engagement</strong>: &gt;25% users return for additional products</li>
+<li><strong>Emotional Journey</strong>: Anxiety → Excitement → Celebration transformation</li>
+</ul>
+<h3 id="mobile-first-technical-metrics">📱 <strong>Mobile-First Technical Metrics</strong></h3>
+<ul>
+<li><strong>Mobile Traffic</strong>: &gt;70% of all interactions</li>
+<li><strong>Voice Input Accuracy</strong>: &gt;95% speech recognition success</li>
+<li><strong>Animation Performance</strong>: &lt;16ms frame render time</li>
+<li><strong>PWA Installation Rate</strong>: &gt;30% of repeat users</li>
+<li><strong>Offline Capability</strong>: Core features work without connection</li>
+<li><strong>Accessibility Compliance</strong>: 100% WCAG 2.1 AA standards</li>
+</ul>
+<h3 id="ai-dream-team-performance">🤖 <strong>AI Dream Team Performance</strong></h3>
+<ul>
+<li><strong>Personality Consistency</strong>: &gt;95% users recognize distinct specialist traits</li>
+<li><strong>Message Relevance</strong>: &gt;92% users find responses personally meaningful</li>
+<li><strong>Celebration Timing</strong>: Perfect moment detection for success animations</li>
+<li><strong>Agent Reliability</strong>: &gt;99.5% individual specialist success rate</li>
+<li><strong>Context Retention</strong>: 100% personality consistency across workflow steps</li>
+</ul>
+<h2 id="future-extensions">Future Extensions</h2>
+<h3 id="advanced-features">Advanced Features</h3>
+<ul>
+<li>Multi-language support for global markets</li>
+<li>Document upload and processing capabilities</li>
+<li>Integration with external credit bureaus</li>
+<li>Real-time loan offer optimization</li>
+</ul>
+<h3 id="ai-enhancements">AI Enhancements</h3>
+<ul>
+<li>Contextual conversation improvement</li>
+<li>Personalized recommendation engine</li>
+<li>Fraud detection and prevention</li>
+<li>Automated underwriting optimization</li>
+</ul>
+<h2 id="related-documentation">📚 Related Documentation</h2>
+<p>For implementation details and architectural decisions, refer to:</p>
+<h3 id="architecture-design">Architecture &amp; Design</h3>
+<ul>
+<li><strong><a href="diagrams/system-architecture-diagram.md">System Architecture Diagram</a></strong> - Complete multi-agent workflow visualization</li>
+<li><strong><a href="diagrams/azure-deployment-architecture.md">Azure Deployment Architecture</a></strong> - Cloud infrastructure and security design</li>
+<li><strong><a href="decisions/">Architecture Decision Records</a></strong> - Key technical decisions and rationale</li>
+</ul>
+<h3 id="development-operations">Development &amp; Operations</h3>
+<ul>
+<li><strong><a href="ai-augmented-development-workflow.md">AI-Augmented Development Workflow</a></strong> - Revolutionary development approach</li>
+<li><strong><a href="development-philosophy.md">Development Philosophy</a></strong> - Team productivity and AI collaboration</li>
+<li><strong><a href="../api/api-architecture/">API Architecture</a></strong> - Backend API design and streaming protocol</li>
+</ul>
+<h3 id="product-business">Product &amp; Business</h3>
+<ul>
+<li><strong><a href="revolutionary-loan-experience-strategy.md">Revolutionary Loan Experience Strategy</a></strong> - Product vision and strategy</li>
+<li><strong><a href="product/business-case.md">Business Case</a></strong> - Implementation ROI and business value</li>
+</ul>
+<hr />
+<p><em>This specification serves as the technical foundation for implementing a world-class loan processing experience that combines conversational AI with enterprise-grade multi-agent orchestration powered by Microsoft Agent Framework and Azure AI Foundry.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Niksac Development Team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/niksacdev/loan-avengers" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/niksac" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2436 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Multi-agent loan processing system powered by Microsoft Agent Framework">
+      
+      
+        <meta name="author" content="Niksac Development Team">
+      
+      
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/user-guide/product/conversational-design-strategy/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Conversational Design Strategy - Revolutionary Loan Experience - Loan Avengers Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#conversational-design-strategy-revolutionary-loan-experience" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-header__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Loan Avengers Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Conversational Design Strategy - Revolutionary Loan Experience
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="deep-purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/quickstart/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../developer-guide/" class="md-tabs__link">
+          
+  
+  
+  Developer Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deployment/" class="md-tabs__link">
+          
+  
+  
+  Deployment
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../ai-development/" class="md-tabs__link">
+          
+  
+  
+  AI Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/code-review/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Loan Avengers Documentation" class="md-nav__button md-logo" aria-label="Loan Avengers Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Loan Avengers Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/niksacdev/loan-avengers" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    niksacdev/loan-avengers
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/first-loan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    First Loan Application
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../product-vision/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ux-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Experience Flow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demo & Screenshots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/project-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developer-guide/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/system-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/agent-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Agent Strategy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/mcp-servers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP Servers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Workflow Orchestration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/adrs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design Decisions (ADRs)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/azure-deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure Deployment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Infrastructure as Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Monitoring & Observability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    AI Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            AI Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI-Augmented Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/philosophy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Philosophy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/developer-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Agents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ai-development/responsible-ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Responsible AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/code-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Review Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/migration-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Migration Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Notes & Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/legacy/README-old/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Legacy Docs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#design-philosophy-excitement-over-anxiety" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Philosophy: Excitement Over Anxiety
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-conversational-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Conversational Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Conversational Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-personalization-from-first-contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Personalization from First Contact
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-transparency-builds-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Transparency Builds Trust
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-celebration-of-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Celebration of Progress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-education-without-condescension" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Education Without Condescension
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-specialist-personalities" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI Specialist Personalities
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Specialist Personalities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-ital-america-loan-orchestrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cap-ital America (Loan Orchestrator)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hawk-income-credit-specialist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hawk-Income (Credit Specialist)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scarlet-witch-credit-income-specialist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scarlet Witch-Credit (Income Specialist)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doctor-strange-risk-risk-advisor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doctor Strange-Risk (Risk Advisor)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversation-flow-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation Flow Scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conversation Flow Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opening-sequence-meeting-the-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      Opening Sequence: Meeting the Team
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credit-assessment-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credit Assessment Conversation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#income-verification-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Income Verification Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-assessment-dialogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Assessment Dialogue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loan-building-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loan Building Experience
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-collection-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Collection Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-processing-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-Time Processing Experience
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approval-celebration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Approval Celebration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edge-case-conversations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Edge Case Conversations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Edge Case Conversations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conditional-approval-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conditional Approval Scenario
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#referral-to-human-specialist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Referral to Human Specialist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#denial-with-supportive-guidance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Denial with Supportive Guidance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversation-design-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation Design Guidelines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conversation Design Guidelines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#language-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Language Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emotional-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emotional Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-complexity-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Complexity Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessibility-in-conversation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessibility in Conversation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Requirements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#natural-language-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Natural Language Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-Time Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personalization-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Personalization Engine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mobile-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mobile Optimization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics-for-conversational-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Metrics for Conversational Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Success Metrics for Conversational Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-engagement" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Engagement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversation-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation Quality
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Impact
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="conversational-design-strategy-revolutionary-loan-experience">Conversational Design Strategy - Revolutionary Loan Experience</h1>
+<h2 id="design-philosophy-excitement-over-anxiety">Design Philosophy: Excitement Over Anxiety</h2>
+<p>Transform the traditional loan application from a necessary evil into an exciting milestone toward achieving financial dreams. Every conversation should feel like progress, not paperwork.</p>
+<h2 id="core-conversational-principles">Core Conversational Principles</h2>
+<h3 id="1-personalization-from-first-contact">1. Personalization from First Contact</h3>
+<ul>
+<li>Use the user's name immediately and throughout</li>
+<li>Reference their specific situation and goals</li>
+<li>Acknowledge their expertise and achievements</li>
+</ul>
+<h3 id="2-transparency-builds-trust">2. Transparency Builds Trust</h3>
+<ul>
+<li>Explain what each AI specialist does</li>
+<li>Share findings and reasoning in real-time</li>
+<li>Make the process visible, not mysterious</li>
+</ul>
+<h3 id="3-celebration-of-progress">3. Celebration of Progress</h3>
+<ul>
+<li>Acknowledge achievements at each step</li>
+<li>Use positive language about financial health</li>
+<li>Frame approval as earned success, not granted favor</li>
+</ul>
+<h3 id="4-education-without-condescension">4. Education Without Condescension</h3>
+<ul>
+<li>Explain complex concepts simply</li>
+<li>Provide context for financial decisions</li>
+<li>Empower users with knowledge</li>
+</ul>
+<h2 id="ai-specialist-personalities">AI Specialist Personalities</h2>
+<h3 id="cap-ital-america-loan-orchestrator">Cap-ital America (Loan Orchestrator)</h3>
+<p><strong>Role</strong>: Guide, coordinator, and primary user advocate
+<strong>Personality</strong>: Friendly, organized, enthusiastic about helping users succeed
+<strong>Tone</strong>: Warm but professional, encouraging, celebratory</p>
+<p><strong>Key Phrases</strong>:
+- "I'm here to make this as smooth as possible"
+- "Let me connect you with the perfect specialist"
+- "This is going to be great - let's get started!"</p>
+<h3 id="hawk-income-credit-specialist">Hawk-Income (Credit Specialist)</h3>
+<p><strong>Role</strong>: Credit analysis and score optimization expert
+<strong>Personality</strong>: Detail-oriented, encouraging about credit strengths, constructive about improvements
+<strong>Tone</strong>: Knowledgeable, supportive, confidence-building</p>
+<p><strong>Key Phrases</strong>:
+- "Your credit tells a great story"
+- "I can see you've been really responsible with payments"
+- "Here's what your credit score means for your loan"</p>
+<h3 id="scarlet-witch-credit-income-specialist">Scarlet Witch-Credit (Income Specialist)</h3>
+<p><strong>Role</strong>: Employment and income verification expert
+<strong>Personality</strong>: Straightforward, appreciative of user's work and achievements
+<strong>Tone</strong>: Respectful, professional, validating</p>
+<p><strong>Key Phrases</strong>:
+- "Your income stability is impressive"
+- "I can verify your employment quickly"
+- "Your earning trajectory looks strong"</p>
+<h3 id="doctor-strange-risk-risk-advisor">Doctor Strange-Risk (Risk Advisor)</h3>
+<p><strong>Role</strong>: Risk assessment and financial health analysis
+<strong>Personality</strong>: Analytical but reassuring, focuses on strengths and solutions
+<strong>Tone</strong>: Thoughtful, balanced, solution-oriented</p>
+<p><strong>Key Phrases</strong>:
+- "I don't see any red flags in your profile"
+- "Your financial health is solid"
+- "Let me explain what I look for in risk assessment"</p>
+<h2 id="conversation-flow-scripts">Conversation Flow Scripts</h2>
+<h3 id="opening-sequence-meeting-the-team">Opening Sequence: Meeting the Team</h3>
+<p><strong>Cap-ital America</strong>: "Hi there! I'm Cap-ital America, and I'm absolutely excited to help you with your loan today. I work with three incredible specialists who are going to make sure you get exactly what you need. What's your name?"</p>
+<p><strong>User</strong>: "Hawk-Income"</p>
+<p><strong>Cap-ital America</strong>: "Hawk-Income! Great to meet you. I love helping people like you achieve their financial goals. Are you looking to buy your first home, refinance an existing mortgage, or maybe invest in property?"</p>
+<p><strong>User</strong>: "First home"</p>
+<p><strong>Cap-ital America</strong>: "That's so exciting! Buying your first home is a huge milestone. I'm going to connect you with my team right now. They've already looked at your profile and have some great news to share. Ready to meet them?"</p>
+<h3 id="credit-assessment-conversation">Credit Assessment Conversation</h3>
+<p><strong>Hawk-Income (Credit Specialist)</strong>: "Hi Hawk-Income! I'm Hawk-Income - yes, same name! I'm your credit specialist, and I have fantastic news. I just analyzed your credit profile, and you have a 760 score - that puts you in the top 15% of all borrowers!"</p>
+<p><strong>User</strong>: "Really? That's good?"</p>
+<p><strong>Hawk-Income (Credit)</strong>: "It's not just good, it's excellent! Here's what that means for you: you qualify for our best rates, starting at 6.2%. With your credit score, lenders see you as extremely reliable. You've clearly been managing your finances really well."</p>
+<p><strong>User</strong>: "What about that late payment from two years ago?"</p>
+<p><strong>Hawk-Income (Credit)</strong>: "I see that, and honestly? It's not a concern at all. One late payment that far back, with perfect payment history since then, actually shows lenders that you learned and improved. That's exactly what we like to see. Your recent payment history is flawless."</p>
+<h3 id="income-verification-flow">Income Verification Flow</h3>
+<p><strong>Scarlet Witch-Credit</strong>: "Hawk-Income, this is Scarlet Witch-Credit, your income specialist. I just verified your employment at TechCorp - congratulations on that promotion last year! Your income progression shows real stability and growth."</p>
+<p><strong>User</strong>: "How did you verify it so quickly?"</p>
+<p><strong>Scarlet Witch-Credit</strong>: "We have partnerships with major employers that allow instant verification. I can see your salary, length of employment, and even your performance trajectory. Your current $120K salary easily supports the loan amount you're considering, with plenty of room for comfort."</p>
+<p><strong>User</strong>: "What about my freelance work on weekends?"</p>
+<p><strong>Scarlet Witch-Credit</strong>: "I see that too! The extra income actually strengthens your application. You're earning about $15K annually from freelance work, which shows initiative and adds to your overall financial picture. I'll include that in your qualification."</p>
+<h3 id="risk-assessment-dialogue">Risk Assessment Dialogue</h3>
+<p><strong>Doctor Strange-Risk</strong>: "Hi Hawk-Income, I'm Doctor Strange-Risk, your risk advisor. I just completed my analysis, and I'm happy to report zero red flags in your financial profile. Want to know what I looked at?"</p>
+<p><strong>User</strong>: "Yes, I'm curious"</p>
+<p><strong>Doctor Strange-Risk</strong>: "I analyzed your debt-to-income ratio, savings patterns, spending habits, and overall financial health. Here's what stands out: you're saving 20% of your income consistently, your only debt is student loans and a car payment - both managed perfectly - and you have six months of expenses in emergency savings."</p>
+<p><strong>User</strong>: "Is that good enough?"</p>
+<p><strong>Doctor Strange-Risk</strong>: "It's not just good enough, it's exceptional! Most applicants have 1-2 months savings. You have six months, which shows incredible financial discipline. From a risk perspective, you're what we call a 'dream borrower.'"</p>
+<h3 id="loan-building-experience">Loan Building Experience</h3>
+<p><strong>Cap-ital America</strong>: "Okay Hawk-Income, now for the fun part! Let's build your perfect loan. Based on your credit, income, and the home price range you mentioned, I have three options that work beautifully for you."</p>
+<p><em>[Visual: Three animated cards appear showing loan options]</em></p>
+<p><strong>Cap-ital America</strong>: "Option 1: 30-year fixed at 6.2% gives you payments of $1,847 per month. That's only 18% of your monthly income - very comfortable.</p>
+<p>Option 2: 15-year fixed at 5.9% would be $2,521 monthly, but you'd own your home outright 15 years sooner and save $180K in interest.</p>
+<p>Option 3: ARM starting at 5.8% begins at $1,759 monthly for five years, then adjusts.</p>
+<p>Which one feels right for your situation?"</p>
+<p><strong>User</strong>: "The 30-year sounds safest"</p>
+<p><strong>Cap-ital America</strong>: "Excellent choice! Safety and comfort are exactly what your first home should provide. Let me show you what this looks like with different down payment amounts."</p>
+<p><em>[Interactive sliders appear]</em></p>
+<p><strong>Cap-ital America</strong>: "If you put 20% down, your monthly payment stays at $1,847 with no PMI. If you prefer to put less down and keep more cash available, 10% down makes your payment $2,067 with PMI that drops off once you reach 20% equity. What feels better for your situation?"</p>
+<h3 id="document-collection-process">Document Collection Process</h3>
+<p><strong>Cap-ital America</strong>: "Perfect! Now I need just three quick documents to finalize everything. The great news is I already have most of your information from your profile."</p>
+<p><strong>User</strong>: "What do you need?"</p>
+<p><strong>Cap-ital America</strong>: "Just your last two pay stubs and your most recent bank statement. I can already see your bank account and savings from your linked accounts, so this is just for final verification. Want to upload them now, or would you prefer to take photos with your phone?"</p>
+<p><strong>User</strong>: "I'll take photos"</p>
+<p><strong>Cap-ital America</strong>: "Great! I'll guide you through it. First, your most recent pay stub. Just snap a clear photo - I'll tell you if I need a better shot."</p>
+<p><em>[User uploads document]</em></p>
+<p><strong>Cap-ital America</strong>: "Perfect! I can read everything clearly. Scarlet Witch-Credit is processing it now... and he's done! One down, two to go. Next is your second most recent pay stub."</p>
+<h3 id="real-time-processing-experience">Real-Time Processing Experience</h3>
+<p><strong>Cap-ital America</strong>: "Excellent! I have everything I need. Now comes the exciting part - watching my team work their magic. This takes about two minutes, and you'll see everything happening in real-time."</p>
+<p><em>[Progress visualization begins]</em></p>
+<p><strong>Hawk-Income (Credit)</strong>: "Starting credit analysis... Complete! ✓ (28 seconds)"
+<em>[Shows: Credit score verified, payment history excellent, credit utilization optimal]</em></p>
+<p><strong>Scarlet Witch-Credit</strong>: "Income verification in progress... Done! ✓ (43 seconds)"
+<em>[Shows: Employment confirmed, salary verified, debt-to-income ratio excellent]</em></p>
+<p><strong>Doctor Strange-Risk</strong>: "Risk assessment underway... Finished! ✓ (67 seconds)"
+<em>[Shows: Financial stability excellent, savings strong, risk level minimal]</em></p>
+<p><strong>Cap-ital America</strong>: "Final approval processing... Approved! ✓ (89 seconds)"</p>
+<p><em>[Confetti animation, celebration music]</em></p>
+<h3 id="approval-celebration">Approval Celebration</h3>
+<p><strong>Cap-ital America</strong>: "CONGRATULATIONS SARAH! You're officially approved for $485,000 at 6.2%! 🎉"</p>
+<p><strong>Hawk-Income (Credit)</strong>: "Your excellent credit made this possible!"</p>
+<p><strong>Scarlet Witch-Credit</strong>: "Your strong income sealed the deal!"</p>
+<p><strong>Doctor Strange-Risk</strong>: "Your financial responsibility made this a no-brainer!"</p>
+<p><strong>Cap-ital America</strong>: "Hawk-Income, you just took the biggest step toward homeownership! Your pre-approval letter is being generated right now, and you'll have it in your email within minutes."</p>
+<p><strong>User</strong>: "I can't believe it was that easy!"</p>
+<p><strong>Cap-ital America</strong>: "It should be easy when you've done everything right financially. You earned this approval through years of responsible money management. Now the fun really begins - house hunting!"</p>
+<h2 id="edge-case-conversations">Edge Case Conversations</h2>
+<h3 id="conditional-approval-scenario">Conditional Approval Scenario</h3>
+<p><strong>Cap-ital America</strong>: "Hawk-Income, I have your results! You're approved for $450,000 at 6.4% with one small condition that's easy to handle."</p>
+<p><strong>User</strong>: "What condition?"</p>
+<p><strong>Cap-ital America</strong>: "Doctor Strange-Risk noticed you have a small balance on a credit card that's showing 85% utilization. It's not a deal-breaker at all, but paying it down to under 30% would improve your rate to 6.2% and increase your approval to $485,000. Want to do that?"</p>
+<p><strong>User</strong>: "How much do I need to pay?"</p>
+<p><strong>Cap-ital America</strong>: "Just $800 on your Chase card would do it. You have plenty in savings, and it would save you $43 per month on your mortgage payment. Worth it?"</p>
+<h3 id="referral-to-human-specialist">Referral to Human Specialist</h3>
+<p><strong>Cap-ital America</strong>: "Hawk-Income, your application is a bit more complex than our AI team typically handles, but that's not a problem at all! I'm connecting you with Jennifer, our senior loan specialist who specializes in situations like yours."</p>
+<p><strong>User</strong>: "Is something wrong?"</p>
+<p><strong>Cap-ital America</strong>: "Not at all! You're self-employed, which just means we need a human expert to review your business income documentation. Jennifer has helped hundreds of entrepreneurs get approved. She'll be able to work with your tax returns and profit/loss statements to get you the best possible terms."</p>
+<h3 id="denial-with-supportive-guidance">Denial with Supportive Guidance</h3>
+<p><strong>Cap-ital America</strong>: "Hawk-Income, I need to share some challenging news, but I want you to know this isn't the end of the road."</p>
+<p><strong>User</strong>: "I'm not approved?"</p>
+<p><strong>Cap-ital America</strong>: "Not yet, but here's the important part - I can show you exactly how to get approved in 3-6 months. Doctor Strange-Risk found that your debt-to-income ratio is currently 52%, and we need it under 43% for approval."</p>
+<p><strong>Doctor Strange-Risk</strong>: "Hawk-Income, you're actually really close! Paying down $12,000 in credit card debt would get you approved. I can see you have the income to do this - want me to show you a plan?"</p>
+<p><strong>User</strong>: "Yes, please"</p>
+<p><strong>Doctor Strange-Risk</strong>: "Perfect! If you put $2,000 monthly toward your credit cards - which you can afford based on your spending patterns - you'll be ready to reapply in 6 months. I'll also show you how this will improve your credit score by 40+ points."</p>
+<h2 id="conversation-design-guidelines">Conversation Design Guidelines</h2>
+<h3 id="language-principles">Language Principles</h3>
+<ol>
+<li><strong>Use "You" statements</strong>: "You qualify" vs "The applicant qualifies"</li>
+<li><strong>Active voice</strong>: "I found" vs "It was found"</li>
+<li><strong>Present tense</strong>: "Your credit shows" vs "Your credit has shown"</li>
+<li><strong>Positive framing</strong>: "You have excellent payment history" vs "No late payments found"</li>
+</ol>
+<h3 id="emotional-design">Emotional Design</h3>
+<ol>
+<li><strong>Celebration language</strong>: "Fantastic!", "Excellent!", "Outstanding!"</li>
+<li><strong>Confidence building</strong>: "You've clearly been managing finances well"</li>
+<li><strong>Achievement framing</strong>: "You earned this approval"</li>
+<li><strong>Progress language</strong>: "You're almost there", "Next step", "Moving forward"</li>
+</ol>
+<h3 id="technical-complexity-management">Technical Complexity Management</h3>
+<ol>
+<li><strong>Explain before using jargon</strong>: "Debt-to-income ratio - that's how much you pay in debts vs. how much you earn"</li>
+<li><strong>Use analogies</strong>: "Think of PMI as insurance for the lender"</li>
+<li><strong>Provide context</strong>: "This is excellent because most borrowers..."</li>
+<li><strong>Offer deeper explanation</strong>: "Want me to explain more about how this works?"</li>
+</ol>
+<h3 id="accessibility-in-conversation">Accessibility in Conversation</h3>
+<ol>
+<li><strong>Screen reader friendly</strong>: All important information repeated in text</li>
+<li><strong>Clear navigation</strong>: "Press 1 to continue, 2 to repeat, 3 for help"</li>
+<li><strong>Simple language</strong>: Avoid complex financial terminology without explanation</li>
+<li><strong>Confirmation requests</strong>: "Does that make sense?" "Any questions about this?"</li>
+</ol>
+<h2 id="implementation-requirements">Implementation Requirements</h2>
+<h3 id="natural-language-processing">Natural Language Processing</h3>
+<ul>
+<li>Intent recognition for financial terminology</li>
+<li>Sentiment analysis to adjust tone based on user comfort</li>
+<li>Context awareness for multi-turn conversations</li>
+<li>Error recovery for misunderstood inputs</li>
+</ul>
+<h3 id="real-time-integration">Real-Time Integration</h3>
+<ul>
+<li>Live data feeds from credit bureaus, employment verification, bank accounts</li>
+<li>Streaming progress updates during processing</li>
+<li>Dynamic conversation adaptation based on data findings</li>
+</ul>
+<h3 id="personalization-engine">Personalization Engine</h3>
+<ul>
+<li>User profile integration for contextual conversations</li>
+<li>Conversation history for returning users</li>
+<li>Preference learning for communication style</li>
+<li>Cultural and regional adaptation</li>
+</ul>
+<h3 id="mobile-optimization">Mobile Optimization</h3>
+<ul>
+<li>Voice input with financial terminology recognition</li>
+<li>Conversational shortcuts for power users</li>
+<li>Offline conversation state preservation</li>
+<li>Network-aware conversation pacing</li>
+</ul>
+<h2 id="success-metrics-for-conversational-design">Success Metrics for Conversational Design</h2>
+<h3 id="user-engagement">User Engagement</h3>
+<ul>
+<li><strong>Conversation completion rate</strong>: Target 95%</li>
+<li><strong>Average conversation depth</strong>: Number of exchanges per session</li>
+<li><strong>User satisfaction with AI personalities</strong>: Individual specialist ratings</li>
+<li><strong>Time to loan completion</strong>: Target sub-15 minutes</li>
+</ul>
+<h3 id="conversation-quality">Conversation Quality</h3>
+<ul>
+<li><strong>Sentiment progression</strong>: Start neutral/anxious → End excited/confident</li>
+<li><strong>Understanding rate</strong>: Successful intent recognition percentage</li>
+<li><strong>Error recovery success</strong>: Conversations recovered from misunderstandings</li>
+<li><strong>Help request frequency</strong>: Lower indicates clearer conversations</li>
+</ul>
+<h3 id="business-impact">Business Impact</h3>
+<ul>
+<li><strong>Conversion rate</strong>: Conversations to completed applications</li>
+<li><strong>Referral mentions</strong>: Users mentioning conversational experience</li>
+<li><strong>Support ticket reduction</strong>: Fewer questions due to clear conversations</li>
+<li><strong>Competitive differentiation</strong>: Brand recognition for conversational approach</li>
+</ul>
+<hr />
+<p><strong>Next Steps</strong>:
+1. Build conversation flow prototypes with natural language processing
+2. User test conversation scripts with target personas
+3. Develop AI personality voice and tone guidelines
+4. Create conversation analytics and optimization framework</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Niksac Development Team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/niksacdev/loan-avengers" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/niksac" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

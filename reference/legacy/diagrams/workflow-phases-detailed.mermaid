@@ -1,0 +1,204 @@
+graph TB
+    subgraph "Phase Comparison: Traditional vs AI-Augmented Development"
+        
+        subgraph "Phase 1: Ideation & Conceptualization"
+            subgraph "Traditional (Days/Weeks)"
+                PM1[👤 Product Manager<br/>Requirements Definition]
+                MR1[👤 Market Researcher<br/>Competitive Analysis]
+                BA1[👤 Business Analyst<br/>User Stories]
+                
+                PM1 --> MR1
+                MR1 --> BA1
+                
+                TIME1[⏱️ 2-4 weeks<br/>Sequential handoffs]
+            end
+            
+            subgraph "AI-Augmented (Hours)"
+                DEV1[👨‍💻 Developer<br/>Strategic Vision]
+                RAI1[🤖 Research Agent<br/>Market Intelligence]
+                BAI1[🤖 Business Agent<br/>Requirement Validation]
+                
+                DEV1 -.-> RAI1
+                DEV1 -.-> BAI1
+                RAI1 -.-> BAI1
+                
+                TIMEA1[⚡ 2-4 hours<br/>Parallel execution]
+            end
+        end
+        
+        subgraph "Phase 2: Specification & Design"
+            subgraph "Traditional (Days)"
+                TW2[👤 Technical Writer<br/>Documentation]
+                SA2[👤 Solution Architect<br/>Technical Specs]
+                UX2[👤 UX Designer<br/>Interface Design]
+                
+                TW2 --> SA2
+                SA2 --> UX2
+                
+                TIME2[⏱️ 1-2 weeks<br/>Documentation lag]
+            end
+            
+            subgraph "AI-Augmented (Minutes/Hours)"
+                DEV2[👨‍💻 Developer<br/>Strategic Specs]
+                SPEC2[🛠️ Spec-Kit<br/>Auto Generation]
+                DOC2[🤖 Doc Agent<br/>Living Documents]
+                
+                DEV2 -.-> SPEC2
+                DEV2 -.-> DOC2
+                SPEC2 -.-> DOC2
+                
+                TIMEA2[⚡ 1-2 hours<br/>Living docs]
+            end
+        end
+        
+        subgraph "Phase 3: Development Planning"
+            subgraph "Traditional (Hours/Days)"
+                SM3[👤 Scrum Master<br/>Sprint Planning]
+                DT3[👤 Dev Team<br/>Task Breakdown]
+                QAT3[👤 QA Team<br/>Test Planning]
+                
+                SM3 --> DT3
+                DT3 --> QAT3
+                
+                TIME3[⏱️ 4-8 hours<br/>Manual estimation]
+            end
+            
+            subgraph "AI-Augmented (Minutes)"
+                DEV3[👨‍💻 Developer<br/>Issue Review]
+                ISS3[🤖 Issue Agent<br/>Story Generation]
+                PLN3[🤖 Planning Agent<br/>Auto Breakdown]
+                
+                DEV3 -.-> ISS3
+                ISS3 -.-> PLN3
+                
+                TIMEA3[⚡ 15-30 minutes<br/>Automated generation]
+            end
+        end
+        
+        subgraph "Phase 4: Implementation"
+            subgraph "Traditional (Weeks)"
+                FE4[👤 Frontend Dev<br/>UI Implementation]
+                BE4[👤 Backend Dev<br/>API Development]
+                DBA4[👤 DB Admin<br/>Data Layer]
+                DO4[👤 DevOps<br/>Infrastructure]
+                
+                FE4 --> BE4
+                BE4 --> DBA4
+                DBA4 --> DO4
+                
+                TIME4[⏱️ 2-6 weeks<br/>Sequential development]
+            end
+            
+            subgraph "AI-Augmented (Days)"
+                DEV4[👨‍💻 Developer<br/>Critical Path + Review]
+                UI4[🤖 UI Agent<br/>Frontend]
+                API4[🤖 Backend Agent<br/>APIs]
+                LOG4[🤖 Logger Agent<br/>Infrastructure]
+                TST4[🤖 Test Agent<br/>Unit Tests]
+                
+                DEV4 -.-> UI4
+                DEV4 -.-> API4
+                DEV4 -.-> LOG4
+                DEV4 -.-> TST4
+                
+                TIMEA4[⚡ 3-5 days<br/>Parallel development]
+            end
+        end
+        
+        subgraph "Phase 5: Code Review & Testing"
+            subgraph "Traditional (Days)"
+                SR5[👤 Senior Dev<br/>Code Review]
+                AR5[👤 Architect<br/>Design Review]
+                QA5[👤 QA Engineer<br/>Manual Testing]
+                
+                SR5 --> AR5
+                AR5 --> QA5
+                
+                TIME5[⏱️ 3-7 days<br/>Review bottlenecks]
+            end
+            
+            subgraph "AI-Augmented (Hours)"
+                DEV5[👨‍💻 Developer<br/>Functional Review]
+                CR5[🤖 Code Reviewer<br/>Technical Analysis]
+                UXR5[🤖 UX Reviewer<br/>Design Validation]
+                PMR5[🤖 PM Reviewer<br/>Product Alignment]
+                
+                CR5 -.-> DEV5
+                UXR5 -.-> DEV5
+                PMR5 -.-> DEV5
+                
+                TIMEA5[⚡ 2-4 hours<br/>Multi-layer AI review]
+            end
+        end
+        
+        subgraph "Phase 6: Documentation & Deployment"
+            subgraph "Traditional (Days)"
+                TW6[👤 Technical Writer<br/>Doc Updates]
+                DO6[👤 DevOps<br/>Deployment]
+                SRE6[👤 SRE<br/>Monitoring Setup]
+                
+                TW6 --> DO6
+                DO6 --> SRE6
+                
+                TIME6[⏱️ 2-3 days<br/>Manual processes]
+            end
+            
+            subgraph "AI-Augmented (Minutes)"
+                DEV6[👨‍💻 Developer<br/>Deployment Review]
+                DOC6[🤖 Doc Agent<br/>Auto Updates]
+                CI6[🤖 CI Agent<br/>Auto Deploy]
+                
+                DOC6 -.-> DEV6
+                CI6 -.-> DEV6
+                
+                TIMEA6[⚡ 30-60 minutes<br/>Automated pipeline]
+            end
+        end
+    end
+    
+    %% Summary comparison
+    subgraph "Workflow Comparison Summary"
+        subgraph "Traditional Team Results"
+            TR1[👥 8-12 specialists required]
+            TR2[⏱️ 4-8 weeks total cycle]
+            TR3[🔄 Sequential dependencies]
+            TR4[💰 High coordination overhead]
+            TR5[📋 Documentation often outdated]
+            TR6[🐛 Testing after development]
+        end
+        
+        subgraph "AI-Augmented Results"
+            AR1[👤 1 human + AI agents]
+            AR2[⚡ 1-2 weeks total cycle]
+            AR3[⚡ Parallel execution]
+            AR4[🚀 Minimal coordination needed]
+            AR5[📋 Living documentation]
+            AR6[✅ Continuous testing]
+        end
+        
+        subgraph "Key Advantages"
+            ADV1[📈 10x faster delivery]
+            ADV2[💡 Rapid design iteration]
+            ADV3[🎯 Higher code quality]
+            ADV4[💰 90% cost reduction]
+            ADV5[🔄 Continuous refactoring]
+            ADV6[📚 Knowledge preservation]
+        end
+    end
+
+    %% Styling
+    classDef human fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef agent fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef tool fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#000
+    classDef time fill:#ffebee,stroke:#c62828,stroke-width:2px,color:#000
+    classDef timefast fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef result fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#000
+    classDef advantage fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    
+    class DEV1,DEV2,DEV3,DEV4,DEV5,DEV6,PM1,MR1,BA1,TW2,SA2,UX2,SM3,DT3,QAT3,FE4,BE4,DBA4,DO4,SR5,AR5,QA5,TW6,DO6,SRE6 human
+    class RAI1,BAI1,DOC2,ISS3,PLN3,UI4,API4,LOG4,TST4,CR5,UXR5,PMR5,DOC6,CI6 agent
+    class SPEC2 tool
+    class TIME1,TIME2,TIME3,TIME4,TIME5,TIME6 time
+    class TIMEA1,TIMEA2,TIMEA3,TIMEA4,TIMEA5,TIMEA6 timefast
+    class TR1,TR2,TR3,TR4,TR5,TR6,AR1,AR2,AR3,AR4,AR5,AR6 result
+    class ADV1,ADV2,ADV3,ADV4,ADV5,ADV6 advantage

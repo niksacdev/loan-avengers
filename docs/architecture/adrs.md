@@ -16,10 +16,10 @@ Architecture Decision Records document significant architectural choices, their 
 
 ### API & Orchestration
 - [ADR-005: API Architecture with Agent Framework](decisions/adr-005-api-architecture-with-agent-framework.md)
-- [ADR-005: Orchestration Refactoring](decisions/adr-005-orchestration-refactoring.md) *(alternative)*
 - [ADR-006: Sequential Workflow Orchestration](decisions/adr-006-sequential-workflow-orchestration.md)
 - [ADR-007: Conversation State with Agent Thread](decisions/adr-007-conversation-state-with-agent-thread.md)
 - [ADR-011: Two-Endpoint API Architecture](decisions/adr-011-two-endpoint-api-architecture.md)
+- [ADR-013: Orchestration Refactoring](decisions/adr-013-orchestration-refactoring.md)
 
 ### Infrastructure
 - [ADR-008: Streamable HTTP Transport](decisions/adr-008-streamable-http-transport.md)
@@ -28,7 +28,7 @@ Architecture Decision Records document significant architectural choices, their 
 - [ADR-012: Observability Implementation](decisions/adr-012-observability-implementation.md)
 
 ### Assessments
-- [ADR-010: Unified Workflow Architecture Assessment](decisions/adr-010-unified-workflow-architecture-assessment.md) *(assessment)*
+- [ADR-014: Unified Workflow Architecture Assessment](decisions/adr-014-unified-workflow-architecture-assessment.md)
 
 ## ADR Categories
 
@@ -58,9 +58,11 @@ When making significant architectural decisions:
 
 The most recent architectural decisions:
 
-1. **ADR-012**: Observability Implementation (2025-09-30)
-2. **ADR-011**: Two-Endpoint API Architecture (2025-09-29)
-3. **ADR-010**: Monorepo Restructuring (2025-09-28)
+1. **ADR-014**: Unified Workflow Architecture Assessment (2025-09-29)
+2. **ADR-013**: Orchestration Refactoring (2025-09-30)
+3. **ADR-012**: Observability Implementation (2025-09-30)
+4. **ADR-011**: Two-Endpoint API Architecture (2025-09-29)
+5. **ADR-010**: Monorepo Restructuring (2025-09-28)
 
 ## Related Documentation
 

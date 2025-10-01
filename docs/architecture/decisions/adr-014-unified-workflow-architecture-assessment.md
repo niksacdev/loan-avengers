@@ -1,4 +1,4 @@
-# ADR-010: Unified Workflow Architecture Assessment
+# ADR-014: Unified Workflow Architecture Assessment
 
 **Status**: Under Review
 **Date**: 2025-09-29

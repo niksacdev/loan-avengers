@@ -1,0 +1,104 @@
+version: '3.8'
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Loan Avengers - Local Development Environment
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# This docker-compose file provides a complete local development environment
+# with hot-reloading for both API and UI components.
+#
+# Usage:
+#   docker-compose up          # Start all services
+#   docker-compose up api      # Start only API
+#   docker-compose up ui       # Start only UI
+#   docker-compose down        # Stop and remove containers
+#   docker-compose logs -f     # Follow logs
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+services:
+  # ───────────────────────────────────────────────────────────────────────────
+  # API Service - FastAPI Backend
+  # ───────────────────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+      target: builder  # Use builder stage for development
+    image: loan-avengers-api:dev
+    container_name: loan-avengers-api
+    ports:
+      - "8000:8000"
+    environment:
+      # API Configuration
+      APP_DEBUG: "true"
+      APP_LOG_LEVEL: "DEBUG"
+      APP_CORS_ORIGINS: "http://localhost:5173,http://localhost:8080"
+
+      # Session Management
+      APP_SESSION_TIMEOUT_HOURS: 24
+
+      # Agent Framework (if needed)
+      AGENT_FRAMEWORK_LOG_LEVEL: "DEBUG"
+    volumes:
+      # Mount source code for hot-reload
+      - ./apps/api/loan_avengers:/app/loan_avengers:ro
+      # Mount .env file
+      - ./.env:/app/.env:ro
+    command: >
+      uvicorn loan_avengers.api.app:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
+      --log-level debug
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - loan-avengers-network
+    restart: unless-stopped
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # UI Service - React/TypeScript Frontend
+  # ───────────────────────────────────────────────────────────────────────────
+  ui:
+    build:
+      context: ./apps/ui
+      dockerfile: Dockerfile
+    image: loan-avengers-ui:dev
+    container_name: loan-avengers-ui
+    ports:
+      - "8080:8080"
+    environment:
+      # API Backend endpoint
+      VITE_API_URL: "http://localhost:8000"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - loan-avengers-network
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Networks
+# ─────────────────────────────────────────────────────────────────────────────
+networks:
+  loan-avengers-network:
+    name: loan-avengers-network
+    driver: bridge
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Volumes (for future use with databases, caching, etc.)
+# ─────────────────────────────────────────────────────────────────────────────
+volumes:
+  api-data:
+    name: loan-avengers-api-data

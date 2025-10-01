@@ -1,0 +1,83 @@
+# Production Environment Configuration
+# Azure Agent Service deployment settings for production
+
+environment: production
+region: eastus
+
+# Agent service settings
+agentService:
+  resourceGroup: loan-avengers-prod-rg
+  name: loan-avengers-agents-prod
+  sku: premium
+  availabilityZones: [1, 2, 3]
+
+# Container Registry
+containerRegistry:
+  name: loanavengersp rodacr
+  loginServer: loanavengersprodacr.azurecr.io
+  replication:
+    enabled: true
+    regions: [eastus, westus, westeurope]
+
+# API Backend connection
+apiBackend:
+  endpoint: https://loan-avengers-api.azurewebsites.net
+  timeout: 60s
+  healthCheck:
+    enabled: true
+    interval: 30s
+    path: /health
+
+# Environment variables
+environmentVariables:
+  APP_DEBUG: "false"
+  APP_LOG_LEVEL: "INFO"
+  AGENT_FRAMEWORK_LOG_LEVEL: "WARNING"
+
+# Scaling configuration (production has higher limits)
+scaling:
+  minReplicas: 3
+  maxReplicas: 50
+  targetCPUUtilization: 70
+  targetMemoryUtilization: 80
+
+# Monitoring and alerts
+monitoring:
+  logAnalyticsWorkspace: loan-avengers-prod-logs
+  applicationInsights: loan-avengers-prod-insights
+  alertsEnabled: true
+  alerts:
+    - name: high-error-rate
+      metric: error_rate
+      threshold: 5
+      window: 5m
+      action: email
+    - name: slow-response
+      metric: response_time_p95
+      threshold: 5000  # 5 seconds
+      window: 10m
+      action: pagerduty
+
+# Backup and disaster recovery
+backup:
+  enabled: true
+  retentionDays: 30
+  schedule: "0 2 * * *"  # 2 AM daily
+
+disasterRecovery:
+  enabled: true
+  failoverRegion: westus
+  rpo: 1h  # Recovery Point Objective
+  rto: 30m  # Recovery Time Objective
+
+# Security
+security:
+  managedIdentity:
+    enabled: true
+    type: system-assigned
+  keyVault:
+    name: loan-avengers-prod-kv
+    accessPolicy: read-only
+  networkSecurity:
+    privateEndpoints: true
+    allowedIPs: []  # Use private endpoints only

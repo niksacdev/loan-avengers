@@ -85,8 +85,15 @@ class TestIntakeAgentProcessApplication:
     """Test the main process_application method."""
 
     @pytest.fixture
-    def mock_intake_agent(self, mock_azure_chat_client):
-        """Create a mock IntakeAgent for testing."""
+    def mock_intake_agent(self, mock_azure_chat_client) -> IntakeAgent:
+        """Create a mock IntakeAgent for testing.
+
+        Args:
+            mock_azure_chat_client: Mocked Azure chat client fixture
+
+        Returns:
+            IntakeAgent: Configured intake agent with mocked dependencies
+        """
         with (
             patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona") as mock_load_persona,
             patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool") as mock_mcp_tool,

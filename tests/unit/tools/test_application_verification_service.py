@@ -15,8 +15,15 @@ from loan_avengers.models.application import EmploymentStatus, LoanApplication, 
 from loan_avengers.tools.mcp_servers.application_verification.service import ApplicationVerificationServiceImpl
 
 
-def serialize_test_data(data):
-    """Helper function to serialize test data with proper datetime handling."""
+def serialize_test_data(data: dict) -> str:
+    """Helper function to serialize test data with proper datetime handling.
+
+    Args:
+        data: Dictionary containing test data with potential datetime objects
+
+    Returns:
+        str: JSON string with proper datetime serialization
+    """
     return json.dumps(data, default=lambda obj: obj.isoformat() if isinstance(obj, datetime) else str(obj))
 
 
@@ -24,18 +31,36 @@ class TestApplicationVerificationServiceImpl:
     """Test ApplicationVerificationServiceImpl methods."""
 
     @pytest.fixture
-    def service(self):
-        """Create service instance for testing."""
+    def service(self) -> ApplicationVerificationServiceImpl:
+        """Create service instance for testing.
+
+        Returns:
+            ApplicationVerificationServiceImpl: Service instance for testing
+        """
         return ApplicationVerificationServiceImpl()
 
     @pytest.fixture
-    def complete_application_json(self, sample_loan_application):
-        """Get complete application as JSON string."""
+    def complete_application_json(self, sample_loan_application: LoanApplication) -> str:
+        """Get complete application as JSON string.
+
+        Args:
+            sample_loan_application: Sample loan application fixture
+
+        Returns:
+            str: JSON representation of complete application
+        """
         return sample_loan_application.model_dump_json()
 
     @pytest.fixture
-    def vip_application_json(self, vip_loan_application):
-        """Get VIP application as JSON string."""
+    def vip_application_json(self, vip_loan_application: LoanApplication) -> str:
+        """Get VIP application as JSON string.
+
+        Args:
+            vip_loan_application: VIP loan application fixture
+
+        Returns:
+            str: JSON representation of VIP application
+        """
         return vip_loan_application.model_dump_json()
 
     async def test_validate_basic_parameters_complete_application(self, service, complete_application_json):
@@ -274,8 +299,12 @@ class TestLegacyApplicationVerificationMethods:
     """Test the existing mock methods in ApplicationVerificationServiceImpl."""
 
     @pytest.fixture
-    def service(self):
-        """Create service instance for testing."""
+    def service(self) -> ApplicationVerificationServiceImpl:
+        """Create service instance for testing.
+
+        Returns:
+            ApplicationVerificationServiceImpl: Service instance for testing legacy methods
+        """
         return ApplicationVerificationServiceImpl()
 
     async def test_retrieve_credit_report(self, service):

@@ -17,15 +17,26 @@ class TestMCPDocumentProcessingService:
     """Test MCPDocumentProcessingService methods."""
 
     @pytest.fixture
-    def mock_mcp_client(self):
-        """Create mock MCP client for testing."""
+    def mock_mcp_client(self) -> Mock:
+        """Create mock MCP client for testing.
+
+        Returns:
+            Mock: Mock MCP client with async call_tool method
+        """
         client = Mock()
         client.call_tool = AsyncMock()
         return client
 
     @pytest.fixture
-    def service(self, mock_mcp_client):
-        """Create service instance with mock client."""
+    def service(self, mock_mcp_client: Mock) -> MCPDocumentProcessingService:
+        """Create service instance with mock client.
+
+        Args:
+            mock_mcp_client: Mock MCP client fixture
+
+        Returns:
+            MCPDocumentProcessingService: Service instance for testing
+        """
         return MCPDocumentProcessingService(mcp_client=mock_mcp_client)
 
     async def test_init_with_client(self, mock_mcp_client):

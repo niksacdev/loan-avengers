@@ -1,0 +1,45 @@
+# Agent Configuration
+# This file defines agent persona mappings and which MCP servers each agent uses
+
+# Agent personas - stored as markdown files
+agent_personas:
+  intake:
+    file: "intake-agent-persona.md"
+    description: "Fast data completeness check and routing assignment"
+    mcp_servers: []
+
+  credit:
+    file: "credit-agent-persona.md"
+    description: "Evaluates creditworthiness and financial risk"
+    mcp_servers:
+      - "application_verification"
+      - "financial_calculations"
+      - "document_processing"
+
+  income:
+    file: "income-agent-persona.md"
+    description: "Verifies employment and income information"
+    mcp_servers:
+      - "application_verification"
+      - "document_processing"
+      - "financial_calculations"
+
+  risk:
+    file: "risk-agent-persona.md"
+    description: "Synthesizes all assessments and makes final lending decisions"
+    mcp_servers:
+      - "application_verification"
+      - "financial_calculations"
+      - "document_processing"
+
+  orchestrator:
+    file: "orchestrator-agent-persona.md"
+    description: "Coordinates the loan processing workflow"
+    mcp_servers: []
+
+# Configuration metadata
+metadata:
+  version: "2.0.0"
+  last_updated: "2024-09-24"
+  description: "Agent persona configuration for Microsoft Agent Framework integration"
+  mcp_servers_config: "mcp_servers.yaml"  # Reference to MCP servers config

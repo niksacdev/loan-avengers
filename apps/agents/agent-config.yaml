@@ -1,0 +1,95 @@
+# Azure Agent Service Configuration
+# Placeholder for future Azure Agent Service deployment
+
+apiVersion: agents.azure.com/v1alpha1
+kind: AgentDeployment
+metadata:
+  name: loan-avengers-agents
+  namespace: production
+spec:
+  # Agent definitions reference the actual implementation in API app
+  agents:
+    - name: conversation-orchestrator
+      description: "Orchestrates conversational loan data collection"
+      runtime: python
+      version: "3.11"
+      # Source points to API container image
+      source:
+        type: container
+        image: "${ACR_NAME}.azurecr.io/loan-avengers-api:latest"
+        entrypoint: "python"
+        args: ["-m", "loan_avengers.agents.conversation_orchestrator"]
+      persona:
+        # Persona loaded from API container
+        path: "/app/loan_avengers/agents/agent-persona/coordinator-persona.md"
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+        limits:
+          memory: "1Gi"
+          cpu: "500m"
+      scaling:
+        minReplicas: 1
+        maxReplicas: 10
+        targetCPUUtilization: 70
+
+    - name: sequential-pipeline
+      description: "Manages sequential loan processing workflow"
+      runtime: python
+      version: "3.11"
+      source:
+        type: container
+        image: "${ACR_NAME}.azurecr.io/loan-avengers-api:latest"
+        entrypoint: "python"
+        args: ["-m", "loan_avengers.agents.sequential_pipeline"]
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "500m"
+        limits:
+          memory: "2Gi"
+          cpu: "1000m"
+      scaling:
+        minReplicas: 2
+        maxReplicas: 20
+        targetCPUUtilization: 75
+
+  # MCP Server connections
+  tools:
+    - name: application-verification
+      type: mcp
+      endpoint: "http://localhost:8010"
+      timeout: 30s
+
+    - name: document-processing
+      type: mcp
+      endpoint: "http://localhost:8011"
+      timeout: 60s
+
+    - name: financial-calculations
+      type: mcp
+      endpoint: "http://localhost:8012"
+      timeout: 30s
+
+  # Monitoring and observability
+  monitoring:
+    enabled: true
+    provider: azure-monitor
+    workspace: "${LOG_ANALYTICS_WORKSPACE_ID}"
+    metrics:
+      - agent_response_time
+      - agent_success_rate
+      - tool_call_count
+    alerts:
+      - name: high-error-rate
+        condition: error_rate > 5%
+        action: scale_up
+
+  # Security settings
+  security:
+    authentication:
+      type: managed-identity
+    secrets:
+      provider: azure-key-vault
+      vaultName: "${KEY_VAULT_NAME}"

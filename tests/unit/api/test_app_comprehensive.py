@@ -7,8 +7,12 @@ from loan_avengers.api.app import app
 
 
 @pytest.fixture
-def client():
-    """Create test client."""
+def client() -> TestClient:
+    """Create test client for FastAPI app.
+
+    Returns:
+        TestClient: Configured test client for making API requests
+    """
     return TestClient(app)
 
 
@@ -74,7 +78,11 @@ class TestChatEndpointComprehensive:
 
         response = client.post(
             "/api/chat",
-            json={"user_message": "Process my application", "session_id": "complete-456", "current_data": complete_data},
+            json={
+                "user_message": "Process my application",
+                "session_id": "complete-456",
+                "current_data": complete_data,
+            },
         )
 
         assert response.status_code in [200, 500]
@@ -196,7 +204,9 @@ class TestCORSAndMiddleware:
 
     def test_cors_headers_present(self, client):
         """Test CORS headers are present in responses."""
-        response = client.options("/api/chat", headers={"Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST"})
+        response = client.options(
+            "/api/chat", headers={"Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST"}
+        )
 
         # Check if CORS is configured (may or may not have explicit headers)
         assert response.status_code in [200, 404, 405]
@@ -242,7 +252,7 @@ class TestConcurrentRequests:
         """Test multiple sessions are independent."""
         # Create multiple sessions
         session_ids = []
-        for i in range(3):
+        for _i in range(3):
             response = client.post("/api/sessions")
             if response.status_code in [200, 201]:
                 session_ids.append(response.json()["session_id"])
@@ -260,7 +270,9 @@ class TestConcurrentRequests:
 
         responses = []
         for session_id, message in messages:
-            response = client.post("/api/chat", json={"user_message": message, "session_id": session_id, "current_data": {}})
+            response = client.post(
+                "/api/chat", json={"user_message": message, "session_id": session_id, "current_data": {}}
+            )
 
             responses.append(response.status_code)
 

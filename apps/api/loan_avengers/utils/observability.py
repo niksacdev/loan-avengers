@@ -75,13 +75,13 @@ class Observability:
                 enable_sensitive_data=enable_sensitive_data,
                 enable_live_metrics=True,  # Enable live metrics for real-time monitoring
             )
-            logging.info("Agent Framework observability initialized with Application Insights (OTEL enabled)")
+            logging.info("Observability initialized with Application Insights and OpenTelemetry")
         elif AGENT_FRAMEWORK_AVAILABLE and enable_otel:
-            logging.info("Agent Framework observability enabled but no Application Insights connection string")
+            logging.warning("ENABLE_OTEL=true but APPLICATIONINSIGHTS_CONNECTION_STRING not set - using basic logging")
         elif AGENT_FRAMEWORK_AVAILABLE:
-            logging.info("Agent Framework observability disabled (ENABLE_OTEL=false)")
+            logging.debug("OpenTelemetry disabled (ENABLE_OTEL not set) - using basic logging")
         else:
-            logging.info("Using standard Python logging (agent_framework not available)")
+            logging.debug("agent_framework not available - using standard Python logging")
 
         cls._initialized = True
 

@@ -112,6 +112,7 @@ nav:
       - Overview: architecture/index.md
       - System Architecture: architecture/system-architecture.md
       - Agent Framework: architecture/agent-framework.md
+      - Agent Strategy: architecture/agent-strategy.md
       - MCP Servers: architecture/mcp-servers.md
       - Data Models: architecture/data-models.md
       - Workflow Orchestration: architecture/orchestration.md
@@ -133,8 +134,10 @@ nav:
 
   - Reference:
       - Code Review Guidelines: reference/code-review.md
+      - Migration Guide: reference/migration-guide.md
       - Notes & Tips: reference/notes.md
       - Troubleshooting: reference/troubleshooting.md
       - FAQ: reference/faq.md
+      - Legacy Docs: reference/legacy/README-old.md
 
 copyright: Copyright &copy; 2025 Niksac Development Team

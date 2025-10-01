@@ -1,0 +1,122 @@
+name: Test Apps Structure
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'fix/**', 'refactor/**']
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-api:
+    name: Test API App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Add uv to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install API dependencies
+        working-directory: apps/api
+        run: uv sync
+
+      - name: Run linting
+        working-directory: apps/api
+        run: |
+          uv run ruff check . --fix
+          uv run ruff format . --check
+
+      - name: Run tests with coverage
+        working-directory: apps/api
+        run: uv run pytest ../../tests/ -v --cov=loan_avengers --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./apps/api/coverage.xml
+          flags: api
+          name: api-coverage
+
+  test-ui:
+    name: Test UI App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: apps/ui/package-lock.json
+
+      - name: Install UI dependencies
+        working-directory: apps/ui
+        run: npm ci
+
+      - name: Run linting
+        working-directory: apps/ui
+        run: npm run lint
+
+      - name: Run type checking
+        working-directory: apps/ui
+        run: npm run type-check
+
+      - name: Build UI
+        working-directory: apps/ui
+        run: npm run build
+
+      - name: Run UI tests
+        working-directory: apps/ui
+        run: npm test --if-present
+
+  validate-structure:
+    name: Validate Monorepo Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate workspace config
+        run: |
+          # Check root pyproject.toml has workspace config
+          if ! grep -q '\[tool\.uv\.workspace\]' pyproject.toml; then
+            echo "❌ Root pyproject.toml missing workspace config"
+            exit 1
+          fi
+
+          # Check apps/api has its own pyproject.toml
+          if [ ! -f apps/api/pyproject.toml ]; then
+            echo "❌ apps/api/pyproject.toml not found"
+            exit 1
+          fi
+
+          # Check apps/api has uv.lock (not root)
+          if [ ! -f apps/api/uv.lock ]; then
+            echo "❌ apps/api/uv.lock not found"
+            exit 1
+          fi
+
+          echo "✅ Workspace structure validated"
+
+      - name: Check for orphaned dependencies
+        run: |
+          # Warn if root has dependencies (should only have dev-dependencies)
+          if grep -q '^dependencies = \[' pyproject.toml; then
+            echo "⚠️  Warning: Root pyproject.toml has dependencies. Should use workspace members."
+          fi
+
+          echo "✅ Dependency check complete"

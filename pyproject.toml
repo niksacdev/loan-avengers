@@ -1,70 +1,19 @@
 [project]
-name = "loan-avengers"
+name = "loan-avengers-workspace"
 version = "0.1.0"
-description = "🦸‍♂️ The Loan Avengers - A superhero squad that assembles to make dream loans happen!"
+description = "🦸‍♂️ Loan Avengers - Multi-Agent Loan Processing Monorepo"
 authors = [
     { name = "niksacdev", email = "niksac@microsoft.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
 
-dependencies = [
-    # Microsoft Agent Framework with key integrations
-    "agent-framework[azure,foundry,viz]",
+# Workspace configuration for monorepo
+[tool.uv.workspace]
+members = ["apps/api"]
 
-    # Core business logic dependencies
-    "pydantic>=2.5.0", # Data model validation
-    "PyYAML>=6.0.0", # Configuration file parsing
-
-    # MCP server dependencies
-    "mcp[cli]>=1.12.3", # Model Context Protocol for agent tools
-    "uvicorn>=0.35.0", # ASGI server for MCP servers
-    "httpx>=0.27.0", # HTTP client for external integrations
-    "requests>=2.32.4", # HTTP requests for MCP tools
-
-    # API server dependencies
-    "fastapi>=0.115.0", # FastAPI web framework
-    "uvicorn[standard]>=0.32.0", # ASGI server with performance extras
-
-    # Optional dependencies
-    "python-dotenv>=1.0.0", # Environment configuration (optional)
-]
-
-[project.optional-dependencies]
-# Future AI provider options
-openai = [
-    "openai>=1.0.0",
-]
-azure = [
-    "azure-monitor-opentelemetry>=1.6.13", # Azure Application Insights integration
-    "opentelemetry-instrumentation-logging", # Auto trace context injection
-]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-asyncio>=0.23.0",
-    "pytest-mock>=3.12.0",
-    "black>=24.0.0",
-    "ruff>=0.1.0",
-    "mypy>=1.8.0",
-    "pytest-cov>=6.2.1",
-]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
+# Shared development dependencies for entire workspace
 [tool.uv]
-prerelease = "if-necessary-or-explicit"
 dev-dependencies = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
@@ -75,12 +24,7 @@ dev-dependencies = [
     "pytest-cov>=7.0.0",
 ]
 
-[tool.uv.sources]
-# Microsoft Agent Framework packages from GitHub (following official documentation format)
-"agent-framework" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/main" }
-"agent-framework-azure" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure" }
-"agent-framework-foundry" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/foundry" }
-
+# Shared tooling configuration across all apps
 [tool.ruff]
 line-length = 120
 target-version = "py310"
@@ -124,17 +68,17 @@ markers = [
 ]
 addopts = [
     "--strict-markers",
-    "--strict-config", 
+    "--strict-config",
     "--disable-warnings",
 ]
 
-# Coverage configuration
+# Coverage configuration (shared across workspace)
 [tool.coverage.run]
 source = ["loan_avengers"]
 branch = true
 omit = [
     "*/tests/*",
-    "*/test_*.py", 
+    "*/test_*.py",
     "*/__pycache__/*",
     "*/migrations/*",
     "*/venv/*",
@@ -148,44 +92,28 @@ parallel = true
 [tool.coverage.paths]
 source = [
     "loan_avengers/",
-    "/Users/*/loan-avengers/loan_avengers/",
+    "/workspaces/loan-avengers/apps/api/loan_avengers/",
     "*/loan_avengers/",
 ]
 
 [tool.coverage.report]
-# Target coverage levels
 precision = 2
 show_missing = true
 skip_covered = false
 skip_empty = false
-
-# Coverage thresholds for different modules
 fail_under = 85.0
 exclude_lines = [
-    # Standard pragmas
     "pragma: no cover",
-    "pragma: nocover", 
-    
-    # Don't complain about missing debug-only code
+    "pragma: nocover",
     "def __repr__",
     "if self\\.debug",
-    
-    # Don't complain if tests don't hit defensive assertion code
     "raise AssertionError",
     "raise NotImplementedError",
-    
-    # Don't complain if non-runnable code isn't run
     "if 0:",
     "if False:",
     "if __name__ == .__main__.:",
-    
-    # Don't complain about abstract methods, they aren't run
     "@(abc\\.)?abstractmethod",
-    
-    # Don't complain about type checking code
     "if TYPE_CHECKING:",
-    
-    # Don't complain about platform specific code
     "pragma: (.*\\s)?platform",
 ]
 
@@ -200,16 +128,3 @@ output = "coverage.xml"
 [tool.coverage.json]
 output = "coverage.json"
 show_contexts = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["loan_avengers"]
-
-[tool.hatch.build.targets.sdist]
-include = [
-  "loan_avengers",
-  "README.md",
-  "LICENSE",
-  "agent-persona",
-  "docs",
-  "pyproject.toml",
-]

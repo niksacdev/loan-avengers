@@ -12,7 +12,7 @@
         <meta name="author" content="Niksac Development Team">
       
       
-        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-009-azure-container-apps-deployment/">
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-016-github-actions-security/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>ADR-009: Azure Container Apps Deployment Strategy - Loan Avengers Documentation</title>
+        <title>ADR-002: GitHub Actions Security Standards - Loan Avengers Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-009-azure-container-apps-deployment-strategy" class="md-skip">
+        <a href="#adr-002-github-actions-security-standards" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-009: Azure Container Apps Deployment Strategy
+              ADR-002: GitHub Actions Security Standards
             
           </span>
         </div>
@@ -1712,6 +1712,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
@@ -1731,29 +1740,113 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#infrastructure-components" class="md-nav__link">
+  <a href="#security-standards-for-all-workflows" class="md-nav__link">
     <span class="md-ellipsis">
-      Infrastructure Components
+      Security Standards for All Workflows
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pre-deployment-requirements" class="md-nav__link">
+  <a href="#critical-fixes-required" class="md-nav__link">
     <span class="md-ellipsis">
-      Pre-Deployment Requirements
+      Critical Fixes Required
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Critical Fixes Required">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-codecov-token-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add Codecov Token (CRITICAL)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployment-process" class="md-nav__link">
+  <a href="#2-replace-curl-sh-pattern-high-priority" class="md-nav__link">
     <span class="md-ellipsis">
-      Deployment Process
+      2. Replace curl | sh Pattern (HIGH PRIORITY)
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-remove-linting-continue-on-error-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Remove Linting continue-on-error (HIGH PRIORITY)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-add-secret-validation-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Add Secret Validation (HIGH PRIORITY)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-specific-security-grades" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow-Specific Security Grades
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Enhancements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended Enhancements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enable-dependabot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Dependabot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-workflow-concurrency-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Workflow Concurrency Limits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-security-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Security Scanning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1791,9 +1884,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mitigation" class="md-nav__link">
+  <a href="#metrics" class="md-nav__link">
     <span class="md-ellipsis">
-      Mitigation
+      Metrics
     </span>
   </a>
   
@@ -1815,36 +1908,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#phase-1-infrastructure-setup" class="md-nav__link">
+  <a href="#pre-public-release-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1: Infrastructure Setup
+      Pre-Public Release Checklist
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-2-security-hardening" class="md-nav__link">
+  <a href="#post-public-enhancements" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 2: Security Hardening
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-3-deployment-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 3: Deployment Pipeline
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-4-go-live" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4: Go Live
+      Post-Public Enhancements
     </span>
   </a>
   
@@ -1865,9 +1940,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
+  <a href="#alternatives-considered" class="md-nav__link">
     <span class="md-ellipsis">
-      Related ADRs
+      Alternatives Considered
     </span>
   </a>
   
@@ -1892,135 +1967,206 @@
   
 
 
-<h1 id="adr-009-azure-container-apps-deployment-strategy">ADR-009: Azure Container Apps Deployment Strategy</h1>
-<p><strong>Status</strong>: Accepted
-<strong>Date</strong>: 2025-09-28 (Updated: 2025-10-01)</p>
+<h1 id="adr-002-github-actions-security-standards">ADR-002: GitHub Actions Security Standards</h1>
+<h2 id="status">Status</h2>
+<p>Accepted</p>
 <h2 id="context">Context</h2>
-<p>Need cloud-native, serverless deployment on Azure with auto-scaling and seamless integration with Azure services. Additionally, before public release, we need to ensure proper CI/CD security and deployment safeguards are in place.</p>
+<p>Before making the repository public, we performed a comprehensive security review of all GitHub Actions workflows. We identified security issues ranging from critical (missing tokens) to best practice improvements. This ADR documents the security standards and required fixes.</p>
 <h2 id="decision">Decision</h2>
-<h3 id="infrastructure-components">Infrastructure Components</h3>
-<ul>
-<li><strong>Azure Container Apps</strong> for API hosting (serverless, auto-scaling)</li>
-<li><strong>Azure Cache for Redis</strong> for AgentThread state management</li>
-<li><strong>Azure Blob Storage</strong> for document storage</li>
-<li><strong>Cosmos DB</strong> for completed applications persistence</li>
-<li><strong>Azure Key Vault</strong> for secrets management</li>
-<li><strong>Entra ID (Managed Identity)</strong> for authentication</li>
-</ul>
-<h3 id="pre-deployment-requirements">Pre-Deployment Requirements</h3>
-<p>Before deploying to production:</p>
+<h3 id="security-standards-for-all-workflows">Security Standards for All Workflows</h3>
 <ol>
-<li><strong>Security Configuration</strong> (see ADR-017):</li>
-<li>All secrets in Azure Key Vault</li>
-<li>CORS origins restricted to production domains</li>
-<li>Debug mode disabled (<code>APP_DEBUG=false</code>)</li>
-<li>HTTPS enforced (automatic with Azure Container Apps)</li>
-<li>Azure Managed Identity configured</li>
-<li>Application Insights for security monitoring</li>
-<li>Session timeout configured</li>
-<li>Input validation on all endpoints</li>
-<li>Rate limiting enabled</li>
+<li><strong>Action Version Pinning</strong></li>
+<li>Always use specific version tags (<code>@v4</code>, <code>@v5</code>)</li>
+<li>Never use <code>@main</code> or <code>@latest</code></li>
 <li>
-<p>Security headers (CSP, HSTS, X-Frame-Options)</p>
+<p>Update versions via Dependabot</p>
 </li>
 <li>
-<p><strong>Branch Protection</strong> (see ADR-015):</p>
+<p><strong>Minimal Permissions</strong></p>
 </li>
-<li>Main branch protected with required approvals</li>
-<li>All CI/CD checks must pass before merge</li>
-<li>CODEOWNERS configured for workflow files</li>
+<li>Use principle of least privilege</li>
+<li>Specify exact permissions needed</li>
 <li>
-<p>No direct pushes to main</p>
+<p>Default to read-only where possible</p>
 </li>
 <li>
-<p><strong>GitHub Actions Security</strong> (see ADR-016):</p>
+<p><strong>Secret Handling</strong></p>
 </li>
-<li>All workflows follow security best practices</li>
-<li>Secrets properly configured</li>
-<li>Dependabot enabled for dependency updates</li>
-<li>CodeQL scanning enabled</li>
+<li>Reference secrets via <code>${{ secrets.NAME }}</code></li>
+<li>Never hardcode credentials</li>
+<li>Validate secrets exist before use</li>
+<li>
+<p>Add validation steps to workflows</p>
+</li>
+<li>
+<p><strong>Secure Installation Methods</strong></p>
+</li>
+<li>Use official GitHub Actions over <code>curl | sh</code></li>
+<li>Prefer <code>astral-sh/setup-uv@v5</code> over curl script</li>
+<li>
+<p>Validate checksums when downloading binaries</p>
+</li>
+<li>
+<p><strong>No Sensitive Data in Logs</strong></p>
+</li>
+<li>Mask secrets in workflow output</li>
+<li>Avoid printing environment variables</li>
+<li>Sanitize error messages</li>
 </ol>
-<h3 id="deployment-process">Deployment Process</h3>
+<h3 id="critical-fixes-required">Critical Fixes Required</h3>
+<h4 id="1-add-codecov-token-critical">1. Add Codecov Token (CRITICAL)</h4>
+<p><strong>Location</strong>: <code>.github/workflows/test-apps.yml:44-48</code></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Upload coverage to Codecov</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">codecov/codecov-action@v4</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.CODECOV_TOKEN }}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./apps/api/coverage.xml</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">flags</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-coverage</span>
+</span></code></pre></div>
+<p><strong>Action</strong>: Add <code>CODECOV_TOKEN</code> to repository secrets</p>
+<h4 id="2-replace-curl-sh-pattern-high-priority">2. Replace curl | sh Pattern (HIGH PRIORITY)</h4>
+<p><strong>Location</strong>: <code>.github/workflows/test-apps.yml:24</code></p>
+<p>Replace:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install uv</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">curl -LsSf https://astral.sh/uv/install.sh | sh</span>
+</span></code></pre></div></p>
+<p>With:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install uv</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v5</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;latest&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div></p>
+<h4 id="3-remove-linting-continue-on-error-high-priority">3. Remove Linting continue-on-error (HIGH PRIORITY)</h4>
+<p><strong>Location</strong>: <code>.github/workflows/test-apps.yml:69-72</code></p>
+<p>After fixing all linting issues, change:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run linting</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">working-directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/ui</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npm run lint || echo &quot;⚠️  Linting has warnings&quot;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">continue-on-error</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div></p>
+<p>To:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run linting</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">working-directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/ui</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npm run lint</span>
+</span></code></pre></div></p>
+<h4 id="4-add-secret-validation-high-priority">4. Add Secret Validation (HIGH PRIORITY)</h4>
+<p><strong>Location</strong>: <code>.github/workflows/claude-code-review.yml</code> and <code>.github/workflows/claude.yml</code></p>
+<p>Add validation step:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Validate secrets</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="no">if [ -z &quot;${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}&quot; ]; then</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="no">echo &quot;❌ CLAUDE_CODE_OAUTH_TOKEN not configured&quot;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="no">echo &quot;See: https://docs.claude.com/en/docs/claude-code&quot;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="no">exit 1</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="no">fi</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="no">echo &quot;✅ Claude Code token configured&quot;</span>
+</span></code></pre></div></p>
+<h3 id="workflow-specific-security-grades">Workflow-Specific Security Grades</h3>
 <ol>
-<li><strong>Build</strong>: GitHub Actions builds Docker image</li>
-<li><strong>Test</strong>: Automated tests run in CI/CD</li>
-<li><strong>Security Scan</strong>: Container scanned for vulnerabilities</li>
-<li><strong>Deploy</strong>: Push to Azure Container Registry</li>
-<li><strong>Release</strong>: Container Apps pulls and deploys</li>
-<li><strong>Monitor</strong>: Application Insights tracks performance</li>
+<li><strong>test-apps.yml</strong>: B+ (needs Codecov token, uv action, linting fix)</li>
+<li><strong>docs.yml</strong>: A- (excellent, minimal issues)</li>
+<li><strong>require-linked-issue.yml</strong>: A (well-designed)</li>
+<li><strong>claude-code-review.yml</strong>: B+ (needs secret validation)</li>
+<li><strong>claude.yml</strong>: A- (needs secret validation)</li>
 </ol>
+<h3 id="recommended-enhancements">Recommended Enhancements</h3>
+<h4 id="enable-dependabot">Enable Dependabot</h4>
+<p>Create <code>.github/dependabot.yml</code>:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">updates</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pip&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/apps/api&quot;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">open-pull-requests-limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;npm&quot;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/apps/ui&quot;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">open-pull-requests-limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">package-ecosystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;github-actions&quot;</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/&quot;</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">schedule</span><span class="p">:</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;weekly&quot;</span>
+</span></code></pre></div></p>
+<h4 id="add-workflow-concurrency-limits">Add Workflow Concurrency Limits</h4>
+<p>For Claude workflows, add:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">concurrency</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-review-${{ github.event.pull_request.number }}</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">timeout-minutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+</span></code></pre></div></p>
+<h4 id="add-security-scanning">Add Security Scanning</h4>
+<p>Create <code>.github/workflows/security.yml</code> with:
+- CodeQL analysis for Python and JavaScript
+- Bandit security scanning for Python
+- Weekly scheduled runs
+- Upload results to GitHub Security tab</p>
 <h2 id="consequences">Consequences</h2>
 <h3 id="positive">Positive</h3>
 <ul>
-<li><strong>Serverless</strong>: No infrastructure management required</li>
-<li><strong>Auto-scaling</strong>: Scales based on demand (0 to N instances)</li>
-<li><strong>Native Azure Integration</strong>: Managed Identity, Key Vault, etc.</li>
-<li><strong>Cost-effective</strong>: Pay only for usage</li>
-<li><strong>Secure</strong>: Multiple layers of security protection</li>
-<li><strong>CI/CD Automated</strong>: GitHub Actions handles build and deploy</li>
+<li><strong>Secure CI/CD</strong>: Workflows follow security best practices</li>
+<li><strong>Automated Updates</strong>: Dependabot keeps actions current</li>
+<li><strong>Cost Control</strong>: Timeouts and concurrency prevent runaway costs</li>
+<li><strong>Visibility</strong>: Security scanning provides early warning</li>
 </ul>
 <h3 id="negative">Negative</h3>
 <ul>
-<li><strong>Azure-specific</strong>: Not multi-cloud portable</li>
-<li><strong>Cold start</strong>: Initial request may have latency</li>
-<li><strong>Azure dependency</strong>: Requires Azure subscription</li>
-<li><strong>Learning curve</strong>: Azure-specific services and concepts</li>
+<li><strong>Initial Setup Time</strong>: Configuring tokens and secrets takes effort</li>
+<li><strong>False Positives</strong>: Security scans may flag benign code</li>
+<li><strong>Maintenance</strong>: Regular review of Dependabot PRs needed</li>
 </ul>
-<h3 id="mitigation">Mitigation</h3>
+<h3 id="metrics">Metrics</h3>
 <ul>
-<li>Use Azure credits for initial deployment</li>
-<li>Document all Azure-specific configurations</li>
-<li>Consider multi-cloud support in future if needed</li>
-<li>Pre-warm containers for production use</li>
+<li>All workflows must pass security review before public release</li>
+<li>Zero critical security issues in production workflows</li>
+<li>Dependabot PRs reviewed within 7 days</li>
+<li>Security scanning results reviewed weekly</li>
 </ul>
 <h2 id="implementation">Implementation</h2>
-<h3 id="phase-1-infrastructure-setup">Phase 1: Infrastructure Setup</h3>
-<ol>
-<li>Create Azure resources (Container Apps, Redis, Key Vault, etc.)</li>
-<li>Configure Managed Identity</li>
-<li>Set up Application Insights</li>
-</ol>
-<h3 id="phase-2-security-hardening">Phase 2: Security Hardening</h3>
-<ol>
-<li>Complete all pre-deployment security requirements</li>
-<li>Configure branch protection (ADR-015)</li>
-<li>Fix GitHub Actions security issues (ADR-016)</li>
-<li>Enable all security features (ADR-017)</li>
-</ol>
-<h3 id="phase-3-deployment-pipeline">Phase 3: Deployment Pipeline</h3>
-<ol>
-<li>Configure GitHub Actions for Azure deployment</li>
-<li>Set up Container Registry</li>
-<li>Implement deployment workflow</li>
-<li>Test with staging environment</li>
-</ol>
-<h3 id="phase-4-go-live">Phase 4: Go Live</h3>
-<ol>
-<li>Verify all security checks pass</li>
-<li>Deploy to production</li>
-<li>Monitor for issues</li>
-<li>Make repository public (if applicable)</li>
-</ol>
+<h3 id="pre-public-release-checklist">Pre-Public Release Checklist</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add CODECOV_TOKEN to repository secrets</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update test-apps.yml with Codecov token</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Replace curl | sh with astral-sh/setup-uv@v5</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Fix all UI linting issues</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Remove continue-on-error from UI linting</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add secret validation to Claude workflows</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create .github/dependabot.yml</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Enable GitHub Security features</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test all workflows with sample PR</li>
+</ul>
+<h3 id="post-public-enhancements">Post-Public Enhancements</h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create security.yml workflow with CodeQL</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add Bandit scanning</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Add concurrency limits to Claude workflows</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Set up automated security scanning reports</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure workflow usage alerts</li>
+</ul>
 <h2 id="references">References</h2>
 <ul>
-<li>ADR-015: Branch Protection Strategy</li>
-<li>ADR-016: GitHub Actions Security Standards</li>
-<li>ADR-017: Public Release Readiness Standards</li>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>Azure Container Apps Documentation</li>
-<li>Azure Deployment Guide: <code>docs/deployment/azure-deployment.md</code></li>
-<li>Security Checklist: <code>docs/deployment/deployment-checklist.md</code></li>
+<li>GitHub Actions Security Best Practices: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions</li>
+<li>Dependabot Configuration: https://docs.github.com/en/code-security/dependabot</li>
+<li>CodeQL Documentation: https://docs.github.com/en/code-security/code-scanning</li>
+<li>SECURITY.md: Repository security policy</li>
 </ul>
-<h2 id="related-adrs">Related ADRs</h2>
-<ul>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>ADR-015: Branch Protection Strategy (pre-deployment requirement)</li>
-<li>ADR-016: GitHub Actions Security (CI/CD requirement)</li>
-<li>ADR-017: Public Release Readiness (overall standards)</li>
-</ul>
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<ol>
+<li><strong>Self-hosted Runners</strong>: Rejected due to maintenance overhead</li>
+<li><strong>Third-party Security Tools</strong>: Using GitHub native features for simplicity</li>
+<li><strong>Manual Reviews Only</strong>: Rejected; automated checks catch issues faster</li>
+</ol>
 <hr />
-<p><strong>Last Updated</strong>: 2025-10-01
-<strong>Author</strong>: Original decision 2025-09-28, Security additions 2025-10-01</p>
+<p><strong>Date</strong>: 2025-10-01
+<strong>Author</strong>: Claude Code Security Review
+<strong>Overall Security Grade</strong>: B+ (Good, with room for improvement)
+<strong>Target Grade</strong>: A (after critical fixes)</p>
 
 
 

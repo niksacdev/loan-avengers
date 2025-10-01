@@ -117,6 +117,18 @@
          <lastmod>2025-10-01</lastmod>
     </url>
     <url>
+         <loc>https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-015-branch-protection-strategy/</loc>
+         <lastmod>2025-10-01</lastmod>
+    </url>
+    <url>
+         <loc>https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-016-github-actions-security/</loc>
+         <lastmod>2025-10-01</lastmod>
+    </url>
+    <url>
+         <loc>https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-017-public-release-readiness/</loc>
+         <lastmod>2025-10-01</lastmod>
+    </url>
+    <url>
          <loc>https://niksacdev.github.io/loan-avengers/deployment/</loc>
          <lastmod>2025-10-01</lastmod>
     </url>

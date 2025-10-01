@@ -12,7 +12,7 @@
         <meta name="author" content="Niksac Development Team">
       
       
-        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-009-azure-container-apps-deployment/">
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-017-public-release-readiness/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>ADR-009: Azure Container Apps Deployment Strategy - Loan Avengers Documentation</title>
+        <title>ADR-003: Public Release Readiness Standards - Loan Avengers Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-009-azure-container-apps-deployment-strategy" class="md-skip">
+        <a href="#adr-003-public-release-readiness-standards" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-009: Azure Container Apps Deployment Strategy
+              ADR-003: Public Release Readiness Standards
             
           </span>
         </div>
@@ -1712,6 +1712,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
@@ -1731,27 +1740,105 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#infrastructure-components" class="md-nav__link">
+  <a href="#public-release-requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Infrastructure Components
+      Public Release Requirements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Release Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-security-documentation-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Security Documentation (REQUIRED)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pre-deployment-requirements" class="md-nav__link">
+  <a href="#2-legal-licensing-required" class="md-nav__link">
     <span class="md-ellipsis">
-      Pre-Deployment Requirements
+      2. Legal &amp; Licensing (REQUIRED)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployment-process" class="md-nav__link">
+  <a href="#3-community-guidelines-required" class="md-nav__link">
     <span class="md-ellipsis">
-      Deployment Process
+      3. Community Guidelines (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-branch-protection-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Branch Protection (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-github-actions-security-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. GitHub Actions Security (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-github-security-features-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. GitHub Security Features (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-documentation-quality-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Documentation Quality (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-code-quality-standards-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Code Quality Standards (REQUIRED)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#readiness-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Readiness Assessment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-blockers-must-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical Blockers (Must Fix)
     </span>
   </a>
   
@@ -1791,9 +1878,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mitigation" class="md-nav__link">
+  <a href="#success-metrics" class="md-nav__link">
     <span class="md-ellipsis">
-      Mitigation
+      Success Metrics
     </span>
   </a>
   
@@ -1815,36 +1902,111 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#phase-1-infrastructure-setup" class="md-nav__link">
+  <a href="#phase-1-critical-fixes-1-2-hours" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1: Infrastructure Setup
+      Phase 1: Critical Fixes (1-2 hours)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-2-security-hardening" class="md-nav__link">
+  <a href="#phase-2-high-priority-2-3-hours" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 2: Security Hardening
+      Phase 2: High Priority (2-3 hours)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-3-deployment-pipeline" class="md-nav__link">
+  <a href="#phase-3-recommended-enhancements-1-2-days-post-public" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 3: Deployment Pipeline
+      Phase 3: Recommended Enhancements (1-2 days, post-public)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-4-go-live" class="md-nav__link">
+  <a href="#pre-public-release-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 4: Go Live
+      Pre-Public Release Checklist
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-Public Release Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-must-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical (Must Complete)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-should-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Priority (Should Complete)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-nice-to-have" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended (Nice to Have)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secrets-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secrets Audit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quality-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality Gates
     </span>
   </a>
   
@@ -1865,11 +2027,77 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
+  <a href="#timeline" class="md-nav__link">
     <span class="md-ellipsis">
-      Related ADRs
+      Timeline
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimistic-4-6-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimistic (4-6 hours)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conservative-1-2-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conservative (1-2 days)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Review &amp; Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Review &amp; Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-public-launch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Public Launch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintenance Schedule
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1892,135 +2120,343 @@
   
 
 
-<h1 id="adr-009-azure-container-apps-deployment-strategy">ADR-009: Azure Container Apps Deployment Strategy</h1>
-<p><strong>Status</strong>: Accepted
-<strong>Date</strong>: 2025-09-28 (Updated: 2025-10-01)</p>
+<h1 id="adr-003-public-release-readiness-standards">ADR-003: Public Release Readiness Standards</h1>
+<h2 id="status">Status</h2>
+<p>Accepted</p>
 <h2 id="context">Context</h2>
-<p>Need cloud-native, serverless deployment on Azure with auto-scaling and seamless integration with Azure services. Additionally, before public release, we need to ensure proper CI/CD security and deployment safeguards are in place.</p>
+<p>The Loan Avengers repository is currently private and being prepared for public release. We need to establish clear standards for what constitutes "ready for public" to ensure security, quality, and professionalism. This ADR documents the comprehensive readiness assessment and required actions.</p>
 <h2 id="decision">Decision</h2>
-<h3 id="infrastructure-components">Infrastructure Components</h3>
+<h3 id="public-release-requirements">Public Release Requirements</h3>
+<p>We establish the following requirements for public repository release:</p>
+<h4 id="1-security-documentation-required">1. Security Documentation (REQUIRED)</h4>
 <ul>
-<li><strong>Azure Container Apps</strong> for API hosting (serverless, auto-scaling)</li>
-<li><strong>Azure Cache for Redis</strong> for AgentThread state management</li>
-<li><strong>Azure Blob Storage</strong> for document storage</li>
-<li><strong>Cosmos DB</strong> for completed applications persistence</li>
-<li><strong>Azure Key Vault</strong> for secrets management</li>
-<li><strong>Entra ID (Managed Identity)</strong> for authentication</li>
+<li>✅ SECURITY.md with vulnerability reporting process</li>
+<li>✅ Supported versions table</li>
+<li>✅ Security best practices for contributors</li>
+<li>✅ Pre-deployment security checklist</li>
+<li>✅ AI-specific security considerations</li>
+<li>✅ Responsible disclosure policy</li>
 </ul>
-<h3 id="pre-deployment-requirements">Pre-Deployment Requirements</h3>
-<p>Before deploying to production:</p>
+<h4 id="2-legal-licensing-required">2. Legal &amp; Licensing (REQUIRED)</h4>
+<ul>
+<li>✅ LICENSE file (MIT License)</li>
+<li>✅ Copyright notice (© 2025 Nik Sachdeva)</li>
+<li>✅ License badge in README</li>
+</ul>
+<h4 id="3-community-guidelines-required">3. Community Guidelines (REQUIRED)</h4>
+<ul>
+<li>✅ CONTRIBUTING.md with:</li>
+<li>Development setup instructions</li>
+<li>Code style guidelines (Ruff)</li>
+<li>PR submission process</li>
+<li>Testing requirements (≥85% coverage)</li>
+<li>Commit message conventions</li>
+<li>⚠️ CODE_OF_CONDUCT.md (optional but recommended)</li>
+</ul>
+<h4 id="4-branch-protection-required">4. Branch Protection (REQUIRED)</h4>
+<ul>
+<li>⚠️ Main branch protection configured (see ADR-001)</li>
+<li>⚠️ Status checks enforced</li>
+<li>⚠️ PR approval required</li>
+<li>⚠️ Conversation resolution required</li>
+<li>⚠️ CODEOWNERS file created</li>
+</ul>
+<h4 id="5-github-actions-security-required">5. GitHub Actions Security (REQUIRED)</h4>
+<ul>
+<li>⚠️ All critical security fixes applied (see ADR-002)</li>
+<li>⚠️ Codecov token configured</li>
+<li>⚠️ curl | sh patterns replaced</li>
+<li>⚠️ UI linting issues fixed</li>
+<li>⚠️ Secret validation added</li>
+</ul>
+<h4 id="6-github-security-features-required">6. GitHub Security Features (REQUIRED)</h4>
+<ul>
+<li>⚠️ Dependency graph enabled</li>
+<li>⚠️ Dependabot alerts enabled</li>
+<li>⚠️ Dependabot security updates enabled</li>
+<li>⚠️ Code scanning (CodeQL) enabled</li>
+<li>⚠️ Secret scanning enabled</li>
+<li>⚠️ Secret scanning push protection enabled</li>
+</ul>
+<h4 id="7-documentation-quality-required">7. Documentation Quality (REQUIRED)</h4>
+<ul>
+<li>✅ README.md with clear description</li>
+<li>✅ GitHub Pages deployed (https://niksacdev.github.io/loan-avengers/)</li>
+<li>✅ API documentation</li>
+<li>✅ Architecture diagrams</li>
+<li>⚠️ README badges (ready to add)</li>
+</ul>
+<h4 id="8-code-quality-standards-required">8. Code Quality Standards (REQUIRED)</h4>
+<ul>
+<li>✅ Ruff linting configured</li>
+<li>✅ Test coverage ≥85% threshold</li>
+<li>✅ Pre-commit validation script</li>
+<li>⚠️ All linting issues resolved</li>
+</ul>
+<h3 id="readiness-assessment">Readiness Assessment</h3>
+<p><strong>Overall Readiness: 85%</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Score</th>
+<th>Status</th>
+<th>Blocker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Security Documentation</td>
+<td>95%</td>
+<td>✅ Excellent</td>
+<td>No</td>
+</tr>
+<tr>
+<td>License &amp; Legal</td>
+<td>100%</td>
+<td>✅ Complete</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GitHub Actions Security</td>
+<td>70%</td>
+<td>🟡 Needs fixes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Branch Protection</td>
+<td>0%</td>
+<td>🔴 Not configured</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>90%</td>
+<td>✅ Excellent</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Community Guidelines</td>
+<td>60%</td>
+<td>🟡 Missing optional items</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Security Features</td>
+<td>50%</td>
+<td>🟡 Need to enable</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Code Quality</td>
+<td>80%</td>
+<td>🟡 UI linting issues</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="critical-blockers-must-fix">Critical Blockers (Must Fix)</h3>
 <ol>
-<li><strong>Security Configuration</strong> (see ADR-017):</li>
-<li>All secrets in Azure Key Vault</li>
-<li>CORS origins restricted to production domains</li>
-<li>Debug mode disabled (<code>APP_DEBUG=false</code>)</li>
-<li>HTTPS enforced (automatic with Azure Container Apps)</li>
-<li>Azure Managed Identity configured</li>
-<li>Application Insights for security monitoring</li>
-<li>Session timeout configured</li>
-<li>Input validation on all endpoints</li>
-<li>Rate limiting enabled</li>
-<li>
-<p>Security headers (CSP, HSTS, X-Frame-Options)</p>
-</li>
-<li>
-<p><strong>Branch Protection</strong> (see ADR-015):</p>
-</li>
-<li>Main branch protected with required approvals</li>
-<li>All CI/CD checks must pass before merge</li>
-<li>CODEOWNERS configured for workflow files</li>
-<li>
-<p>No direct pushes to main</p>
-</li>
-<li>
-<p><strong>GitHub Actions Security</strong> (see ADR-016):</p>
-</li>
-<li>All workflows follow security best practices</li>
-<li>Secrets properly configured</li>
-<li>Dependabot enabled for dependency updates</li>
-<li>CodeQL scanning enabled</li>
-</ol>
-<h3 id="deployment-process">Deployment Process</h3>
-<ol>
-<li><strong>Build</strong>: GitHub Actions builds Docker image</li>
-<li><strong>Test</strong>: Automated tests run in CI/CD</li>
-<li><strong>Security Scan</strong>: Container scanned for vulnerabilities</li>
-<li><strong>Deploy</strong>: Push to Azure Container Registry</li>
-<li><strong>Release</strong>: Container Apps pulls and deploys</li>
-<li><strong>Monitor</strong>: Application Insights tracks performance</li>
+<li><strong>Codecov Token</strong> - Blocks coverage reporting</li>
+<li><strong>UI Linting Issues</strong> - Code quality standard</li>
+<li><strong>Branch Protection</strong> - Security requirement</li>
+<li><strong>GitHub Security Features</strong> - Free and essential</li>
+<li><strong>GitHub Actions Fixes</strong> - Security requirement</li>
 </ol>
 <h2 id="consequences">Consequences</h2>
 <h3 id="positive">Positive</h3>
 <ul>
-<li><strong>Serverless</strong>: No infrastructure management required</li>
-<li><strong>Auto-scaling</strong>: Scales based on demand (0 to N instances)</li>
-<li><strong>Native Azure Integration</strong>: Managed Identity, Key Vault, etc.</li>
-<li><strong>Cost-effective</strong>: Pay only for usage</li>
+<li><strong>Professional</strong>: Repository meets industry standards</li>
 <li><strong>Secure</strong>: Multiple layers of security protection</li>
-<li><strong>CI/CD Automated</strong>: GitHub Actions handles build and deploy</li>
+<li><strong>Welcoming</strong>: Clear contributor guidelines</li>
+<li><strong>Maintainable</strong>: Quality standards enforced</li>
+<li><strong>Discoverable</strong>: Good documentation attracts contributors</li>
 </ul>
 <h3 id="negative">Negative</h3>
 <ul>
-<li><strong>Azure-specific</strong>: Not multi-cloud portable</li>
-<li><strong>Cold start</strong>: Initial request may have latency</li>
-<li><strong>Azure dependency</strong>: Requires Azure subscription</li>
-<li><strong>Learning curve</strong>: Azure-specific services and concepts</li>
+<li><strong>Setup Time</strong>: 4-6 hours to complete all requirements</li>
+<li><strong>Ongoing Maintenance</strong>: Security updates need review</li>
+<li><strong>Contributor Friction</strong>: More hoops for new contributors</li>
 </ul>
-<h3 id="mitigation">Mitigation</h3>
+<h3 id="success-metrics">Success Metrics</h3>
 <ul>
-<li>Use Azure credits for initial deployment</li>
-<li>Document all Azure-specific configurations</li>
-<li>Consider multi-cloud support in future if needed</li>
-<li>Pre-warm containers for production use</li>
+<li>Zero critical security vulnerabilities at launch</li>
+<li>All CI/CD checks passing</li>
+<li>Branch protection prevents direct pushes</li>
+<li>Documentation complete and professional</li>
+<li>First contributor able to submit PR without confusion</li>
 </ul>
 <h2 id="implementation">Implementation</h2>
-<h3 id="phase-1-infrastructure-setup">Phase 1: Infrastructure Setup</h3>
+<h3 id="phase-1-critical-fixes-1-2-hours">Phase 1: Critical Fixes (1-2 hours)</h3>
+<p><strong>Must complete before going public:</strong></p>
 <ol>
-<li>Create Azure resources (Container Apps, Redis, Key Vault, etc.)</li>
-<li>Configure Managed Identity</li>
-<li>Set up Application Insights</li>
+<li>Add Codecov token to GitHub Secrets</li>
+<li>Update test-apps.yml with token</li>
+<li>Replace curl | sh with astral-sh/setup-uv@v5</li>
+<li>Fix all UI linting errors</li>
+<li>Remove continue-on-error from UI linting</li>
+<li>Add secret validation to Claude workflows</li>
+<li>Insert badges into README.md</li>
 </ol>
-<h3 id="phase-2-security-hardening">Phase 2: Security Hardening</h3>
+<p><strong>Verification</strong>: Create test PR and ensure all checks pass</p>
+<h3 id="phase-2-high-priority-2-3-hours">Phase 2: High Priority (2-3 hours)</h3>
+<p><strong>Should complete before going public:</strong></p>
 <ol>
-<li>Complete all pre-deployment security requirements</li>
-<li>Configure branch protection (ADR-015)</li>
-<li>Fix GitHub Actions security issues (ADR-016)</li>
-<li>Enable all security features (ADR-017)</li>
+<li>Create <code>.github/dependabot.yml</code></li>
+<li>Create <code>.github/CODEOWNERS</code></li>
+<li>Configure branch protection for main</li>
+<li>Enable all GitHub Security features:</li>
+<li>Dependabot alerts</li>
+<li>Secret scanning</li>
+<li>Code scanning (CodeQL)</li>
+<li>Push protection</li>
+<li>Test branch protection with PR</li>
+<li>Verify CONTRIBUTING.md is clear</li>
 </ol>
-<h3 id="phase-3-deployment-pipeline">Phase 3: Deployment Pipeline</h3>
+<p><strong>Verification</strong>: Test complete PR workflow end-to-end</p>
+<h3 id="phase-3-recommended-enhancements-1-2-days-post-public">Phase 3: Recommended Enhancements (1-2 days, post-public)</h3>
+<p><strong>Can be completed after going public:</strong></p>
 <ol>
-<li>Configure GitHub Actions for Azure deployment</li>
-<li>Set up Container Registry</li>
-<li>Implement deployment workflow</li>
-<li>Test with staging environment</li>
+<li>Add security scanning workflow (security.yml)</li>
+<li>Add Bandit security scanning</li>
+<li>Add concurrency limits to Claude workflows</li>
+<li>Add timeout limits to workflows</li>
+<li>Set up OpenSSF Scorecard</li>
+<li>Create CODE_OF_CONDUCT.md</li>
+<li>Enable GitHub Discussions</li>
 </ol>
-<h3 id="phase-4-go-live">Phase 4: Go Live</h3>
+<h3 id="pre-public-release-checklist">Pre-Public Release Checklist</h3>
+<h4 id="critical-must-complete">Critical (Must Complete)</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Codecov token added to secrets</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> test-apps.yml updated with Codecov token</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> curl | sh replaced with astral-sh/setup-uv@v5</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> All UI linting errors fixed</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> continue-on-error removed from UI linting</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Secret validation added to Claude workflows</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Badges added to README.md</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Review commit history for secrets</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> All .env.example values are placeholders</li>
+</ul>
+<h4 id="high-priority-should-complete">High Priority (Should Complete)</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> dependabot.yml created</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CODEOWNERS created</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Main branch protection configured</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Status checks verified in branch protection</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Dependabot alerts enabled</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Secret scanning enabled</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Secret push protection enabled</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CodeQL scanning enabled</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test PR created and verified</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CONTRIBUTING.md is clear and accurate</li>
+</ul>
+<h4 id="recommended-nice-to-have">Recommended (Nice to Have)</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Security scanning workflow added</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Bandit scanning configured</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> OpenSSF Scorecard badge added</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CODE_OF_CONDUCT.md created</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> GitHub Discussions enabled</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Signed commits considered</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Environment protection for GitHub Pages</li>
+</ul>
+<h4 id="final-verification">Final Verification</h4>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create test issue</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create test PR with issue link</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify all status checks run</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify branch protection blocks failing PRs</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify conversation resolution requirement</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Verify PR approval requirement</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test auto-delete of branch after merge</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Review repository settings one final time</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>Make repository public</strong></li>
+</ul>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="secrets-audit">Secrets Audit</h3>
+<p>Before going public:</p>
 <ol>
-<li>Verify all security checks pass</li>
-<li>Deploy to production</li>
-<li>Monitor for issues</li>
-<li>Make repository public (if applicable)</li>
+<li><strong>Repository Secrets</strong> - Review Settings → Secrets:</li>
+<li>CODECOV_TOKEN (coverage reporting)</li>
+<li>CLAUDE_CODE_OAUTH_TOKEN (Claude workflows)</li>
+<li>
+<p>Any Azure credentials (use Managed Identity in production)</p>
+</li>
+<li>
+<p><strong>Commit History</strong> - Scan for accidentally committed secrets:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>log<span class="w"> </span>--all<span class="w"> </span>--full-history<span class="w"> </span>--source<span class="w"> </span>--<span class="w"> </span><span class="s1">&#39;*\.env&#39;</span>
+</span></code></pre></div></p>
+</li>
+<li>Use git-secrets or gitleaks to scan</li>
+<li>
+<p>Consider BFG Repo-Cleaner if secrets found</p>
+</li>
+<li>
+<p><strong>Public Visibility Impact</strong>:</p>
+</li>
+<li>All commit history becomes visible</li>
+<li>All issues and PRs become searchable</li>
+<li>GitHub Actions logs are public</li>
+<li>Dependencies scanned by GitHub Advisory Database</li>
 </ol>
+<h3 id="quality-gates">Quality Gates</h3>
+<p>All PRs must:
+1. Pass all CI/CD checks
+2. Have ≥1 approval
+3. Resolve all conversations
+4. Link to a GitHub issue
+5. Maintain ≥85% test coverage
+6. Pass Ruff linting
+7. Be up to date with main branch</p>
 <h2 id="references">References</h2>
 <ul>
-<li>ADR-015: Branch Protection Strategy</li>
-<li>ADR-016: GitHub Actions Security Standards</li>
-<li>ADR-017: Public Release Readiness Standards</li>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>Azure Container Apps Documentation</li>
-<li>Azure Deployment Guide: <code>docs/deployment/azure-deployment.md</code></li>
-<li>Security Checklist: <code>docs/deployment/deployment-checklist.md</code></li>
+<li>ADR-001: Branch Protection Strategy</li>
+<li>ADR-002: GitHub Actions Security Standards</li>
+<li>SECURITY.md: Security policy and reporting</li>
+<li>CONTRIBUTING.md: Contribution guidelines</li>
 </ul>
-<h2 id="related-adrs">Related ADRs</h2>
+<h2 id="timeline">Timeline</h2>
+<h3 id="optimistic-4-6-hours">Optimistic (4-6 hours)</h3>
 <ul>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>ADR-015: Branch Protection Strategy (pre-deployment requirement)</li>
-<li>ADR-016: GitHub Actions Security (CI/CD requirement)</li>
-<li>ADR-017: Public Release Readiness (overall standards)</li>
+<li>Phase 1 Critical: 1-2 hours</li>
+<li>Phase 2 High Priority: 2-3 hours</li>
+<li>Testing &amp; Verification: 1 hour</li>
+</ul>
+<h3 id="conservative-1-2-days">Conservative (1-2 days)</h3>
+<ul>
+<li>Phase 1 Critical: 0.5 day</li>
+<li>Phase 2 High Priority: 0.5 day</li>
+<li>Phase 3 Enhancements: 0.5 day</li>
+<li>Testing &amp; Documentation: 0.5 day</li>
+</ul>
+<p><strong>Recommendation</strong>: Plan for 1 full day to complete Phases 1-2 and thoroughly test.</p>
+<h2 id="alternatives-considered">Alternatives Considered</h2>
+<ol>
+<li><strong>Minimal Public Release</strong>: Rejected - would compromise security</li>
+<li><strong>Delayed Public Release</strong>: Considered - but requirements are achievable quickly</li>
+<li><strong>Private Release First</strong>: Rejected - want full community engagement</li>
+<li><strong>No Branch Protection</strong>: Rejected - security requirement</li>
+</ol>
+<h2 id="review-monitoring">Review &amp; Monitoring</h2>
+<h3 id="post-public-launch">Post-Public Launch</h3>
+<ul>
+<li><strong>Week 1</strong>: Monitor for security alerts, review first community PRs</li>
+<li><strong>Month 1</strong>: Review effectiveness of branch protection and quality gates</li>
+<li><strong>Quarter 1</strong>: Assess contributor experience, update guidelines as needed</li>
+</ul>
+<h3 id="maintenance-schedule">Maintenance Schedule</h3>
+<ul>
+<li><strong>Weekly</strong>: Review Dependabot PRs and security alerts</li>
+<li><strong>Monthly</strong>: Audit repository settings and permissions</li>
+<li><strong>Quarterly</strong>: Review ADRs and update if standards changed</li>
 </ul>
 <hr />
-<p><strong>Last Updated</strong>: 2025-10-01
-<strong>Author</strong>: Original decision 2025-09-28, Security additions 2025-10-01</p>
+<p><strong>Date</strong>: 2025-10-01
+<strong>Author</strong>: Claude Code Security &amp; Compliance Review
+<strong>Current Status</strong>: 🟡 <strong>READY WITH CRITICAL FIXES</strong>
+<strong>Recommendation</strong>: Address all 🔴 Critical and 🟡 High Priority blockers before making public
+<strong>Target Launch</strong>: After completing Phase 1 &amp; 2 (estimated 4-6 hours)</p>
 
 
 

@@ -12,7 +12,7 @@
         <meta name="author" content="Niksac Development Team">
       
       
-        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-009-azure-container-apps-deployment/">
+        <link rel="canonical" href="https://niksacdev.github.io/loan-avengers/architecture/decisions/adr-015-branch-protection-strategy/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>ADR-009: Azure Container Apps Deployment Strategy - Loan Avengers Documentation</title>
+        <title>ADR-001: Branch Protection Strategy for Public Release - Loan Avengers Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-009-azure-container-apps-deployment-strategy" class="md-skip">
+        <a href="#adr-001-branch-protection-strategy-for-public-release" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-009: Azure Container Apps Deployment Strategy
+              ADR-001: Branch Protection Strategy for Public Release
             
           </span>
         </div>
@@ -1712,6 +1712,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
       Context
@@ -1731,27 +1740,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#infrastructure-components" class="md-nav__link">
+  <a href="#main-branch-protection-rules" class="md-nav__link">
     <span class="md-ellipsis">
-      Infrastructure Components
+      Main Branch Protection Rules
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pre-deployment-requirements" class="md-nav__link">
+  <a href="#github-repository-settings" class="md-nav__link">
     <span class="md-ellipsis">
-      Pre-Deployment Requirements
+      GitHub Repository Settings
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#deployment-process" class="md-nav__link">
+  <a href="#codeowners-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Deployment Process
+      CODEOWNERS Configuration
     </span>
   </a>
   
@@ -1791,9 +1800,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mitigation" class="md-nav__link">
+  <a href="#mitigation-strategies" class="md-nav__link">
     <span class="md-ellipsis">
-      Mitigation
+      Mitigation Strategies
     </span>
   </a>
   
@@ -1815,36 +1824,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#phase-1-infrastructure-setup" class="md-nav__link">
+  <a href="#phase-1-immediate-pre-public" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 1: Infrastructure Setup
+      Phase 1: Immediate (Pre-Public)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-2-security-hardening" class="md-nav__link">
+  <a href="#phase-2-post-public" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 2: Security Hardening
+      Phase 2: Post-Public
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-3-deployment-pipeline" class="md-nav__link">
+  <a href="#emergency-procedures" class="md-nav__link">
     <span class="md-ellipsis">
-      Phase 3: Deployment Pipeline
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#phase-4-go-live" class="md-nav__link">
-    <span class="md-ellipsis">
-      Phase 4: Go Live
+      Emergency Procedures
     </span>
   </a>
   
@@ -1865,9 +1865,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-adrs" class="md-nav__link">
+  <a href="#review-schedule" class="md-nav__link">
     <span class="md-ellipsis">
-      Related ADRs
+      Review Schedule
     </span>
   </a>
   
@@ -1892,135 +1892,146 @@
   
 
 
-<h1 id="adr-009-azure-container-apps-deployment-strategy">ADR-009: Azure Container Apps Deployment Strategy</h1>
-<p><strong>Status</strong>: Accepted
-<strong>Date</strong>: 2025-09-28 (Updated: 2025-10-01)</p>
+<h1 id="adr-001-branch-protection-strategy-for-public-release">ADR-001: Branch Protection Strategy for Public Release</h1>
+<h2 id="status">Status</h2>
+<p>Accepted</p>
 <h2 id="context">Context</h2>
-<p>Need cloud-native, serverless deployment on Azure with auto-scaling and seamless integration with Azure services. Additionally, before public release, we need to ensure proper CI/CD security and deployment safeguards are in place.</p>
+<p>Before making the Loan Avengers repository public, we need to establish branch protection rules to ensure code quality, security, and proper review processes. This prevents direct pushes to main, enforces CI/CD checks, and maintains professional development standards.</p>
 <h2 id="decision">Decision</h2>
-<h3 id="infrastructure-components">Infrastructure Components</h3>
-<ul>
-<li><strong>Azure Container Apps</strong> for API hosting (serverless, auto-scaling)</li>
-<li><strong>Azure Cache for Redis</strong> for AgentThread state management</li>
-<li><strong>Azure Blob Storage</strong> for document storage</li>
-<li><strong>Cosmos DB</strong> for completed applications persistence</li>
-<li><strong>Azure Key Vault</strong> for secrets management</li>
-<li><strong>Entra ID (Managed Identity)</strong> for authentication</li>
-</ul>
-<h3 id="pre-deployment-requirements">Pre-Deployment Requirements</h3>
-<p>Before deploying to production:</p>
+<h3 id="main-branch-protection-rules">Main Branch Protection Rules</h3>
+<p>We will enforce the following protection rules on the <code>main</code> branch:</p>
 <ol>
-<li><strong>Security Configuration</strong> (see ADR-017):</li>
-<li>All secrets in Azure Key Vault</li>
-<li>CORS origins restricted to production domains</li>
-<li>Debug mode disabled (<code>APP_DEBUG=false</code>)</li>
-<li>HTTPS enforced (automatic with Azure Container Apps)</li>
-<li>Azure Managed Identity configured</li>
-<li>Application Insights for security monitoring</li>
-<li>Session timeout configured</li>
-<li>Input validation on all endpoints</li>
-<li>Rate limiting enabled</li>
+<li><strong>Require Pull Request with Approval</strong></li>
+<li>Minimum 1 approval required</li>
+<li>Dismiss stale reviews when new commits pushed</li>
 <li>
-<p>Security headers (CSP, HSTS, X-Frame-Options)</p>
+<p>Require Code Owners approval (after CODEOWNERS created)</p>
 </li>
 <li>
-<p><strong>Branch Protection</strong> (see ADR-015):</p>
+<p><strong>Require Status Checks to Pass</strong></p>
 </li>
-<li>Main branch protected with required approvals</li>
-<li>All CI/CD checks must pass before merge</li>
-<li>CODEOWNERS configured for workflow files</li>
+<li>Test API App (from <code>test-apps.yml</code>)</li>
+<li>Test UI App (from <code>test-apps.yml</code>)</li>
+<li>Validate Monorepo Structure (from <code>test-apps.yml</code>)</li>
+<li>Require Linked Issue (from <code>require-linked-issue.yml</code>)</li>
 <li>
-<p>No direct pushes to main</p>
+<p>Require branches up to date before merging</p>
 </li>
 <li>
-<p><strong>GitHub Actions Security</strong> (see ADR-016):</p>
+<p><strong>Require Conversation Resolution</strong></p>
 </li>
-<li>All workflows follow security best practices</li>
-<li>Secrets properly configured</li>
-<li>Dependabot enabled for dependency updates</li>
-<li>CodeQL scanning enabled</li>
+<li>
+<p>All review comments must be resolved before merge</p>
+</li>
+<li>
+<p><strong>Require Linear History</strong></p>
+</li>
+<li>Enforce squash or rebase merging</li>
+<li>
+<p>Disable merge commits</p>
+</li>
+<li>
+<p><strong>Restrict Direct Pushes</strong></p>
+</li>
+<li>Only repository administrators can push</li>
+<li>All changes go through PR process</li>
+<li>No force pushes allowed</li>
+<li>
+<p>No branch deletions allowed</p>
+</li>
+<li>
+<p><strong>No Bypassing Rules</strong></p>
+</li>
+<li>Even admins must follow rules</li>
+<li>Exception: Emergency hotfixes (documented)</li>
 </ol>
-<h3 id="deployment-process">Deployment Process</h3>
-<ol>
-<li><strong>Build</strong>: GitHub Actions builds Docker image</li>
-<li><strong>Test</strong>: Automated tests run in CI/CD</li>
-<li><strong>Security Scan</strong>: Container scanned for vulnerabilities</li>
-<li><strong>Deploy</strong>: Push to Azure Container Registry</li>
-<li><strong>Release</strong>: Container Apps pulls and deploys</li>
-<li><strong>Monitor</strong>: Application Insights tracks performance</li>
-</ol>
+<h3 id="github-repository-settings">GitHub Repository Settings</h3>
+<p><strong>Pull Requests</strong>:
+- Allow squash merging: ✅ Enabled
+- Allow rebase merging: ✅ Enabled
+- Allow merge commits: ❌ Disabled
+- Automatically delete head branches: ✅ Enabled
+- Allow auto-merge: ✅ Enabled (after approvals)</p>
+<p><strong>Security &amp; Analysis</strong>:
+- Dependency graph: ✅ Enabled
+- Dependabot alerts: ✅ Enabled
+- Dependabot security updates: ✅ Enabled
+- Code scanning (CodeQL): ✅ Enabled
+- Secret scanning: ✅ Enabled
+- Secret scanning push protection: ✅ Enabled</p>
+<h3 id="codeowners-configuration">CODEOWNERS Configuration</h3>
+<p>Create <code>.github/CODEOWNERS</code>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># Repository owner
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>* @niksacdev
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># Workflow files require security review
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/.github/workflows/ @niksacdev
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a># Security-sensitive files
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>/SECURITY.md @niksacdev
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>/.env.example @niksacdev
+</span></code></pre></div></p>
 <h2 id="consequences">Consequences</h2>
 <h3 id="positive">Positive</h3>
 <ul>
-<li><strong>Serverless</strong>: No infrastructure management required</li>
-<li><strong>Auto-scaling</strong>: Scales based on demand (0 to N instances)</li>
-<li><strong>Native Azure Integration</strong>: Managed Identity, Key Vault, etc.</li>
-<li><strong>Cost-effective</strong>: Pay only for usage</li>
-<li><strong>Secure</strong>: Multiple layers of security protection</li>
-<li><strong>CI/CD Automated</strong>: GitHub Actions handles build and deploy</li>
+<li><strong>Code Quality</strong>: All code reviewed before merging</li>
+<li><strong>Security</strong>: Automated security checks prevent vulnerabilities</li>
+<li><strong>Traceability</strong>: Every change linked to GitHub issue</li>
+<li><strong>Professional</strong>: Industry-standard development practices</li>
+<li><strong>Clean History</strong>: Linear history easier to understand and debug</li>
 </ul>
 <h3 id="negative">Negative</h3>
 <ul>
-<li><strong>Azure-specific</strong>: Not multi-cloud portable</li>
-<li><strong>Cold start</strong>: Initial request may have latency</li>
-<li><strong>Azure dependency</strong>: Requires Azure subscription</li>
-<li><strong>Learning curve</strong>: Azure-specific services and concepts</li>
+<li><strong>Slower Merges</strong>: PRs must wait for approvals and checks</li>
+<li><strong>Setup Complexity</strong>: Initial configuration requires time</li>
+<li><strong>Contributor Friction</strong>: New contributors face more requirements</li>
 </ul>
-<h3 id="mitigation">Mitigation</h3>
+<h3 id="mitigation-strategies">Mitigation Strategies</h3>
 <ul>
-<li>Use Azure credits for initial deployment</li>
-<li>Document all Azure-specific configurations</li>
-<li>Consider multi-cloud support in future if needed</li>
-<li>Pre-warm containers for production use</li>
+<li>Clear documentation in CONTRIBUTING.md</li>
+<li>Pre-commit hooks help catch issues early</li>
+<li>Automated checks provide fast feedback</li>
+<li>Code Owners expedite review process</li>
 </ul>
 <h2 id="implementation">Implementation</h2>
-<h3 id="phase-1-infrastructure-setup">Phase 1: Infrastructure Setup</h3>
+<h3 id="phase-1-immediate-pre-public">Phase 1: Immediate (Pre-Public)</h3>
 <ol>
-<li>Create Azure resources (Container Apps, Redis, Key Vault, etc.)</li>
-<li>Configure Managed Identity</li>
-<li>Set up Application Insights</li>
+<li>Create <code>.github/CODEOWNERS</code> file</li>
+<li>Configure main branch protection in GitHub Settings</li>
+<li>Enable all security features</li>
+<li>Test with sample PR</li>
 </ol>
-<h3 id="phase-2-security-hardening">Phase 2: Security Hardening</h3>
+<h3 id="phase-2-post-public">Phase 2: Post-Public</h3>
 <ol>
-<li>Complete all pre-deployment security requirements</li>
-<li>Configure branch protection (ADR-015)</li>
-<li>Fix GitHub Actions security issues (ADR-016)</li>
-<li>Enable all security features (ADR-017)</li>
+<li>Monitor for false positives in security scanning</li>
+<li>Adjust status check requirements if needed</li>
+<li>Add additional Code Owners as team grows</li>
 </ol>
-<h3 id="phase-3-deployment-pipeline">Phase 3: Deployment Pipeline</h3>
-<ol>
-<li>Configure GitHub Actions for Azure deployment</li>
-<li>Set up Container Registry</li>
-<li>Implement deployment workflow</li>
-<li>Test with staging environment</li>
-</ol>
-<h3 id="phase-4-go-live">Phase 4: Go Live</h3>
-<ol>
-<li>Verify all security checks pass</li>
-<li>Deploy to production</li>
-<li>Monitor for issues</li>
-<li>Make repository public (if applicable)</li>
-</ol>
+<h3 id="emergency-procedures">Emergency Procedures</h3>
+<p>When branch protection must be disabled:
+1. Document reason in GitHub issue
+2. Admin temporarily disables specific rule
+3. Make emergency change with justification
+4. Re-enable protection immediately
+5. Create PR documenting what was done
+6. Conduct retrospective</p>
 <h2 id="references">References</h2>
 <ul>
-<li>ADR-015: Branch Protection Strategy</li>
-<li>ADR-016: GitHub Actions Security Standards</li>
-<li>ADR-017: Public Release Readiness Standards</li>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>Azure Container Apps Documentation</li>
-<li>Azure Deployment Guide: <code>docs/deployment/azure-deployment.md</code></li>
-<li>Security Checklist: <code>docs/deployment/deployment-checklist.md</code></li>
+<li>GitHub Branch Protection Documentation: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches</li>
+<li>CONTRIBUTING.md: Guidelines for contributors</li>
+<li>SECURITY.md: Security policy and reporting</li>
 </ul>
-<h2 id="related-adrs">Related ADRs</h2>
+<h2 id="review-schedule">Review Schedule</h2>
 <ul>
-<li>ADR-005: API Architecture with Agent Framework</li>
-<li>ADR-015: Branch Protection Strategy (pre-deployment requirement)</li>
-<li>ADR-016: GitHub Actions Security (CI/CD requirement)</li>
-<li>ADR-017: Public Release Readiness (overall standards)</li>
+<li><strong>Weekly</strong>: Check for failed status checks</li>
+<li><strong>Monthly</strong>: Review effectiveness of rules</li>
+<li><strong>Quarterly</strong>: Audit admin access and bypass permissions</li>
+<li><strong>After incidents</strong>: Update rules to prevent similar issues</li>
 </ul>
 <hr />
-<p><strong>Last Updated</strong>: 2025-10-01
-<strong>Author</strong>: Original decision 2025-09-28, Security additions 2025-10-01</p>
+<p><strong>Date</strong>: 2025-10-01
+<strong>Author</strong>: Claude Code Security Review
+<strong>Stakeholders</strong>: @niksacdev, future contributors</p>
 
 
 

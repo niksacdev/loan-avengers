@@ -1,4 +1,4 @@
-# ADR-005: Orchestration Pattern Refactoring
+# ADR-013: Orchestration Pattern Refactoring
 
 **Status**: Accepted
 **Date**: 2025-09-30

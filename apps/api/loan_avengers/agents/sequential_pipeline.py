@@ -171,11 +171,12 @@ class SequentialPipeline:
                 )
                 await asyncio.sleep(0.5)
 
-            # Create ChatAgents from standalone agent classes with MCP tools connected
-            intake_chat = await self.intake_agent.create_chat_agent()
-            credit_chat = await self.credit_agent.create_chat_agent()
-            income_chat = await self.income_agent.create_chat_agent()
-            risk_chat = await self.risk_agent.create_chat_agent()
+            # Create ChatAgents from standalone agent classes
+            # Framework handles MCP tool lifecycle automatically
+            intake_chat = self.intake_agent.create_agent()
+            credit_chat = self.credit_agent.create_agent()
+            income_chat = self.income_agent.create_agent()
+            risk_chat = self.risk_agent.create_agent()
 
             # Build sequential workflow using SequentialBuilder
             workflow = SequentialBuilder().participants([intake_chat, credit_chat, income_chat, risk_chat]).build()

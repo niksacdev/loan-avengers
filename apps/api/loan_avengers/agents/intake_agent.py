@@ -88,33 +88,31 @@ class IntakeAgent:
 
         logger.info("IntakeAgent initialized", extra={"agent": "intake"})
 
-    async def create_chat_agent(self) -> ChatAgent:
+    def create_agent(self) -> ChatAgent:
         """
-        Create a ChatAgent with connected MCP tools for use in workflows.
+        Create a ChatAgent for use in workflows (SequentialBuilder, etc.).
 
-        This method connects the MCP tools and returns a configured ChatAgent
-        that can be used with SequentialBuilder or other workflow patterns.
+        This method creates a ChatAgent using the AzureAIAgentClient.create_agent()
+        pattern. MCP tools are passed at agent creation and the framework handles
+        the connection lifecycle automatically.
 
         Returns:
-            ChatAgent: Configured agent with connected MCP tools
+            ChatAgent: Configured agent for workflow orchestration
 
         Note:
-            The returned ChatAgent is already within the MCP tool async context.
-            The caller must await the agent within the same async context.
+            This follows the Microsoft Agent Framework pattern where tools are
+            defined at agent creation time. The framework manages MCP tool lifecycle.
         """
-        # Connect MCP tool
-        await self.mcp_tool.__aenter__()
-
-        # Create and return ChatAgent
-        return ChatAgent(
-            chat_client=self.chat_client,
-            instructions=self.instructions,
+        return self.chat_client.create_agent(
             name="Intake_Agent",
+            instructions=self.instructions,
             description="Sharp-eyed application validator with efficient humor",
-            temperature=self.temperature,
-            max_tokens=self.max_tokens,
+            model_config={
+                "temperature": self.temperature,
+                "max_tokens": self.max_tokens,
+            },
             response_format=IntakeAssessment,
-            tools=[self.mcp_tool],
+            tools=self.mcp_tool,  # Framework handles MCP tool lifecycle
         )
 
     async def process_application(

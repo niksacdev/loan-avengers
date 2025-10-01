@@ -17,14 +17,10 @@ import pytest
 try:
     from agent_framework import AgentThread
     from azure.ai.projects.models import ThreadMessage
-
-    # For backward compatibility with tests
-    FoundryChatClient = None  # No longer used, kept for mock compatibility
 except ImportError:
     # Fallback for when agent_framework is not available
     AgentThread = None
     ThreadMessage = None
-    FoundryChatClient = None
 
 from loan_avengers.models.application import EmploymentStatus, LoanApplication, LoanPurpose
 from loan_avengers.models.responses import IntakeAssessment

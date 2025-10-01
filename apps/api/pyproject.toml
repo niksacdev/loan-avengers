@@ -20,8 +20,9 @@ classifiers = [
 
 dependencies = [
     # Microsoft Agent Framework with key integrations
-    # NOTE: agent-framework will be available from parent .venv
-    # "agent-framework[azure,foundry,viz]",
+    "agent-framework-core",
+    "agent-framework-azure-ai",
+    "agent-framework-copilotstudio",
 
     # Core business logic dependencies
     "pydantic>=2.5.0", # Data model validation
@@ -78,11 +79,8 @@ dev-dependencies = [
 ]
 
 # [tool.uv.sources]
-# Microsoft Agent Framework packages from GitHub (following official documentation format)
-# NOTE: Commented out - using parent .venv with already installed agent-framework
-# "agent-framework" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/main" }
-# "agent-framework-azure" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure" }
-# "agent-framework-foundry" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/foundry" }
+# Microsoft Agent Framework packages are installed in parent .venv
+# Use parent .venv by setting VIRTUAL_ENV or running from parent directory
 
 [tool.ruff]
 line-length = 120
@@ -203,6 +201,12 @@ output = "../../coverage.xml"
 [tool.coverage.json]
 output = "../../coverage.json"
 show_contexts = true
+
+[tool.uv.sources]
+# Microsoft Agent Framework packages from GitHub (using correct package names and subdirectories)
+"agent-framework-core" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/core" }
+"agent-framework-azure-ai" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure-ai" }
+"agent-framework-copilotstudio" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/copilotstudio" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["loan_avengers"]

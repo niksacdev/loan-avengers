@@ -19,7 +19,7 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 from agent_framework import AgentThread, ChatAgent, SequentialBuilder, SharedState, WorkflowEvent
-from agent_framework_foundry import FoundryChatClient
+from agent_framework_azure_ai import AzureAIAgentClient
 from azure.identity.aio import DefaultAzureCredential
 from pydantic import BaseModel
 
@@ -65,19 +65,19 @@ class SequentialLoanWorkflow:
 
     def __init__(
         self,
-        chat_client: FoundryChatClient | None = None,
+        chat_client: AzureAIAgentClient | None = None,
     ):
         """
         Initialize the unified workflow.
 
         Args:
-            chat_client: Azure AI Foundry chat client. If None, creates with
+            chat_client: Azure AI Agent client. If None, creates with
                 DefaultAzureCredential for Entra ID authentication.
         """
         if chat_client:
             self.chat_client = chat_client
         else:
-            self.chat_client = FoundryChatClient(async_credential=DefaultAzureCredential())
+            self.chat_client = AzureAIAgentClient(async_credential=DefaultAzureCredential())
 
         # Create specialized agents for different workflow phases
         self.coordinator_collector = self._create_coordinator_collector()

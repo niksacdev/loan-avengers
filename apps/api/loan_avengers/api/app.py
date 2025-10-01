@@ -20,12 +20,15 @@ try:
     from loan_avengers.agents.sequential_pipeline import SequentialPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = True
-except ImportError:
+    print("[DEBUG] ✅ Successfully imported real ConversationOrchestrator and SequentialPipeline")
+except ImportError as e:
     # Use mock implementation when agent_framework is not available
+    print(f"[DEBUG] ❌ ImportError loading real implementations: {e}")
     from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as ConversationOrchestrator
     from loan_avengers.agents.mock_sequential_workflow import SequentialPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = False
+    print("[DEBUG] 📦 Loaded mock implementations")
 from loan_avengers.api.config import settings
 from loan_avengers.api.models import (
     ConversationRequest,

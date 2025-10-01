@@ -11,7 +11,7 @@ import os
 
 from agent_framework import AgentRunResponse, AgentThread, ChatAgent
 from agent_framework._mcp import MCPStreamableHTTPTool
-from agent_framework_foundry import FoundryChatClient
+from agent_framework_azure_ai import AzureAIAgentClient
 from azure.identity.aio import DefaultAzureCredential
 
 from loan_avengers.models.application import LoanApplication
@@ -42,7 +42,7 @@ class IntakeAgent:
 
     def __init__(
         self,
-        chat_client: FoundryChatClient | None = None,
+        chat_client: AzureAIAgentClient | None = None,
         temperature: float = 0.1,
         max_tokens: int = 500,
     ):
@@ -53,7 +53,7 @@ class IntakeAgent:
         ChatAgent is created per-request to ensure proper MCP tool lifecycle.
 
         Args:
-            chat_client: Azure AI Foundry chat client. If None, creates with
+            chat_client: Azure AI Agent client. If None, creates with
                 DefaultAzureCredential for Entra ID authentication.
             temperature: Sampling temperature for the model (low for consistency)
             max_tokens: Maximum tokens for response (small for speed)
@@ -65,7 +65,7 @@ class IntakeAgent:
         if chat_client:
             self.chat_client = chat_client
         else:
-            self.chat_client = FoundryChatClient(async_credential=DefaultAzureCredential())
+            self.chat_client = AzureAIAgentClient(async_credential=DefaultAzureCredential())
 
         # Load persona instructions from markdown file
         self.instructions = PersonaLoader.load_persona("intake")

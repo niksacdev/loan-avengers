@@ -35,7 +35,7 @@ class CreditAgent:
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
-    - Two MCP tools: application_verification (8010) and financial_calculations (8012)
+    - Two MCP tools: application_verification and financial_calculations
     - Structured logging with masked sensitive data (application_id[:8]***)
     - Async context managers for proper MCP tool lifecycle
 
@@ -99,7 +99,10 @@ class CreditAgent:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        logger.info("CreditAgent initialized", extra={"agent": "credit", "mcp_servers": ["8010", "8012"]})
+        logger.info(
+            "CreditAgent initialized",
+            extra={"agent": "credit", "mcp_servers": ["application_verification", "financial_calculations"]},
+        )
 
     async def process_application(
         self,

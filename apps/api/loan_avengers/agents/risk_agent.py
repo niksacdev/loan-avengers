@@ -35,7 +35,8 @@ class RiskAgent:
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
-    - Three MCP tools: ALL servers (8010, 8011, 8012) for holistic risk analysis
+    - Three MCP tools: ALL servers (application_verification, document_processing,
+      financial_calculations) for holistic risk analysis
     - Structured logging with masked sensitive data (application_id[:8]***)
     - Async context managers for proper MCP tool lifecycle
 
@@ -110,7 +111,13 @@ class RiskAgent:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        logger.info("RiskAgent initialized", extra={"agent": "risk", "mcp_servers": ["8010", "8011", "8012"]})
+        logger.info(
+            "RiskAgent initialized",
+            extra={
+                "agent": "risk",
+                "mcp_servers": ["application_verification", "document_processing", "financial_calculations"],
+            },
+        )
 
     async def process_application(
         self,

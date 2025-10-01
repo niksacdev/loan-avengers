@@ -81,10 +81,10 @@ class SequentialPipeline:
             extra={
                 "agents": ["intake", "credit", "income", "risk"],
                 "mcp_servers_enabled": {
-                    "intake": ["8010"],
-                    "credit": ["8010", "8012"],
-                    "income": ["8010", "8011", "8012"],
-                    "risk": ["8010", "8011", "8012"],
+                    "intake": ["application_verification"],
+                    "credit": ["application_verification", "financial_calculations"],
+                    "income": ["application_verification", "document_processing", "financial_calculations"],
+                    "risk": ["application_verification", "document_processing", "financial_calculations"],
                 },
             },
         )

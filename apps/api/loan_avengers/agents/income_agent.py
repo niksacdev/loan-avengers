@@ -35,8 +35,8 @@ class IncomeAgent:
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
-    - Three MCP tools: application_verification (8010), document_processing (8011),
-      and financial_calculations (8012) for comprehensive income analysis
+    - Three MCP tools: application_verification, document_processing,
+      and financial_calculations for comprehensive income analysis
     - Structured logging with masked sensitive data (application_id[:8]***)
     - Async context managers for proper MCP tool lifecycle
 
@@ -112,7 +112,13 @@ class IncomeAgent:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        logger.info("IncomeAgent initialized", extra={"agent": "income", "mcp_servers": ["8010", "8011", "8012"]})
+        logger.info(
+            "IncomeAgent initialized",
+            extra={
+                "agent": "income",
+                "mcp_servers": ["application_verification", "document_processing", "financial_calculations"],
+            },
+        )
 
     async def process_application(
         self,

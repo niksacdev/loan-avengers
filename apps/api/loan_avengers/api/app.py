@@ -27,8 +27,8 @@ except ImportError:
     print("[WARN] OpenTelemetry packages not available - observability features limited")
 
 try:
-    from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
-    from loan_avengers.agents.sequential_pipeline import SequentialPipeline
+    from loan_avengers.orchestrators.conversation_orchestrator import ConversationOrchestrator
+    from loan_avengers.orchestrators.sequential_pipeline import SequentialPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = True
     print("[DEBUG] ✅ Successfully imported real ConversationOrchestrator and SequentialPipeline")
@@ -184,7 +184,7 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
 
         # Get or create state machine for this session
         if session.state_machine is None:
-            from loan_avengers.agents.conversation_state_machine import ConversationStateMachine
+            from loan_avengers.orchestrators.conversation_state_machine import ConversationStateMachine
 
             session.state_machine = ConversationStateMachine()
             logger.info(f"Created new state machine for session {session.session_id[:8]}***")

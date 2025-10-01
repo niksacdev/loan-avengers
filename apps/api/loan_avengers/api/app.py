@@ -10,10 +10,21 @@ This API provides endpoints for:
 
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+
+# OpenTelemetry auto-instrumentation for Azure Monitor
+try:
+    from azure.monitor.opentelemetry import configure_azure_monitor
+    from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
+    OTEL_AVAILABLE = True
+except ImportError:
+    OTEL_AVAILABLE = False
+    print("[WARN] OpenTelemetry packages not available - observability features limited")
 
 try:
     from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
@@ -41,6 +52,16 @@ from loan_avengers.utils.observability import Observability
 
 logger = Observability.get_logger("api")
 
+# Initialize OpenTelemetry with Azure Monitor (if configured)
+if OTEL_AVAILABLE and os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"):
+    configure_azure_monitor(
+        # Auto-configure from APPLICATIONINSIGHTS_CONNECTION_STRING env var
+        # Also reads OTEL_SERVICE_NAME, OTEL_SERVICE_VERSION, OTEL_RESOURCE_ATTRIBUTES
+    )
+    logger.info("OpenTelemetry configured with Azure Monitor")
+else:
+    logger.info("OpenTelemetry not configured - using basic logging only")
+
 # Create FastAPI application with configuration from settings
 app = FastAPI(
     title=settings.title,
@@ -51,12 +72,68 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+# Auto-instrument FastAPI for distributed tracing (if OTEL available)
+if OTEL_AVAILABLE:
+    FastAPIInstrumentor.instrument_app(
+        app,
+        # Exclude health/docs endpoints from tracing to reduce noise
+        excluded_urls="/health,/docs,/redoc,/openapi.json",
+    )
+    logger.info("FastAPI auto-instrumentation enabled")
+
 # Configure CORS from environment settings
 app.add_middleware(CORSMiddleware, **settings.get_cors_config())
 
 # Initialize conversation orchestrator and sequential processing pipeline
 conversation_orchestrator = ConversationOrchestrator()
 sequential_pipeline = SequentialPipeline()
+
+
+# Correlation ID middleware for request tracing
+@app.middleware("http")
+async def add_correlation_id_middleware(request: Request, call_next):
+    """
+    Add correlation ID to all requests for end-to-end tracing.
+
+    Correlation IDs enable tracking requests across:
+    - HTTP API calls
+    - Agent executions
+    - MCP server tool calls
+    - UI interactions
+
+    The correlation ID is:
+    - Extracted from X-Correlation-ID header (if provided by client)
+    - Generated as new UUID if not provided
+    - Added to response headers
+    - Automatically included in all logs via Observability.get_correlation_id()
+    - Propagated through OpenTelemetry traces automatically
+    """
+    # Get or generate correlation ID
+    correlation_id = request.headers.get("X-Correlation-ID")
+    if not correlation_id:
+        correlation_id = Observability.set_correlation_id()
+    else:
+        Observability.set_correlation_id(correlation_id)
+
+    logger.debug(
+        "Request started",
+        extra={
+            "correlation_id": correlation_id,
+            "method": request.method,
+            "path": request.url.path,
+        },
+    )
+
+    # Process request
+    response = await call_next(request)
+
+    # Add correlation ID to response headers
+    response.headers["X-Correlation-ID"] = correlation_id
+
+    # Clear correlation ID after request (prevents leakage between requests)
+    Observability.clear_correlation_id()
+
+    return response
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -115,6 +192,7 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
         logger.info(
             "Processing chat request",
             extra={
+                "correlation_id": Observability.get_correlation_id(),
                 "session_id": session.session_id[:8] + "***",
                 "user_message_length": len(request.user_message),
                 "existing_data_fields": len(session.collected_data),
@@ -189,6 +267,7 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
             logger.info(
                 "Chat processed successfully",
                 extra={
+                    "correlation_id": Observability.get_correlation_id(),
                     "session_id": session.session_id[:8] + "***",
                     "completion_percentage": latest_response.completion_percentage,
                     "agent": latest_response.agent_name,
@@ -221,8 +300,10 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
         logger.error(
             "Chat processing failed",
             extra={
+                "correlation_id": Observability.get_correlation_id(),
                 "session_id": request.session_id[:8] + "***" if request.session_id else "new",
                 "error": str(e),
+                "error_type": type(e).__name__,
             },
             exc_info=True,
         )

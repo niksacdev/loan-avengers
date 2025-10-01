@@ -17,6 +17,7 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
+from loan_avengers.config.mcp_config import MCPServerConfig  # noqa: E402
 from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import ApplicationVerificationServiceImpl  # noqa: E402
@@ -24,10 +25,10 @@ from .service import ApplicationVerificationServiceImpl  # noqa: E402
 # Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("application_verification_server")
 
-# Create MCP server and configure optional SSE
+# Create MCP server with environment-based configuration
 mcp = FastMCP("application-verification")
-mcp.settings.host = "localhost"
-mcp.settings.port = 8010
+mcp.settings.host = MCPServerConfig.get_host()
+mcp.settings.port = MCPServerConfig.get_port("APPLICATION_VERIFICATION", 8010)
 
 # Initialize service implementation
 service = ApplicationVerificationServiceImpl()

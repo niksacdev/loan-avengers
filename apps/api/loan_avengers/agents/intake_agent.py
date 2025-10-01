@@ -59,7 +59,8 @@ class IntakeAgent:
             max_tokens: Maximum tokens for response (small for speed)
 
         Environment:
-            Requires FOUNDRY_PROJECT_ENDPOINT and FOUNDRY_MODEL_DEPLOYMENT_NAME.
+            Requires AZURE_AI_PROJECT_ENDPOINT and AZURE_AI_MODEL_DEPLOYMENT_NAME.
+            MCP_APPLICATION_VERIFICATION_URL for MCP server connection.
             Authentication via Azure CLI (az login) or Managed Identity.
         """
         if chat_client:
@@ -70,9 +71,9 @@ class IntakeAgent:
         # Load persona instructions from markdown file
         self.instructions = PersonaLoader.load_persona("intake")
 
-        # Create MCP tool for application verification server
+        # Create MCP tool for application verification server from environment
         # Note: Tool connection is deferred until process_application is called
-        mcp_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL", "http://localhost:8010/mcp")
+        mcp_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
         self.mcp_tool = MCPStreamableHTTPTool(
             name="application-verification",
             url=mcp_url,

@@ -26,16 +26,8 @@ jobs:
       - name: Add uv to PATH
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Configure git for uv with GitHub token
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
-
       - name: Install API dependencies
         working-directory: apps/api
-        env:
-          GIT_LFS_SKIP_SMUDGE: 1
         run: uv sync
 
       - name: Run linting

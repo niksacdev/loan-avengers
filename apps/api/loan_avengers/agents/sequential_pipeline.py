@@ -199,8 +199,11 @@ class SequentialPipeline:
             logger.info(
                 "Starting application processing",
                 extra={
+                    "correlation_id": Observability.get_correlation_id(),
                     "application_id": application.application_id,
                     "applicant_name": application.applicant_name,
+                    "loan_amount": application.loan_amount,
+                    "annual_income": application.annual_income,
                 },
             )
 
@@ -270,7 +273,16 @@ Please assess this application and provide your recommendation."""
             logger.info("Application processing completed")
 
         except Exception as e:
-            logger.error("Application processing failed", extra={"error": str(e)}, exc_info=True)
+            logger.error(
+                "Application processing failed",
+                extra={
+                    "correlation_id": Observability.get_correlation_id(),
+                    "application_id": application.application_id if application else None,
+                    "error": str(e),
+                    "error_type": type(e).__name__,
+                },
+                exc_info=True,
+            )
 
             # Yield error update
             yield ProcessingUpdate(

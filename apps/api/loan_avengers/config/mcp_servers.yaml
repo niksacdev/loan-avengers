@@ -1,6 +1,17 @@
 # MCP Server Configuration
 # This file defines the Model Context Protocol servers that provide tools
 # for loan processing business logic
+#
+# NOTE: Host and port values shown here are defaults for documentation purposes.
+# Actual runtime values are read from environment variables:
+#   - MCP_SERVER_HOST (default: 0.0.0.0)
+#   - MCP_APPLICATION_VERIFICATION_PORT (default: 8010)
+#   - MCP_DOCUMENT_PROCESSING_PORT (default: 8011)
+#   - MCP_FINANCIAL_CALCULATIONS_PORT (default: 8012)
+#   - MCP_TRANSPORT (default: streamable-http)
+#
+# Each MCP server independently reads these environment variables via
+# MCPServerConfig helper to maintain server independence.
 
 servers:
   application_verification:

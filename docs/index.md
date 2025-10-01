@@ -73,9 +73,22 @@ New to Loan Avengers? Start here:
 
 ## 📸 See It In Action
 
+### Landing Page - Meet Your AI Dream Team
 <div style="text-align: center; margin: 2em 0;">
-  <img src="assets/loan_workflow_agents.png" alt="Agent Workflow" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <img src="assets/landing_home.png" alt="Loan Avengers Landing Page" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <p style="margin-top: 1em; color: #666;"><em>The home page introduces the AI Dream Team of specialized loan processing agents</em></p>
+</div>
+
+### Live Agent Workflow - Watch the Magic Happen
+<div style="text-align: center; margin: 2em 0;">
+  <img src="assets/loan_workflow_agents.png" alt="Agent Workflow in Action" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
   <p style="margin-top: 1em; color: #666;"><em>Real-time agent coordination as each specialist processes your application</em></p>
+</div>
+
+### Instant Results - Loan Approved! 🎉
+<div style="text-align: center; margin: 2em 0;">
+  <img src="assets/loan_approved.png" alt="Loan Approval Results" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <p style="margin-top: 1em; color: #666;"><em>Complete loan decision with full transparency and agent recommendations</em></p>
 </div>
 
 ## 🏗️ Architecture Highlights

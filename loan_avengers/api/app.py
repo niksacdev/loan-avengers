@@ -16,15 +16,14 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
 try:
-    from agent_framework import SharedState  # AgentThread not directly used here
-
-    from loan_avengers.agents.sequential_workflow import SequentialLoanWorkflow
+    from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
+    from loan_avengers.agents.loan_processing_pipeline import LoanProcessingPipeline
 
     AGENT_FRAMEWORK_AVAILABLE = True
 except ImportError:
     # Use mock implementation when agent_framework is not available
-    from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as SequentialLoanWorkflow
-    from loan_avengers.agents.mock_sequential_workflow import MockSharedState as SharedState
+    from loan_avengers.agents.mock_sequential_workflow import LoanProcessingPipeline
+    from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as ConversationOrchestrator
 
     AGENT_FRAMEWORK_AVAILABLE = False
 from loan_avengers.api.models import (
@@ -50,14 +49,22 @@ app = FastAPI(
 # Configure CORS for development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://localhost:5175"],  # React dev servers
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+        "http://localhost:5177",
+        "http://localhost:3000",
+    ],  # React dev servers
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize unified workflow
-sequential_workflow = SequentialLoanWorkflow()
+# Initialize conversation orchestrator and processing pipeline
+conversation_orchestrator = ConversationOrchestrator()
+processing_pipeline = LoanProcessingPipeline()
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -66,7 +73,8 @@ async def health_check():
     return HealthResponse(
         status="healthy",
         services={
-            "sequential_workflow": "available",
+            "conversation_orchestrator": "available",
+            "processing_pipeline": "available",
             "session_manager": "available",
             "agent_framework": "available" if AGENT_FRAMEWORK_AVAILABLE else "mock",
         },
@@ -77,63 +85,95 @@ async def health_check():
 @app.post("/api/chat", response_model=ConversationResponse)
 async def handle_unified_chat(request: ConversationRequest):
     """
-    Handle unified chat workflow with AgentThread and SharedState.
+    Handle conversation and processing with direct orchestrator usage.
 
-    This endpoint manages the entire loan application journey through
-    a single continuous workflow using Microsoft Agent Framework:
-    1. Gets or creates session with AgentThread
-    2. Uses SharedState for application data sharing
-    3. Processes through unified workflow (collection → processing → decision)
-    4. Returns streaming workflow responses
+    Pattern: Code-Based Orchestration
+    1. ConversationOrchestrator handles conversation phase
+    2. When complete, triggers LoanProcessingPipeline
+    3. Returns structured responses
+
+    Flow:
+        User → ConversationOrchestrator → Parse/Validate → State Update
+        → If complete: Create LoanApplication → LoanProcessingPipeline → Decision
     """
     try:
         # Get or create conversation session
         session = session_manager.get_or_create_session(request.session_id)
 
-        # Get AgentThread for conversation continuity
-        agent_thread = session.get_or_create_thread()
+        # Get or create state machine for this session
+        if session.state_machine is None:
+            from loan_avengers.agents.conversation_state_machine import ConversationStateMachine
 
-        # Create SharedState for workflow data sharing with existing collected data
-        shared_state = SharedState()
-        await shared_state.set("application_data", session.collected_data)
+            session.state_machine = ConversationStateMachine()
+            logger.info(f"Created new state machine for session {session.session_id[:8]}***")
 
         logger.info(
-            "Processing unified chat request",
+            "Processing chat request",
             extra={
                 "session_id": session.session_id[:8] + "***",
                 "user_message_length": len(request.user_message),
-                "workflow_phase": getattr(session, "workflow_phase", "collecting"),
                 "existing_data_fields": len(session.collected_data),
+                "state_machine_state": session.state_machine.state.value if session.state_machine else "none",
             },
         )
 
-        # Process through unified workflow
-        # This handles both collection and processing in one continuous flow
-        workflow_responses = []
-        async for workflow_response in sequential_workflow.process_conversation(
-            user_message=request.user_message, thread=agent_thread, shared_state=shared_state
-        ):
-            workflow_responses.append(workflow_response)
+        # Phase 1: Handle conversation through state machine directly
+        conversation_responses = []
+
+        # Use the session's state machine
+        conversation_response = session.state_machine.process_input(request.user_message)
+        conversation_responses.append(conversation_response)
+
+        # Update session with conversation data
+        session.update_data(conversation_response.collected_data, conversation_response.completion_percentage)
+
+        # Phase 2: If ready for processing, trigger pipeline
+        if conversation_response.action == "ready_for_processing":
+            logger.info("Conversation complete, starting processing pipeline")
+
+            # Create LoanApplication from collected data
+            application = conversation_orchestrator.create_loan_application(conversation_response.collected_data)
+
+            # Process through automated pipeline (streaming agent updates)
+            async for processing_update in processing_pipeline.process_application(application):
+                    # Transform processing updates to conversation responses for UI
+                    agent_update_response = ConversationResponse(
+                        agent_name=processing_update.agent_name,
+                        message=processing_update.message,
+                        action="processing",
+                        collected_data=conversation_response.collected_data,
+                        next_step=processing_update.phase,
+                        completion_percentage=100,  # Already at 100%, now processing
+                        metadata={
+                            "processing_phase": processing_update.phase,
+                            "agent": processing_update.agent_name,
+                        },
+                        session_id=session.session_id,
+                    )
+
+                    # Append to responses so UI receives all updates
+                    conversation_responses.append(agent_update_response)
+
+                    logger.info(
+                        "Processing update streamed to UI",
+                        extra={
+                            "phase": processing_update.phase,
+                            "agent": processing_update.agent_name,
+                            "message_preview": processing_update.message[:100],
+                        },
+                    )
+
+                    if processing_update.status == "completed":
+                        session.mark_completed()
 
         # Get the latest response for the API response
-        if workflow_responses:
-            latest_response = workflow_responses[-1]
-
-            # Update session with workflow data
-            session.update_data(latest_response.collected_data, latest_response.completion_percentage)
-
-            # Update workflow phase tracking
-            session.workflow_phase = latest_response.phase
-
-            # Check if workflow is completed
-            if latest_response.action == "completed":
-                session.mark_completed()
+        if conversation_responses:
+            latest_response = conversation_responses[-1]
 
             logger.info(
-                "Unified chat processed successfully",
+                "Chat processed successfully",
                 extra={
                     "session_id": session.session_id[:8] + "***",
-                    "phase": latest_response.phase,
                     "completion_percentage": latest_response.completion_percentage,
                     "agent": latest_response.agent_name,
                 },
@@ -144,25 +184,26 @@ async def handle_unified_chat(request: ConversationRequest):
                 message=latest_response.message,
                 action=latest_response.action,
                 collected_data=latest_response.collected_data,
-                next_step=f"Continue in {latest_response.phase} phase",
+                next_step=latest_response.next_step,
                 completion_percentage=latest_response.completion_percentage,
+                quick_replies=latest_response.quick_replies if hasattr(latest_response, "quick_replies") else [],
                 session_id=session.session_id,
             )
         else:
             # No responses - return default
             return ConversationResponse(
-                agent_name="System",
+                agent_name="Cap-ital America",
                 message="I'm processing your request. Please wait a moment.",
-                action="processing",
+                action="collect_info",
                 collected_data={},
-                next_step="Continuing workflow",
+                next_step="Continue providing information",
                 completion_percentage=0,
                 session_id=session.session_id,
             )
 
     except Exception as e:
         logger.error(
-            "Unified chat processing failed",
+            "Chat processing failed",
             extra={
                 "session_id": request.session_id[:8] + "***" if request.session_id else "new",
                 "error": str(e),

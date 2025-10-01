@@ -53,7 +53,10 @@ async def extract_text_from_document(document_path: str, document_type: str = "a
     Returns:
         JSON string with extracted text and metadata
     """
-    logger.info(f"Starting OCR text extraction for document: {document_path} (type: {document_type})")
+    logger.info(
+        "Starting OCR text extraction for document",
+        extra={"document_path": document_path, "document_type": document_type},
+    )
     result = await document_service.extract_text_from_document(document_path, document_type)
     return str(result)
 
@@ -69,7 +72,10 @@ async def classify_document_type(document_content: str) -> str:
     Returns:
         JSON string with document classification results
     """
-    logger.info(f"Document classification request - content length: {len(document_content)}")
+    logger.info(
+        "Document classification request received",
+        extra={"content_length": len(document_content)},
+    )
     result = await document_service.classify_document_type(document_content)
     return str(result)
 

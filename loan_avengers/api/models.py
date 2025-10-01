@@ -31,6 +31,9 @@ class ConversationResponse(BaseModel):
     collected_data: dict[str, Any] = Field(default_factory=dict, description="Updated application data")
     next_step: str = Field(..., description="Brief description of what happens next")
     completion_percentage: int = Field(..., ge=0, le=100, description="Application completion percentage")
+    quick_replies: list[dict[str, Any]] = Field(
+        default_factory=list, description="Optional quick reply buttons for structured input"
+    )
     session_id: str = Field(..., description="Session ID for conversation continuity")
 
 

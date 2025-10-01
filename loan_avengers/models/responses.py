@@ -199,6 +199,74 @@ class AgentResponse(BaseModel, Generic[AssessmentType]):
     application_id: str = Field(description="Application identifier")
 
 
+class ConversationResponse(BaseModel):
+    """
+    Response from the Coordinator during conversational data collection.
+
+    This model represents the coordinator's responses to user messages
+    during the information gathering phase. Used by CoordinatorService
+    to communicate with the UI during conversation.
+    """
+
+    agent_name: str = Field(default="Cap-ital America", description="Name of the agent responding")
+    message: str = Field(..., description="Conversational message to display to the user")
+    action: str = Field(
+        ...,
+        description=(
+            "Current action: collect_info, ready_for_processing, need_clarification, processing, completed, error"
+        ),
+    )
+    collected_data: dict = Field(default_factory=dict, description="Data collected so far from the conversation")
+    next_step: str = Field(default="", description="Description of what happens next in the conversation")
+    completion_percentage: int = Field(default=0, ge=0, le=100, description="Progress percentage (0-100)")
+    quick_replies: list[dict] = Field(
+        default_factory=list, description="Optional quick reply options for structured input"
+    )
+    metadata: dict = Field(default_factory=dict, description="Additional metadata about the response")
+
+
+class ProcessingUpdate(BaseModel):
+    """
+    Update from the ProcessingWorkflow during automated loan processing.
+
+    This model represents status updates as the application moves through
+    the processing agents (Intake → Credit → Income → Risk). Used by
+    ProcessingWorkflow to communicate progress to the UI.
+    """
+
+    agent_name: str = Field(..., description="Name of the processing agent providing the update")
+    message: str = Field(..., description="Status message about the processing step")
+    phase: str = Field(
+        ...,
+        description="Current processing phase: validating, assessing_credit, verifying_income, deciding",
+    )
+    completion_percentage: int = Field(..., ge=0, le=100, description="Overall processing progress (0-100)")
+    status: str = Field(default="processing", description="Status: processing, completed, error")
+    assessment_data: dict = Field(default_factory=dict, description="Assessment results from this processing step")
+    metadata: dict = Field(default_factory=dict, description="Additional metadata about the processing step")
+
+
+class FinalDecisionResponse(BaseModel):
+    """
+    Final loan decision response after all processing is complete.
+
+    This model represents the final outcome of the loan application
+    after all agents have completed their assessments. Used by
+    ProcessingWorkflow to communicate final decision to the UI.
+    """
+
+    agent_name: str = Field(default="Loan Avengers Team", description="Name representing the decision-making entity")
+    message: str = Field(..., description="Human-readable decision message")
+    decision: str = Field(..., description="Final decision: APPROVED, REJECTED, NEEDS_MORE_INFO")
+    loan_amount: float = Field(..., gt=0, description="Approved loan amount (if approved)")
+    interest_rate: float | None = Field(default=None, ge=0, description="Approved interest rate (if approved)")
+    conditions: list[str] = Field(default_factory=list, description="Conditions or requirements for approval")
+    reasoning: str = Field(..., description="Explanation of the decision")
+    next_steps: list[str] = Field(default_factory=list, description="Next steps for the applicant")
+    completion_percentage: int = Field(default=100, description="Always 100 for final decision")
+    metadata: dict = Field(default_factory=dict, description="Additional decision metadata")
+
+
 __all__ = [
     "IntakeAssessment",
     "CreditAssessment",
@@ -208,4 +276,7 @@ __all__ = [
     "UsageStats",
     "AgentResponse",
     "AssessmentType",
+    "ConversationResponse",
+    "ProcessingUpdate",
+    "FinalDecisionResponse",
 ]

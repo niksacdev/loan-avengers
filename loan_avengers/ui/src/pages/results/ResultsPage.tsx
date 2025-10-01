@@ -46,7 +46,7 @@ export function ResultsPage() {
       score: 'A+'
     },
     {
-      name: 'Riley',
+      name: 'Cap-ital America',
       role: 'Loan Orchestrator',
       emoji: '🦸‍♂️',
       message: 'Congratulations! The team unanimously approves your loan!',

@@ -79,7 +79,8 @@ class Observability:
 
         if AGENT_FRAMEWORK_AVAILABLE:
             # Agent Framework REQUIRES 'agent_framework' prefix (unit test verified)
-            # See test_logger_requirements.py - get_logger('test') raises "Logger name must start with 'agent_framework'"
+            # See test_logger_requirements.py - get_logger('test') raises error:
+            # "Logger name must start with 'agent_framework'"
             # PR reviewer suggestion to remove prefix is INCORRECT
             framework_logger_name = f"agent_framework.{name}"
             return get_logger(framework_logger_name)

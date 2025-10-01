@@ -50,7 +50,7 @@ class ConversationSession:
                     "Invalid session_id format provided",
                     extra={"session_id": session_id, "error": str(e)},
                 )
-                raise ValueError(f"Invalid session_id format: must be a valid UUID") from e
+                raise ValueError("Invalid session_id format: must be a valid UUID") from e
 
         self.session_id = session_id or str(uuid.uuid4())
         self.created_at = datetime.now(timezone.utc)
@@ -62,6 +62,9 @@ class ConversationSession:
 
         # AgentThread for conversation continuity
         self.agent_thread: AgentThread | None = None
+
+        # State machine for deterministic conversation flow
+        self.state_machine: Any = None  # Will be set by orchestrator
 
         logger.info(
             "ConversationSession created",

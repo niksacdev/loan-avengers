@@ -77,22 +77,29 @@ export interface AccessibilityConfig {
   reduceMotion: boolean;
 }
 
-// Riley Chat Interface Types
+// Coordinator Chat Interface Types
 export interface ChatMessage {
   id: string;
-  sender: 'user' | 'riley';
+  sender: 'user' | 'coordinator';
   message: string;
   timestamp: Date;
   typing?: boolean;
 }
 
-export interface RileyResponse {
+export interface QuickReplyOption {
+  label: string;
+  value: string | number;
+  icon?: string;
+}
+
+export interface CoordinatorResponse {
   agent_name: string;
   message: string;
-  action: 'collect_info' | 'ready_for_processing' | 'need_clarification';
+  action: 'collect_info' | 'ready_for_processing' | 'need_clarification' | 'completed';
   collected_data: Record<string, any>;
   next_step: string;
   completion_percentage: number;
+  quick_replies?: QuickReplyOption[];
 }
 
 export interface ChatSession {

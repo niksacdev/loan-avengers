@@ -67,7 +67,7 @@ VITE_ENABLE_ANALYTICS=false                # Analytics tracking
 
 The frontend connects to the Python backend at `/loan_avengers/`:
 
-- **Agent Communication**: Real-time updates from Riley, Sarah, Marcus, and Alex
+- **Agent Communication**: Real-time updates from Cap-ital America, Sarah, Marcus, and Alex
 - **Processing Status**: Live progress tracking during loan assessment
 - **Document Upload**: Integration with document processing MCP servers
 - **Results Display**: Formatted loan decisions and celebrations

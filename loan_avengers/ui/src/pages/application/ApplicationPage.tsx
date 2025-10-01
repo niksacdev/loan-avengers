@@ -26,8 +26,8 @@ export function ApplicationPage() {
   };
 
   const handleApplicationComplete = (applicationData: Record<string, any>) => {
-    console.log('Application completed by Riley:', applicationData);
-    // Convert Riley's collected data to LoanApplication format
+    console.log('Application completed by Cap-ital America:', applicationData);
+    // Convert Cap-ital America's collected data to LoanApplication format
     setApplication(prev => ({
       ...prev,
       applicantName: applicationData.applicant_name,
@@ -190,7 +190,7 @@ export function ApplicationPage() {
                     <div className="text-center">
                       <div className="text-2xl mb-2">💬</div>
                       <p className="text-gray-700 dark:text-dark-text-secondary">
-                        Talk naturally - Riley understands conversational language
+                        Talk naturally - Cap-ital America understands conversational language
                       </p>
                     </div>
                     <div className="text-center">

@@ -38,7 +38,7 @@ logger.info("Application Verification MCP Server initialized on port 8010")
 @mcp.tool()
 async def retrieve_credit_report(applicant_id: str, full_name: str, address: str) -> str:
     """Return a credit report summary as JSON string."""
-    logger.info(f"Credit report request for applicant: {applicant_id[:8]}***")
+    logger.info("Credit report request received", extra={"applicant_id": applicant_id[:8] + "***"})
     result = await service.retrieve_credit_report(applicant_id, full_name, address)
     return json.dumps(result)
 
@@ -46,7 +46,10 @@ async def retrieve_credit_report(applicant_id: str, full_name: str, address: str
 @mcp.tool()
 async def verify_employment(applicant_id: str, employer_name: str, position: str) -> str:
     """Return employment verification as JSON string."""
-    logger.info(f"Employment verification request received for {employer_name} position: {position}")
+    logger.info(
+        "Employment verification request received",
+        extra={"employer_name": employer_name, "position": position},
+    )
     result = await service.verify_employment(applicant_id, employer_name, position)
     return json.dumps(result)
 
@@ -54,7 +57,10 @@ async def verify_employment(applicant_id: str, employer_name: str, position: str
 @mcp.tool()
 async def get_bank_account_data(account_number: str, routing_number: str) -> str:
     """Return bank account details and balance as JSON string."""
-    logger.info(f"Bank account data request received for account ending in {account_number[-4:]}")
+    logger.info(
+        "Bank account data request received",
+        extra={"account_last_4": account_number[-4:]},
+    )
     result = await service.get_bank_account_data(account_number, routing_number)
     return json.dumps(result)
 
@@ -62,7 +68,7 @@ async def get_bank_account_data(account_number: str, routing_number: str) -> str
 @mcp.tool()
 async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
     """Return tax transcript summary as JSON string."""
-    logger.info(f"Tax transcript data request received for tax year {tax_year}")
+    logger.info("Tax transcript data request received", extra={"tax_year": tax_year})
     result = await service.get_tax_transcript_data(applicant_id, tax_year)
     return json.dumps(result)
 
@@ -70,7 +76,7 @@ async def get_tax_transcript_data(applicant_id: str, tax_year: int) -> str:
 @mcp.tool()
 async def verify_asset_information(asset_type: str, asset_details_json: str) -> str:
     """Return asset verification results as JSON string."""
-    logger.info(f"Asset verification request received for {asset_type} asset type")
+    logger.info("Asset verification request received", extra={"asset_type": asset_type})
     try:
         asset_details = json.loads(asset_details_json) if asset_details_json else {}
     except json.JSONDecodeError:

@@ -41,7 +41,6 @@ class TestMockWorkflowDataExtraction:
         assert "applicant_name" in result or result == existing_data
 
 
-
 class TestMockWorkflowPhases:
     """Test workflow phase transitions."""
 

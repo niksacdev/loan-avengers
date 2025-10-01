@@ -15,24 +15,19 @@ will be added in the future for comparison.
 
 from __future__ import annotations
 
-import os
 from collections.abc import AsyncGenerator
 
-from agent_framework import AgentThread, ChatAgent, SequentialBuilder, WorkflowEvent
-from agent_framework._mcp import MCPStreamableHTTPTool
+from agent_framework import AgentThread
 from agent_framework_azure_ai import AzureAIAgentClient
 from azure.identity.aio import DefaultAzureCredential
 
+from loan_avengers.agents.credit_agent import CreditAgent
+from loan_avengers.agents.income_agent import IncomeAgent
+from loan_avengers.agents.intake_agent import IntakeAgent
+from loan_avengers.agents.risk_agent import RiskAgent
 from loan_avengers.models.application import LoanApplication
-from loan_avengers.models.responses import (
-    CreditAssessment,
-    FinalDecisionResponse,
-    IncomeAssessment,
-    ProcessingUpdate,
-    RiskAssessment,
-)
+from loan_avengers.models.responses import FinalDecisionResponse, ProcessingUpdate
 from loan_avengers.utils.observability import Observability
-from loan_avengers.utils.persona_loader import PersonaLoader
 
 logger = Observability.get_logger("sequential_pipeline")
 
@@ -56,7 +51,6 @@ class SequentialPipeline:
         credit_agent: Credit risk assessment specialist
         income_agent: Income verification specialist
         risk_agent: Final decision maker
-        workflow: Sequential workflow orchestrator
     """
 
     def __init__(
@@ -75,17 +69,15 @@ class SequentialPipeline:
         else:
             self.chat_client = AzureAIAgentClient(async_credential=DefaultAzureCredential())
 
-        # Create specialized processing agents
-        self.intake_agent = self._create_intake_agent()
-        self.credit_agent = self._create_credit_agent()
-        self.income_agent = self._create_income_agent()
-        self.risk_agent = self._create_risk_agent()
-
-        # Build the sequential processing workflow
-        self.workflow = self._build_sequential_workflow()
+        # Instantiate specialized processing agent classes
+        # Each agent manages its own MCP tools and persona
+        self.intake_agent = IntakeAgent(chat_client=self.chat_client)
+        self.credit_agent = CreditAgent(chat_client=self.chat_client)
+        self.income_agent = IncomeAgent(chat_client=self.chat_client)
+        self.risk_agent = RiskAgent(chat_client=self.chat_client)
 
         logger.info(
-            "SequentialPipeline initialized",
+            "SequentialPipeline initialized with standalone agent classes",
             extra={
                 "agents": ["intake", "credit", "income", "risk"],
                 "mcp_servers_enabled": {
@@ -95,171 +87,6 @@ class SequentialPipeline:
                     "risk": ["8010", "8011", "8012"],
                 },
             },
-        )
-
-    def _create_intake_agent(self) -> ChatAgent:
-        """Create intake agent for application validation."""
-        persona = PersonaLoader.load_persona("intake")
-
-        return ChatAgent(
-            chat_client=self.chat_client,
-            instructions=persona,
-            name="Intake_Validator",
-            description="Application validator",
-            temperature=0.1,
-            max_tokens=500,
-        )
-
-    def _create_credit_agent(self) -> ChatAgent:
-        """Create credit assessment agent with MCP tools for credit verification and calculations."""
-        # Load credit persona from markdown file
-        persona = PersonaLoader.load_persona("credit")
-
-        # MCP Tool 1: Application verification for credit reports
-        verification_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
-        verification_tool = MCPStreamableHTTPTool(
-            name="application-verification",
-            url=verification_url,
-            description="Credit report and identity verification services",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        # MCP Tool 2: Financial calculations for DTI and affordability
-        calculations_url = os.getenv("MCP_FINANCIAL_CALCULATIONS_URL")
-        calculations_tool = MCPStreamableHTTPTool(
-            name="financial-calculations",
-            url=calculations_url,
-            description="Financial calculations for credit analysis",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        logger.info("Credit agent created with MCP tools", extra={"mcp_servers": ["8010", "8012"]})
-
-        return ChatAgent(
-            chat_client=self.chat_client,
-            instructions=persona,
-            name="Credit_Assessor",
-            description="Credit risk analysis specialist",
-            temperature=0.2,
-            max_tokens=600,
-            response_format=CreditAssessment,
-            tools=[verification_tool, calculations_tool],
-        )
-
-    def _create_income_agent(self) -> ChatAgent:
-        """Create income verification agent with comprehensive MCP tools for verification and analysis."""
-        # Load income persona from markdown file
-        persona = PersonaLoader.load_persona("income")
-
-        # MCP Tool 1: Application verification for employment and bank data
-        verification_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
-        verification_tool = MCPStreamableHTTPTool(
-            name="application-verification",
-            url=verification_url,
-            description="Employment verification and bank account data services",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        # MCP Tool 2: Document processing for paystubs and tax returns
-        documents_url = os.getenv("MCP_DOCUMENT_PROCESSING_URL")
-        documents_tool = MCPStreamableHTTPTool(
-            name="document-processing",
-            url=documents_url,
-            description="Document extraction and validation for income verification",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        # MCP Tool 3: Financial calculations for income stability analysis
-        calculations_url = os.getenv("MCP_FINANCIAL_CALCULATIONS_URL")
-        calculations_tool = MCPStreamableHTTPTool(
-            name="financial-calculations",
-            url=calculations_url,
-            description="Income stability and affordability calculations",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        logger.info("Income agent created with MCP tools", extra={"mcp_servers": ["8010", "8011", "8012"]})
-
-        return ChatAgent(
-            chat_client=self.chat_client,
-            instructions=persona,
-            name="Income_Verifier",
-            description="Income and employment verification specialist",
-            temperature=0.1,
-            max_tokens=500,
-            response_format=IncomeAssessment,
-            tools=[verification_tool, documents_tool, calculations_tool],
-        )
-
-    def _create_risk_agent(self) -> ChatAgent:
-        """Create final risk analysis agent with comprehensive MCP tools for holistic assessment."""
-        # Load risk persona from markdown file
-        persona = PersonaLoader.load_persona("risk")
-
-        # MCP Tools: ALL THREE for comprehensive risk synthesis
-        # Tool 1: Application verification for final fraud and identity checks
-        verification_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
-        verification_tool = MCPStreamableHTTPTool(
-            name="application-verification",
-            url=verification_url,
-            description="Final verification and fraud detection services",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        # Tool 2: Document processing for comprehensive document validation
-        documents_url = os.getenv("MCP_DOCUMENT_PROCESSING_URL")
-        documents_tool = MCPStreamableHTTPTool(
-            name="document-processing",
-            url=documents_url,
-            description="Comprehensive document validation and metadata analysis",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        # Tool 3: Financial calculations for final risk metrics
-        calculations_url = os.getenv("MCP_FINANCIAL_CALCULATIONS_URL")
-        calculations_tool = MCPStreamableHTTPTool(
-            name="financial-calculations",
-            url=calculations_url,
-            description="Final financial risk calculations and metrics",
-            load_tools=True,
-            load_prompts=False,
-        )
-
-        logger.info(
-            "Risk agent created with comprehensive MCP tools", extra={"mcp_servers": ["8010", "8011", "8012"]}
-        )
-
-        return ChatAgent(
-            chat_client=self.chat_client,
-            instructions=persona,
-            name="Risk_Analyzer",
-            description="Final loan decision maker",
-            temperature=0.1,
-            max_tokens=600,
-            response_format=RiskAssessment,
-            tools=[verification_tool, documents_tool, calculations_tool],
-        )
-
-    def _build_sequential_workflow(self):
-        """Build the sequential processing workflow using SequentialBuilder."""
-        return (
-            SequentialBuilder()
-            .participants(
-                [
-                    self.intake_agent,  # Phase 1: Validation
-                    self.credit_agent,  # Phase 2: Credit assessment
-                    self.income_agent,  # Phase 3: Income verification
-                    self.risk_agent,  # Phase 4: Final decision
-                ]
-            )
-            .build()
         )
 
     async def process_application(
@@ -278,6 +105,8 @@ class SequentialPipeline:
             ProcessingUpdate events during processing
             FinalDecisionResponse when processing is complete
         """
+        import asyncio
+
         try:
             logger.info(
                 "Starting sequential workflow processing",
@@ -292,25 +121,8 @@ class SequentialPipeline:
                 },
             )
 
-            # Create a new thread for this processing execution
-            processing_thread = AgentThread()
-
-            # Format application data as input message for the workflow
-            application_input = f"""Process this loan application:
-
-Application ID: {application.application_id}
-Applicant: {application.applicant_name}
-Email: {application.email}
-Loan Amount: ${application.loan_amount:,.2f}
-Purpose: {application.loan_purpose}
-Annual Income: ${application.annual_income:,.2f}
-Employment: {application.employment_status}
-Down Payment: ${application.down_payment:,.2f if application.down_payment else 0.00}
-
-Please assess this application and provide your recommendation."""
-
-            # Run the sequential workflow with progress updates
-            logger.info("Running sequential processing workflow")
+            # Create a new thread for conversation context across agents
+            thread = AgentThread()
 
             # Agent processing phases with handoff logging
             phases = [
@@ -331,54 +143,114 @@ Please assess this application and provide your recommendation."""
                 },
             )
 
-            # Yield start updates for each agent with handoff logging
-            for idx, (agent_name, phase, phase_name, completion) in enumerate(phases):
-                # Log agent handoff (except for first agent, already logged above)
-                if idx > 0:
-                    prev_agent = phases[idx - 1][1]  # Previous agent phase name
-                    logger.info(
-                        "Agent handoff",
-                        extra={
-                            "from_agent": prev_agent,
-                            "to_agent": phase,
-                            "application_id": Observability.mask_application_id(application.application_id),
-                            "workflow_phase": phase_name,
-                            "completion_percentage": completion,
-                        },
-                    )
+            # Store assessments from each agent for context passing
+            previous_assessments = []
 
-                yield ProcessingUpdate(
-                    agent_name=agent_name,
-                    message=f"🔄 {agent_name.replace('_', ' ')} is analyzing your application...",
-                    phase=phase_name,
-                    completion_percentage=completion,
-                    status="in_progress",
-                    assessment_data={"application_id": application.application_id},
-                    metadata={"stage": phase, "agent": agent_name},
-                )
+            # Phase 1: Intake Agent - Validates application data
+            yield ProcessingUpdate(
+                agent_name="Intake_Validator",
+                message="🔄 Intake Validator is analyzing your application...",
+                phase="validating",
+                completion_percentage=25,
+                status="in_progress",
+                assessment_data={"application_id": application.application_id},
+                metadata={"stage": "intake", "agent": "Intake_Validator"},
+            )
+            await asyncio.sleep(0.5)
 
-                # Small delay for smooth UX
-                import asyncio
+            intake_result = await self.intake_agent.process_application(application, thread=thread)
+            previous_assessments.append(intake_result)
 
-                await asyncio.sleep(1)
-
-            # Execute the actual workflow (all agents run sequentially via SequentialBuilder)
+            # Log handoff to credit agent
             logger.info(
-                "Executing SequentialBuilder workflow",
+                "Agent handoff",
                 extra={
+                    "from_agent": "intake",
+                    "to_agent": "credit",
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "agents_count": len(phases),
+                    "workflow_phase": "assessing_credit",
                 },
             )
-            result = await self.workflow.run(application_input)
+
+            # Phase 2: Credit Agent - Analyzes creditworthiness
+            yield ProcessingUpdate(
+                agent_name="Credit_Assessor",
+                message="🔄 Credit Assessor is analyzing your application...",
+                phase="assessing_credit",
+                completion_percentage=50,
+                status="in_progress",
+                assessment_data={"application_id": application.application_id},
+                metadata={"stage": "credit", "agent": "Credit_Assessor"},
+            )
+            await asyncio.sleep(0.5)
+
+            credit_result = await self.credit_agent.process_application(
+                application, thread=thread, previous_assessments=previous_assessments
+            )
+            previous_assessments.append(credit_result)
+
+            # Log handoff to income agent
+            logger.info(
+                "Agent handoff",
+                extra={
+                    "from_agent": "credit",
+                    "to_agent": "income",
+                    "application_id": Observability.mask_application_id(application.application_id),
+                    "workflow_phase": "verifying_income",
+                },
+            )
+
+            # Phase 3: Income Agent - Verifies employment and income
+            yield ProcessingUpdate(
+                agent_name="Income_Verifier",
+                message="🔄 Income Verifier is analyzing your application...",
+                phase="verifying_income",
+                completion_percentage=75,
+                status="in_progress",
+                assessment_data={"application_id": application.application_id},
+                metadata={"stage": "income", "agent": "Income_Verifier"},
+            )
+            await asyncio.sleep(0.5)
+
+            income_result = await self.income_agent.process_application(
+                application, thread=thread, previous_assessments=previous_assessments
+            )
+            previous_assessments.append(income_result)
+
+            # Log handoff to risk agent
+            logger.info(
+                "Agent handoff",
+                extra={
+                    "from_agent": "income",
+                    "to_agent": "risk",
+                    "application_id": Observability.mask_application_id(application.application_id),
+                    "workflow_phase": "deciding",
+                },
+            )
+
+            # Phase 4: Risk Agent - Makes final recommendation
+            yield ProcessingUpdate(
+                agent_name="Risk_Analyzer",
+                message="🔄 Risk Analyzer is analyzing your application...",
+                phase="deciding",
+                completion_percentage=100,
+                status="in_progress",
+                assessment_data={"application_id": application.application_id},
+                metadata={"stage": "risk", "agent": "Risk_Analyzer"},
+            )
+            await asyncio.sleep(0.5)
+
+            risk_result = await self.risk_agent.process_application(
+                application, thread=thread, previous_assessments=previous_assessments
+            )
 
             # Process workflow result and log completion
             logger.info(
                 "Sequential workflow completed",
                 extra={
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "result_type": type(result).__name__,
                     "total_agents": len(phases),
+                    "final_recommendation": risk_result.assessment.loan_recommendation,
                 },
             )
 
@@ -390,7 +262,10 @@ Please assess this application and provide your recommendation."""
                 completion_percentage=100,
                 status="completed",
                 assessment_data={"application_id": application.application_id},
-                metadata={"workflow_result": str(result)[:200]},
+                metadata={
+                    "final_recommendation": risk_result.assessment.loan_recommendation,
+                    "overall_risk": risk_result.assessment.overall_risk,
+                },
             )
 
             logger.info(
@@ -426,65 +301,6 @@ Please assess this application and provide your recommendation."""
                 assessment_data={},
                 metadata={"error": str(e)},
             )
-
-    async def _transform_workflow_event(
-        self, event: WorkflowEvent, application: LoanApplication, current_phase: str
-    ) -> ProcessingUpdate | None:
-        """
-        Transform workflow event to ProcessingUpdate format.
-
-        Args:
-            event: WorkflowEvent from the sequential workflow
-            application: LoanApplication being processed
-            current_phase: Current processing phase
-
-        Returns:
-            ProcessingUpdate or None if event cannot be transformed
-        """
-        try:
-            # Extract agent information from event
-            agent_name = "Assistant"
-            message_content = ""
-
-            # Handle different event types
-            if hasattr(event, "executor_id"):
-                agent_name = str(event.executor_id).replace("_", " ")
-
-            if hasattr(event, "data") and event.data:
-                if isinstance(event.data, str):
-                    message_content = event.data
-                elif hasattr(event.data, "text"):
-                    message_content = event.data.text
-                elif hasattr(event.data, "content"):
-                    message_content = str(event.data.content)
-                else:
-                    message_content = str(event.data)
-
-            # Calculate completion percentage based on phase
-            phase_completion = {
-                "validating": 25,
-                "assessing_credit": 50,
-                "verifying_income": 75,
-                "deciding": 100,
-            }
-
-            completion = phase_completion.get(current_phase, 0)
-
-            return ProcessingUpdate(
-                agent_name=agent_name,
-                message=message_content or f"Processing in {current_phase} phase...",
-                phase=current_phase,
-                completion_percentage=completion,
-                status="processing" if completion < 100 else "completed",
-                assessment_data={},
-                metadata={"event_type": type(event).__name__, "phase": current_phase},
-            )
-
-        except Exception as e:
-            logger.warning(
-                "Failed to transform workflow event", extra={"error": str(e), "event_type": type(event).__name__}
-            )
-            return None
 
 
 __all__ = ["SequentialPipeline"]

@@ -26,20 +26,6 @@ except ImportError:
     OTEL_AVAILABLE = False
     print("[WARN] OpenTelemetry packages not available - observability features limited")
 
-try:
-    from loan_avengers.orchestrators.conversation_orchestrator import ConversationOrchestrator
-    from loan_avengers.orchestrators.sequential_pipeline import SequentialPipeline
-
-    AGENT_FRAMEWORK_AVAILABLE = True
-    print("[DEBUG] ✅ Successfully imported real ConversationOrchestrator and SequentialPipeline")
-except ImportError as e:
-    # Use mock implementation when agent_framework is not available
-    print(f"[DEBUG] ❌ ImportError loading real implementations: {e}")
-    from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as ConversationOrchestrator
-    from loan_avengers.agents.mock_sequential_workflow import SequentialPipeline
-
-    AGENT_FRAMEWORK_AVAILABLE = False
-    print("[DEBUG] 📦 Loaded mock implementations")
 from loan_avengers.api.config import settings
 from loan_avengers.api.models import (
     ConversationRequest,
@@ -48,6 +34,8 @@ from loan_avengers.api.models import (
     SessionInfo,
 )
 from loan_avengers.api.session_manager import session_manager
+from loan_avengers.orchestrators.conversation_orchestrator import ConversationOrchestrator
+from loan_avengers.orchestrators.sequential_pipeline import SequentialPipeline
 from loan_avengers.utils.observability import Observability
 
 logger = Observability.get_logger("api")
@@ -149,7 +137,7 @@ async def health_check() -> HealthResponse:
             "conversation_orchestrator": "available",
             "sequential_pipeline": "available",
             "session_manager": "available",
-            "agent_framework": "available" if AGENT_FRAMEWORK_AVAILABLE else "mock",
+            "agent_framework": "available",
         },
         timestamp=datetime.now(timezone.utc).isoformat(),
     )

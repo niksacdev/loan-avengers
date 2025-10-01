@@ -10,7 +10,7 @@ import type { LoanApplication } from '../../types';
  */
 export function ApplicationPage() {
   const [currentStep, setCurrentStep] = useState<'intro' | 'conversation' | 'processing'>('intro');
-  const [application, setApplication] = useState<Partial<LoanApplication>>({
+  const [_application, setApplication] = useState<Partial<LoanApplication>>({
     status: 'draft',
   });
   const [conversationProgress, setConversationProgress] = useState(0);
@@ -28,13 +28,7 @@ export function ApplicationPage() {
     setCurrentStep('conversation');
   };
 
-  const handleSubmitApplication = () => {
-    setCurrentStep('processing');
-    // TODO: Integrate with backend API
-    console.log('Submitting application:', application);
-  };
-
-  const handleApplicationComplete = (applicationData: Record<string, any>, session_id: string) => {
+  const handleApplicationComplete = (applicationData: Record<string, any>, _session_id: string) => {
     console.log('Application completed by Cap-ital America:', applicationData);
     // Convert Cap-ital America's collected data to LoanApplication format
     setApplication(prev => ({

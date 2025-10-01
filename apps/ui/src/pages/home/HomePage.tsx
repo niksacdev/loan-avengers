@@ -92,7 +92,7 @@ export function HomePage() {
 
               {/* Compact Team Grid */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
-                {aiTeam.map((specialist, index) => (
+                {aiTeam.map((specialist) => (
                   <div
                     key={specialist.name}
                     className="bg-white/90 dark:bg-dark-bg-card/90 backdrop-blur-md rounded-3xl p-6 text-center group hover:scale-110 hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 border-2 border-gray-200/60 dark:border-gray-700/60 hover:border-brand-400 dark:hover:border-brand-500"

@@ -18,7 +18,7 @@ interface LogViewerProps {
  * Geeky Log Viewer - Shows detailed system logs for debugging
  */
 export function LogViewer({ isOpen, onClose, sessionId }: LogViewerProps) {
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [logs] = useState<LogEntry[]>([]);
 
   if (!isOpen) return null;
 

@@ -8,10 +8,12 @@ mock implementations so we can test the API endpoints and UI integration.
 from __future__ import annotations
 
 import asyncio
+import uuid
 from collections.abc import AsyncGenerator
 from datetime import datetime
 from typing import Any
 
+from loan_avengers.models.application import LoanApplication
 from loan_avengers.utils.observability import Observability
 
 logger = Observability.get_logger("mock_sequential_workflow")
@@ -75,6 +77,70 @@ class MockSequentialLoanWorkflow:
     def __init__(self, chat_client=None):
         """Initialize mock workflow."""
         logger.info("MockSequentialLoanWorkflow initialized")
+
+    def create_loan_application(self, collected_data: dict[str, Any]) -> LoanApplication:
+        """
+        Create validated LoanApplication from conversation data.
+
+        Deterministic transformations:
+        - Generate UUID for applicant_id
+        - Generate LN-prefixed application_id
+        - Apply default values for optional fields
+        - Validate via Pydantic model
+
+        Args:
+            collected_data: Dict from state machine with user data
+
+        Returns:
+            LoanApplication: Validated Pydantic model ready for processing
+
+        Raises:
+            ValueError: If data fails Pydantic validation
+        """
+        try:
+            # Generate proper UUID for applicant_id
+            applicant_id = str(uuid.uuid4())
+
+            # Generate application_id in format LN + 10 digits
+            app_id_num = abs(uuid.uuid4().int) % 10000000000
+            application_id = f"LN{app_id_num:010d}"
+
+            # Provide defaults for fields not collected in simplified flow
+            application_data = {
+                "application_id": application_id,
+                "applicant_name": collected_data.get("applicant_name"),
+                "applicant_id": applicant_id,
+                "email": collected_data.get("email"),
+                "phone": collected_data.get("phone", "5555551234"),
+                "date_of_birth": collected_data.get("date_of_birth", datetime(1990, 1, 1)),
+                "loan_amount": collected_data.get("loan_amount"),
+                "loan_purpose": collected_data.get("loan_purpose", "home_purchase"),
+                "loan_term_months": collected_data.get("loan_term_months", 360),
+                "annual_income": collected_data.get("annual_income"),
+                "employment_status": collected_data.get("employment_status", "employed"),
+                "employer_name": collected_data.get("employer_name", "Not Provided"),
+                "months_employed": collected_data.get("months_employed", 12),
+                "down_payment": collected_data.get("down_payment"),
+            }
+
+            application = LoanApplication(**application_data)
+
+            logger.info(
+                "LoanApplication created from state machine data",
+                extra={
+                    "application_id": application.application_id,
+                    "applicant_name": application.applicant_name,
+                },
+            )
+
+            return application
+
+        except Exception as e:
+            logger.error(
+                "Failed to create LoanApplication from state machine data",
+                extra={"collected_data": collected_data, "error": str(e)},
+            )
+            raise ValueError(f"Could not create LoanApplication: {e!s}") from e
 
     async def process_conversation(
         self, user_message: str, thread: MockAgentThread, shared_state: MockSharedState = None

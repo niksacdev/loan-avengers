@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ChatMessage, CoordinatorResponse, QuickReplyOption } from '../../types';
+import { config } from '../../utils/config';
 import { LogViewer } from './LogViewer';
 
 interface CoordinatorChatProps {
@@ -81,7 +82,7 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
 
     try {
       // Call API with the value directly (not the label)
-      const response = await fetch('http://localhost:8000/api/chat', {
+      const response = await fetch(`${config.api.baseUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -215,7 +216,7 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
       });
 
       // Call API to complete application and trigger workflow
-      const response = await fetch('http://localhost:8000/api/chat', {
+      const response = await fetch(`${config.api.baseUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

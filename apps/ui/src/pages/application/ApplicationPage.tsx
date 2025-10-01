@@ -10,7 +10,7 @@ import type { LoanApplication } from '../../types';
  */
 export function ApplicationPage() {
   const [currentStep, setCurrentStep] = useState<'intro' | 'conversation' | 'processing'>('intro');
-  const [application, setApplication] = useState<Partial<LoanApplication>>({
+  const [_application, setApplication] = useState<Partial<LoanApplication>>({
     status: 'draft',
   });
   const [conversationProgress, setConversationProgress] = useState(0);
@@ -28,13 +28,7 @@ export function ApplicationPage() {
     setCurrentStep('conversation');
   };
 
-  const handleSubmitApplication = () => {
-    setCurrentStep('processing');
-    // TODO: Integrate with backend API
-    console.log('Submitting application:', application);
-  };
-
-  const handleApplicationComplete = (applicationData: Record<string, any>, session_id: string) => {
+  const handleApplicationComplete = (applicationData: Record<string, any>, _session_id: string) => {
     console.log('Application completed by Cap-ital America:', applicationData);
     // Convert Cap-ital America's collected data to LoanApplication format
     setApplication(prev => ({
@@ -289,15 +283,15 @@ export function ApplicationPage() {
                 <span className="absolute -bottom-1 -left-2 text-sm animate-pulse delay-300">💫</span>
               </div>
 
-              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                Your{' '}
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6 tracking-tight">
+                <span className="text-gray-900 dark:text-gray-100">Your</span>{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-brand-600 via-accent-600 to-brand-500 bg-clip-text text-transparent">
                     AI Team
                   </span>
                   <span className="absolute -top-1 -right-3 text-lg animate-spin">⭐</span>
                 </span>
-                {' '}is Working Their{' '}
+                {' '}<span className="text-gray-900 dark:text-gray-100">is Working Their</span>{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-warning-500 via-brand-500 to-accent-600 bg-clip-text text-transparent">
                     Magic!

@@ -3,12 +3,19 @@ Centralized observability configuration for loan processing agents.
 
 Simple setup for stdio logging and optional Application Insights integration
 using Microsoft Agent Framework's built-in observability capabilities.
+
+Now enhanced with:
+- OpenTelemetry distributed tracing via Azure Monitor
+- Correlation ID tracking across requests
+- Token usage tracking for cost management
 """
 
 from __future__ import annotations
 
 import logging
 import os
+import uuid
+from contextvars import ContextVar
 
 try:
     from agent_framework import get_logger
@@ -21,9 +28,20 @@ except ImportError:
 
 
 class Observability:
-    """Simple observability configuration for all agents."""
+    """
+    Centralized observability configuration for all agents.
+
+    Features:
+    - Agent Framework observability (setup_observability)
+    - OpenTelemetry distributed tracing (via Azure Monitor)
+    - Correlation ID tracking for request tracing
+    - Token usage tracking for cost management
+    """
 
     _initialized = False
+
+    # Context-local storage for correlation ID (thread-safe for async)
+    _correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="")
 
     @classmethod
     def initialize(cls, force_reinit: bool = False) -> None:
@@ -48,16 +66,20 @@ class Observability:
             force=True,  # Override any existing configuration
         )
 
-        # Initialize Agent Framework observability if available and Application Insights is configured
-        if AGENT_FRAMEWORK_AVAILABLE and app_insights_connection_string:
+        # Initialize Agent Framework observability if enabled and available
+        enable_otel = os.getenv("ENABLE_OTEL", "false").lower() == "true"
+
+        if AGENT_FRAMEWORK_AVAILABLE and enable_otel and app_insights_connection_string:
             setup_observability(
                 applicationinsights_connection_string=app_insights_connection_string,
                 enable_sensitive_data=enable_sensitive_data,
                 enable_live_metrics=True,  # Enable live metrics for real-time monitoring
             )
-            logging.info("Agent Framework observability initialized with Application Insights")
+            logging.info("Agent Framework observability initialized with Application Insights (OTEL enabled)")
+        elif AGENT_FRAMEWORK_AVAILABLE and enable_otel:
+            logging.info("Agent Framework observability enabled but no Application Insights connection string")
         elif AGENT_FRAMEWORK_AVAILABLE:
-            logging.info("Agent Framework observability using stdio logging only")
+            logging.info("Agent Framework observability disabled (ENABLE_OTEL=false)")
         else:
             logging.info("Using standard Python logging (agent_framework not available)")
 
@@ -169,6 +191,111 @@ class Observability:
         if not app_id or len(app_id) <= 8:
             return f"{app_id}***" if app_id else "***"
         return f"{app_id[:8]}***"
+
+    @classmethod
+    def set_correlation_id(cls, correlation_id: str | None = None) -> str:
+        """
+        Set correlation ID for current request context.
+
+        Correlation IDs enable end-to-end request tracing across services
+        and agent executions. They're automatically propagated through logs
+        and OpenTelemetry traces.
+
+        Args:
+            correlation_id: Optional correlation ID. If None, generates a new UUID.
+
+        Returns:
+            str: The correlation ID that was set
+
+        Example:
+            >>> correlation_id = Observability.set_correlation_id()
+            >>> logger.info("Processing", extra={"correlation_id": Observability.get_correlation_id()})
+        """
+        if not correlation_id:
+            correlation_id = str(uuid.uuid4())
+        cls._correlation_id_var.set(correlation_id)
+        return correlation_id
+
+    @classmethod
+    def get_correlation_id(cls) -> str:
+        """
+        Get correlation ID for current request context.
+
+        If no correlation ID has been set, generates and sets a new one.
+
+        Returns:
+            str: Current correlation ID
+
+        Example:
+            >>> logger.info("Processing", extra={"correlation_id": Observability.get_correlation_id()})
+        """
+        correlation_id = cls._correlation_id_var.get()
+        if not correlation_id:
+            correlation_id = cls.set_correlation_id()
+        return correlation_id
+
+    @classmethod
+    def clear_correlation_id(cls) -> None:
+        """Clear correlation ID from current context."""
+        cls._correlation_id_var.set("")
+
+    @staticmethod
+    def log_token_usage(
+        agent_name: str,
+        input_tokens: int,
+        output_tokens: int,
+        model: str | None = None,
+        application_id: str | None = None,
+    ) -> None:
+        """
+        Log token usage for cost tracking and analysis.
+
+        Token usage is logged with structured fields for easy querying
+        in Azure Application Insights using KQL.
+
+        Args:
+            agent_name: Name of the agent that used tokens
+            input_tokens: Number of input tokens consumed
+            output_tokens: Number of output tokens generated
+            model: Optional model name/deployment
+            application_id: Optional application ID for correlation
+
+        Example:
+            >>> Observability.log_token_usage(
+            ...     agent_name="Credit_Assessor",
+            ...     input_tokens=150,
+            ...     output_tokens=75,
+            ...     model="gpt-4",
+            ...     application_id="LN1234567890"
+            ... )
+
+        Query in Azure Application Insights (KQL):
+            ```kql
+            traces
+            | where customDimensions.event_type == "token_usage"
+            | summarize
+                total_tokens = sum(toint(customDimensions.total_tokens)),
+                total_cost_estimate = sum(toint(customDimensions.total_tokens)) * 0.00001
+                by tostring(customDimensions.agent_name)
+            ```
+        """
+        logger = logging.getLogger("agent_framework.observability.token_usage")
+
+        total_tokens = input_tokens + output_tokens
+
+        logger.info(
+            f"Token usage: {agent_name} ({total_tokens} tokens)",
+            extra={
+                "event_type": "token_usage",
+                "agent_name": agent_name,
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+                "total_tokens": total_tokens,
+                "model": model or "unknown",
+                "application_id": Observability.mask_application_id(application_id) if application_id else None,
+                "correlation_id": Observability.get_correlation_id(),
+            },
+        )
 
 
 __all__ = ["Observability"]

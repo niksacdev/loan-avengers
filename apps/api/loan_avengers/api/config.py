@@ -55,6 +55,11 @@ class APISettings(BaseSettings):
     cors_allow_headers: list[str] = ["*"]
 
     # Azure AI Foundry Settings (for agent framework)
+    azure_ai_project_endpoint: str | None = None
+    azure_ai_model_deployment_name: str | None = None
+    azure_ai_agent_name: str | None = None
+
+    # Legacy support for old FOUNDRY_ prefix (deprecated)
     foundry_project_endpoint: str | None = None
     foundry_model_deployment_name: str | None = None
 
@@ -62,6 +67,11 @@ class APISettings(BaseSettings):
     azure_openai_endpoint: str | None = None
     azure_openai_api_version: str = "2024-02-15-preview"
     azure_openai_deployment_name: str | None = None
+
+    # MCP Server URLs (for agent framework to connect to MCP servers)
+    mcp_application_verification_url: str = "http://localhost:8010/mcp"
+    mcp_document_processing_url: str = "http://localhost:8011/mcp"
+    mcp_financial_calculations_url: str = "http://localhost:8012/mcp"
 
     # Logging Settings
     log_level: str = "INFO"

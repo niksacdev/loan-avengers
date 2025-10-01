@@ -13,8 +13,14 @@ from decimal import Decimal
 from unittest.mock import AsyncMock, Mock
 
 import pytest
-from agent_framework import AgentThread
-from agent_framework_foundry import FoundryChatClient
+
+try:
+    from agent_framework import AgentThread
+    from azure.ai.projects.models import ThreadMessage
+except ImportError:
+    # Fallback for when agent_framework is not available
+    AgentThread = None
+    ThreadMessage = None
 
 from loan_avengers.models.application import EmploymentStatus, LoanApplication, LoanPurpose
 from loan_avengers.models.responses import IntakeAssessment
@@ -146,8 +152,8 @@ def sample_intake_assessment() -> IntakeAssessment:
 
 @pytest.fixture
 def mock_azure_chat_client() -> Mock:
-    """Create a mock Foundry chat client for testing."""
-    mock_client = Mock(spec=FoundryChatClient)
+    """Create a mock Azure AI chat client for testing."""
+    mock_client = Mock()
 
     # Mock successful response
     mock_response = Mock()

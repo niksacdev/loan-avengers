@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 /**
  * ArchitectureDiagram component - displays a simplified block diagram
  * of the system architecture showing the correct relationships between

@@ -19,10 +19,12 @@ classifiers = [
 ]
 
 dependencies = [
-    # Microsoft Agent Framework with key integrations
-    "agent-framework-core",
-    "agent-framework-azure-ai",
-    "agent-framework-copilotstudio",
+    # Microsoft Agent Framework - now available on PyPI!
+    # https://pypi.org/project/agent-framework/
+    # https://github.com/microsoft/agent-framework
+    "agent-framework-core>=1.0.0b251001",  # Core functionality with Azure OpenAI support
+    "agent-framework-azure-ai>=1.0.0b251001",  # Azure AI integration
+    "agent-framework-copilotstudio>=1.0.0b251001",  # Copilot Studio integration
 
     # Core business logic dependencies
     "pydantic>=2.5.0", # Data model validation
@@ -41,16 +43,19 @@ dependencies = [
 
     # Configuration and environment
     "python-dotenv>=1.0.0", # Environment configuration
+
+    # Observability and monitoring
+    "azure-monitor-opentelemetry>=1.6.13", # Azure Application Insights integration with OTEL
+    "opentelemetry-instrumentation-fastapi>=0.48.0", # Auto-instrument FastAPI HTTP requests
+    "opentelemetry-instrumentation-httpx>=0.48.0", # Auto-instrument httpx HTTP client
+    "opentelemetry-instrumentation-requests>=0.48.0", # Auto-instrument requests HTTP client
+    "opentelemetry-instrumentation-logging>=0.48.0", # Auto-inject trace context into logs
 ]
 
 [project.optional-dependencies]
 # Future AI provider options
 openai = [
     "openai>=1.0.0",
-]
-azure = [
-    "azure-monitor-opentelemetry>=1.6.13", # Azure Application Insights integration
-    "opentelemetry-instrumentation-logging", # Auto trace context injection
 ]
 dev = [
     "pytest>=8.0.0",
@@ -202,11 +207,8 @@ output = "../../coverage.xml"
 output = "../../coverage.json"
 show_contexts = true
 
-[tool.uv.sources]
-# Microsoft Agent Framework packages from GitHub (using correct package names and subdirectories)
-"agent-framework-core" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/core" }
-"agent-framework-azure-ai" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/azure-ai" }
-"agent-framework-copilotstudio" = { git = "https://github.com/microsoft/agent-framework.git", branch = "main", subdirectory = "python/packages/copilotstudio" }
+# Note: agent-framework is now installed from PyPI (https://pypi.org/project/agent-framework/)
+# No need for [tool.uv.sources] configuration anymore!
 
 [tool.hatch.build.targets.wheel]
 packages = ["loan_avengers"]

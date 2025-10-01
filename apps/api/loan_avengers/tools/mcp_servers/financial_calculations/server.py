@@ -21,6 +21,7 @@ sys.path.insert(0, str(project_root))
 
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
+from loan_avengers.config.mcp_config import MCPServerConfig  # noqa: E402
 from loan_avengers.utils.observability import Observability  # noqa: E402
 
 from .service import FinancialCalculationsServiceImpl  # noqa: E402
@@ -28,12 +29,10 @@ from .service import FinancialCalculationsServiceImpl  # noqa: E402
 # Initialize logging (observability auto-initializes)
 logger = Observability.get_logger("financial_calculations_server")
 
-# Create MCP server
+# Create MCP server with environment-based configuration
 mcp = FastMCP("financial-calculations")
-
-# Configure for SSE transport
-mcp.settings.host = "localhost"
-mcp.settings.port = 8012
+mcp.settings.host = MCPServerConfig.get_host()
+mcp.settings.port = MCPServerConfig.get_port("FINANCIAL_CALCULATIONS", 8012)
 
 # Initialize service implementation
 financial_service = FinancialCalculationsServiceImpl()

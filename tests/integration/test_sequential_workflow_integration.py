@@ -317,12 +317,14 @@ class TestSequentialWorkflowDataTransformation:
     """Test data transformation logic."""
 
     @pytest.fixture
-    def workflow(self) -> "MockSequentialLoanWorkflow":
+    def workflow(self):
         """Create workflow with mocked dependencies.
 
         Returns:
             MockSequentialLoanWorkflow: Workflow instance with mocked framework dependencies
         """
+        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+
         with (
             patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent"),
             patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder"),
@@ -330,8 +332,6 @@ class TestSequentialWorkflowDataTransformation:
             patch("loan_avengers.agents.mock_sequential_workflow.FoundryChatClient"),
         ):
             mock_persona.load_persona.return_value = "Mock persona"
-
-            from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
             return MockSequentialLoanWorkflow()
 

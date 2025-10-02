@@ -1,4 +1,4 @@
-# Loan Avengers UI Dockerfile
+# Loan Defenders UI Dockerfile
 # Multi-stage build for optimal image size
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

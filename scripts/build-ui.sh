@@ -3,10 +3,10 @@
 
 set -e  # Exit on any error
 
-echo "🏗️  Building Loan Avengers UI..."
+echo "🏗️  Building Loan Defenders UI..."
 
 # Navigate to UI directory
-cd loan_avengers/ui
+cd loan_defenders/ui
 
 echo "📦 Installing dependencies..."
 npm ci
@@ -18,4 +18,4 @@ echo "🏗️  Building for production..."
 npm run build
 
 echo "✅ UI build completed successfully!"
-echo "📁 Build output available in loan_avengers/ui/dist/"
+echo "📁 Build output available in loan_defenders/ui/dist/"

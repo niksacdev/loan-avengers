@@ -1,5 +1,5 @@
 [project]
-name = "loan-avengers-workspace"
+name = "loan-defenders-workspace"
 version = "0.1.0"
 description = "🦸‍♂️ Loan Defenders - Multi-Agent Loan Processing Monorepo"
 authors = [
@@ -93,7 +93,7 @@ parallel = true
 [tool.coverage.paths]
 source = [
     "loan_defenders/",
-    "/workspaces/loan-avengers/apps/api/loan_defenders/",
+    "/workspaces/loan-defenders/apps/api/loan_defenders/",
     "*/loan_defenders/",
 ]
 

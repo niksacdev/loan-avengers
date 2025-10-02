@@ -1,7 +1,7 @@
 [project]
-name = "loan-avengers-api"
+name = "loan-defenders-api"
 version = "0.1.0"
-description = "🦸‍♂️ Loan Avengers API - FastAPI backend for multi-agent loan processing"
+description = "🦸‍♂️ Loan Defenders API - FastAPI backend for multi-agent loan processing"
 authors = [
     { name = "niksacdev", email = "niksac@microsoft.com" }
 ]
@@ -154,7 +154,7 @@ parallel = true
 [tool.coverage.paths]
 source = [
     "loan_defenders/",
-    "/workspaces/loan-avengers/apps/api/loan_defenders/",
+    "/workspaces/loan-defenders/apps/api/loan_defenders/",
     "*/loan_defenders/",
 ]
 
@@ -197,7 +197,7 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "../../htmlcov"
-title = "Loan Avengers API Coverage Report"
+title = "Loan Defenders API Coverage Report"
 show_contexts = true
 
 [tool.coverage.xml]

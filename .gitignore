@@ -148,6 +148,7 @@ uv.lock
 
 # Application specific
 *.log
+logs/
 local_config.yaml
 local_config.yml
 secrets.yaml

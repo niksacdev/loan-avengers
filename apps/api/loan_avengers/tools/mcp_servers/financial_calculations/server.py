@@ -41,13 +41,13 @@ logger.info("Financial Calculations MCP Server initialized on port 8012")
 
 
 @mcp.tool()
-async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_payments: float) -> str:
+async def calculate_debt_to_income_ratio(monthly_income: float, monthly_debt_payments: float = 0.0) -> str:
     """
     Calculate debt-to-income ratio for loan qualification.
 
     Args:
         monthly_income: Total monthly income
-        monthly_debt_payments: Total monthly debt payments
+        monthly_debt_payments: Total monthly debt payments (defaults to 0.0 if not provided)
 
     Returns:
         JSON string with DTI calculation results

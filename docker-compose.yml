@@ -1,7 +1,7 @@
 version: '3.8'
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Loan Avengers - Local Development Environment
+# Loan Defenders - Local Development Environment
 # ═══════════════════════════════════════════════════════════════════════════
 #
 # This docker-compose file provides a complete local development environment
@@ -25,8 +25,8 @@ services:
       context: ./apps/api
       dockerfile: Dockerfile
       target: builder  # Use builder stage for development
-    image: loan-avengers-api:dev
-    container_name: loan-avengers-api
+    image: loan-defenders-api:dev
+    container_name: loan-defenders-api
     ports:
       - "8000:8000"
     environment:
@@ -42,11 +42,11 @@ services:
       AGENT_FRAMEWORK_LOG_LEVEL: "DEBUG"
     volumes:
       # Mount source code for hot-reload
-      - ./apps/api/loan_avengers:/app/loan_avengers:ro
+      - ./apps/api/loan_defenders:/app/loan_defenders:ro
       # Mount .env file
       - ./.env:/app/.env:ro
     command: >
-      uvicorn loan_avengers.api.app:app
+      uvicorn loan_defenders.api.app:app
       --host 0.0.0.0
       --port 8000
       --reload
@@ -58,7 +58,7 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - loan-avengers-network
+      - loan-defenders-network
     restart: unless-stopped
 
   # ───────────────────────────────────────────────────────────────────────────
@@ -68,8 +68,8 @@ services:
     build:
       context: ./apps/ui
       dockerfile: Dockerfile
-    image: loan-avengers-ui:dev
-    container_name: loan-avengers-ui
+    image: loan-defenders-ui:dev
+    container_name: loan-defenders-ui
     ports:
       - "8080:8080"
     environment:
@@ -82,7 +82,7 @@ services:
       retries: 3
       start_period: 10s
     networks:
-      - loan-avengers-network
+      - loan-defenders-network
     depends_on:
       api:
         condition: service_healthy
@@ -92,8 +92,8 @@ services:
 # Networks
 # ─────────────────────────────────────────────────────────────────────────────
 networks:
-  loan-avengers-network:
-    name: loan-avengers-network
+  loan-defenders-network:
+    name: loan-defenders-network
     driver: bridge
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -101,4 +101,4 @@ networks:
 # ─────────────────────────────────────────────────────────────────────────────
 volumes:
   api-data:
-    name: loan-avengers-api-data
+    name: loan-defenders-api-data

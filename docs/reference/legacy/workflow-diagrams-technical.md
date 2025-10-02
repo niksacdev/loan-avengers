@@ -1,6 +1,6 @@
 # Technical Workflow Diagrams: AI-Augmented Development
 
-> **Technical Deep-Dive**: Detailed Mermaid diagrams showcasing the technical implementation of AI-augmented development workflows, based on actual Loan Avengers repository patterns.
+> **Technical Deep-Dive**: Detailed Mermaid diagrams showcasing the technical implementation of AI-augmented development workflows, based on actual Loan Defenders repository patterns.
 
 ## Agent Orchestration Architecture
 
@@ -384,7 +384,7 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "Loan Avengers Application Layer"
+    subgraph "Loan Defenders Application Layer"
         A[IntakeAgent] 
         B[CreditAgent]
         C[IncomeAgent]
@@ -787,7 +787,7 @@ graph TB
 ---
 
 **Technical Implementation Notes:**
-- All diagrams based on actual Loan Avengers repository patterns
+- All diagrams based on actual Loan Defenders repository patterns
 - MCP server architecture matches implemented system
 - Agent specialization reflects current `.claude/agents/` and `.github/chatmodes/`
 - Quality gates match current CI/CD pipeline in `.github/workflows/`

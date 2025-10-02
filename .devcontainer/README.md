@@ -1,6 +1,6 @@
-# 🚀 Loan Avengers Dev Container
+# 🚀 Loan Defenders Dev Container
 
-This development container provides a complete, consistent development environment for the Loan Avengers project with all necessary tools pre-installed.
+This development container provides a complete, consistent development environment for the Loan Defenders project with all necessary tools pre-installed.
 
 ## 🛠️ What's Included
 
@@ -19,7 +19,7 @@ This development container provides a complete, consistent development environme
 
 ### **Development Aliases & Commands**
 ```bash
-# Loan Avengers specific
+# Loan Defenders specific
 loan-dev          # Show available development commands
 loan-test         # Run interactive test suite
 start-mcp         # Start MCP application verification server
@@ -55,7 +55,7 @@ gpush             # git push origin HEAD
 ```bash
 # Using VS Code
 # 1. Install "Dev Containers" extension
-# 2. Open loan-avengers folder in VS Code
+# 2. Open loan-defenders folder in VS Code
 # 3. Command Palette (Cmd/Ctrl+Shift+P) > "Dev Containers: Reopen in Container"
 
 # Using GitHub Codespaces
@@ -106,13 +106,13 @@ uv run python tests/test_suite_runner.py
 - `5000` - General development server
 
 ### **Volume Mounts**
-- **Project files**: Entire project mounted at `/workspaces/loan-avengers`
+- **Project files**: Entire project mounted at `/workspaces/loan-defenders`
 - **Azure config**: `~/.azure` mounted for Azure CLI persistence
 - **SSH keys**: `~/.ssh` mounted for Git operations
 - **VS Code extensions**: Persistent volume for extension data
 
 ### **Environment Variables**
-- `PYTHONPATH=/workspaces/loan-avengers`
+- `PYTHONPATH=/workspaces/loan-defenders`
 - `ENVIRONMENT=development`
 - `UV_CACHE_DIR=/tmp/uv-cache`
 - `AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1`
@@ -181,7 +181,7 @@ az version
 ### **Permission Issues**
 ```bash
 # Fix file permissions
-sudo chown -R vscode:vscode /workspaces/loan-avengers
+sudo chown -R vscode:vscode /workspaces/loan-defenders
 ```
 
 ## 📊 **Performance Tips**
@@ -214,10 +214,10 @@ uv cache clean
 
 ## 🎯 **Next Steps**
 
-1. **Explore the codebase**: Start with `loan_avengers/` directory
+1. **Explore the codebase**: Start with `loan_defenders/` directory
 2. **Run tests**: Use `loan-test` to understand the test suite
 3. **Start MCP server**: Use `start-mcp` to test integration
 4. **Azure setup**: Follow Azure deployment guide for cloud development
 5. **Contribute**: See contributing guidelines in project root
 
-The dev container gives you everything needed to start developing the Loan Avengers system immediately! 🦸‍♂️
+The dev container gives you everything needed to start developing the Loan Defenders system immediately! 🦸‍♂️

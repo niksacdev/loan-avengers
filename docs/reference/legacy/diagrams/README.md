@@ -1,6 +1,6 @@
 # Architecture & Development Workflow Diagrams
 
-This directory contains comprehensive architecture diagrams and revolutionary AI-augmented development workflow visualizations for the Loan Avengers multi-agent system.
+This directory contains comprehensive architecture diagrams and revolutionary AI-augmented development workflow visualizations for the Loan Defenders multi-agent system.
 
 ## AI-Augmented Development Workflow Diagrams (NEW)
 

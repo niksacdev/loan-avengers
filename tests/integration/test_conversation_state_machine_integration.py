@@ -5,7 +5,7 @@ Tests the full conversation flow from initial state through data collection
 to processing state, simulating real user interactions.
 """
 
-from loan_avengers.agents.conversation_state_machine import (
+from loan_defenders.agents.conversation_state_machine import (
     ConversationState,
     ConversationStateMachine,
 )
@@ -274,7 +274,7 @@ class TestResponseStructureIntegration:
             assert isinstance(response.collected_data, dict)
 
 
-class TestAvengersPersonalityIntegration:
+class TestLoanDefendersPersonalityIntegration:
     """Test that Cap-ital America personality shines through responses."""
 
     def test_responses_have_personality(self):
@@ -284,11 +284,11 @@ class TestAvengersPersonalityIntegration:
 
         message = response.message.lower()
         # Should have enthusiastic or personality-driven language
-        personality_markers = ["🦸", "🛡️", "avenger", "assemble", "soldier", "mission"]
+        personality_markers = ["🦸", "🛡️", "defender", "assemble", "soldier", "mission"]
         assert any(marker in message for marker in personality_markers)
 
-    def test_processing_state_has_avengers_theme(self):
-        """Test that processing state message has Avengers theme."""
+    def test_processing_state_has_defenders_theme(self):
+        """Test that processing state message has Loan Defenders theme."""
         machine = ConversationStateMachine()
 
         # Get to processing state

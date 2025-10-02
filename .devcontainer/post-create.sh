@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🚀 Loan Avengers Dev Container - Post Creation Setup Script
+# 🚀 Loan Defenders Dev Container - Post Creation Setup Script
 # This script sets up the development environment after container creation
 
 set -e  # Exit on any error
@@ -31,7 +31,7 @@ print_header() {
 
 # Main setup function
 main() {
-    print_header "🚀 Setting up Loan Avengers Development Environment"
+    print_header "🚀 Setting up Loan Defenders Development Environment"
     echo "================================================================"
 
     # Update system packages (required for stability)
@@ -86,7 +86,7 @@ main() {
 
     # Install Python dependencies (with caching optimization)
     print_status "Installing Python dependencies with UV..."
-    cd /workspaces/loan-avengers
+    cd /workspaces/loan-defenders
 
     if [ -f "pyproject.toml" ]; then
         # Use UV with optimized settings for container environments
@@ -127,7 +127,7 @@ main() {
     print_status "Setting up development aliases..."
     cat >> /home/vscode/.zshrc << 'EOF'
 
-# Loan Avengers Development Aliases
+# Loan Defenders Development Aliases
 alias ll='ls -la'
 alias la='ls -la'
 alias ..='cd ..'
@@ -173,7 +173,7 @@ alias gpush='git push origin HEAD'
 alias dps='docker ps'
 alias di='docker images'
 
-# Loan Avengers specific
+# Loan Defenders specific
 alias test-unit='uv run pytest tests/unit/ -v'
 alias test-integration='uv run pytest tests/integration/ -v'
 alias test-all='uv run pytest tests/ -v'
@@ -182,19 +182,19 @@ alias coverage='uv run python tests/coverage_report.py'
 
 
     # Welcome message
-    echo "🦸‍♂️ Welcome to the Loan Avengers Development Environment!"
+    echo "🦸‍♂️ Welcome to the Loan Defenders Development Environment!"
 EOF    # Create development workspace directories
     print_status "Creating workspace directories..."
-    mkdir -p /workspaces/loan-avengers/{logs,temp,docs/notes}
+    mkdir -p /workspaces/loan-defenders/{logs,temp,docs/notes}
 
     # Setup VS Code workspace settings
     print_status "Setting up VS Code workspace..."
-    mkdir -p /workspaces/loan-avengers/.vscode
-    cat > /workspaces/loan-avengers/.vscode/settings.json << 'EOF'
+    mkdir -p /workspaces/loan-defenders/.vscode
+    cat > /workspaces/loan-defenders/.vscode/settings.json << 'EOF'
 {
-    "python.defaultInterpreterPath": "/workspaces/loan-avengers/.venv/bin/python",
+    "python.defaultInterpreterPath": "/workspaces/loan-defenders/.venv/bin/python",
     "python.terminal.activateEnvironment": true,
-    "terminal.integrated.cwd": "/workspaces/loan-avengers",
+    "terminal.integrated.cwd": "/workspaces/loan-defenders",
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
@@ -209,7 +209,7 @@ EOF    # Create development workspace directories
 EOF
 
     # Create launch configuration for debugging
-    cat > /workspaces/loan-avengers/.vscode/launch.json << 'EOF'
+    cat > /workspaces/loan-defenders/.vscode/launch.json << 'EOF'
 {
     "version": "0.2.0",
     "configurations": [
@@ -228,7 +228,7 @@ EOF
             "name": "MCP Server: Application Verification",
             "type": "python",
             "request": "launch",
-            "module": "loan_avengers.tools.mcp_servers.application_verification.server",
+            "module": "loan_defenders.tools.mcp_servers.application_verification.server",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
         },
@@ -246,13 +246,13 @@ EOF
 EOF
 
     # Make post-create script executable (if needed)
-    chmod +x /workspaces/loan-avengers/.devcontainer/post-create.sh 2>/dev/null || true
+    chmod +x /workspaces/loan-defenders/.devcontainer/post-create.sh 2>/dev/null || true
 
     # Final success message
     echo ""
     print_header "🎉 Development Environment Setup Complete!"
     echo "================================================================"
-    print_success "Loan Avengers development container is ready!"
+    print_success "Loan Defenders development container is ready!"
     echo ""
     echo "🛠️  Available Tools:"
     echo "   • Python 3.11 with UV package manager"

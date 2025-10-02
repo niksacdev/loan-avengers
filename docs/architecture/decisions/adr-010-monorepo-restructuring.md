@@ -7,7 +7,7 @@
 
 ## Context
 
-The Loan Avengers application started as a single Python package with mixed API and UI code. As the project grew, we identified several challenges:
+The Loan Defenders application started as a single Python package with mixed API and UI code. As the project grew, we identified several challenges:
 
 1. **Deployment Complexity**: Cannot deploy API and UI independently
 2. **Dependency Conflicts**: Shared dependencies between API (Python) and UI (TypeScript)
@@ -26,14 +26,14 @@ The Loan Avengers application started as a single Python package with mixed API 
 We restructure the repository into a **monorepo with independent apps** using the following architecture:
 
 ```
-loan-avengers/
+loan-defenders/
 ├── pyproject.toml          # Workspace root (tooling config only)
 ├── .env                    # Shared environment variables
 ├── apps/
 │   ├── api/                # Python FastAPI backend
 │   │   ├── pyproject.toml  # API-specific dependencies
 │   │   ├── uv.lock         # API dependency lock
-│   │   └── loan_avengers/  # Application code
+│   │   └── loan_defenders/  # Application code
 │   └── ui/                 # TypeScript React frontend
 │       ├── package.json    # UI-specific dependencies
 │       ├── package-lock.json

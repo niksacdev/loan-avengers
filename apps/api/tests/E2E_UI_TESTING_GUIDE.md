@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide explains how to perform end-to-end testing of the Loan Avengers UI application, including manual testing procedures and automated testing strategies.
+This guide explains how to perform end-to-end testing of the Loan Defenders UI application, including manual testing procedures and automated testing strategies.
 
 ## Architecture
 
@@ -61,7 +61,7 @@ This guide explains how to perform end-to-end testing of the Loan Avengers UI ap
    - Last 4 digits: "1234"
    - Click "Submit Application"
    - Verify progress bar shows 100%
-   - Verify "AVENGERS ASSEMBLE" message appears
+   - Verify "DEFENDERS ASSEMBLE" message appears
 7. **Processing Phase**: Watch agent updates stream in
    - Intake Agent validates (25%)
    - Credit Agent assesses (50%)
@@ -156,7 +156,7 @@ This guide explains how to perform end-to-end testing of the Loan Avengers UI ap
 **Steps**:
 1. Complete conversation to personal info form
 2. Click "Generate Dummy Data" button
-3. Verify form fields are populated with Avengers-themed data
+3. Verify form fields are populated with defenders-themed data
 4. Submit form
 5. Verify processing works with generated data
 
@@ -206,7 +206,7 @@ test('complete loan application flow', async ({ page }) => {
   await page.getByRole('button', { name: 'Submit Application' }).click();
 
   // Wait for processing
-  await expect(page.getByText(/AVENGERS.*ASSEMBLE/)).toBeVisible();
+  await expect(page.getByText(/DEFENDERS.*ASSEMBLE/)).toBeVisible();
 
   // Verify agent updates appear
   await expect(page.getByText(/Intake Agent/)).toBeVisible({ timeout: 30000 });
@@ -297,7 +297,7 @@ Enable debug logging:
 export LOG_LEVEL=DEBUG
 
 # UI
-localStorage.setItem('debug', 'loan-avengers:*')
+localStorage.setItem('debug', 'loan-defenders:*')
 ```
 
 ## Common Issues
@@ -309,7 +309,7 @@ localStorage.setItem('debug', 'loan-avengers:*')
 **Fix**:
 ```bash
 cd apps/api
-uv run python -m loan_avengers.api.app
+uv run python -m loan_defenders.api.app
 ```
 
 ### Issue: Agents not processing

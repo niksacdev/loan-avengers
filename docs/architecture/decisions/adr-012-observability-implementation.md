@@ -7,7 +7,7 @@
 
 ## Context
 
-The Loan Avengers multi-agent system processes sensitive loan applications through complex workflows involving:
+The Loan Defenders multi-agent system processes sensitive loan applications through complex workflows involving:
 - FastAPI REST API endpoints
 - Microsoft Agent Framework orchestration
 - Multiple specialized agents (Coordinator, Intake, Credit, Income, Risk)
@@ -59,7 +59,7 @@ We implement **enterprise-grade observability using out-of-the-box solutions** r
                           │ OTEL Exporter (Built-in)
                           │
 ┌─────────────────────────────────────────────────────────────┐
-│                  Loan Avengers API                           │
+│                  Loan Defenders API                           │
 │                                                               │
 │  ┌────────────────────────────────────────────────┐         │
 │  │  Auto-Instrumentation (5 lines of code!)       │         │
@@ -96,7 +96,7 @@ We implement **enterprise-grade observability using out-of-the-box solutions** r
 - **Low overhead**: <1% performance impact with batching
 - **Vendor-agnostic**: Can switch from Azure Monitor to any OTEL backend
 
-**Implementation** (`loan_avengers/api/app.py:56-82`):
+**Implementation** (`loan_defenders/api/app.py:56-82`):
 ```python
 from azure.monitor.opentelemetry import configure_azure_monitor
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -125,7 +125,7 @@ FastAPIInstrumentor.instrument_app(app, excluded_urls="/health,/docs")
 - Correlation IDs bridge UI → API → Agents → MCP servers
 - `ContextVar` is thread-safe for FastAPI's async model
 
-**Implementation** (`loan_avengers/utils/observability.py:191-236`, `app.py:93-136`):
+**Implementation** (`loan_defenders/utils/observability.py:191-236`, `app.py:93-136`):
 ```python
 # ContextVar for async-safe storage
 _correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="")
@@ -156,7 +156,7 @@ async def add_correlation_id_middleware(request, call_next):
 - **Flexible**: Can add fields without schema changes
 - **Auditable**: Full context (agent, application, correlation ID)
 
-**Implementation** (`loan_avengers/utils/observability.py:239-294`):
+**Implementation** (`loan_defenders/utils/observability.py:239-294`):
 ```python
 @staticmethod
 def log_token_usage(agent_name, input_tokens, output_tokens, model=None, application_id=None):
@@ -193,7 +193,7 @@ traces
 - **Token tracking**: Built-in token usage monitoring
 - **Live metrics**: Real-time agent performance in Azure
 
-**Existing Implementation** (`loan_avengers/utils/observability.py:52-58`):
+**Existing Implementation** (`loan_defenders/utils/observability.py:52-58`):
 ```python
 if AGENT_FRAMEWORK_AVAILABLE and app_insights_connection_string:
     setup_observability(
@@ -247,7 +247,7 @@ logger.info(
 APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=...
 
 # Optional (defaults work for most cases)
-OTEL_SERVICE_NAME=loan-avengers-api
+OTEL_SERVICE_NAME=loan-defenders-api
 OTEL_SERVICE_VERSION=0.1.0
 OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production
 OTEL_PYTHON_FASTAPI_EXCLUDED_URLS=/health,/docs
@@ -369,20 +369,20 @@ ENABLE_SENSITIVE_DATA=false
    - Added: `opentelemetry-instrumentation-requests>=0.48.0`
    - Added: `opentelemetry-instrumentation-logging>=0.48.0`
 
-2. **API Instrumentation** (`loan_avengers/api/app.py`)
+2. **API Instrumentation** (`loan_defenders/api/app.py`)
    - Lines 19-27: Import OTEL packages
    - Lines 56-82: Configure Azure Monitor and FastAPI instrumentation
    - Lines 93-136: Correlation ID middleware
 
-3. **Observability Utilities** (`loan_avengers/utils/observability.py`)
+3. **Observability Utilities** (`loan_defenders/utils/observability.py`)
    - Lines 1-18: Updated docstring with OTEL features
    - Lines 44: Added `_correlation_id_var` ContextVar
    - Lines 191-236: Correlation ID methods
    - Lines 239-294: Token usage tracking
 
 4. **Strategic Logging Enhancement**
-   - `loan_avengers/api/app.py`: Added correlation IDs to logs (lines 195, 270, 303)
-   - `loan_avengers/agents/sequential_pipeline.py`: Added correlation IDs (lines 202, 279)
+   - `loan_defenders/api/app.py`: Added correlation IDs to logs (lines 195, 270, 303)
+   - `loan_defenders/agents/sequential_pipeline.py`: Added correlation IDs (lines 202, 279)
 
 5. **Documentation** (`docs/observability-guide.md`)
    - 500+ lines of comprehensive documentation
@@ -402,7 +402,7 @@ ENABLE_SENSITIVE_DATA=false
    cd apps/api && uv sync
 
    # 2. Start API (without Application Insights)
-   LOG_LEVEL=DEBUG uv run uvicorn loan_avengers.api.app:app
+   LOG_LEVEL=DEBUG uv run uvicorn loan_defenders.api.app:app
 
    # 3. Verify console logging shows correlation IDs
    curl -X POST http://localhost:8000/api/chat \
@@ -420,7 +420,7 @@ ENABLE_SENSITIVE_DATA=false
    export APPLICATIONINSIGHTS_CONNECTION_STRING=...
 
    # 2. Start API
-   uv run uvicorn loan_avengers.api.app:app
+   uv run uvicorn loan_defenders.api.app:app
 
    # 3. Send requests
    # 4. Wait 2-3 minutes for ingestion

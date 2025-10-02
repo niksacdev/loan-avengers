@@ -7,7 +7,7 @@ ensuring accurate calculations and proper error handling.
 
 import pytest
 
-from loan_avengers.tools.mcp_servers.financial_calculations.service import FinancialCalculationsServiceImpl
+from loan_defenders.tools.mcp_servers.financial_calculations.service import FinancialCalculationsServiceImpl
 
 
 class TestFinancialCalculationsServiceImpl:

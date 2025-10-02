@@ -1,4 +1,4 @@
-# Loan Avengers Documentation
+# Loan Defenders Documentation
 
 > **Multi-Agent Loan Processing System** demonstrating revolutionary AI-augmented development workflows with Microsoft Agent Framework and MCP servers.
 
@@ -55,7 +55,7 @@
 ## 🤖 **Agent Framework Integration**
 
 ### **Microsoft Agent Framework**
-The Loan Avengers system showcases enterprise-grade integration with Microsoft Agent Framework:
+The Loan Defenders system showcases enterprise-grade integration with Microsoft Agent Framework:
 
 - **5 Specialized Agents**: Intake, Credit, Income, Risk, and Orchestrator agents
 - **MCP Server Integration**: 3 custom MCP servers for verification, document processing, and financial calculations
@@ -179,4 +179,4 @@ docs/
 
 ---
 
-**This documentation represents a living knowledge base that evolves with our development practices and advancing AI capabilities. The Loan Avengers project serves as both a functional multi-agent system and a proof-of-concept for the future of AI-augmented software development.**
+**This documentation represents a living knowledge base that evolves with our development practices and advancing AI capabilities. The Loan Defenders project serves as both a functional multi-agent system and a proof-of-concept for the future of AI-augmented software development.**

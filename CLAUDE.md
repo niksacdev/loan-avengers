@@ -129,7 +129,7 @@ Claude has access to specialized development agents that MUST be used proactivel
 
 ### Directory Structure
 ```
-loan_avengers/
+loan_defenders/
 ├── models/                           # Business data models (Pydantic v2)
 │   ├── application.py               # LoanApplication model
 │   ├── assessment.py               # Assessment result models
@@ -156,12 +156,12 @@ loan_avengers/
 ### Microsoft Agent Framework Integration
 The system is designed for Microsoft Agent Framework with direct agent persona loading:
 
-**Agent Personas**: Located in `loan_avengers/agents/agent-persona/`
+**Agent Personas**: Located in `loan_defenders/agents/agent-persona/`
 - Load directly as ChatClientAgent instructions
 - Each persona contains specialized domain knowledge
 - Optimized for token efficiency (300-500 lines each)
 
-**Configuration**: See `loan_avengers/config/agents.yaml`
+**Configuration**: See `loan_defenders/config/agents.yaml`
 - Maps agents to their required MCP servers
 - Defines agent capabilities and output formats
 - Used for tool configuration in Microsoft Agent Framework
@@ -169,7 +169,7 @@ The system is designed for Microsoft Agent Framework with direct agent persona l
 ### Agent Integration Pattern
 ```python
 from microsoft_agent_framework import ChatClientAgent
-from loan_avengers.agents import get_persona_path
+from loan_defenders.agents import get_persona_path
 
 # Load agent persona
 persona = open(get_persona_path("credit")).read()
@@ -846,11 +846,11 @@ decision = await orchestrator_agent.run({
 ## Quick Reference
 
 ### Key Files
-- Agent Personas: `loan_avengers/agents/agent-persona/*.md`
-- Data Models: `loan_avengers/models/*.py`
-- Agent Configuration: `loan_avengers/config/agents.yaml`
-- MCP Servers: `loan_avengers/tools/mcp_servers/*/server.py`
-- Business Utils: `loan_avengers/utils/*.py`
+- Agent Personas: `loan_defenders/agents/agent-persona/*.md`
+- Data Models: `loan_defenders/models/*.py`
+- Agent Configuration: `loan_defenders/config/agents.yaml`
+- MCP Servers: `loan_defenders/tools/mcp_servers/*/server.py`
+- Business Utils: `loan_defenders/utils/*.py`
 
 ### Common Commands
 ```bash
@@ -860,14 +860,14 @@ uv add package_name        # Add new dependency
 uv add --dev package_name  # Add development dependency
 
 # Run MCP servers
-uv run python -m loan_avengers.tools.mcp_servers.application_verification.server
-uv run python -m loan_avengers.tools.mcp_servers.document_processing.server
-uv run python -m loan_avengers.tools.mcp_servers.financial_calculations.server
+uv run python -m loan_defenders.tools.mcp_servers.application_verification.server
+uv run python -m loan_defenders.tools.mcp_servers.document_processing.server
+uv run python -m loan_defenders.tools.mcp_servers.financial_calculations.server
 
 # Run tests
 uv run pytest tests/ -v                                    # All tests
 uv run pytest tests/unit/models/test_application_models.py -v  # Data model tests
-uv run pytest tests/ --cov=loan_avengers                   # With coverage
+uv run pytest tests/ --cov=loan_defenders                   # With coverage
 
 # Test validation
 uv run python scripts/validate_ci_fix.py                  # Quick validation

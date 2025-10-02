@@ -1,9 +1,9 @@
-site_name: Loan Avengers Documentation
-site_url: https://niksacdev.github.io/loan-avengers/
+site_name: Loan Defenders Documentation
+site_url: https://niksacdev.github.io/loan-defenders/
 site_description: Multi-agent loan processing system powered by Microsoft Agent Framework
 site_author: Niksac Development Team
-repo_name: niksacdev/loan-avengers
-repo_url: https://github.com/niksacdev/loan-avengers
+repo_name: niksacdev/loan-defenders
+repo_url: https://github.com/niksacdev/loan-defenders
 edit_uri: edit/main/docs/
 
 theme:
@@ -79,7 +79,7 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/niksacdev/loan-avengers
+      link: https://github.com/niksacdev/loan-defenders
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/niksac
   version:

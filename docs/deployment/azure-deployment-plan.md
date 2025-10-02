@@ -37,7 +37,7 @@ terraform version
 
 2. **Resource Naming Convention Setup**
    - **Pattern:** `{organization}-{project}-{component}-{environment}-{instance}`
-   - **Example:** `contoso-loanavengers-openai-dev-001`
+   - **Example:** `contoso-loandefenders-openai-dev-001`
    - **Benefits:** Consistent naming, easy resource identification, compliance
 
 3. **RBAC Best Practices**
@@ -57,7 +57,7 @@ terraform version
 ```bash
 # Create service principal with minimal required permissions
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-SP_NAME="sp-loanavengers-terraform-dev"
+SP_NAME="sp-loandefenders-terraform-dev"
 
 az ad sp create-for-rbac \
   --name $SP_NAME \
@@ -96,14 +96,14 @@ echo "service-principal.json" >> .gitignore
    ```bash
    # Generate unique storage account name
    RANDOM_SUFFIX=$(openssl rand -hex 4)
-   STORAGE_ACCOUNT="sttfloanavengers$RANDOM_SUFFIX"
+   STORAGE_ACCOUNT="sttfloandefenders$RANDOM_SUFFIX"
    RESOURCE_GROUP="rg-terraform-state-dev"
    
    # Create resource group for state management
    az group create \
      --name $RESOURCE_GROUP \
      --location "East US" \
-     --tags project=loan-avengers purpose=terraform-state
+     --tags project=loan-defenders purpose=terraform-state
    
    # Create storage account with security features
    az storage account create \
@@ -340,7 +340,7 @@ echo "service-principal.json" >> .gitignore
        └── Action Groups
    ```
 
-2. **Custom Metrics for Loan Avengers**
+2. **Custom Metrics for Loan Defenders**
    - Agent response times
    - Token consumption rates
    - Loan processing success rates
@@ -415,7 +415,7 @@ echo "service-principal.json" >> .gitignore
 2. **Load Testing Planning**
    ```bash
    # Simple load test with Azure Load Testing
-   az load test create --name loan-avengers-load-test
+   az load test create --name loan-defenders-load-test
    
    # Test scenarios:
    # - Single user workflow
@@ -526,7 +526,7 @@ az login
 az account set --subscription "your-subscription-id"
 
 # Create service principal
-az ad sp create-for-rbac --name "loan-avengers-deploy-sp" --role "Contributor"
+az ad sp create-for-rbac --name "loan-defenders-deploy-sp" --role "Contributor"
 ```
 
 ### **State Management Setup**

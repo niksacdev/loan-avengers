@@ -6,22 +6,22 @@ region: eastus
 
 # Agent service settings
 agentService:
-  resourceGroup: loan-avengers-prod-rg
-  name: loan-avengers-agents-prod
+  resourceGroup: loan-defenders-prod-rg
+  name: loan-defenders-agents-prod
   sku: premium
   availabilityZones: [1, 2, 3]
 
 # Container Registry
 containerRegistry:
-  name: loanavengersp rodacr
-  loginServer: loanavengersprodacr.azurecr.io
+  name: loandefendersprodacr
+  loginServer: loandefendersprodacr.azurecr.io
   replication:
     enabled: true
     regions: [eastus, westus, westeurope]
 
 # API Backend connection
 apiBackend:
-  endpoint: https://loan-avengers-api.azurewebsites.net
+  endpoint: https://loan-defenders-api.azurewebsites.net
   timeout: 60s
   healthCheck:
     enabled: true
@@ -43,8 +43,8 @@ scaling:
 
 # Monitoring and alerts
 monitoring:
-  logAnalyticsWorkspace: loan-avengers-prod-logs
-  applicationInsights: loan-avengers-prod-insights
+  logAnalyticsWorkspace: loan-defenders-prod-logs
+  applicationInsights: loan-defenders-prod-insights
   alertsEnabled: true
   alerts:
     - name: high-error-rate
@@ -76,7 +76,7 @@ security:
     enabled: true
     type: system-assigned
   keyVault:
-    name: loan-avengers-prod-kv
+    name: loan-defenders-prod-kv
     accessPolicy: read-only
   networkSecurity:
     privateEndpoints: true

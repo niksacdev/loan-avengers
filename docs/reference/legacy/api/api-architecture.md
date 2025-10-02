@@ -1,8 +1,8 @@
-# Loan Avengers API Architecture
+# Loan Defenders API Architecture
 
 ## Overview
 
-The Loan Avengers API exposes our multi-agent loan processing system to user interfaces through a REST API with real-time streaming capabilities. The architecture leverages **Microsoft Agent Framework** for workflow orchestration and conversation state management, aligned with the **Model Context Protocol (MCP)** Streamable HTTP transport pattern.
+The Loan Defenders API exposes our multi-agent loan processing system to user interfaces through a REST API with real-time streaming capabilities. The architecture leverages **Microsoft Agent Framework** for workflow orchestration and conversation state management, aligned with the **Model Context Protocol (MCP)** Streamable HTTP transport pattern.
 
 ## System Architecture
 
@@ -306,7 +306,7 @@ Using Agent Framework's SequentialBuilder:
 
 ```python
 from agent_framework import SequentialBuilder
-from loan_avengers.agents import IntakeAgent, CreditAgent, IncomeAgent, RiskAgent
+from loan_defenders.agents import IntakeAgent, CreditAgent, IncomeAgent, RiskAgent
 
 # Initialize agents
 intake_agent = IntakeAgent()
@@ -438,7 +438,7 @@ FastAPI handles HTTP errors with structured responses:
 ```yaml
 apiVersion: 2024-03-01
 properties:
-  managedEnvironmentId: /subscriptions/.../managedEnvironments/loan-avengers-env
+  managedEnvironmentId: /subscriptions/.../managedEnvironments/loan-defenders-env
   configuration:
     activeRevisionsMode: Single
     ingress:
@@ -449,7 +449,7 @@ properties:
           weight: 100
       corsPolicy:
         allowedOrigins:
-          - https://loanavengers.com
+          - https://loandefenders.com
         allowedMethods:
           - GET
           - POST
@@ -459,17 +459,17 @@ properties:
           - Content-Type
           - Accept
       customDomains:
-        - name: api.loanavengers.com
+        - name: api.loandefenders.com
           certificateId: /subscriptions/.../certificates/api-cert
     secrets:
       - name: foundry-endpoint
-        keyVaultUrl: https://loan-avengers-kv.vault.azure.net/secrets/foundry-endpoint
+        keyVaultUrl: https://loan-defenders-kv.vault.azure.net/secrets/foundry-endpoint
       - name: redis-connection-string
-        keyVaultUrl: https://loan-avengers-kv.vault.azure.net/secrets/redis-connection-string
+        keyVaultUrl: https://loan-defenders-kv.vault.azure.net/secrets/redis-connection-string
   template:
     containers:
-      - name: loan-avengers-api
-        image: loanavengersacr.azurecr.io/loan-avengers-api:latest
+      - name: loan-defenders-api
+        image: loandefendersacr.azurecr.io/loan-defenders-api:latest
         resources:
           cpu: 1.0
           memory: 2Gi
@@ -518,14 +518,14 @@ FOUNDRY_PROJECT_ENDPOINT=https://your-project.projects.ai.azure.com
 FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4
 
 # Azure Cache for Redis
-REDIS_CONNECTION_STRING=rediss://loan-avengers-redis.redis.cache.windows.net:6380,...
+REDIS_CONNECTION_STRING=rediss://loan-defenders-redis.redis.cache.windows.net:6380,...
 
 # Azure Blob Storage
 AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;...
 
 # Azure Cosmos DB
-COSMOS_DB_ENDPOINT=https://loan-avengers-cosmos.documents.azure.com:443/
-COSMOS_DB_DATABASE_NAME=loanavengers
+COSMOS_DB_ENDPOINT=https://loan-defenders-cosmos.documents.azure.com:443/
+COSMOS_DB_DATABASE_NAME=loandefenders
 
 # Application Insights
 APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=...;IngestionEndpoint=https://...
@@ -536,7 +536,7 @@ MCP_DOCUMENT_PROCESSING_PORT=8011
 MCP_FINANCIAL_CALCULATIONS_PORT=8012
 
 # Security
-ALLOWED_ORIGINS=https://loanavengers.com,https://app.loanavengers.com
+ALLOWED_ORIGINS=https://loandefenders.com,https://app.loandefenders.com
 ```
 
 ## Observability
@@ -556,7 +556,7 @@ All components send telemetry to Azure Application Insights:
 {
   "timestamp": "2025-09-28T10:30:00Z",
   "level": "INFO",
-  "logger": "loan_avengers.api",
+  "logger": "loan_defenders.api",
   "message": "Application processed",
   "application_id": "LN123456****",  # Masked PII
   "agent": "intake",

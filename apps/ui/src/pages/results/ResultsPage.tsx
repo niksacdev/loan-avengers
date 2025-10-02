@@ -323,7 +323,7 @@ export function ResultsPage() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-lg mx-auto">
                   <button
                     onClick={() => {
-                      alert('🎉 Shared: "Just got approved for my dream home loan with AI specialists in 15 minutes! The future is here! #LoanAvengers"');
+                      alert('🎉 Shared: "Just got approved for my dream home loan with AI specialists in 15 minutes! The future is here! #LoanDefenders"');
                     }}
                     className="btn-secondary w-full sm:w-auto px-8 py-4 text-lg shadow-lg hover:shadow-xl group"
                   >

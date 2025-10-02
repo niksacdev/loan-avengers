@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from loan_avengers.api.app import app
+from loan_defenders.api.app import app
 
 
 @pytest.fixture

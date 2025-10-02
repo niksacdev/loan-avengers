@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Loan Avengers API uses **Streamable HTTP** transport, aligned with the Model Context Protocol (MCP) specification (2025-03-26). This provides real-time workflow event streaming to clients using Server-Sent Events (SSE).
+The Loan Defenders API uses **Streamable HTTP** transport, aligned with the Model Context Protocol (MCP) specification (2025-03-26). This provides real-time workflow event streaming to clients using Server-Sent Events (SSE).
 
 ## Streamable HTTP Transport
 
@@ -18,7 +18,7 @@ Following MCP specification, we use a **single HTTP POST endpoint** that support
 
 ```http
 POST /api/v1/applications/LN1234567890/stream HTTP/1.1
-Host: api.loanavengers.com
+Host: api.loandefenders.com
 Authorization: Bearer <entra_id_token>
 Accept: text/event-stream
 Content-Type: application/json
@@ -247,7 +247,7 @@ Agent streaming progress update.
 
 ```typescript
 const eventSource = new EventSource(
-  'https://api.loanavengers.com/api/v1/applications/LN1234567890/stream',
+  'https://api.loandefenders.com/api/v1/applications/LN1234567890/stream',
   {
     headers: {
       'Authorization': `Bearer ${entraToken}`
@@ -309,7 +309,7 @@ import httpx
 import json
 
 async def stream_workflow_events(application_id: str, entra_token: str):
-    url = f"https://api.loanavengers.com/api/v1/applications/{application_id}/stream"
+    url = f"https://api.loandefenders.com/api/v1/applications/{application_id}/stream"
 
     async with httpx.AsyncClient() as client:
         async with client.stream(
@@ -355,7 +355,7 @@ export function useWorkflowStream(applicationId: string, token: string) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `https://api.loanavengers.com/api/v1/applications/${applicationId}/stream`,
+      `https://api.loandefenders.com/api/v1/applications/${applicationId}/stream`,
       {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -489,7 +489,7 @@ curl -N \
   -H "Authorization: Bearer ${ENTRA_TOKEN}" \
   -H "Accept: text/event-stream" \
   -X POST \
-  https://api.loanavengers.com/api/v1/applications/LN1234567890/stream
+  https://api.loandefenders.com/api/v1/applications/LN1234567890/stream
 ```
 
 ### Automated Testing

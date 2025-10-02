@@ -1,4 +1,4 @@
-# Azure Deployment Architecture - Loan Avengers
+# Azure Deployment Architecture - Loan Defenders
 
 ## Complete Azure Infrastructure Deployment Diagram
 
@@ -27,7 +27,7 @@ graph TB
     subgraph "Azure Container Apps Environment"
         direction TB
         subgraph "Container Apps"
-            UI[🎨 Loan Avengers UI<br/>React + Vite<br/>Container App]
+            UI[🎨 Loan Defenders UI<br/>React + Vite<br/>Container App]
             API[🚀 FastAPI Backend<br/>Microsoft Agent Framework<br/>Container App]
         end
 

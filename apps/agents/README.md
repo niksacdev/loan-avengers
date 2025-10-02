@@ -4,7 +4,7 @@ This directory contains deployment configurations for **Azure Agent Service**, n
 
 ## Overview
 
-The actual agent code lives in `apps/api/loan_avengers/agents/`. This directory only contains:
+The actual agent code lives in `apps/api/loan_defenders/agents/`. This directory only contains:
 - Azure deployment manifests
 - Agent service configuration files
 - Environment-specific settings (dev/staging/production)
@@ -83,12 +83,12 @@ az account set --subscription "your-subscription-id"
 az agent-service deploy \
   --config agent-config.yaml \
   --environment production \
-  --resource-group loan-avengers-rg
+  --resource-group loan-defenders-rg
 
 # Monitor deployment
 az agent-service deployment show \
-  --name loan-avengers-agents \
-  --resource-group loan-avengers-rg
+  --name loan-defenders-agents \
+  --resource-group loan-defenders-rg
 ```
 
 ## Local Development
@@ -97,13 +97,13 @@ For local development, agents run as part of the API container. Azure Agent Serv
 
 ## Related Documentation
 
-- Agent implementation code: `apps/api/loan_avengers/agents/`
+- Agent implementation code: `apps/api/loan_defenders/agents/`
 - API deployment: `apps/api/README.md`
 - [Azure Agent Service Documentation](https://learn.microsoft.com/en-us/azure/agent-service/)
 
 ## Notes
 
 - ⚠️ This directory is for **deployment configuration only**
-- ✅ Agent **implementation code** lives in `apps/api/loan_avengers/agents/`
+- ✅ Agent **implementation code** lives in `apps/api/loan_defenders/agents/`
 - 🔧 Modify these files when changing deployment settings, not agent behavior
 - 📝 Agent behavior is controlled by persona markdown files in the API app

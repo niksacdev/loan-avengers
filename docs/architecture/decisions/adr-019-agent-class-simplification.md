@@ -240,13 +240,13 @@ class SequentialPipeline:
 ### Files Modified
 
 **Agent Classes** (All refactored):
-1. `loan_avengers/agents/intake_agent.py` (281 → 110 lines)
-2. `loan_avengers/agents/credit_agent.py` (310 → 125 lines)
-3. `loan_avengers/agents/income_agent.py` (329 → 138 lines)
-4. `loan_avengers/agents/risk_agent.py` (329 → 138 lines)
+1. `loan_defenders/agents/intake_agent.py` (281 → 110 lines)
+2. `loan_defenders/agents/credit_agent.py` (310 → 125 lines)
+3. `loan_defenders/agents/income_agent.py` (329 → 138 lines)
+4. `loan_defenders/agents/risk_agent.py` (329 → 138 lines)
 
 **Orchestrator** (Updated):
-5. `loan_avengers/orchestrators/sequential_pipeline.py` - Updated to use `workflow.run_stream()`
+5. `loan_defenders/orchestrators/sequential_pipeline.py` - Updated to use `workflow.run_stream()`
 
 **Tests** (Created):
 6. `tests/__init__.py` (new)
@@ -292,13 +292,13 @@ uv run pytest tests/unit/agents/test_agent_instantiation.py -v
 
 **Linting**:
 ```bash
-uv run ruff check loan_avengers/agents/ --fix
+uv run ruff check loan_defenders/agents/ --fix
 # Result: All checks passed! ✅
 ```
 
 **Formatting**:
 ```bash
-uv run ruff format loan_avengers/agents/
+uv run ruff format loan_defenders/agents/
 # Result: All files formatted! ✅
 ```
 

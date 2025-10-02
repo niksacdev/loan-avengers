@@ -95,7 +95,7 @@ export function Layout({
 
               {/* GitHub Repository Link */}
               <a
-                href="https://github.com/niksacdev/loan-avengers"
+                href="https://github.com/niksacdev/loan-defenders"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-dark-text-secondary hover:text-gray-900 dark:hover:text-dark-text-primary hover:bg-gray-100 dark:hover:bg-dark-bg-tertiary transition-colors duration-300"
@@ -142,7 +142,7 @@ export function Layout({
 
             <div className="flex items-center space-x-6 text-sm text-gray-600">
               <button
-                onClick={() => window.location.href = 'mailto:support@loanavengers.com'}
+                onClick={() => window.location.href = 'mailto:support@loandefenders.com'}
                 className="hover:text-gray-900 transition-colors"
               >
                 Support

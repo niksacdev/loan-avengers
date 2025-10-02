@@ -5,7 +5,7 @@ import { Capabilities } from '../../components/home/Capabilities';
 import { ArchitectureDiagram } from '../../components/home/ArchitectureDiagram';
 
 /**
- * Home page component - the landing page for the Loan Avengers application.
+ * Home page component - the landing page for the Loan Defenders application.
  * Showcases Microsoft Agent Framework capabilities and the AI Dream Team.
  */
 export function HomePage() {
@@ -37,7 +37,7 @@ export function HomePage() {
   ];
 
   return (
-    <Layout title="Microsoft Agent Framework - Loan Avengers">
+    <Layout title="Microsoft Agent Framework - Loan Defenders">
       <div className="animate-fade-in">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-gray-50 via-white to-brand-25 dark:from-dark-bg-primary dark:via-dark-bg-secondary dark:to-dark-bg-tertiary py-20 lg:py-28 overflow-hidden transition-colors duration-300">
@@ -75,7 +75,7 @@ export function HomePage() {
                 Meet the{' '}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-r from-vite-purple via-brand-500 to-vite-orange bg-clip-text text-transparent animate-pulse">
-                    Loan Avengers
+                    Loan Defenders
                   </span>
                   {/* Sophisticated accent effects */}
                   <span className="absolute -top-3 -right-3 text-3xl opacity-80 animate-pulse delay-100">⚡</span>

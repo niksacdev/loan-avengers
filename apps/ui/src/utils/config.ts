@@ -1,6 +1,6 @@
 import type { ApiConfig } from '../types';
 
-// Environment configuration for the Loan Avengers frontend
+// Environment configuration for the Loan Defenders frontend
 export const config = {
   api: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
@@ -8,7 +8,7 @@ export const config = {
     retries: parseInt(import.meta.env.VITE_API_RETRIES || '3', 10),
   } as ApiConfig,
   app: {
-    name: 'Loan Avengers',
+    name: 'Loan Defenders',
     version: import.meta.env.VITE_APP_VERSION || '1.0.0',
     environment: import.meta.env.MODE || 'development',
   },
@@ -56,7 +56,7 @@ export const validateConfig = (): boolean => {
 // Development helper to log configuration (non-sensitive parts only)
 export const logConfigInfo = (): void => {
   if (config.app.environment === 'development') {
-    console.info('🦸‍♂️ Loan Avengers Configuration:', {
+    console.info('🦸‍♂️ Loan Defenders Configuration:', {
       app: config.app,
       features: config.features,
       ui: config.ui,

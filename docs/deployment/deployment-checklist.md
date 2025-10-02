@@ -1,4 +1,4 @@
-# ✅ Azure Deployment Checklist - Loan Avengers
+# ✅ Azure Deployment Checklist - Loan Defenders
 
 Quick reference checklist for implementing the Azure secure deployment plan.
 
@@ -118,7 +118,7 @@ Quick reference checklist for implementing the Azure secure deployment plan.
 - [ ] Security scans passing (100%)
 
 ### **Functional Validation**
-- [ ] Loan Avengers agents working end-to-end
+- [ ] Loan Defenders agents working end-to-end
 - [ ] MCP servers accessible and responding
 - [ ] Azure OpenAI integration functional with Managed Identity
 - [ ] All test suites passing

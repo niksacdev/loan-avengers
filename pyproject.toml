@@ -1,7 +1,7 @@
 [project]
-name = "loan-avengers-workspace"
+name = "loan-defenders-workspace"
 version = "0.1.0"
-description = "🦸‍♂️ Loan Avengers - Multi-Agent Loan Processing Monorepo"
+description = "🦸‍♂️ Loan Defenders - Multi-Agent Loan Processing Monorepo"
 authors = [
     { name = "niksacdev", email = "niksac@microsoft.com" }
 ]
@@ -42,7 +42,7 @@ extend-select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["loan_avengers"]
+known-first-party = ["loan_defenders"]
 known-third-party = ["agents"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -75,7 +75,7 @@ addopts = [
 
 # Coverage configuration (shared across workspace)
 [tool.coverage.run]
-source = ["loan_avengers"]
+source = ["loan_defenders"]
 branch = true
 omit = [
     "*/tests/*",
@@ -92,9 +92,9 @@ parallel = true
 
 [tool.coverage.paths]
 source = [
-    "loan_avengers/",
-    "/workspaces/loan-avengers/apps/api/loan_avengers/",
-    "*/loan_avengers/",
+    "loan_defenders/",
+    "/workspaces/loan-defenders/apps/api/loan_defenders/",
+    "*/loan_defenders/",
 ]
 
 [tool.coverage.report]
@@ -120,7 +120,7 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "htmlcov"
-title = "Loan Avengers Coverage Report"
+title = "Loan Defenders Coverage Report"
 show_contexts = true
 
 [tool.coverage.xml]

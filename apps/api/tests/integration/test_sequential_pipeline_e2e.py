@@ -9,8 +9,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from loan_avengers.models.application import LoanApplication
-from loan_avengers.orchestrators.sequential_pipeline import SequentialPipeline
+from loan_defenders.models.application import LoanApplication
+from loan_defenders.orchestrators.sequential_pipeline import SequentialPipeline
 from tests.fixtures.mcp_test_harness import MCPTestHarness
 
 
@@ -97,7 +97,7 @@ class TestSequentialPipelineIntegration:
         # Verify create_agent was called with correct parameters
         assert mock_chat_client.create_agent.call_count == 4
 
-    @patch("loan_avengers.orchestrators.sequential_pipeline.SequentialBuilder")
+    @patch("loan_defenders.orchestrators.sequential_pipeline.SequentialBuilder")
     async def test_workflow_creation(self, mock_builder_class, mock_chat_client, sample_loan_application):
         """Test that SequentialBuilder workflow is created correctly."""
         # Set up mock SequentialBuilder
@@ -135,7 +135,7 @@ class TestSequentialPipelineIntegration:
 class TestApprovalScenario:
     """Test complete approval scenario end-to-end."""
 
-    @patch("loan_avengers.orchestrators.sequential_pipeline.SequentialBuilder")
+    @patch("loan_defenders.orchestrators.sequential_pipeline.SequentialBuilder")
     async def test_approval_workflow(self, mock_builder_class, mock_chat_client, sample_loan_application, mcp_harness):
         """Test complete approval workflow with mock MCP responses."""
         # Configure approval scenario
@@ -188,7 +188,7 @@ class TestApprovalScenario:
 class TestRejectionScenario:
     """Test complete rejection scenario end-to-end."""
 
-    @patch("loan_avengers.orchestrators.sequential_pipeline.SequentialBuilder")
+    @patch("loan_defenders.orchestrators.sequential_pipeline.SequentialBuilder")
     async def test_rejection_workflow(self, mock_builder_class, mock_chat_client, sample_loan_application, mcp_harness):
         """Test complete rejection workflow with poor credit."""
         # Configure rejection scenario (low credit score, high DTI)
@@ -228,7 +228,7 @@ class TestRejectionScenario:
 class TestErrorHandling:
     """Test error handling in the pipeline."""
 
-    @patch("loan_avengers.orchestrators.sequential_pipeline.SequentialBuilder")
+    @patch("loan_defenders.orchestrators.sequential_pipeline.SequentialBuilder")
     async def test_pipeline_handles_exceptions(self, mock_builder_class, mock_chat_client, sample_loan_application):
         """Test that pipeline handles exceptions gracefully."""
         # Set up mock workflow that raises exception

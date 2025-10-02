@@ -386,7 +386,7 @@ class ConversationSession:
 - **ADR-006**: Sequential Workflow Orchestration
 - **ADR-007**: Conversation State with AgentThread
 - **ADR-010**: Unified Workflow Architecture Assessment (rejection)
-- **Full Design Document**: `/workspaces/loan-avengers/docs/architecture/correct-two-endpoint-architecture.md`
+- **Full Design Document**: `/workspaces/loan-defenders/docs/architecture/correct-two-endpoint-architecture.md`
 
 ---
 

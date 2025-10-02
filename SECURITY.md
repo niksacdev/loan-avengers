@@ -11,14 +11,14 @@ We release patches for security vulnerabilities. Which versions are eligible for
 
 ## Reporting a Vulnerability
 
-We take the security of Loan Avengers seriously. If you believe you have found a security vulnerability, please report it to us as described below.
+We take the security of Loan Defenders seriously. If you believe you have found a security vulnerability, please report it to us as described below.
 
 ### Where to Report
 
 **For security vulnerabilities, please use GitHub Issues with the `security` label:**
 
 1. **Create a GitHub Issue (Preferred)**:
-   - Go to [Issues](https://github.com/niksacdev/loan-avengers/issues/new)
+   - Go to [Issues](https://github.com/niksacdev/loan-defenders/issues/new)
    - Add the `security` label
    - Provide detailed information about the vulnerability
    - If you have a fix, submit a PR and reference the issue
@@ -96,24 +96,24 @@ After submitting a security issue or PR:
 
 Pay extra attention when working with these components:
 
-1. **API Endpoints** (`loan_avengers/api/app.py`):
+1. **API Endpoints** (`loan_defenders/api/app.py`):
    - Session validation
    - CORS configuration
    - Input sanitization
    - Rate limiting
 
-2. **Agent Orchestration** (`loan_avengers/agents/`):
+2. **Agent Orchestration** (`loan_defenders/agents/`):
    - Prompt injection prevention
    - Tool access control
    - Context isolation between sessions
 
-3. **MCP Servers** (`loan_avengers/tools/mcp_servers/`):
+3. **MCP Servers** (`loan_defenders/tools/mcp_servers/`):
    - Input validation
    - Secure parameter handling
    - No PII in logs
    - Always use `applicant_id` (UUID), never SSN
 
-4. **Data Models** (`loan_avengers/models/`):
+4. **Data Models** (`loan_defenders/models/`):
    - PII handling
    - Data encryption requirements
    - Validation rules
@@ -197,7 +197,7 @@ We believe in responsible disclosure:
 
 Security updates will be:
 
-- Published in [GitHub Security Advisories](https://github.com/niksacdev/loan-avengers/security/advisories)
+- Published in [GitHub Security Advisories](https://github.com/niksacdev/loan-defenders/security/advisories)
 - Tagged in releases with `[SECURITY]` prefix
 - Announced in the repository README
 - Documented in CHANGELOG.md
@@ -211,8 +211,8 @@ Security updates will be:
 
 ## Questions?
 
-If you have questions about this security policy, please open a [GitHub Discussion](https://github.com/niksacdev/loan-avengers/discussions) in the Security category.
+If you have questions about this security policy, please open a [GitHub Discussion](https://github.com/niksacdev/loan-defenders/discussions) in the Security category.
 
 ---
 
-**Thank you for helping keep Loan Avengers and our users safe!**
+**Thank you for helping keep Loan Defenders and our users safe!**

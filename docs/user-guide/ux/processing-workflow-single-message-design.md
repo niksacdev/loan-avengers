@@ -707,8 +707,8 @@ const messageKey = `${currentMessage.agentName}-${currentMessage.state}`;
 
 ## Related Documentation
 
-- **Current Implementation**: `/workspaces/loan-avengers/loan_avengers/ui/src/pages/application/ApplicationPage.tsx` (lines 443-475)
-- **Type Definitions**: `/workspaces/loan-avengers/loan_avengers/ui/src/types/index.ts`
+- **Current Implementation**: `/workspaces/loan-defenders/loan_defenders/ui/src/pages/application/ApplicationPage.tsx` (lines 443-475)
+- **Type Definitions**: `/workspaces/loan-defenders/loan_defenders/ui/src/types/index.ts`
 - **Animation Patterns**: See Tailwind CSS utilities in existing codebase
 
 ---

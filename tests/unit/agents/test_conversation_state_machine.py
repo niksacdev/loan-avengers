@@ -8,11 +8,11 @@ Tests cover:
 - Response generation
 """
 
-from loan_avengers.agents.conversation_state_machine import (
+from loan_defenders.orchestrators.conversation_state_machine import (
     ConversationState,
     ConversationStateMachine,
 )
-from loan_avengers.models.responses import ConversationResponse
+from loan_defenders.models.responses import ConversationResponse
 
 
 class TestConversationStateMachineInit:

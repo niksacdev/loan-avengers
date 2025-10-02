@@ -11,16 +11,16 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 from agent_framework import AgentRunResponse, ChatMessage, UsageDetails
 
-from loan_avengers.agents.intake_agent import IntakeAgent
+from loan_defenders.agents.intake_agent import IntakeAgent
 
 
 class TestIntakeAgentInit:
     """Test IntakeAgent initialization."""
 
-    @patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool")
-    @patch("loan_avengers.agents.intake_agent.FoundryChatClient")
-    @patch("loan_avengers.agents.intake_agent.DefaultAzureCredential")
-    @patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona")
+    @patch("loan_defenders.agents.intake_agent.MCPStreamableHTTPTool")
+    @patch("loan_defenders.agents.intake_agent.FoundryChatClient")
+    @patch("loan_defenders.agents.intake_agent.DefaultAzureCredential")
+    @patch("loan_defenders.agents.intake_agent.PersonaLoader.load_persona")
     def test_init_with_default_client(
         self, mock_load_persona, mock_default_credential, mock_foundry_client, mock_mcp_tool
     ):
@@ -62,8 +62,8 @@ class TestIntakeAgentInit:
             load_prompts=False,
         )
 
-    @patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool")
-    @patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona")
+    @patch("loan_defenders.agents.intake_agent.MCPStreamableHTTPTool")
+    @patch("loan_defenders.agents.intake_agent.PersonaLoader.load_persona")
     def test_init_with_custom_client(self, mock_load_persona, mock_mcp_tool, mock_azure_chat_client):
         """Test IntakeAgent initialization with custom Azure client."""
         # Setup mocks
@@ -95,8 +95,8 @@ class TestIntakeAgentProcessApplication:
             IntakeAgent: Configured intake agent with mocked dependencies
         """
         with (
-            patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona") as mock_load_persona,
-            patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool") as mock_mcp_tool,
+            patch("loan_defenders.agents.intake_agent.PersonaLoader.load_persona") as mock_load_persona,
+            patch("loan_defenders.agents.intake_agent.MCPStreamableHTTPTool") as mock_mcp_tool,
         ):
             mock_load_persona.return_value = "Test persona instructions"
             mock_mcp_instance = Mock()
@@ -125,7 +125,7 @@ class TestIntakeAgentProcessApplication:
             value=sample_intake_assessment,
         )
 
-        with patch("loan_avengers.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
+        with patch("loan_defenders.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
             mock_agent_instance = Mock()
             mock_agent_instance.run = AsyncMock(return_value=mock_response)
             mock_chat_agent_class.return_value = mock_agent_instance
@@ -134,7 +134,7 @@ class TestIntakeAgentProcessApplication:
             result = await mock_intake_agent.process_application(sample_loan_application)
 
         # Verify result structure (Pydantic model, not dict!)
-        from loan_avengers.models.responses import AgentResponse, IntakeAssessment
+        from loan_defenders.models.responses import AgentResponse, IntakeAssessment
 
         assert isinstance(result, AgentResponse)
         assert isinstance(result.assessment, IntakeAssessment)
@@ -172,7 +172,7 @@ class TestIntakeAgentProcessApplication:
             value=Mock(),
         )
 
-        with patch("loan_avengers.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
+        with patch("loan_defenders.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
             mock_agent_instance = Mock()
             mock_agent_instance.run = AsyncMock(return_value=mock_response)
             mock_chat_agent_class.return_value = mock_agent_instance
@@ -205,7 +205,7 @@ class TestIntakeAgentProcessApplication:
             value=None,  # Parsing failed
         )
 
-        with patch("loan_avengers.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
+        with patch("loan_defenders.agents.intake_agent.ChatAgent") as mock_chat_agent_class:
             mock_agent_instance = Mock()
             mock_agent_instance.run = AsyncMock(return_value=mock_response)
             mock_chat_agent_class.return_value = mock_agent_instance
@@ -253,9 +253,9 @@ class TestIntakeAgentMessageFormatting:
     async def test_message_contains_application_data(self, mock_azure_chat_client, sample_loan_application):
         """Test that agent message contains application data."""
         with (
-            patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona") as mock_load_persona,
-            patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool") as mock_mcp_tool,
-            patch("loan_avengers.agents.intake_agent.ChatAgent") as mock_chat_agent_class,
+            patch("loan_defenders.agents.intake_agent.PersonaLoader.load_persona") as mock_load_persona,
+            patch("loan_defenders.agents.intake_agent.MCPStreamableHTTPTool") as mock_mcp_tool,
+            patch("loan_defenders.agents.intake_agent.ChatAgent") as mock_chat_agent_class,
         ):
             mock_load_persona.return_value = "Test persona"
             mock_mcp_instance = AsyncMock()
@@ -290,8 +290,8 @@ class TestIntakeAgentMessageFormatting:
 class TestIntakeAgentConfiguration:
     """Test agent configuration and MCP tool setup."""
 
-    @patch("loan_avengers.agents.intake_agent.MCPStreamableHTTPTool")
-    @patch("loan_avengers.agents.intake_agent.PersonaLoader.load_persona")
+    @patch("loan_defenders.agents.intake_agent.MCPStreamableHTTPTool")
+    @patch("loan_defenders.agents.intake_agent.PersonaLoader.load_persona")
     def test_mcp_tool_configuration(self, mock_load_persona, mock_mcp_tool, mock_azure_chat_client):
         """Test that MCP tool is configured correctly."""
         mock_load_persona.return_value = "Test persona"
@@ -314,7 +314,7 @@ class TestIntakeAgentSerializationCompatibility:
 
     async def test_agent_response_json_serialization_compatibility(self, sample_intake_assessment):
         """Test that AgentResponse can be serialized to JSON for API compatibility."""
-        from loan_avengers.models.responses import AgentResponse, UsageStats
+        from loan_defenders.models.responses import AgentResponse, UsageStats
 
         # Create a sample AgentResponse
         usage_stats = UsageStats(input_tokens=100, output_tokens=50, total_tokens=150)

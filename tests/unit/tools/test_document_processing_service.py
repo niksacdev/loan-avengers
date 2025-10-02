@@ -10,7 +10,7 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from loan_avengers.tools.mcp_servers.document_processing.service import MCPDocumentProcessingService
+from loan_defenders.tools.mcp_servers.document_processing.service import MCPDocumentProcessingService
 
 
 class TestMCPDocumentProcessingService:

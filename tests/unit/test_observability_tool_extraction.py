@@ -4,7 +4,7 @@ Test the Observability utility functions.
 
 from unittest.mock import Mock
 
-from loan_avengers.utils.observability import Observability
+from loan_defenders.utils.observability import Observability
 
 
 class TestToolCallExtraction:

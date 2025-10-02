@@ -11,11 +11,11 @@ import pytest
 from agent_framework import ChatAgent
 from agent_framework._mcp import MCPStreamableHTTPTool
 
-from loan_avengers.agents.credit_agent import CreditAgent
-from loan_avengers.agents.income_agent import IncomeAgent
-from loan_avengers.agents.intake_agent import IntakeAgent
-from loan_avengers.agents.risk_agent import RiskAgent
-from loan_avengers.models.responses import (
+from loan_defenders.agents.credit_agent import CreditAgent
+from loan_defenders.agents.income_agent import IncomeAgent
+from loan_defenders.agents.intake_agent import IntakeAgent
+from loan_defenders.agents.risk_agent import RiskAgent
+from loan_defenders.models.responses import (
     CreditAssessment,
     IncomeAssessment,
     IntakeAssessment,
@@ -54,8 +54,8 @@ class TestIntakeAgent:
 
     def test_init_without_client(self, mock_env_vars):
         """Test IntakeAgent initialization without provided client."""
-        with patch("loan_avengers.agents.intake_agent.AzureAIAgentClient") as mock_client_class:
-            with patch("loan_avengers.agents.intake_agent.DefaultAzureCredential"):
+        with patch("loan_defenders.agents.intake_agent.AzureAIAgentClient") as mock_client_class:
+            with patch("loan_defenders.agents.intake_agent.DefaultAzureCredential"):
                 agent = IntakeAgent()
 
                 assert agent.chat_client is not None

@@ -14,7 +14,7 @@ from collections.abc import AsyncGenerator
 import httpx
 import pytest
 
-from loan_avengers.agents.intake_agent import IntakeAgent
+from loan_defenders.agents.intake_agent import IntakeAgent
 
 
 class TestIntakeAgentMCPIntegration:
@@ -25,8 +25,8 @@ class TestIntakeAgentMCPIntegration:
         """Start and manage the MCP server for integration tests."""
         # Start the MCP server process
         process = subprocess.Popen(
-            ["uv", "run", "python", "-m", "loan_avengers.tools.mcp_servers.application_verification.server"],
-            cwd="/Users/niksac/github/loan-avengers",
+            ["uv", "run", "python", "-m", "loan_defenders.tools.mcp_servers.application_verification.server"],
+            cwd="/Users/niksac/github/loan-defenders",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )

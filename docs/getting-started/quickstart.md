@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get the Loan Avengers system up and running in under 10 minutes!
+Get the Loan Defenders system up and running in under 10 minutes!
 
 ## Prerequisites
 
@@ -19,8 +19,8 @@ Before you begin, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/niksacdev/loan-avengers.git
-cd loan-avengers
+git clone https://github.com/niksacdev/loan-defenders.git
+cd loan-defenders
 ```
 
 ### 2. Set Up Environment Variables
@@ -73,17 +73,17 @@ Open three terminal windows and start the MCP servers:
 
 **Terminal 1: Application Verification Server**
 ```bash
-uv run python -m loan_avengers.tools.mcp_servers.application_verification.server
+uv run python -m loan_defenders.tools.mcp_servers.application_verification.server
 ```
 
 **Terminal 2: Document Processing Server**
 ```bash
-uv run python -m loan_avengers.tools.mcp_servers.document_processing.server
+uv run python -m loan_defenders.tools.mcp_servers.document_processing.server
 ```
 
 **Terminal 3: Financial Calculations Server**
 ```bash
-uv run python -m loan_avengers.tools.mcp_servers.financial_calculations.server
+uv run python -m loan_defenders.tools.mcp_servers.financial_calculations.server
 ```
 
 !!! info "MCP Server Ports"
@@ -97,7 +97,7 @@ In a new terminal:
 
 ```bash
 cd apps/api
-uv run python -m loan_avengers.api.app
+uv run python -m loan_defenders.api.app
 ```
 
 The API will be available at `http://localhost:8000`
@@ -122,7 +122,7 @@ The UI will be available at `http://localhost:5173`
 ## Verify Installation
 
 1. Open your browser to `http://localhost:5173` (or the port shown in your terminal)
-2. You should see the Loan Avengers homepage with the AI Dream Team
+2. You should see the Loan Defenders homepage with the AI Dream Team
 3. Click "Try the Demo" to start processing a loan application
 4. Fill in the sample data and submit
 5. Watch as the AI agents process your application in real-time!
@@ -167,14 +167,14 @@ kill -9 <PID>
 APP_CORS_ORIGINS="http://localhost:5173,http://localhost:5174,http://localhost:5175"
 
 # Restart API server
-ps aux | grep "loan_avengers.api.app" | grep -v grep | awk '{print $2}' | xargs kill
-cd apps/api && uv run python -m loan_avengers.api.app
+ps aux | grep "loan_defenders.api.app" | grep -v grep | awk '{print $2}' | xargs kill
+cd apps/api && uv run python -m loan_defenders.api.app
 ```
 
 For detailed solutions, see the full [Troubleshooting Guide](../reference/troubleshooting.md).
 
 ## Getting Help
 
-- **Issues**: [GitHub Issues](https://github.com/niksacdev/loan-avengers/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/niksacdev/loan-avengers/discussions)
+- **Issues**: [GitHub Issues](https://github.com/niksacdev/loan-defenders/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/niksacdev/loan-defenders/discussions)
 - **Documentation**: You're reading it! 📖

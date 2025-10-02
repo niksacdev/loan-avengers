@@ -4,7 +4,7 @@
 apiVersion: agents.azure.com/v1alpha1
 kind: AgentDeployment
 metadata:
-  name: loan-avengers-agents
+  name: loan-defenders-agents
   namespace: production
 spec:
   # Agent definitions reference the actual implementation in API app
@@ -16,12 +16,12 @@ spec:
       # Source points to API container image
       source:
         type: container
-        image: "${ACR_NAME}.azurecr.io/loan-avengers-api:latest"
+        image: "${ACR_NAME}.azurecr.io/loan-defenders-api:latest"
         entrypoint: "python"
-        args: ["-m", "loan_avengers.agents.conversation_orchestrator"]
+        args: ["-m", "loan_defenders.agents.conversation_orchestrator"]
       persona:
         # Persona loaded from API container
-        path: "/app/loan_avengers/agents/agent-persona/coordinator-persona.md"
+        path: "/app/loan_defenders/agents/agent-persona/coordinator-persona.md"
       resources:
         requests:
           memory: "512Mi"
@@ -40,9 +40,9 @@ spec:
       version: "3.11"
       source:
         type: container
-        image: "${ACR_NAME}.azurecr.io/loan-avengers-api:latest"
+        image: "${ACR_NAME}.azurecr.io/loan-defenders-api:latest"
         entrypoint: "python"
-        args: ["-m", "loan_avengers.agents.sequential_pipeline"]
+        args: ["-m", "loan_defenders.agents.sequential_pipeline"]
       resources:
         requests:
           memory: "1Gi"

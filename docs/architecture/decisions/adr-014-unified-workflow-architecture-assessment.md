@@ -28,10 +28,10 @@
 ## Context: What We're Reviewing
 
 ### System Under Review
-- **Primary**: `loan_avengers/agents/unified_workflow.py` (422 lines)
-- **Supporting**: `loan_avengers/agents/mock_unified_workflow.py` (303 lines)
-- **Integration**: `loan_avengers/api/app.py` (FastAPI endpoint)
-- **Session Management**: `loan_avengers/api/session_manager.py`
+- **Primary**: `loan_defenders/agents/unified_workflow.py` (422 lines)
+- **Supporting**: `loan_defenders/agents/mock_unified_workflow.py` (303 lines)
+- **Integration**: `loan_defenders/api/app.py` (FastAPI endpoint)
+- **Session Management**: `loan_defenders/api/session_manager.py`
 
 ### Current Architecture Foundation
 The system has established architectural principles through ADRs:
@@ -704,7 +704,7 @@ def _create_credit_assessor(self) -> ChatAgent:
 
 **These exist in the system** (checking project structure):
 ```
-loan_avengers/agents/agent-persona/
+loan_defenders/agents/agent-persona/
 ├── intake-agent-persona.md
 ├── credit-agent-persona.md  (probably exists)
 ├── income-agent-persona.md  (probably exists)
@@ -822,7 +822,7 @@ async for event in workflow.run_stream(application):
 
 ### WorkflowOrchestrator (Existing, Correct)
 
-**File**: `loan_avengers/agents/workflow_orchestrator.py`
+**File**: `loan_defenders/agents/workflow_orchestrator.py`
 
 **Architecture**:
 ```python
@@ -856,7 +856,7 @@ class WorkflowOrchestrator:
 
 ### UnifiedLoanWorkflow (New, Problematic)
 
-**File**: `loan_avengers/agents/unified_workflow.py`
+**File**: `loan_defenders/agents/unified_workflow.py`
 
 **Architecture**:
 ```python

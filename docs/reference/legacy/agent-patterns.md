@@ -1,4 +1,4 @@
-# Loan Avengers Agent Patterns
+# Loan Defenders Agent Patterns
 
 Personality-driven agent personas with superhero themes for autonomous loan processing business logic.
 

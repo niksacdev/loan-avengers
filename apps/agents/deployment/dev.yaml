@@ -6,18 +6,18 @@ region: eastus
 
 # Agent service settings
 agentService:
-  resourceGroup: loan-avengers-dev-rg
-  name: loan-avengers-agents-dev
+  resourceGroup: loan-defenders-dev-rg
+  name: loan-defenders-agents-dev
   sku: basic
 
 # Container Registry
 containerRegistry:
-  name: loanavengersdevacr
-  loginServer: loanavengersdevacr.azurecr.io
+  name: loandefendersdevacr
+  loginServer: loandefendersdevacr.azurecr.io
 
 # API Backend connection
 apiBackend:
-  endpoint: https://loan-avengers-api-dev.azurewebsites.net
+  endpoint: https://loan-defenders-api-dev.azurewebsites.net
   timeout: 120s
 
 # Environment variables
@@ -33,8 +33,8 @@ scaling:
 
 # Monitoring
 monitoring:
-  logAnalyticsWorkspace: loan-avengers-dev-logs
-  applicationInsights: loan-avengers-dev-insights
+  logAnalyticsWorkspace: loan-defenders-dev-logs
+  applicationInsights: loan-defenders-dev-insights
   alertsEnabled: false
 
 # Cost management (dev uses spot instances)

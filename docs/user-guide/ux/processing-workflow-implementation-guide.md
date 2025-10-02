@@ -24,7 +24,7 @@ Replace the stacked message cards (lines 443-475) with a single dynamic message 
 
 ### Step 1: Update State Management (5 minutes)
 
-**Location**: `/workspaces/loan-avengers/loan_avengers/ui/src/pages/application/ApplicationPage.tsx`
+**Location**: `/workspaces/loan-defenders/loan_defenders/ui/src/pages/application/ApplicationPage.tsx`
 
 **Current Code** (lines 18):
 ```typescript
@@ -241,7 +241,7 @@ useEffect(() => {
 
 ### Step 4: Add CSS Animations (5 minutes)
 
-**Location**: `/workspaces/loan-avengers/loan_avengers/ui/src/index.css` or `/workspaces/loan-avengers/loan_avengers/ui/src/styles/global.css`
+**Location**: `/workspaces/loan-defenders/loan_defenders/ui/src/index.css` or `/workspaces/loan-defenders/loan_defenders/ui/src/styles/global.css`
 
 **Add these styles**:
 
@@ -445,7 +445,7 @@ useEffect(() => {
 **Before Committing**:
 - [ ] Run `uv run ruff check . --fix` (auto-fix linting issues)
 - [ ] Run `uv run ruff format .` (auto-format code)
-- [ ] Run frontend build: `cd loan_avengers/ui && npm run build`
+- [ ] Run frontend build: `cd loan_defenders/ui && npm run build`
 - [ ] Test in development: `npm run dev`
 
 ### Visual Testing
@@ -636,13 +636,13 @@ timing: {
 ### 1. Local Testing
 ```bash
 # Frontend
-cd loan_avengers/ui
+cd loan_defenders/ui
 npm run dev
 # Test at http://localhost:5173/application
 
 # Backend (if needed)
 cd ../..
-uv run python -m loan_avengers.api.app
+uv run python -m loan_defenders.api.app
 ```
 
 ### 2. Pre-Deployment Checks
@@ -650,11 +650,11 @@ uv run python -m loan_avengers.api.app
 # Run all quality checks
 uv run ruff check . --fix
 uv run ruff format .
-cd loan_avengers/ui && npm run build
+cd loan_defenders/ui && npm run build
 cd ../.. && uv run pytest tests/ -v
 
 # Verify no TypeScript errors
-cd loan_avengers/ui && npm run type-check
+cd loan_defenders/ui && npm run type-check
 ```
 
 ### 3. Create Pull Request
@@ -729,12 +729,12 @@ Closes #[issue-number]
 ## Related Files
 
 **Modified Files**:
-- `/workspaces/loan-avengers/loan_avengers/ui/src/pages/application/ApplicationPage.tsx` (lines 18, 54-102, 443-475)
-- `/workspaces/loan-avengers/loan_avengers/ui/src/index.css` (add animations)
+- `/workspaces/loan-defenders/loan_defenders/ui/src/pages/application/ApplicationPage.tsx` (lines 18, 54-102, 443-475)
+- `/workspaces/loan-defenders/loan_defenders/ui/src/index.css` (add animations)
 
 **Reference Documentation**:
-- UX Design Spec: `/workspaces/loan-avengers/docs/ux/processing-workflow-single-message-design.md`
-- User Journey: `/workspaces/loan-avengers/docs/ux/processing-workflow-user-journey.md`
+- UX Design Spec: `/workspaces/loan-defenders/docs/ux/processing-workflow-single-message-design.md`
+- User Journey: `/workspaces/loan-defenders/docs/ux/processing-workflow-user-journey.md`
 
 **Supporting Tools**:
 - Tailwind CSS: https://tailwindcss.com/docs

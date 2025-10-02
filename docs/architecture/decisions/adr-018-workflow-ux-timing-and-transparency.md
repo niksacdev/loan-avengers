@@ -76,7 +76,7 @@ Implemented a carefully timed transition sequence:
 
 Corrected field mapping to expose Risk Agent reasoning:
 
-**Backend Fix** (`apps/api/loan_avengers/orchestrators/sequential_pipeline.py:327`):
+**Backend Fix** (`apps/api/loan_defenders/orchestrators/sequential_pipeline.py:327`):
 ```python
 # BEFORE (incorrect)
 reasoning = risk_decision.get("reasoning", "")
@@ -175,7 +175,7 @@ The fallback message serves dual purposes:
   - Lines 235-260: Always-visible rationale section with fallback
 
 **Backend**:
-- `apps/api/loan_avengers/orchestrators/sequential_pipeline.py`
+- `apps/api/loan_defenders/orchestrators/sequential_pipeline.py`
   - Line 327: Corrected field name from `reasoning` to `processing_notes`
 
 ### Testing Performed
@@ -230,4 +230,4 @@ Tested across multiple decision types:
 
 **Date**: 2025-10-02
 **Decision Makers**: Development Team
-**Implementation**: apps/ui/src/pages/{application,results}/*.tsx, apps/api/loan_avengers/orchestrators/sequential_pipeline.py
+**Implementation**: apps/ui/src/pages/{application,results}/*.tsx, apps/api/loan_defenders/orchestrators/sequential_pipeline.py

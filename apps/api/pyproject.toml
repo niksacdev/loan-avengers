@@ -103,7 +103,7 @@ extend-select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["loan_avengers"]
+known-first-party = ["loan_defenders"]
 known-third-party = ["agents"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -136,7 +136,7 @@ addopts = [
 
 # Coverage configuration
 [tool.coverage.run]
-source = ["loan_avengers"]
+source = ["loan_defenders"]
 branch = true
 omit = [
     "*/tests/*",
@@ -153,9 +153,9 @@ parallel = true
 
 [tool.coverage.paths]
 source = [
-    "loan_avengers/",
-    "/workspaces/loan-avengers/apps/api/loan_avengers/",
-    "*/loan_avengers/",
+    "loan_defenders/",
+    "/workspaces/loan-avengers/apps/api/loan_defenders/",
+    "*/loan_defenders/",
 ]
 
 [tool.coverage.report]
@@ -211,11 +211,11 @@ show_contexts = true
 # No need for [tool.uv.sources] configuration anymore!
 
 [tool.hatch.build.targets.wheel]
-packages = ["loan_avengers"]
+packages = ["loan_defenders"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "loan_avengers",
+  "loan_defenders",
   "README.md",
   "../../LICENSE",
   "../../docs",

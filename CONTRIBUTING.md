@@ -1,6 +1,6 @@
-# Contributing to Loan Avengers
+# Contributing to Loan Defenders
 
-First off, thank you for considering contributing to Loan Avengers! It's people like you that make this project a great demonstration of multi-agent AI systems.
+First off, thank you for considering contributing to Loan Defenders! It's people like you that make this project a great demonstration of multi-agent AI systems.
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@ This project and everyone participating in it is governed by our commitment to c
 
 ### Reporting Bugs
 
-Before creating bug reports, please check the [existing issues](https://github.com/niksacdev/loan-avengers/issues) to avoid duplicates.
+Before creating bug reports, please check the [existing issues](https://github.com/niksacdev/loan-defenders/issues) to avoid duplicates.
 
 **How to Submit a Bug Report**:
 
@@ -74,8 +74,8 @@ We love code contributions! Here's how to get started:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/niksacdev/loan-avengers.git
-   cd loan-avengers
+   git clone https://github.com/niksacdev/loan-defenders.git
+   cd loan-defenders
    ```
 
 2. **Install Python dependencies**:
@@ -113,7 +113,7 @@ We love code contributions! Here's how to get started:
 
 ```bash
 cd apps/api
-uv run uvicorn loan_avengers.api.app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn loan_defenders.api.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
 #### Running the UI Development Server
@@ -127,13 +127,13 @@ npm run dev
 
 ```bash
 # Application Verification Server
-uv run python -m loan_avengers.tools.mcp_servers.application_verification.server
+uv run python -m loan_defenders.tools.mcp_servers.application_verification.server
 
 # Document Processing Server
-uv run python -m loan_avengers.tools.mcp_servers.document_processing.server
+uv run python -m loan_defenders.tools.mcp_servers.document_processing.server
 
 # Financial Calculations Server
-uv run python -m loan_avengers.tools.mcp_servers.financial_calculations.server
+uv run python -m loan_defenders.tools.mcp_servers.financial_calculations.server
 ```
 
 ### Running Tests
@@ -150,7 +150,7 @@ uv run pytest ../../tests/ -v
 uv run pytest ../../tests/unit/test_models.py -v
 
 # Run with coverage
-uv run pytest ../../tests/ -v --cov=loan_avengers --cov-report=term-missing
+uv run pytest ../../tests/ -v --cov=loan_defenders --cov-report=term-missing
 
 # Run only fast tests (skip slow integration tests)
 uv run pytest ../../tests/ -v -m "not slow"
@@ -188,10 +188,10 @@ uv run ruff check . --fix
 uv run ruff format .
 
 # 3. Run tests with coverage (must be ≥85%)
-uv run pytest ../../tests/ -v --cov=loan_avengers --cov-report=term-missing
+uv run pytest ../../tests/ -v --cov=loan_defenders --cov-report=term-missing
 
 # 4. Type checking (optional but recommended)
-uv run mypy loan_avengers/
+uv run mypy loan_defenders/
 ```
 
 If any of these fail, **fix the issues before creating your PR**.
@@ -359,10 +359,10 @@ test(workflow): Add integration tests for loan processing pipeline
 Understanding the codebase:
 
 ```
-loan-avengers/
+loan-defenders/
 ├── apps/
 │   ├── api/                      # FastAPI backend
-│   │   └── loan_avengers/
+│   │   └── loan_defenders/
 │   │       ├── agents/          # Agent personas and orchestration
 │   │       ├── api/             # FastAPI endpoints
 │   │       ├── models/          # Pydantic data models
@@ -396,7 +396,7 @@ loan-avengers/
 **Example**:
 ```python
 import pytest
-from loan_avengers.models.application import LoanApplication
+from loan_defenders.models.application import LoanApplication
 
 def test_loan_application_validates_positive_amount():
     """Loan amount must be positive."""
@@ -437,13 +437,13 @@ Contributors are recognized in:
 
 If you have questions about contributing:
 
-1. Check existing [issues](https://github.com/niksacdev/loan-avengers/issues)
-2. Check [documentation](https://niksacdev.github.io/loan-avengers/)
-3. Ask in [Discussions](https://github.com/niksacdev/loan-avengers/discussions)
+1. Check existing [issues](https://github.com/niksacdev/loan-defenders/issues)
+2. Check [documentation](https://niksacdev.github.io/loan-defenders/)
+3. Ask in [Discussions](https://github.com/niksacdev/loan-defenders/discussions)
 4. Email: niksac@microsoft.com
 
 ---
 
-**Thank you for contributing to Loan Avengers!** 🦸‍♂️
+**Thank you for contributing to Loan Defenders!** 🦸‍♂️
 
 Your contributions help demonstrate the power of AI agent systems and inspire others to build with these technologies.

@@ -1,21 +1,21 @@
-# 🦸‍♂️ The Loan Avengers
+# 🦸‍♂️ The Loan Defenders
 
-[![Build Status](https://github.com/niksacdev/loan-avengers/actions/workflows/test-apps.yml/badge.svg)](https://github.com/niksacdev/loan-avengers/actions/workflows/test-apps.yml)
-[![Documentation](https://github.com/niksacdev/loan-avengers/actions/workflows/docs.yml/badge.svg)](https://niksacdev.github.io/loan-avengers/)
+[![Build Status](https://github.com/niksacdev/loan-defenders/actions/workflows/test-apps.yml/badge.svg)](https://github.com/niksacdev/loan-defenders/actions/workflows/test-apps.yml)
+[![Documentation](https://github.com/niksacdev/loan-defenders/actions/workflows/docs.yml/badge.svg)](https://niksacdev.github.io/loan-defenders/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
 A multi-agent loan processing system built that transforms traditional loan applications into a conversational experience using personality-driven AI agents.
 
-> **📚 For complete documentation, guides, and API reference, visit [niksacdev.github.io/loan-avengers](https://niksacdev.github.io/loan-avengers/)**
+> **📚 For complete documentation, guides, and API reference, visit [niksacdev.github.io/loan-defenders](https://niksacdev.github.io/loan-defenders/)**
 
 > **⚠️ Experimental Application**: This is a sample demonstrating **[Microsoft Agent Framework](https://github.com/microsoft/agent-framework)** and **[Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-studio/)** capabilities through a practical multi-agent loan processing scenario. It highlights AI agent architecture patterns, secure cloud deployment, and AI-augmented agent development practices.
 
 ## 🎨 **Experience the Demo**
 
 ### Landing Page - Meet Your AI Dream Team
-![Loan Avengers Landing Page](docs/assets/landing_home.png)
+![Loan Defenders Landing Page](docs/assets/landing_home.png)
 *The home page introduces the AI Dream Team of specialized loan processing agents*
 
 ### Live Agent Workflow - Watch the Magic Happen
@@ -27,12 +27,12 @@ A multi-agent loan processing system built that transforms traditional loan appl
 *Complete loan decision with full transparency and agent recommendations*
 ## 🎬 **How It Works**
 
-### **The Avengers Assembly Sequence**
+### **The Defenders Assembly Sequence**
 ```
 User: "I need 250K for this house I'm looking at"
 
 🦸‍♂️ Cap-ital America: "That's exciting! Let me get my team to help you.
-                      AVENGERS, ASSEMBLE! 🦅"
+                      DEFENDERS, ASSEMBLE! 🦅"
 
 🦸‍♂️ Cap-ital America: [Streaming] "Eagle eyes engaged! 🦅 Scanning application data..."
 🦸‍♂️ Cap-ital America: [Streaming] "Everything looks sharp! No missing pieces!"
@@ -50,7 +50,7 @@ User: "I need 250K for this house I'm looking at"
 🦸‍♂️ Cap-ital America: "🎊 MISSION COMPLETE! Your loan application has been approved!"
 ```
 
-## 🦸‍♂️ **Meet the Avengers**
+## 🦸‍♂️ **Meet the Defenders**
 
 ### **🦸‍♂️ Cap-ital America - Loan Orchestrator**
 - **Role**: Coordinates the entire loan application experience
@@ -107,7 +107,7 @@ uv run test_intake_agent.py
 ```
 ## 📚 **Documentation**
 
-Visit **[niksacdev.github.io/loan-avengers](https://niksacdev.github.io/loan-avengers/)** for complete documentation including:
+Visit **[niksacdev.github.io/loan-defenders](https://niksacdev.github.io/loan-defenders/)** for complete documentation including:
 - Quick Start Guide
 - System Architecture
 - API Reference
@@ -121,4 +121,4 @@ Visit **[niksacdev.github.io/loan-avengers](https://niksacdev.github.io/loan-ave
 
 ---
 
-**🦸‍♂️ The Loan Avengers
+**🦸‍♂️ The Loan Defenders

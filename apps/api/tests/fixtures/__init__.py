@@ -1,4 +1,4 @@
-"""Test fixtures for loan_avengers testing."""
+"""Test fixtures for loan_defenders testing."""
 
 from tests.fixtures.mcp_test_harness import (
     MCPTestHarness,

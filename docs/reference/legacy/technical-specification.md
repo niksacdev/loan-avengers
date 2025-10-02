@@ -1,8 +1,8 @@
-# 🦸‍♂️ THE LOAN AVENGERS - Technical Specification
+# 🦸‍♂️ THE LOAN DEFENDERS - Technical Specification
 
 ## Hero Mission Overview
 
-When financial dreams are threatened by boring forms and complex processes, **The Loan Avengers assemble to save the day!** This revolutionary superhero squad transforms traditional loan applications into epic missions where every user gets their own personal team of financial superheroes working to make their dreams come true.
+When financial dreams are threatened by boring forms and complex processes, **The Loan Defenders assemble to save the day!** This revolutionary superhero squad transforms traditional loan applications into epic missions where every user gets their own personal team of financial superheroes working to make their dreams come true.
 
 > **⚠️ Experimental Application**: This is a showcase demonstrating **Microsoft Agent Framework** and **Azure AI Foundry** capabilities through a practical multi-agent loan processing scenario.
 
@@ -18,7 +18,7 @@ For comprehensive system architecture and deployment details, see:
 ### 🎯 **Core Innovation: Cap-ital America & Your Personal AI Dream Team**
 Instead of traditional forms, users interact with Cap-ital America (Loan Coordinator) who assembles a team of specialized AI agents through a collaborative journey:
 
-**🦸‍♂️ Cap-ital America (Loan Coordinator)**: *"AVENGERS, ASSEMBLE! Let me get my team to help you achieve your goals!"*
+**🦸‍♂️ Cap-ital America (Loan Coordinator)**: *"DEFENDERS, ASSEMBLE! Let me get my team to help you achieve your goals!"*
 
 **Your Personal AI Dream Team:**
 - **🦸‍♂️ Cap-ital America (Loan Coordinator)**: Orchestrates the entire application experience with natural conversation
@@ -30,7 +30,7 @@ Instead of traditional forms, users interact with Cap-ital America (Loan Coordin
 
 ### 📱 **Mobile-First Conversational Journey**
 
-#### Phase 1: Cap-ital America's Welcome & Avengers Assembly
+#### Phase 1: Cap-ital America's Welcome & Defenders Assembly
 ```
 🦸‍♂️ Cap-ital America: "Hey there! 👋 I'm Cap-ital America, your AI loan coordinator.
                       Looking to make your homeownership dreams come true? 🏡✨"
@@ -38,11 +38,11 @@ Instead of traditional forms, users interact with Cap-ital America (Loan Coordin
 🎤 User: "Yes! I found this perfect house and I think I need around 250K"
 
 🦸‍♂️ Cap-ital America: "That's SO exciting! 🎉 Your dream home journey is about to begin!
-                      AVENGERS, ASSEMBLE! Let me get my team of AI specialists
+                      DEFENDERS, ASSEMBLE! Let me get my team of AI specialists
                       to help you. First, I'll validate everything looks good! 🦅"
 ```
 
-#### Phase 2: The Avengers Team in Action (Real-Time Streaming)
+#### Phase 2: The Defenders Team in Action (Real-Time Streaming)
 ```
 🚀 Dynamic Card Interface with Smooth Animations:
 
@@ -51,7 +51,7 @@ Instead of traditional forms, users interact with Cap-ital America (Loan Coordin
 │ $250,000 Home Loan             │
 │ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
 │                                │
-│ 🦸 The Avengers Team:          │
+│ 🦸 The Defenders Team:          │
 │ ┌─────┐ ┌─────┐ ┌─────┐        │
 │ │Hawk-Income│ │Scarlet Witch-Credit│ │Doctor Strange-Risk │      │
 │ │💼 ✨│ │📊 💤│ │🛡️💤│        │
@@ -88,14 +88,14 @@ Instead of traditional forms, users interact with Cap-ital America (Loan Coordin
 
 ## Revolutionary System Architecture
 
-### 🤝 **The Avengers Workflow** (Clean Multi-Agent Architecture)
+### 🤝 **The Defenders Workflow** (Clean Multi-Agent Architecture)
 Cap-ital America (Loan Coordinator) leads a streamlined team of AI specialists with clear responsibilities:
 
 **Technical Agent Chain:**
 
 1. **🦸‍♂️ Cap-ital America (Loan Coordinator)** = Coordinator Agent
    - Primary responsibility: Natural conversation and team coordination
-   - "AVENGERS, ASSEMBLE! Let me collect your information through friendly conversation"
+   - "DEFENDERS, ASSEMBLE! Let me collect your information through friendly conversation"
    - Performs initial validation before routing to specialists
    - Tools: Conversational data collection
    - **Note**: AI assistant designed to help with loan applications
@@ -145,7 +145,7 @@ Cap-ital America (Loan Coordinator) leads a streamlined team of AI specialists w
 - **Adaptive Messaging**: Dynamic tone based on user's financial profile
 - **Celebration Triggers**: Smart confetti and success animations
 
-## Complete Avengers Handoff Flow
+## Complete Defenders Handoff Flow
 
 ### 🎬 **Cap-ital America's Orchestrated Experience**
 
@@ -153,7 +153,7 @@ Cap-ital America (Loan Coordinator) leads a streamlined team of AI specialists w
 
 ```
 🦸‍♂️ Cap-ital America: "Hey there! Let me get my incredible team to help you!
-                      AVENGERS, ASSEMBLE! First, I'll make sure we have
+                      DEFENDERS, ASSEMBLE! First, I'll make sure we have
                       everything we need! 🦅"
 
 🦸‍♂️ Cap-ital America: [Streaming] "Eagle eyes engaged! 🦅 Validating application data..."
@@ -196,7 +196,7 @@ Each AI specialist has a distinct personality that transforms technical processi
 class CoordinatorPersonality:
     tone = "friendly, transparent, team-oriented"
     phrases = [
-        "AVENGERS, ASSEMBLE! Let me get my team to help you!",
+        "DEFENDERS, ASSEMBLE! Let me get my team to help you!",
         "I'm Cap-ital America, your AI loan coordinator",
         "Let me collect your information through friendly conversation"
     ]

@@ -1,4 +1,4 @@
-// Core application types for the Loan Avengers frontend
+// Core application types for the Loan Defenders frontend
 export interface ApiConfig {
   baseUrl: string;
   timeout: number;

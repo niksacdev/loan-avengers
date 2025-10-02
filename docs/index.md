@@ -1,10 +1,10 @@
-# Loan Avengers Documentation
+# Loan Defenders Documentation
 
-Welcome to the **Loan Avengers** documentation! This project showcases **Microsoft Agent Framework** and **Azure AI Foundry** through an intelligent multi-agent loan processing system that delivers decisions in under 2 minutes.
+Welcome to the **Loan Defenders** documentation! This project showcases **Microsoft Agent Framework** and **Azure AI Foundry** through an intelligent multi-agent loan processing system that delivers decisions in under 2 minutes.
 
-## 🦸 What is Loan Avengers?
+## 🦸 What is Loan Defenders?
 
-Loan Avengers is a demonstration of **multi-agent AI orchestration** where specialized AI agents work together to process loan applications. Think of it as your AI Dream Team for financial services:
+Loan Defenders is a demonstration of **multi-agent AI orchestration** where specialized AI agents work together to process loan applications. Think of it as your AI Dream Team for financial services:
 
 - **🦸‍♂️ Cap-ital America** - Loan Orchestrator coordinating the entire workflow
 - **🦸‍♀️ Scarlet Witch-Credit** - Credit Specialist analyzing creditworthiness
@@ -33,7 +33,7 @@ Loan Avengers is a demonstration of **multi-agent AI orchestration** where speci
 
 ## 🚀 Quick Start
 
-New to Loan Avengers? Start here:
+New to Loan Defenders? Start here:
 
 <div class="grid cards" markdown>
 
@@ -75,7 +75,7 @@ New to Loan Avengers? Start here:
 
 ### Landing Page - Meet Your AI Dream Team
 <div style="text-align: center; margin: 2em 0;">
-  <img src="assets/landing_home.png" alt="Loan Avengers Landing Page" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <img src="assets/landing_home.png" alt="Loan Defenders Landing Page" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
   <p style="margin-top: 1em; color: #666;"><em>The home page introduces the AI Dream Team of specialized loan processing agents</em></p>
 </div>
 
@@ -118,7 +118,7 @@ graph LR
 
 ## 🎯 Why This Project?
 
-Loan Avengers demonstrates several cutting-edge concepts:
+Loan Defenders demonstrates several cutting-edge concepts:
 
 1. **Multi-Agent Orchestration** - Complex workflows coordinated by autonomous agents
 2. **Personality-Driven AI** - Each agent has unique personality and expertise
@@ -159,8 +159,8 @@ We welcome contributions! See our [Contributing Guide](developer-guide/contribut
 ## 📞 Support
 
 - **Documentation**: You're reading it! 📖
-- **GitHub Issues**: [Report bugs or request features](https://github.com/niksacdev/loan-avengers/issues)
-- **Discussions**: [Ask questions and share ideas](https://github.com/niksacdev/loan-avengers/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/niksacdev/loan-defenders/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/niksacdev/loan-defenders/discussions)
 
 ## 🎓 Learning Resources
 

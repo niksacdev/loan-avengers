@@ -1,6 +1,6 @@
-# 🔐 Azure Secure Deployment Guide - Loan Avengers
+# 🔐 Azure Secure Deployment Guide - Loan Defenders
 
-A comprehensive guide to securely deploy the Loan Avengers multi-agent system in Azure using Infrastructure-as-Code (Terraform) and CI/CD pipelines.
+A comprehensive guide to securely deploy the Loan Defenders multi-agent system in Azure using Infrastructure-as-Code (Terraform) and CI/CD pipelines.
 
 ## 📋 **Overview**
 
@@ -29,7 +29,7 @@ This guide will help you:
 │  │              Azure Services                             │
 │  │  ┌──────────────┐ ┌──────────────┐ ┌─────────────────┐ │
 │  │  │ Azure OpenAI │ │ Key Vault    │ │ Container Apps  │ │
-│  │  │ (Private)    │ │ (Secrets)    │ │ (Loan Avengers) │ │
+│  │  │ (Private)    │ │ (Secrets)    │ │ (Loan Defenders) │ │
 │  │  └──────────────┘ └──────────────┘ └─────────────────┘ │
 │  │  ┌──────────────┐ ┌──────────────┐ ┌─────────────────┐ │
 │  │  │ Cosmos DB    │ │ App Insights │ │ Log Analytics   │ │
@@ -76,7 +76,7 @@ az account show
 #### Step 1.3: Service Principal Creation (for CI/CD)
 ```bash
 # Create service principal for deployment
-az ad sp create-for-rbac --name "loan-avengers-deploy-sp" \
+az ad sp create-for-rbac --name "loan-defenders-deploy-sp" \
     --role "Contributor" \
     --scopes "/subscriptions/$(az account show --query id -o tsv)"
 
@@ -92,12 +92,12 @@ az ad sp create-for-rbac --name "loan-avengers-deploy-sp" \
 #### Step 2.1: Create Terraform State Storage
 ```bash
 # Create resource group for Terraform state
-az group create --name "loan-avengers-tf-state-rg" --location "East US"
+az group create --name "loan-defenders-tf-state-rg" --location "East US"
 
 # Create storage account (name must be globally unique)
-STORAGE_ACCOUNT_NAME="loanavengerstfstate$(openssl rand -hex 4)"
+STORAGE_ACCOUNT_NAME="loandefenderstfstate$(openssl rand -hex 4)"
 az storage account create \
-    --resource-group "loan-avengers-tf-state-rg" \
+    --resource-group "loan-defenders-tf-state-rg" \
     --name "$STORAGE_ACCOUNT_NAME" \
     --sku "Standard_LRS" \
     --encryption-services blob
@@ -109,7 +109,7 @@ az storage container create \
 
 # Get storage account key
 ACCOUNT_KEY=$(az storage account keys list \
-    --resource-group "loan-avengers-tf-state-rg" \
+    --resource-group "loan-defenders-tf-state-rg" \
     --account-name "$STORAGE_ACCOUNT_NAME" \
     --query '[0].value' -o tsv)
 
@@ -126,7 +126,7 @@ echo "Account Key: $ACCOUNT_KEY"
 cd infrastructure/terraform/environments/dev
 
 # Update main.tf backend configuration with your storage account details
-# Replace "loanavengerstfstate" with your actual storage account name
+# Replace "loandefenderstfstate" with your actual storage account name
 ```
 
 #### Step 3.2: Deploy Infrastructure

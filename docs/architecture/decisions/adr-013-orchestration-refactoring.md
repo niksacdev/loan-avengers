@@ -42,20 +42,20 @@ These are deterministic operations that don't require AI intelligence.
    - Pattern: Agent-as-Tool
    - Handles: Natural language conversation only
    - Returns: Raw JSON string (unparsed)
-   - Location: `loan_avengers/agents/conversation_agent.py`
+   - Location: `loan_defenders/agents/conversation_agent.py`
 
 2. **ConversationOrchestrator** (Code-Based)
    - Pattern: Code-Based Orchestration
    - Handles: Parsing, validation, state management, business logic
    - Wraps: ConversationAgent
-   - Location: `loan_avengers/agents/conversation_orchestrator.py`
+   - Location: `loan_defenders/agents/conversation_orchestrator.py`
 
 **Rename and clarify processing components:**
 
 3. **ProcessingWorkflow → LoanProcessingPipeline**
    - Pattern: Sequential Orchestration
    - Clearer naming for loan-specific processing
-   - Location: `loan_avengers/agents/loan_processing_pipeline.py`
+   - Location: `loan_defenders/agents/loan_processing_pipeline.py`
 
 **Remove unnecessary abstraction:**
 
@@ -113,19 +113,19 @@ Final Decision
 ### Files Created/Modified
 
 **Created:**
-- `loan_avengers/agents/conversation_agent.py` - Pure agent wrapper
-- `loan_avengers/agents/conversation_orchestrator.py` - Code-based orchestration
+- `loan_defenders/agents/conversation_agent.py` - Pure agent wrapper
+- `loan_defenders/agents/conversation_orchestrator.py` - Code-based orchestration
 
 **Renamed:**
-- `loan_avengers/agents/processing_workflow.py` → `loan_avengers/agents/loan_processing_pipeline.py`
+- `loan_defenders/agents/processing_workflow.py` → `loan_defenders/agents/loan_processing_pipeline.py`
 
 **Modified:**
-- `loan_avengers/api/app.py` - Updated to use new components directly
+- `loan_defenders/api/app.py` - Updated to use new components directly
 - All imports updated to use `ConversationOrchestrator` and `LoanProcessingPipeline`
 
 **Deleted:**
-- `loan_avengers/agents/sequential_workflow.py` - Redundant facade removed
-- `loan_avengers/agents/coordinator_service.py` - Replaced by Agent + Orchestrator split
+- `loan_defenders/agents/sequential_workflow.py` - Redundant facade removed
+- `loan_defenders/agents/coordinator_service.py` - Replaced by Agent + Orchestrator split
 
 ### API Changes
 

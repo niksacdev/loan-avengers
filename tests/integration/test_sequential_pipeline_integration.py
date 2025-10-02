@@ -9,8 +9,8 @@ from decimal import Decimal
 
 import pytest
 
-from loan_avengers.agents.sequential_pipeline import SequentialPipeline
-from loan_avengers.models.application import LoanApplication
+from loan_defenders.agents.sequential_pipeline import SequentialPipeline
+from loan_defenders.models.application import LoanApplication
 
 
 @pytest.fixture

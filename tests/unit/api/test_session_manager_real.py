@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from loan_avengers.api.session_manager import ConversationSession, SessionManager
+from loan_defenders.api.session_manager import ConversationSession, SessionManager
 
 
 class TestConversationSessionReal:

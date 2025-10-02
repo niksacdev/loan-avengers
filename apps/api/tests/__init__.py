@@ -1,1 +1,1 @@
-"""Test package for loan_avengers."""
+"""Test package for loan_defenders."""

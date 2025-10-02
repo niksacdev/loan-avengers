@@ -2,7 +2,7 @@
 
 import pytest
 
-from loan_avengers.agents.mock_sequential_workflow import (
+from loan_defenders.agents.mock_sequential_workflow import (
     MockAgentThread,
     MockSequentialLoanWorkflow,
     MockSharedState,

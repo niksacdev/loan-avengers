@@ -7,7 +7,7 @@ Run with: uv run pytest tests/integration/test_intake_agent_live.py -v -s
 
 import pytest
 
-from loan_avengers.agents.intake_agent import IntakeAgent
+from loan_defenders.agents.intake_agent import IntakeAgent
 
 
 @pytest.mark.integration
@@ -38,7 +38,7 @@ async def test_intake_agent_live_with_foundry(sample_loan_application):
 
         # Display results - using Pydantic model properties
         # Verify result structure (Pydantic model validation)
-        from loan_avengers.models.responses import AgentResponse
+        from loan_defenders.models.responses import AgentResponse
 
         assert isinstance(result, AgentResponse)
 

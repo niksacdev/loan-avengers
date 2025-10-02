@@ -1,6 +1,6 @@
-# Loan Avengers - Apps Directory
+# Loan Defenders - Apps Directory
 
-This directory contains all deployable applications in the Loan Avengers monorepo.
+This directory contains all deployable applications in the Loan Defenders monorepo.
 
 ## Directory Structure
 
@@ -25,7 +25,7 @@ FastAPI backend that orchestrates the multi-agent loan processing system.
 ```bash
 cd apps/api
 uv sync
-uv run uvicorn loan_avengers.api.app:app --reload
+uv run uvicorn loan_defenders.api.app:app --reload
 ```
 
 See [apps/api/README.md](api/README.md) for detailed documentation.
@@ -52,7 +52,7 @@ See [apps/ui/README.md](ui/README.md) for detailed documentation.
 **Purpose**: Azure Agent Service deployment configurations
 **Note**: This is NOT agent implementation code
 
-Contains YAML manifests and deployment settings for Azure Agent Service. The actual agent code lives in `apps/api/loan_avengers/agents/`.
+Contains YAML manifests and deployment settings for Azure Agent Service. The actual agent code lives in `apps/api/loan_defenders/agents/`.
 
 See [apps/agents/README.md](agents/README.md) for detailed documentation.
 
@@ -63,7 +63,7 @@ See [apps/agents/README.md](agents/README.md) for detailed documentation.
 **Option 1: Run services individually**
 ```bash
 # Terminal 1: API
-cd apps/api && uv run uvicorn loan_avengers.api.app:app --reload
+cd apps/api && uv run uvicorn loan_defenders.api.app:app --reload
 
 # Terminal 2: UI
 cd apps/ui && npm run dev
@@ -83,10 +83,10 @@ docker-compose up ui
 
 ```bash
 # Build API image
-docker build -t loan-avengers-api:latest ./apps/api
+docker build -t loan-defenders-api:latest ./apps/api
 
 # Build UI image
-docker build -t loan-avengers-ui:latest ./apps/ui
+docker build -t loan-defenders-ui:latest ./apps/ui
 ```
 
 ### Running Tests

@@ -1,10 +1,10 @@
-# Loan Avengers API Endpoints Specification
+# Loan Defenders API Endpoints Specification
 
 ## Base URL
 
 ```
-Production: https://api.loanavengers.com/api/v1
-Staging: https://staging-api.loanavengers.com/api/v1
+Production: https://api.loandefenders.com/api/v1
+Staging: https://staging-api.loandefenders.com/api/v1
 Development: http://localhost:8000/api/v1
 ```
 
@@ -21,11 +21,11 @@ Authorization: Bearer <entra_id_token>
 ```bash
 # Azure CLI
 az login
-az account get-access-token --resource https://api.loanavengers.com
+az account get-access-token --resource https://api.loandefenders.com
 ```
 
 **Token Claims Required**:
-- `aud`: `https://api.loanavengers.com`
+- `aud`: `https://api.loandefenders.com`
 - `roles`: One or more of `loan.apply`, `loan.view`, `loan.admin`
 
 ## Rate Limiting
@@ -155,7 +155,7 @@ Start a new loan application workflow.
 
 **cURL Example**:
 ```bash
-curl -X POST https://api.loanavengers.com/api/v1/applications \
+curl -X POST https://api.loandefenders.com/api/v1/applications \
   -H "Authorization: Bearer ${ENTRA_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -240,7 +240,7 @@ Retrieve current status and progress of a loan application.
 
 **cURL Example**:
 ```bash
-curl -X GET https://api.loanavengers.com/api/v1/applications/LN1234567890 \
+curl -X GET https://api.loandefenders.com/api/v1/applications/LN1234567890 \
   -H "Authorization: Bearer ${ENTRA_TOKEN}"
 ```
 
@@ -295,7 +295,7 @@ Cancel an in-progress loan application.
 
 **cURL Example**:
 ```bash
-curl -X DELETE https://api.loanavengers.com/api/v1/applications/LN1234567890 \
+curl -X DELETE https://api.loandefenders.com/api/v1/applications/LN1234567890 \
   -H "Authorization: Bearer ${ENTRA_TOKEN}"
 ```
 
@@ -386,7 +386,7 @@ Send a chat message to the intake agent for conversational loan intake.
 
 **cURL Example**:
 ```bash
-curl -X POST https://api.loanavengers.com/api/v1/applications/LN1234567890/chat \
+curl -X POST https://api.loandefenders.com/api/v1/applications/LN1234567890/chat \
   -H "Authorization: Bearer ${ENTRA_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{"message": "My annual income is $75,000"}'
@@ -446,7 +446,7 @@ Retrieve the complete conversation history for an application.
 
 **cURL Example**:
 ```bash
-curl -X GET "https://api.loanavengers.com/api/v1/applications/LN1234567890/chat/history?limit=50" \
+curl -X GET "https://api.loandefenders.com/api/v1/applications/LN1234567890/chat/history?limit=50" \
   -H "Authorization: Bearer ${ENTRA_TOKEN}"
 ```
 
@@ -520,7 +520,7 @@ data: {"jsonrpc":"2.0","method":"workflow/executor_invoked","params":{"executor_
 **JavaScript Client Example**:
 ```javascript
 const eventSource = new EventSource(
-  'https://api.loanavengers.com/api/v1/applications/LN1234567890/stream',
+  'https://api.loandefenders.com/api/v1/applications/LN1234567890/stream',
   {
     headers: {
       'Authorization': `Bearer ${entraToken}`
@@ -551,7 +551,7 @@ import httpx
 async with httpx.AsyncClient() as client:
     async with client.stream(
         "POST",
-        "https://api.loanavengers.com/api/v1/applications/LN1234567890/stream",
+        "https://api.loandefenders.com/api/v1/applications/LN1234567890/stream",
         headers={
             "Authorization": f"Bearer {entra_token}",
             "Accept": "text/event-stream"
@@ -621,7 +621,7 @@ pay_stub
   "size": 524288,
   "mime_type": "application/pdf",
   "document_type": "pay_stub",
-  "storage_url": "https://loanavengers.blob.core.windows.net/documents/LN1234567890/doc_abc123.pdf",
+  "storage_url": "https://loandefenders.blob.core.windows.net/documents/LN1234567890/doc_abc123.pdf",
   "uploaded_at": "2025-09-28T10:30:00Z",
   "expires_at": "2025-10-28T10:30:00Z"
 }
@@ -655,7 +655,7 @@ pay_stub
 
 **cURL Example**:
 ```bash
-curl -X POST https://api.loanavengers.com/api/v1/applications/LN1234567890/documents \
+curl -X POST https://api.loandefenders.com/api/v1/applications/LN1234567890/documents \
   -H "Authorization: Bearer ${ENTRA_TOKEN}" \
   -F "file=@paystub.pdf" \
   -F "document_type=pay_stub"
@@ -703,7 +703,7 @@ Get all documents uploaded for an application.
 
 **cURL Example**:
 ```bash
-curl -X GET https://api.loanavengers.com/api/v1/applications/LN1234567890/documents \
+curl -X GET https://api.loandefenders.com/api/v1/applications/LN1234567890/documents \
   -H "Authorization: Bearer ${ENTRA_TOKEN}"
 ```
 
@@ -732,7 +732,7 @@ Delete an uploaded document.
 
 **cURL Example**:
 ```bash
-curl -X DELETE https://api.loanavengers.com/api/v1/applications/LN1234567890/documents/doc_abc123 \
+curl -X DELETE https://api.loandefenders.com/api/v1/applications/LN1234567890/documents/doc_abc123 \
   -H "Authorization: Bearer ${ENTRA_TOKEN}"
 ```
 
@@ -787,7 +787,7 @@ Check API service health status.
 
 **cURL Example**:
 ```bash
-curl https://api.loanavengers.com/api/v1/health
+curl https://api.loandefenders.com/api/v1/health
 ```
 
 ---
@@ -853,10 +853,10 @@ agent_processing_duration_seconds{agent="credit"} 2.3
 ### TypeScript/JavaScript
 
 ```typescript
-import { LoanAvengersClient } from '@loanavengers/api-client';
+import { LoanDefendersClient } from '@loandefenders/api-client';
 
-const client = new LoanAvengersClient({
-  baseUrl: 'https://api.loanavengers.com/api/v1',
+const client = new LoanDefendersClient({
+  baseUrl: 'https://api.loandefenders.com/api/v1',
   getAccessToken: async () => {
     // Acquire Entra ID token
     return await acquireEntraIdToken();
@@ -887,12 +887,12 @@ const chatResponse = await client.chat.send(application.application_id, {
 ### Python
 
 ```python
-from loan_avengers_client import LoanAvengersClient
+from loan_defenders_client import LoanDefendersClient
 from azure.identity.aio import DefaultAzureCredential
 
 credential = DefaultAzureCredential()
-client = LoanAvengersClient(
-    base_url="https://api.loanavengers.com/api/v1",
+client = LoanDefendersClient(
+    base_url="https://api.loandefenders.com/api/v1",
     credential=credential
 )
 

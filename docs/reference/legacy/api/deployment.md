@@ -26,7 +26,7 @@ az account set --subscription "YOUR_SUBSCRIPTION_ID"
 
 ```bash
 az group create \
-  --name rg-loan-avengers-prod \
+  --name rg-loan-defenders-prod \
   --location eastus
 ```
 
@@ -34,8 +34,8 @@ az group create \
 
 ```bash
 az acr create \
-  --resource-group rg-loan-avengers-prod \
-  --name loanavengersacr \
+  --resource-group rg-loan-defenders-prod \
+  --name loandefendersacr \
   --sku Standard
 ```
 
@@ -43,8 +43,8 @@ az acr create \
 
 ```bash
 az keyvault create \
-  --name kv-loan-avengers-prod \
-  --resource-group rg-loan-avengers-prod \
+  --name kv-loan-defenders-prod \
+  --resource-group rg-loan-defenders-prod \
   --location eastus
 ```
 
@@ -52,8 +52,8 @@ az keyvault create \
 
 ```bash
 az redis create \
-  --resource-group rg-loan-avengers-prod \
-  --name redis-loan-avengers-prod \
+  --resource-group rg-loan-defenders-prod \
+  --name redis-loan-defenders-prod \
   --location eastus \
   --sku Standard \
   --vm-size C1
@@ -63,8 +63,8 @@ az redis create \
 
 ```bash
 az cosmosdb create \
-  --name cosmos-loan-avengers-prod \
-  --resource-group rg-loan-avengers-prod \
+  --name cosmos-loan-defenders-prod \
+  --resource-group rg-loan-defenders-prod \
   --locations regionName=eastus
 ```
 
@@ -72,8 +72,8 @@ az cosmosdb create \
 
 ```bash
 az storage account create \
-  --name stloanavengersprod \
-  --resource-group rg-loan-avengers-prod \
+  --name stloandefendersprod \
+  --resource-group rg-loan-defenders-prod \
   --location eastus \
   --sku Standard_LRS
 ```
@@ -82,8 +82,8 @@ az storage account create \
 
 ```bash
 az containerapp env create \
-  --name env-loan-avengers-prod \
-  --resource-group rg-loan-avengers-prod \
+  --name env-loan-defenders-prod \
+  --resource-group rg-loan-defenders-prod \
   --location eastus
 ```
 
@@ -93,23 +93,23 @@ az containerapp env create \
 
 ```bash
 # Build image
-docker build -t loanavengersacr.azurecr.io/loan-avengers-api:latest .
+docker build -t loandefendersacr.azurecr.io/loan-defenders-api:latest .
 
 # Login to ACR
-az acr login --name loanavengersacr
+az acr login --name loandefendersacr
 
 # Push image
-docker push loanavengersacr.azurecr.io/loan-avengers-api:latest
+docker push loandefendersacr.azurecr.io/loan-defenders-api:latest
 ```
 
 ### Deploy Container App
 
 ```bash
 az containerapp create \
-  --name app-loan-avengers-api \
-  --resource-group rg-loan-avengers-prod \
-  --environment env-loan-avengers-prod \
-  --image loanavengersacr.azurecr.io/loan-avengers-api:latest \
+  --name app-loan-defenders-api \
+  --resource-group rg-loan-defenders-prod \
+  --environment env-loan-defenders-prod \
+  --image loandefendersacr.azurecr.io/loan-defenders-api:latest \
   --target-port 8000 \
   --ingress external \
   --min-replicas 1 \
@@ -117,8 +117,8 @@ az containerapp create \
   --cpu 1.0 \
   --memory 2Gi \
   --secrets \
-    foundry-endpoint=keyvaultref:https://kv-loan-avengers-prod.vault.azure.net/secrets/foundry-endpoint,identityref:system \
-    redis-connection=keyvaultref:https://kv-loan-avengers-prod.vault.azure.net/secrets/redis-connection,identityref:system \
+    foundry-endpoint=keyvaultref:https://kv-loan-defenders-prod.vault.azure.net/secrets/foundry-endpoint,identityref:system \
+    redis-connection=keyvaultref:https://kv-loan-defenders-prod.vault.azure.net/secrets/redis-connection,identityref:system \
   --env-vars \
     FOUNDRY_PROJECT_ENDPOINT=secretref:foundry-endpoint \
     REDIS_CONNECTION_STRING=secretref:redis-connection
@@ -131,16 +131,16 @@ Store secrets in Azure Key Vault:
 ```bash
 # Foundry endpoint
 az keyvault secret set \
-  --vault-name kv-loan-avengers-prod \
+  --vault-name kv-loan-defenders-prod \
   --name foundry-endpoint \
   --value "https://your-project.projects.ai.azure.com"
 
 # Redis connection
-REDIS_CONN=$(az redis list-keys --name redis-loan-avengers-prod --resource-group rg-loan-avengers-prod --query primaryKey -o tsv)
+REDIS_CONN=$(az redis list-keys --name redis-loan-defenders-prod --resource-group rg-loan-defenders-prod --query primaryKey -o tsv)
 az keyvault secret set \
-  --vault-name kv-loan-avengers-prod \
+  --vault-name kv-loan-defenders-prod \
   --name redis-connection \
-  --value "rediss://redis-loan-avengers-prod.redis.cache.windows.net:6380,password=${REDIS_CONN},ssl=True"
+  --value "rediss://redis-loan-defenders-prod.redis.cache.windows.net:6380,password=${REDIS_CONN},ssl=True"
 ```
 
 ## CI/CD Pipeline

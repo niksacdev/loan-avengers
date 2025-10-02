@@ -40,7 +40,7 @@
 - Tight coupling to Microsoft Agent Framework
 
 **Implementation**:
-- API layer: `loan_avengers/api/`
+- API layer: `loan_defenders/api/`
 - Workflow service: Uses SequentialBuilder
 - Chat service: Uses AgentThread with RedisChatMessageStore
 - See: `docs/api/api-architecture.md`

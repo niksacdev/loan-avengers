@@ -1,6 +1,6 @@
 # 📁 Deployment Documentation
 
-This directory contains comprehensive documentation for deploying the Loan Avengers multi-agent system to Azure using best practices.
+This directory contains comprehensive documentation for deploying the Loan Defenders multi-agent system to Azure using best practices.
 
 ## 📚 **Documentation Overview**
 
@@ -66,7 +66,7 @@ loan-dev
 Azure Subscription
 ├── Resource Groups
 │   ├── Terraform State Management
-│   └── Loan Avengers Application
+│   └── Loan Defenders Application
 ├── Networking
 │   ├── Virtual Network (private)
 │   ├── Subnets (application, data)
@@ -232,4 +232,4 @@ Azure Subscription
 
 ---
 
-**Ready to deploy your secure, enterprise-grade Loan Avengers system? Start with the [Azure Deployment Plan](./azure-deployment-plan.md)! 🚀**
+**Ready to deploy your secure, enterprise-grade Loan Defenders system? Start with the [Azure Deployment Plan](./azure-deployment-plan.md)! 🚀**

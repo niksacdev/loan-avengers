@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-Common issues and solutions for local development of the Loan Avengers system.
+Common issues and solutions for local development of the Loan Defenders system.
 
 ## CORS Configuration Issues
 
@@ -32,11 +32,11 @@ The frontend is running on a port that's not included in the API's CORS allowed 
 3. Restart the API server:
    ```bash
    # Kill existing API process
-   ps aux | grep "loan_avengers.api.app" | grep -v grep | awk '{print $2}' | xargs kill
+   ps aux | grep "loan_defenders.api.app" | grep -v grep | awk '{print $2}' | xargs kill
 
    # Start API server
    cd apps/api
-   uv run python -m loan_avengers.api.app
+   uv run python -m loan_defenders.api.app
    ```
 
 4. Verify the API health:
@@ -81,10 +81,10 @@ The frontend is running on a port that's not included in the API's CORS allowed 
    kill -9 <PID>
 
    # Option 2: Kill all API server processes
-   ps aux | grep "loan_avengers.api.app" | grep -v grep | awk '{print $2}' | xargs kill
+   ps aux | grep "loan_defenders.api.app" | grep -v grep | awk '{print $2}' | xargs kill
 
    # Option 3: Kill all MCP server processes
-   pkill -f "loan_avengers.tools.mcp_servers"
+   pkill -f "loan_defenders.tools.mcp_servers"
    ```
 
 3. **Restart the affected service**
@@ -110,12 +110,12 @@ Environment variables are not being loaded from the `.env` file.
 
 1. **Verify `.env` file exists in project root:**
    ```bash
-   ls -la /workspaces/loan-avengers/.env
+   ls -la /workspaces/loan-defenders/.env
    ```
 
 2. **If missing, create from template:**
    ```bash
-   cd /workspaces/loan-avengers
+   cd /workspaces/loan-defenders
    cp .env.example .env
    ```
 
@@ -129,7 +129,7 @@ Environment variables are not being loaded from the `.env` file.
 4. **Verify environment variables are loaded:**
    ```bash
    # API should print this on startup:
-   # [INFO] Loaded environment variables from /workspaces/loan-avengers/.env
+   # [INFO] Loaded environment variables from /workspaces/loan-defenders/.env
    ```
 
 !!! tip "Environment Variable Hierarchy"
@@ -188,7 +188,7 @@ Environment variables are not being loaded from the `.env` file.
 
 ## Module Not Found Errors
 
-### Problem: "ModuleNotFoundError" or "No module named 'loan_avengers'"
+### Problem: "ModuleNotFoundError" or "No module named 'loan_defenders'"
 
 **Symptoms:**
 - Import errors when running Python scripts
@@ -199,7 +199,7 @@ Environment variables are not being loaded from the `.env` file.
 
 1. **Reinstall dependencies:**
    ```bash
-   cd /workspaces/loan-avengers
+   cd /workspaces/loan-defenders
    uv sync --no-cache
    ```
 
@@ -278,12 +278,12 @@ Environment variables are not being loaded from the `.env` file.
 5. **Restart all MCP servers:**
    ```bash
    # Kill existing processes
-   pkill -f "loan_avengers.tools.mcp_servers"
+   pkill -f "loan_defenders.tools.mcp_servers"
 
    # Start servers in separate terminals
-   uv run python -m loan_avengers.tools.mcp_servers.application_verification.server
-   uv run python -m loan_avengers.tools.mcp_servers.document_processing.server
-   uv run python -m loan_avengers.tools.mcp_servers.financial_calculations.server
+   uv run python -m loan_defenders.tools.mcp_servers.application_verification.server
+   uv run python -m loan_defenders.tools.mcp_servers.document_processing.server
+   uv run python -m loan_defenders.tools.mcp_servers.financial_calculations.server
    ```
 
 !!! warning "MCP Server Dependencies"
@@ -343,7 +343,7 @@ Agent personas may be too large or verbose, causing excessive token consumption.
 
 1. **Check agent persona file sizes:**
    ```bash
-   wc -l apps/api/loan_avengers/agents/agent-persona/*.md
+   wc -l apps/api/loan_defenders/agents/agent-persona/*.md
    ```
 
 2. **Personas should be 300-500 lines max**, not 2000+
@@ -374,8 +374,8 @@ Agent personas may be too large or verbose, causing excessive token consumption.
 1. **Clear session data** (API maintains in-memory sessions):
    ```bash
    # Restart the API server to clear sessions
-   ps aux | grep "loan_avengers.api.app" | grep -v grep | awk '{print $2}' | xargs kill
-   uv run python -m loan_avengers.api.app
+   ps aux | grep "loan_defenders.api.app" | grep -v grep | awk '{print $2}' | xargs kill
+   uv run python -m loan_defenders.api.app
    ```
 
 2. **Clear browser storage:**
@@ -396,11 +396,11 @@ Agent personas may be too large or verbose, causing excessive token consumption.
 If none of these solutions work:
 
 1. **Check the logs** for detailed error messages:
-   - API logs in the terminal running `loan_avengers.api.app`
+   - API logs in the terminal running `loan_defenders.api.app`
    - MCP server logs in their respective terminals
    - Browser console logs (F12 → Console)
 
-2. **Search existing issues**: [GitHub Issues](https://github.com/niksacdev/loan-avengers/issues)
+2. **Search existing issues**: [GitHub Issues](https://github.com/niksacdev/loan-defenders/issues)
 
 3. **Create a new issue** with:
    - Detailed description of the problem
@@ -408,7 +408,7 @@ If none of these solutions work:
    - Error messages and logs
    - Environment details (OS, Python version, Node version)
 
-4. **Join discussions**: [GitHub Discussions](https://github.com/niksacdev/loan-avengers/discussions)
+4. **Join discussions**: [GitHub Discussions](https://github.com/niksacdev/loan-defenders/discussions)
 
 ---
 
@@ -422,7 +422,7 @@ curl http://localhost:8011/health  # MCP Document Processing
 curl http://localhost:8012/health  # MCP Financial Calculations
 
 # View running processes
-ps aux | grep loan_avengers
+ps aux | grep loan_defenders
 ps aux | grep node
 
 # Check port usage

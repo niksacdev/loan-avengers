@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The Loan Avengers repository is currently private and being prepared for public release. We need to establish clear standards for what constitutes "ready for public" to ensure security, quality, and professionalism. This ADR documents the comprehensive readiness assessment and required actions.
+The Loan Defenders repository is currently private and being prepared for public release. We need to establish clear standards for what constitutes "ready for public" to ensure security, quality, and professionalism. This ADR documents the comprehensive readiness assessment and required actions.
 
 ## Decision
 
@@ -58,7 +58,7 @@ We establish the following requirements for public repository release:
 
 #### 7. Documentation Quality (REQUIRED)
 - ✅ README.md with clear description
-- ✅ GitHub Pages deployed (https://niksacdev.github.io/loan-avengers/)
+- ✅ GitHub Pages deployed (https://niksacdev.github.io/loan-defenders/)
 - ✅ API documentation
 - ✅ Architecture diagrams
 - ⚠️ README badges (ready to add)

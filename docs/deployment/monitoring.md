@@ -1,8 +1,8 @@
-# Observability Guide - Loan Avengers
+# Observability Guide - Loan Defenders
 
 ## Overview
 
-The Loan Avengers application implements enterprise-grade observability using **out-of-the-box solutions** from OpenTelemetry, Azure Monitor, and Microsoft Agent Framework. This guide covers how to use observability features for debugging, performance analysis, and cost management.
+The Loan Defenders application implements enterprise-grade observability using **out-of-the-box solutions** from OpenTelemetry, Azure Monitor, and Microsoft Agent Framework. This guide covers how to use observability features for debugging, performance analysis, and cost management.
 
 ## Architecture
 
@@ -17,7 +17,7 @@ The Loan Avengers application implements enterprise-grade observability using **
                               │ OpenTelemetry Exporter
                               │
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Loan Avengers API (FastAPI)                   │
+│                    Loan Defenders API (FastAPI)                   │
 │                                                                   │
 │  ┌──────────────────────────────────────────────────────┐      │
 │  │  OpenTelemetry Auto-Instrumentation                   │      │
@@ -52,7 +52,7 @@ The Loan Avengers application implements enterprise-grade observability using **
 - Database calls (if applicable)
 - Exception stack traces
 
-**Configuration** (`loan_avengers/api/app.py:56-82`):
+**Configuration** (`loan_defenders/api/app.py:56-82`):
 ```python
 # Automatically configured from environment variables
 configure_azure_monitor()
@@ -61,7 +61,7 @@ FastAPIInstrumentor.instrument_app(app, excluded_urls="/health,/docs,/redoc")
 
 ### 2. Microsoft Agent Framework Observability
 
-**Automatically captures** (`loan_avengers/utils/observability.py:52-58`):
+**Automatically captures** (`loan_defenders/utils/observability.py:52-58`):
 - Agent execution traces
 - Token usage (input/output tokens)
 - Agent performance metrics
@@ -80,7 +80,7 @@ setup_observability(
 
 **Purpose**: Track requests end-to-end across API → Agents → MCP servers
 
-**Implementation** (`loan_avengers/api/app.py:93-136`):
+**Implementation** (`loan_defenders/api/app.py:93-136`):
 - Middleware extracts `X-Correlation-ID` header or generates UUID
 - Stored in ContextVar (thread-safe for async)
 - Automatically added to all logs via `Observability.get_correlation_id()`
@@ -103,7 +103,7 @@ logger.info(
 
 **Purpose**: Cost management and optimization
 
-**Implementation** (`loan_avengers/utils/observability.py:239-294`):
+**Implementation** (`loan_defenders/utils/observability.py:239-294`):
 ```python
 Observability.log_token_usage(
     agent_name="Credit_Assessor",
@@ -131,7 +131,7 @@ Required for full observability:
 APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=...;IngestionEndpoint=...
 
 # Recommended: Service identification
-OTEL_SERVICE_NAME=loan-avengers-api
+OTEL_SERVICE_NAME=loan-defenders-api
 OTEL_SERVICE_VERSION=0.1.0
 OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production,cloud.provider=azure
 

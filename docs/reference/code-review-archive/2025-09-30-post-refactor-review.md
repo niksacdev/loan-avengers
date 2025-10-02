@@ -51,7 +51,7 @@ All critical security, reliability, and architectural issues have been properly 
 
 #### Files with F-String Logging:
 
-**`loan_avengers/agents/conversation_orchestrator.py`** (Lines 170, 180-181, 195-196):
+**`loan_defenders/agents/conversation_orchestrator.py`** (Lines 170, 180-181, 195-196):
 ```python
 # ❌ CURRENT (Eager evaluation)
 logger.info(f"RAW AGENT RESPONSE: {agent_response_json[:300]}")
@@ -68,7 +68,7 @@ logger.info("JSON DECODE ERROR: %s", str(e))
 logger.info("PLAIN TEXT RESPONSE: %s", agent_response_json[:200])
 ```
 
-**`loan_avengers/api/app.py`** (Line 129):
+**`loan_defenders/api/app.py`** (Line 129):
 ```python
 # ❌ CURRENT
 logger.info(f"Processing: {processing_update.phase} - {processing_update.message[:100]}")
@@ -83,7 +83,7 @@ logger.info(
 )
 ```
 
-**`loan_avengers/tools/mcp_servers/application_verification/service.py`** (Lines 39, 71):
+**`loan_defenders/tools/mcp_servers/application_verification/service.py`** (Lines 39, 71):
 ```python
 # ❌ CURRENT
 logger.info(f"Retrieving credit report for {full_name} (ID: {applicant_id[:8]}***) at address: {address}")
@@ -108,7 +108,7 @@ logger.info(
 )
 ```
 
-**`loan_avengers/tools/mcp_servers/document_processing/service.py`** (Lines 52, 56, 65, 70, 73):
+**`loan_defenders/tools/mcp_servers/document_processing/service.py`** (Lines 52, 56, 65, 70, 73):
 ```python
 # ❌ CURRENT
 logger.info(f"Document processing service initialized - MCP client: {mcp_client is not None}")
@@ -123,7 +123,7 @@ logger.info("Document text extraction completed", extra={"document_path": docume
 logger.error("Document text extraction failed", extra={"error_type": type(e).__name__, "error": str(e)}, exc_info=True)
 ```
 
-**`loan_avengers/tools/mcp_servers/document_processing/server.py`** (Lines 56, 72, 150):
+**`loan_defenders/tools/mcp_servers/document_processing/server.py`** (Lines 56, 72, 150):
 ```python
 # ❌ CURRENT
 logger.info(f"Starting OCR text extraction for document: {document_path} (type: {document_type})")
@@ -136,7 +136,7 @@ logger.info("Document classification request", extra={"content_length": len(docu
 logger.info("Starting Document Processing MCP Server", extra={"transport_info": get_transport_info(transport, 8011)})
 ```
 
-**`loan_avengers/tools/mcp_servers/financial_calculations/service.py`** (Lines 47, 66, 118):
+**`loan_defenders/tools/mcp_servers/financial_calculations/service.py`** (Lines 47, 66, 118):
 ```python
 # ❌ CURRENT
 logger.error(f"Invalid monthly income for DTI calculation: {monthly_income}")
@@ -155,7 +155,7 @@ logger.info(
 )
 ```
 
-**`loan_avengers/tools/mcp_servers/financial_calculations/server.py`** (Lines 148, 176):
+**`loan_defenders/tools/mcp_servers/financial_calculations/server.py`** (Lines 148, 176):
 ```python
 # ❌ CURRENT
 logger.info(f"Calculating total debt service ratio - Income: ${monthly_income}, Debt: ${total_monthly_debt}")
@@ -166,7 +166,7 @@ logger.info("Calculating total debt service ratio", extra={"monthly_income": mon
 logger.info("Starting Financial Calculations MCP Server", extra={"transport_info": get_transport_info(transport, 8012)})
 ```
 
-**`loan_avengers/tools/mcp_servers/application_verification/server.py`** (Lines 41, 49, 57, 65, 73, 125):
+**`loan_defenders/tools/mcp_servers/application_verification/server.py`** (Lines 41, 49, 57, 65, 73, 125):
 ```python
 # ❌ CURRENT
 logger.info(f"Credit report request for applicant: {applicant_id[:8]}***")
@@ -185,7 +185,7 @@ logger.info("Asset verification request", extra={"asset_type": asset_type})
 logger.info("Starting Application Verification MCP Server", extra={"transport_info": get_transport_info(transport, 8010)})
 ```
 
-**`loan_avengers/tools/mcp_servers/application_verification/service.py`** (Lines 308, 325):
+**`loan_defenders/tools/mcp_servers/application_verification/service.py`** (Lines 308, 325):
 ```python
 # ❌ CURRENT
 logger.error(f"Failed to parse application data: {e}")
@@ -206,7 +206,7 @@ logger.error("Unexpected error during validation", extra={"error": str(e)}, exc_
 
 **Issue**: Detailed parsing information that's useful for debugging is being logged at INFO level, cluttering production logs.
 
-**Location**: `loan_avengers/agents/conversation_orchestrator.py` (Lines 170, 180-181, 195-196)
+**Location**: `loan_defenders/agents/conversation_orchestrator.py` (Lines 170, 180-181, 195-196)
 
 ```python
 # ❌ CURRENT (Debug info at INFO level)
@@ -241,7 +241,7 @@ logger.debug("Plain text response", extra={"response_preview": agent_response_js
 
 **Locations**:
 
-**`loan_avengers/models/responses.py`** (Line 215):
+**`loan_defenders/models/responses.py`** (Line 215):
 ```python
 # Current: 123 characters
         message: str = "I'm having trouble processing that. Could you tell me more about your loan application?"
@@ -253,7 +253,7 @@ logger.debug("Plain text response", extra={"response_preview": agent_response_js
         )
 ```
 
-**`loan_avengers/utils/observability.py`** (Line 82):
+**`loan_defenders/utils/observability.py`** (Line 82):
 ```python
 # Current: 121 characters
             # See test_logger_requirements.py - get_logger('test') raises "Logger name must start with 'agent_framework'"
@@ -272,7 +272,7 @@ logger.debug("Plain text response", extra={"response_preview": agent_response_js
 
 **Issue**: 3 processing agents (Credit, Income, Risk) are using hardcoded instructions instead of loading from persona files.
 
-**Location**: `loan_avengers/agents/loan_processing_pipeline.py` (Lines 93, 117, 141)
+**Location**: `loan_defenders/agents/loan_processing_pipeline.py` (Lines 93, 117, 141)
 
 ```python
 # ❌ CURRENT (Hardcoded instructions)
@@ -298,9 +298,9 @@ def _create_credit_agent(self) -> ChatAgent:
 ```
 
 **Missing Persona Files**:
-1. `loan_avengers/agents/agent-persona/credit-agent-persona.md`
-2. `loan_avengers/agents/agent-persona/income-agent-persona.md`
-3. `loan_avengers/agents/agent-persona/risk-agent-persona.md`
+1. `loan_defenders/agents/agent-persona/credit-agent-persona.md`
+2. `loan_defenders/agents/agent-persona/income-agent-persona.md`
+3. `loan_defenders/agents/agent-persona/risk-agent-persona.md`
 
 **Impact**:
 - Violates architecture principle: "Agent-as-Tool" pattern
@@ -316,7 +316,7 @@ def _create_credit_agent(self) -> ChatAgent:
 
 **Issue**: Workflow result parsing is incomplete, returning generic placeholder update.
 
-**Location**: `loan_avengers/agents/loan_processing_pipeline.py` (Line 231)
+**Location**: `loan_defenders/agents/loan_processing_pipeline.py` (Line 231)
 
 ```python
 # ❌ CURRENT (TODO placeholder)
@@ -363,7 +363,7 @@ yield FinalDecisionResponse(
 
 ### 1. Logger Initialization Comments (Documentation)
 
-**Location**: `loan_avengers/utils/observability.py` (Lines 81-84)
+**Location**: `loan_defenders/utils/observability.py` (Lines 81-84)
 
 **Current**:
 ```python
@@ -396,7 +396,7 @@ Therefore, we always prefix logger names: agent_framework.{name}
 
 ### 2. Error Handling in Agent Response Parsing (Robustness)
 
-**Location**: `loan_avengers/agents/conversation_orchestrator.py` (Lines 193-206)
+**Location**: `loan_defenders/agents/conversation_orchestrator.py` (Lines 193-206)
 
 **Current**: Falls back to plain text on JSON decode error (good!)
 
@@ -422,14 +422,14 @@ This helps identify when agent is not following JSON format instructions.
 
 ### 3. Session ID Validation (Security)
 
-**Location**: `loan_avengers/api/session_manager.py` (Lines 44-53)
+**Location**: `loan_defenders/api/session_manager.py` (Lines 44-53)
 
 **Current**: UUID validation is excellent! ✅
 
 **Minor Enhancement**: Consider extracting validation to utility:
 
 ```python
-# loan_avengers/utils/validation.py
+# loan_defenders/utils/validation.py
 def validate_uuid(value: str, field_name: str = "UUID") -> None:
     """Validate string is proper UUID format."""
     try:
@@ -442,7 +442,7 @@ def validate_uuid(value: str, field_name: str = "UUID") -> None:
         raise ValueError(f"Invalid {field_name} format: must be valid UUID") from e
 
 # Usage in session_manager.py
-from loan_avengers.utils.validation import validate_uuid
+from loan_defenders.utils.validation import validate_uuid
 
 if session_id is not None:
     validate_uuid(session_id, "session_id")
@@ -455,8 +455,8 @@ if session_id is not None:
 ### 4. Unused Debug Logger Check (Optimization)
 
 **Files Using logger.debug**:
-- `loan_avengers/api/session_manager.py` (Lines 83-89, 105-112, 216)
-- `loan_avengers/agents/intake_agent.py`
+- `loan_defenders/api/session_manager.py` (Lines 83-89, 105-112, 216)
+- `loan_defenders/agents/intake_agent.py`
 
 **Recommendation**: These are correctly using `logger.debug()` for detailed diagnostics! No changes needed.
 
@@ -616,11 +616,11 @@ if session_id is not None:
 # tests/integration/test_sequential_workflow_integration.py
 
 # ❌ OLD IMPORTS
-from loan_avengers.agents.sequential_workflow import SequentialLoanWorkflow
+from loan_defenders.agents.sequential_workflow import SequentialLoanWorkflow
 
 # ✅ NEW IMPORTS
-from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
-from loan_avengers.agents.loan_processing_pipeline import LoanProcessingPipeline
+from loan_defenders.agents.conversation_orchestrator import ConversationOrchestrator
+from loan_defenders.agents.loan_processing_pipeline import LoanProcessingPipeline
 ```
 
 ---
@@ -729,7 +729,7 @@ from loan_avengers.agents.loan_processing_pipeline import LoanProcessingPipeline
 ### Future Enhancements
 
 7. **Extract Validation Utilities** (1 hour)
-   - Create `loan_avengers/utils/validation.py`
+   - Create `loan_defenders/utils/validation.py`
    - Move UUID validation to utility
    - Add other common validators
 

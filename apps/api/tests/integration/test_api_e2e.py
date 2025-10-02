@@ -9,7 +9,7 @@ from unittest.mock import Mock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from loan_avengers.api.app import app
+from loan_defenders.api.app import app
 from tests.fixtures.mcp_test_harness import MCPTestHarness
 
 
@@ -158,7 +158,7 @@ class TestConversationFlow:
 
         assert data["completion_percentage"] == 100
         assert data["action"] == "ready_for_processing"
-        assert "AVENGERS" in data["message"]
+        assert "DEFENDERS" in data["message"]
 
 
 class TestSessionManagement:
@@ -217,7 +217,7 @@ class TestSessionManagement:
 
 
 @pytest.mark.asyncio
-@patch("loan_avengers.orchestrators.sequential_pipeline.SequentialPipeline")
+@patch("loan_defenders.orchestrators.sequential_pipeline.SequentialPipeline")
 class TestEndToEndWorkflow:
     """Test complete end-to-end workflow from UI to agent processing."""
 
@@ -231,7 +231,7 @@ class TestEndToEndWorkflow:
 
         async def mock_process(application):
             # Simulate agent processing updates
-            from loan_avengers.models.responses import ProcessingUpdate
+            from loan_defenders.models.responses import ProcessingUpdate
 
             yield ProcessingUpdate(
                 agent_name="Intake_Agent",

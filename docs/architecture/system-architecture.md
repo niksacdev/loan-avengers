@@ -1,4 +1,4 @@
-# System Architecture - Loan Avengers Multi-Agent Framework
+# System Architecture - Loan Defenders Multi-Agent Framework
 
 ## Complete End-to-End Agent Workflow Architecture
 
@@ -181,7 +181,7 @@ sequenceDiagram
     API->>T: Create AgentThread with conversation context
 
     Note over A: 🌟 Alisha introduces the Dream Team
-    A-->>U: "Let me get my Dream Team! AVENGERS, ASSEMBLE!"
+    A-->>U: "Let me get my Dream Team! DEFENDERS, ASSEMBLE!"
 
     API->>J: Invoke Intake Agent with LoanApplication
     J->>AOI: Process validation with persona context

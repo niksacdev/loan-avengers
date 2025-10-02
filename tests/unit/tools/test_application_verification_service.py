@@ -11,8 +11,8 @@ from decimal import Decimal
 
 import pytest
 
-from loan_avengers.models.application import EmploymentStatus, LoanApplication, LoanPurpose
-from loan_avengers.tools.mcp_servers.application_verification.service import ApplicationVerificationServiceImpl
+from loan_defenders.models.application import EmploymentStatus, LoanApplication, LoanPurpose
+from loan_defenders.tools.mcp_servers.application_verification.service import ApplicationVerificationServiceImpl
 
 
 def serialize_test_data(data: dict) -> str:

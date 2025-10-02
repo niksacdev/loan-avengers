@@ -40,7 +40,7 @@ uv run pytest tests/unit/tools/ -v           # MCP service tests
 uv run pytest tests/unit/models/ -v          # Data model tests
 
 # Run with coverage
-uv run pytest tests/ --cov=loan_avengers --cov-report=term-missing
+uv run pytest tests/ --cov=loan_defenders --cov-report=term-missing
 
 # Run using the test suite runner
 uv run python tests/test_suite_runner.py
@@ -54,12 +54,12 @@ uv run python tests/coverage_report.py
 ### Coverage Targets by Module
 ```
 Module                        Target   Purpose
-loan_avengers/agents/         90.0%    Core business logic - high coverage required
-loan_avengers/models/         95.0%    Data models - critical validation
-loan_avengers/tools/services/ 85.0%    Service interfaces - important contracts
-loan_avengers/tools/mcp_servers/ 75.0% MCP servers - has external dependencies  
-loan_avengers/utils/          80.0%    Utilities - medium coverage
-loan_avengers/config/         70.0%    Configuration - lower coverage acceptable
+loan_defenders/agents/         90.0%    Core business logic - high coverage required
+loan_defenders/models/         95.0%    Data models - critical validation
+loan_defenders/tools/services/ 85.0%    Service interfaces - important contracts
+loan_defenders/tools/mcp_servers/ 75.0% MCP servers - has external dependencies  
+loan_defenders/utils/          80.0%    Utilities - medium coverage
+loan_defenders/config/         70.0%    Configuration - lower coverage acceptable
 ```
 
 ### Coverage Commands
@@ -67,13 +67,13 @@ loan_avengers/config/         70.0%    Configuration - lower coverage acceptable
 #### Basic Coverage
 ```bash
 # Run unit tests with coverage
-uv run pytest tests/unit/ --cov=loan_avengers --cov-report=term-missing
+uv run pytest tests/unit/ --cov=loan_defenders --cov-report=term-missing
 
 # Generate HTML report
-uv run pytest tests/unit/ --cov=loan_avengers --cov-report=html:htmlcov
+uv run pytest tests/unit/ --cov=loan_defenders --cov-report=html:htmlcov
 
 # Generate JSON + XML reports  
-uv run pytest tests/unit/ --cov=loan_avengers --cov-report=json --cov-report=xml
+uv run pytest tests/unit/ --cov=loan_defenders --cov-report=json --cov-report=xml
 ```
 
 #### Advanced Coverage Analysis
@@ -134,31 +134,31 @@ uv run python tests/test_suite_runner.py
 --------------------------------------------------------------------------------
 Module                         Coverage    Target     Status     Gap       
 --------------------------------------------------------------------------------
-loan_avengers/agents/          78.45%      90.0%      ❌ FAIL    -11.6%    
-loan_avengers/models/          96.23%      95.0%      ✅ PASS              
-loan_avengers/tools/services/  82.14%      85.0%      ❌ FAIL    -2.9%     
-loan_avengers/utils/           85.67%      80.0%      ✅ PASS              
+loan_defenders/agents/          78.45%      90.0%      ❌ FAIL    -11.6%    
+loan_defenders/models/          96.23%      95.0%      ✅ PASS              
+loan_defenders/tools/services/  82.14%      85.0%      ❌ FAIL    -2.9%     
+loan_defenders/utils/           85.67%      80.0%      ✅ PASS              
 
 🔍 DETAILED ANALYSIS FOR MODULES BELOW TARGET
 --------------------------------------------------------------------------------
 
-📁 loan_avengers/agents/
+📁 loan_defenders/agents/
    Line Coverage: 76.22% (45/59)
    Branch Coverage: 83.33% (5/6)
    Files: 2
    Top Missing Lines:
-     - loan_avengers/agents/intake_agent.py:145
-     - loan_avengers/agents/intake_agent.py:150
-     - loan_avengers/agents/intake_agent.py:155
+     - loan_defenders/agents/intake_agent.py:145
+     - loan_defenders/agents/intake_agent.py:150
+     - loan_defenders/agents/intake_agent.py:155
 
 💡 RECOMMENDATIONS
 --------------------------------------------------------------------------------
 Priority order for improving coverage:
-1. loan_avengers/agents/ (need +11.6% coverage)
+1. loan_defenders/agents/ (need +11.6% coverage)
    → Focus on adding tests for uncovered lines
    → Add ~7 more covered lines
 
-2. loan_avengers/tools/services/ (need +2.9% coverage)  
+2. loan_defenders/tools/services/ (need +2.9% coverage)  
    → Focus on adding tests for edge cases and branches
    → Add ~2 more covered lines
 

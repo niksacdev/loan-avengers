@@ -16,7 +16,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from loan_avengers.utils.observability import AGENT_FRAMEWORK_AVAILABLE, Observability
+from loan_defenders.utils.observability import AGENT_FRAMEWORK_AVAILABLE, Observability
 
 
 class TestCorrelationIDTracking:
@@ -120,7 +120,7 @@ class TestTokenUsageLogging:
         """Clear correlation ID before each test."""
         Observability.clear_correlation_id()
 
-    @patch("loan_avengers.utils.observability.logging.getLogger")
+    @patch("loan_defenders.utils.observability.logging.getLogger")
     def test_log_token_usage_basic(self, mock_get_logger):
         """Test basic token usage logging."""
         mock_logger = Mock()
@@ -149,7 +149,7 @@ class TestTokenUsageLogging:
         assert "LN123456***" in extra["application_id"]  # Should be masked
         assert "correlation_id" in extra
 
-    @patch("loan_avengers.utils.observability.logging.getLogger")
+    @patch("loan_defenders.utils.observability.logging.getLogger")
     def test_log_token_usage_without_optional_fields(self, mock_get_logger):
         """Test token usage logging without model and application_id."""
         mock_logger = Mock()
@@ -169,7 +169,7 @@ class TestTokenUsageLogging:
         assert extra["model"] == "unknown"
         assert extra["application_id"] is None
 
-    @patch("loan_avengers.utils.observability.logging.getLogger")
+    @patch("loan_defenders.utils.observability.logging.getLogger")
     def test_log_token_usage_includes_correlation_id(self, mock_get_logger):
         """Test that token usage logs include correlation ID."""
         mock_logger = Mock()
@@ -347,7 +347,7 @@ class TestObservabilityInitialization:
             "LOG_LEVEL": "INFO",
         },
     )
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_initialize_basic_logging_only(self, mock_basic_config):
         """Test initialization with basic logging only (no App Insights)."""
         Observability.initialize()
@@ -369,8 +369,8 @@ class TestObservabilityInitialization:
             "LOG_LEVEL": "DEBUG",
         },
     )
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
-    @patch("loan_avengers.utils.observability.setup_observability")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.setup_observability")
     def test_initialize_with_app_insights(self, mock_setup_obs, mock_basic_config):
         """Test initialization with Application Insights enabled."""
         if not AGENT_FRAMEWORK_AVAILABLE:
@@ -401,8 +401,8 @@ class TestObservabilityInitialization:
             "LOG_LEVEL": "WARNING",
         },
     )
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
-    @patch("loan_avengers.utils.observability.setup_observability")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.setup_observability")
     def test_initialize_with_sensitive_data_enabled(self, mock_setup_obs, mock_basic_config):
         """Test initialization with sensitive data logging enabled."""
         if not AGENT_FRAMEWORK_AVAILABLE:
@@ -415,7 +415,7 @@ class TestObservabilityInitialization:
         call_kwargs = mock_setup_obs.call_args[1]
         assert call_kwargs["enable_sensitive_data"] is True
 
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_initialize_idempotent(self, mock_basic_config):
         """Test initialize is idempotent (doesn't reinit unless forced)."""
         # First initialization
@@ -438,7 +438,7 @@ class TestObservabilityInitialization:
             "LOG_LEVEL": "ERROR",
         },
     )
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_initialize_custom_log_level(self, mock_basic_config):
         """Test initialization with custom log level."""
         Observability.initialize()
@@ -484,8 +484,8 @@ class TestGetLogger:
         """Reset initialization state after each test."""
         Observability._initialized = False
 
-    @patch("loan_avengers.utils.observability.get_logger")
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.get_logger")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_get_logger_with_agent_framework(self, mock_basic_config, mock_get_framework_logger):
         """Test get_logger with agent framework available."""
         if not AGENT_FRAMEWORK_AVAILABLE:
@@ -500,9 +500,9 @@ class TestGetLogger:
         mock_get_framework_logger.assert_called_once_with("agent_framework.test_agent")
         assert logger == mock_logger
 
-    @patch("loan_avengers.utils.observability.AGENT_FRAMEWORK_AVAILABLE", False)
-    @patch("loan_avengers.utils.observability.logging.getLogger")
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.AGENT_FRAMEWORK_AVAILABLE", False)
+    @patch("loan_defenders.utils.observability.logging.getLogger")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_get_logger_fallback_to_standard_logging(self, mock_basic_config, mock_get_standard_logger):
         """Test get_logger falls back to standard logging when framework unavailable."""
         mock_logger = Mock()
@@ -510,11 +510,11 @@ class TestGetLogger:
 
         logger = Observability.get_logger("test_agent")
 
-        # Should use standard logging with loan_avengers prefix
-        mock_get_standard_logger.assert_called_once_with("loan_avengers.test_agent")
+        # Should use standard logging with loan_defenders prefix
+        mock_get_standard_logger.assert_called_once_with("loan_defenders.test_agent")
         assert logger == mock_logger
 
-    @patch("loan_avengers.utils.observability.logging.basicConfig")
+    @patch("loan_defenders.utils.observability.logging.basicConfig")
     def test_get_logger_ensures_initialization(self, mock_basic_config):
         """Test get_logger ensures observability is initialized."""
         assert Observability._initialized is False

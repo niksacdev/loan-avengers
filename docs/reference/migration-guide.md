@@ -17,7 +17,7 @@ The repository is being restructured from a Python package-centric layout to an 
 - [x] Created comprehensive README files
 
 ### Pending ⏳
-- [ ] Remove original `loan_avengers/` directory
+- [ ] Remove original `loan_defenders/` directory
 - [ ] Update all import paths throughout codebase
 - [ ] Update GitHub Actions workflows
 - [ ] Update CLAUDE.md and documentation
@@ -29,8 +29,8 @@ The repository is being restructured from a Python package-centric layout to an 
 
 ### Before (Current)
 ```
-loan-avengers/
-├── loan_avengers/        # Python package
+loan-defenders/
+├── loan_defenders/        # Python package
 │   ├── api/
 │   ├── agents/
 │   ├── models/
@@ -44,12 +44,12 @@ loan-avengers/
 
 ### After (Target)
 ```
-loan-avengers/
+loan-defenders/
 ├── apps/                 # ✅ All deployable applications
 │   ├── api/             # FastAPI Container App
 │   │   ├── Dockerfile
 │   │   ├── pyproject.toml
-│   │   └── loan_avengers/
+│   │   └── loan_defenders/
 │   ├── ui/              # React Container App
 │   │   ├── Dockerfile
 │   │   ├── package.json
@@ -65,9 +65,9 @@ loan-avengers/
 ### Step 1: Import Path Updates (IN PROGRESS)
 
 All Python imports remain unchanged because the package structure inside `apps/api/` is identical:
-- ✅ `from loan_avengers.api.app import app`
-- ✅ `from loan_avengers.models.application import LoanApplication`
-- ✅ `from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator`
+- ✅ `from loan_defenders.api.app import app`
+- ✅ `from loan_defenders.models.application import LoanApplication`
+- ✅ `from loan_defenders.agents.conversation_orchestrator import ConversationOrchestrator`
 
 **Files that need updates:**
 - Test files in `tests/` (update sys.path if needed)
@@ -106,12 +106,12 @@ Update:
 Once everything is working:
 ```bash
 # Backup first!
-mv loan_avengers loan_avengers.backup
+mv loan_defenders loan_defenders.backup
 
 # Test everything works
 
 # If successful, remove backup
-rm -rf loan_avengers.backup
+rm -rf loan_defenders.backup
 ```
 
 ## Testing Plan
@@ -127,22 +127,22 @@ uv run pytest ../../tests/integration/ -v
 ### Phase 2: Local Docker Build
 ```bash
 # Build images
-docker build -t loan-avengers-api:test ./apps/api
-docker build -t loan-avengers-ui:test ./apps/ui
+docker build -t loan-defenders-api:test ./apps/api
+docker build -t loan-defenders-ui:test ./apps/ui
 
 # Test with docker-compose
 docker-compose up
 ```
 
 ### Phase 3: End-to-End Testing
-1. Start API: `cd apps/api && uv run uvicorn loan_avengers.api.app:app --reload`
+1. Start API: `cd apps/api && uv run uvicorn loan_defenders.api.app:app --reload`
 2. Start UI: `cd apps/ui && npm run dev`
 3. Test full user flow through UI
 
 ## Rollback Plan
 
 If issues arise:
-1. Keep original `loan_avengers/` directory intact
+1. Keep original `loan_defenders/` directory intact
 2. Original structure still works as-is
 3. Can continue development in original structure
 4. Complete migration later
@@ -180,16 +180,16 @@ If issues arise:
 ### Running Locally (Old Structure - Still Works)
 ```bash
 # API
-uv run uvicorn loan_avengers.api.app:app --reload
+uv run uvicorn loan_defenders.api.app:app --reload
 
 # UI
-cd loan_avengers/ui && npm run dev
+cd loan_defenders/ui && npm run dev
 ```
 
 ### Running Locally (New Structure - Testing)
 ```bash
 # API
-cd apps/api && uv run uvicorn loan_avengers.api.app:app --reload
+cd apps/api && uv run uvicorn loan_defenders.api.app:app --reload
 
 # UI
 cd apps/ui && npm run dev

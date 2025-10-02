@@ -32,8 +32,8 @@ class TestSequentialLoanWorkflowIntegration:
             dict: Dictionary containing mocked ChatAgent and SequentialBuilder
         """
         with (
-            patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
-            patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
+            patch("loan_defenders.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
+            patch("loan_defenders.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
         ):
             mock_chat_agent.return_value = Mock()
             mock_builder.return_value = Mock()
@@ -46,13 +46,13 @@ class TestSequentialLoanWorkflowIntegration:
         Yields:
             Mock: Mocked PersonaLoader with default persona instructions
         """
-        with patch("loan_avengers.agents.mock_sequential_workflow.PersonaLoader") as mock_loader:
+        with patch("loan_defenders.agents.mock_sequential_workflow.PersonaLoader") as mock_loader:
             mock_loader.load_persona.return_value = "Mock persona instructions"
             yield mock_loader
 
     def test_workflow_initialization(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test workflow initializes correctly."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -61,7 +61,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_creates_coordinator_collector(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test coordinator collector agent creation."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -73,7 +73,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_creates_intake_validator(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test intake validator agent creation."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -82,7 +82,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_creates_credit_assessor(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test credit assessor agent creation."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -92,7 +92,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_creates_income_verifier(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test income verifier agent creation."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -100,7 +100,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_creates_risk_analyzer(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test risk analyzer agent creation."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -108,7 +108,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_builds_sequential_workflow(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test workflow builds sequential workflow."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -118,13 +118,13 @@ class TestSequentialLoanWorkflowIntegration:
     def test_workflow_with_default_client(self, mock_agent_framework, mock_persona_loader):
         """Test workflow creates default client if none provided."""
         with (
-            patch("loan_avengers.agents.mock_sequential_workflow.FoundryChatClient") as mock_foundry,
-            patch("loan_avengers.agents.mock_sequential_workflow.DefaultAzureCredential") as mock_credential,
+            patch("loan_defenders.agents.mock_sequential_workflow.FoundryChatClient") as mock_foundry,
+            patch("loan_defenders.agents.mock_sequential_workflow.DefaultAzureCredential") as mock_credential,
         ):
             mock_foundry.return_value = Mock()
             mock_credential.return_value = Mock()
 
-            from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+            from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
             workflow = MockSequentialLoanWorkflow()
 
@@ -138,7 +138,7 @@ class TestSequentialLoanWorkflowIntegration:
         self, mock_chat_client, mock_agent_framework, mock_persona_loader
     ):
         """Test processing conversation with empty history."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -153,7 +153,7 @@ class TestSequentialLoanWorkflowIntegration:
         mock_thread = Mock()
         mock_thread.conversation_history = []
 
-        with patch("loan_avengers.agents.mock_sequential_workflow.SharedState") as mock_state:
+        with patch("loan_defenders.agents.mock_sequential_workflow.SharedState") as mock_state:
             mock_state.return_value = AsyncMock()
 
             # Process conversation
@@ -166,7 +166,7 @@ class TestSequentialLoanWorkflowIntegration:
         self, mock_chat_client, mock_agent_framework, mock_persona_loader
     ):
         """Test creating LoanApplication from collected data."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -195,7 +195,7 @@ class TestSequentialLoanWorkflowIntegration:
         self, mock_chat_client, mock_agent_framework, mock_persona_loader
     ):
         """Test creating LoanApplication with invalid data raises ValueError."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -206,7 +206,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_agent_temperature_settings(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test agents have appropriate temperature settings."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -226,7 +226,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_agent_max_tokens_settings(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test agents have appropriate max_tokens settings."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -244,7 +244,7 @@ class TestSequentialLoanWorkflowIntegration:
 
     def test_workflow_agent_descriptions_set(self, mock_chat_client, mock_agent_framework, mock_persona_loader):
         """Test agents have descriptions set."""
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         _workflow = MockSequentialLoanWorkflow(chat_client=mock_chat_client)
 
@@ -272,17 +272,17 @@ class TestSequentialWorkflowAgentCreation:
             MockSequentialLoanWorkflow: Workflow instance with all dependencies mocked
         """
         with (
-            patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
-            patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
-            patch("loan_avengers.agents.mock_sequential_workflow.PersonaLoader") as mock_persona,
-            patch("loan_avengers.agents.mock_sequential_workflow.FoundryChatClient") as mock_client,
+            patch("loan_defenders.agents.mock_sequential_workflow.ChatAgent") as mock_chat_agent,
+            patch("loan_defenders.agents.mock_sequential_workflow.SequentialBuilder") as mock_builder,
+            patch("loan_defenders.agents.mock_sequential_workflow.PersonaLoader") as mock_persona,
+            patch("loan_defenders.agents.mock_sequential_workflow.FoundryChatClient") as mock_client,
         ):
             mock_chat_agent.return_value = Mock()
             mock_builder.return_value = Mock()
             mock_persona.load_persona.return_value = "Mock persona"
             mock_client.return_value = Mock()
 
-            from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+            from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
             workflow = MockSequentialLoanWorkflow()
 
@@ -323,13 +323,13 @@ class TestSequentialWorkflowDataTransformation:
         Returns:
             MockSequentialLoanWorkflow: Workflow instance with mocked framework dependencies
         """
-        from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
+        from loan_defenders.agents.mock_sequential_workflow import MockSequentialLoanWorkflow
 
         with (
-            patch("loan_avengers.agents.mock_sequential_workflow.ChatAgent"),
-            patch("loan_avengers.agents.mock_sequential_workflow.SequentialBuilder"),
-            patch("loan_avengers.agents.mock_sequential_workflow.PersonaLoader") as mock_persona,
-            patch("loan_avengers.agents.mock_sequential_workflow.FoundryChatClient"),
+            patch("loan_defenders.agents.mock_sequential_workflow.ChatAgent"),
+            patch("loan_defenders.agents.mock_sequential_workflow.SequentialBuilder"),
+            patch("loan_defenders.agents.mock_sequential_workflow.PersonaLoader") as mock_persona,
+            patch("loan_defenders.agents.mock_sequential_workflow.FoundryChatClient"),
         ):
             mock_persona.load_persona.return_value = "Mock persona"
 

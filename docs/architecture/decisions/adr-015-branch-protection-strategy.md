@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-Before making the Loan Avengers repository public, we need to establish branch protection rules to ensure code quality, security, and proper review processes. This prevents direct pushes to main, enforces CI/CD checks, and maintains professional development standards.
+Before making the Loan Defenders repository public, we need to establish branch protection rules to ensure code quality, security, and proper review processes. This prevents direct pushes to main, enforces CI/CD checks, and maintains professional development standards.
 
 ## Decision
 

@@ -1,6 +1,6 @@
 # Architecture Decision Records (ADRs)
 
-This page catalogs all architectural decisions made during the development of the Loan Avengers system.
+This page catalogs all architectural decisions made during the development of the Loan Defenders system.
 
 ## What are ADRs?
 

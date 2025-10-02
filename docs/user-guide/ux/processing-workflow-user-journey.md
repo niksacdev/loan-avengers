@@ -489,9 +489,9 @@ Trust Build: Consistent pattern and smooth transitions build confidence
 
 ## Related Documentation
 
-- **UX Design Specification**: `/workspaces/loan-avengers/docs/ux/processing-workflow-single-message-design.md`
-- **Current Implementation**: `/workspaces/loan-avengers/loan_avengers/ui/src/pages/application/ApplicationPage.tsx`
-- **User Journey Template**: `/workspaces/loan-avengers/docs/templates/user-journey-template.md`
+- **UX Design Specification**: `/workspaces/loan-defenders/docs/ux/processing-workflow-single-message-design.md`
+- **Current Implementation**: `/workspaces/loan-defenders/loan_defenders/ui/src/pages/application/ApplicationPage.tsx`
+- **User Journey Template**: `/workspaces/loan-defenders/docs/templates/user-journey-template.md`
 
 ---
 

@@ -1,6 +1,6 @@
-# Loan Avengers API 🦸‍♂️
+# Loan Defenders API 🦸‍♂️
 
-FastAPI backend for the Loan Avengers multi-agent loan processing system.
+FastAPI backend for the Loan Defenders multi-agent loan processing system.
 
 ## Overview
 
@@ -34,10 +34,10 @@ cp ../../.env.example .env
 
 ```bash
 # Development server with auto-reload
-uv run uvicorn loan_avengers.api.app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn loan_defenders.api.app:app --reload --host 0.0.0.0 --port 8000
 
 # Production server
-uv run uvicorn loan_avengers.api.app:app --host 0.0.0.0 --port 8000
+uv run uvicorn loan_defenders.api.app:app --host 0.0.0.0 --port 8000
 ```
 
 ### API Documentation
@@ -62,7 +62,7 @@ The API orchestrates multiple specialized agents:
 ### Key Components
 
 ```
-loan_avengers/
+loan_defenders/
 ├── api/              # FastAPI routes and endpoints
 ├── agents/           # Agent implementations
 │   ├── conversation_orchestrator.py
@@ -82,7 +82,7 @@ Configuration is managed through environment variables. See `.env.example` for a
 
 ```bash
 # API Configuration
-APP_TITLE="Loan Avengers API"
+APP_TITLE="Loan Defenders API"
 APP_DEBUG=false
 APP_CORS_ORIGINS="http://localhost:5173,http://localhost:3000"
 
@@ -100,7 +100,7 @@ APP_LOG_LEVEL=INFO
 uv run pytest ../../tests/ -v
 
 # Run with coverage
-uv run pytest ../../tests/ --cov=loan_avengers --cov-report=term-missing
+uv run pytest ../../tests/ --cov=loan_defenders --cov-report=term-missing
 
 # Run specific test file
 uv run pytest ../../tests/unit/api/test_app.py -v
@@ -116,7 +116,7 @@ uv run ruff check . --fix
 uv run ruff format .
 
 # Type checking
-uv run mypy loan_avengers
+uv run mypy loan_defenders
 ```
 
 ### Adding Dependencies
@@ -134,7 +134,7 @@ uv add --dev package-name
 ### Build Image
 
 ```bash
-docker build -t loan-avengers-api:latest .
+docker build -t loan-defenders-api:latest .
 ```
 
 ### Run Container
@@ -143,7 +143,7 @@ docker build -t loan-avengers-api:latest .
 docker run -p 8000:8000 \
   -e APP_DEBUG=false \
   -e APP_CORS_ORIGINS="https://your-domain.com" \
-  loan-avengers-api:latest
+  loan-defenders-api:latest
 ```
 
 ## Azure Deployment

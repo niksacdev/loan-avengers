@@ -1,5 +1,5 @@
 {
-  "name": "Loan Avengers - Azure Development Environment",
+  "name": "Loan Defenders - Azure Development Environment",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
 
   "features": {
@@ -141,7 +141,7 @@
       "onAutoForward": "notify"
     },
     "5175": {
-      "label": "Loan Avengers UI",
+      "label": "Loan Defenders UI",
       "onAutoForward": "notify"
     },
     "8000": {

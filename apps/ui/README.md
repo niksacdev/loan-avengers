@@ -1,6 +1,6 @@
-# 🦸‍♂️ Loan Avengers Frontend
+# 🦸‍♂️ Loan Defenders Frontend
 
-A React/TypeScript frontend for the revolutionary Loan Avengers conversational loan experience.
+A React/TypeScript frontend for the revolutionary Loan Defenders conversational loan experience.
 
 ## Features
 
@@ -65,7 +65,7 @@ VITE_ENABLE_ANALYTICS=false                # Analytics tracking
 
 ## Integration with Backend
 
-The frontend connects to the Python backend at `/loan_avengers/`:
+The frontend connects to the Python backend at `/loan_defenders/`:
 
 - **Agent Communication**: Real-time updates from Cap-ital America, Sarah, Marcus, and Alex
 - **Processing Status**: Live progress tracking during loan assessment
@@ -84,4 +84,4 @@ npm run lint            # Run ESLint
 
 ---
 
-**Part of the Loan Avengers ecosystem** 🦸‍♂️
+**Part of the Loan Defenders ecosystem** 🦸‍♂️

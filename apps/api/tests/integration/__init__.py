@@ -1,1 +1,1 @@
-"""Integration tests for loan_avengers."""
+"""Integration tests for loan_defenders."""

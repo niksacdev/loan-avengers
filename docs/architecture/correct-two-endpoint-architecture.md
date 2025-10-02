@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document provides the **correct architectural design** for implementing the Loan Avengers API using the two-endpoint pattern that properly separates conversational data collection from formal loan processing.
+This document provides the **correct architectural design** for implementing the Loan Defenders API using the two-endpoint pattern that properly separates conversational data collection from formal loan processing.
 
 ### Key Principles
 
@@ -1264,21 +1264,21 @@ const handleSubmitApplication = () => {
 
 **Files to Modify**:
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/api/app.py`
+- [ ] `/workspaces/loan-defenders/loan_defenders/api/app.py`
   - [ ] Refactor `/api/chat` endpoint to use ONLY RileyCoordinator
   - [ ] Remove unified_workflow imports and usage
   - [ ] Create `/api/process` endpoint with SSE streaming
   - [ ] Update error handling for both endpoints
   - [ ] Add comprehensive logging
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/api/models.py`
+- [ ] `/workspaces/loan-defenders/loan_defenders/api/models.py`
   - [ ] Update `ConversationRequest` schema (already correct)
   - [ ] Update `ConversationResponse` schema (already correct)
   - [ ] Create `ProcessingRequest` schema
   - [ ] Create `WorkflowEvent` schema for SSE events
   - [ ] Add validation patterns and examples
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/api/session_manager.py`
+- [ ] `/workspaces/loan-defenders/loan_defenders/api/session_manager.py`
   - [ ] Update `ConversationSession` with phase-specific states
   - [ ] Add `collection_status` and `processing_status` fields
   - [ ] Add `start_processing()` and `complete_processing()` methods
@@ -1288,27 +1288,27 @@ const handleSubmitApplication = () => {
 **New Files to Create**: None (use existing components)
 
 **Files to Remove**:
-- [ ] `/workspaces/loan-avengers/loan_avengers/agents/unified_workflow.py` (archive, don't delete)
-- [ ] `/workspaces/loan-avengers/loan_avengers/agents/mock_unified_workflow.py` (archive, don't delete)
+- [ ] `/workspaces/loan-defenders/loan_defenders/agents/unified_workflow.py` (archive, don't delete)
+- [ ] `/workspaces/loan-defenders/loan_defenders/agents/mock_unified_workflow.py` (archive, don't delete)
 
 ### Phase 2: Frontend Updates (Week 1-2)
 
 **Files to Modify**:
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/ui/src/components/chat/RileyChat.tsx`
+- [ ] `/workspaces/loan-defenders/loan_defenders/ui/src/components/chat/RileyChat.tsx`
   - [ ] Remove unified workflow handling
   - [ ] Update to call `/api/chat` only
   - [ ] Add detection for `action: "ready_for_processing"`
   - [ ] Show "Submit Application" button when ready
   - [ ] Add `onReadyForProcessing` callback prop
 
-- [ ] Create new component: `/workspaces/loan-avengers/loan_avengers/ui/src/components/workflow/ProcessingView.tsx`
+- [ ] Create new component: `/workspaces/loan-defenders/loan_defenders/ui/src/components/workflow/ProcessingView.tsx`
   - [ ] SSE connection to `/api/process`
   - [ ] Real-time agent progress display
   - [ ] Phase transition animations
   - [ ] Final decision display
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/ui/src/App.tsx`
+- [ ] `/workspaces/loan-defenders/loan_defenders/ui/src/App.tsx`
   - [ ] Add state management for phase transitions
   - [ ] Show Cap-ital America chat during collection
   - [ ] Show processing view during workflow
@@ -1318,7 +1318,7 @@ const handleSubmitApplication = () => {
 
 **Files to Modify**:
 
-- [ ] `/workspaces/loan-avengers/loan_avengers/agents/workflow_orchestrator.py`
+- [ ] `/workspaces/loan-defenders/loan_defenders/agents/workflow_orchestrator.py`
   - [ ] Expand from MVP (Intake only) to full workflow
   - [ ] Add Credit, Income, Risk agent executors
   - [ ] Implement full SequentialBuilder workflow
@@ -1326,9 +1326,9 @@ const handleSubmitApplication = () => {
   - [ ] Enhance error handling and recovery
 
 **New Agent Persona Files** (if not complete):
-- [ ] Ensure `/workspaces/loan-avengers/loan_avengers/agents/agent-persona/credit-agent-persona.md` exists
-- [ ] Ensure `/workspaces/loan-avengers/loan_avengers/agents/agent-persona/income-agent-persona.md` exists
-- [ ] Ensure `/workspaces/loan-avengers/loan_avengers/agents/agent-persona/risk-agent-persona.md` exists
+- [ ] Ensure `/workspaces/loan-defenders/loan_defenders/agents/agent-persona/credit-agent-persona.md` exists
+- [ ] Ensure `/workspaces/loan-defenders/loan_defenders/agents/agent-persona/income-agent-persona.md` exists
+- [ ] Ensure `/workspaces/loan-defenders/loan_defenders/agents/agent-persona/risk-agent-persona.md` exists
 
 ### Phase 4: Testing (Week 3)
 
@@ -1357,10 +1357,10 @@ const handleSubmitApplication = () => {
 **Documentation to Create/Update**:
 
 - [ ] This document (ADR-011 or similar)
-- [ ] `/workspaces/loan-avengers/docs/api/api-endpoints.md` - Full API documentation
-- [ ] `/workspaces/loan-avengers/docs/architecture/state-management.md` - State management patterns
-- [ ] `/workspaces/loan-avengers/README.md` - Update with new architecture
-- [ ] `/workspaces/loan-avengers/CLAUDE.md` - Update with two-endpoint pattern
+- [ ] `/workspaces/loan-defenders/docs/api/api-endpoints.md` - Full API documentation
+- [ ] `/workspaces/loan-defenders/docs/architecture/state-management.md` - State management patterns
+- [ ] `/workspaces/loan-defenders/README.md` - Update with new architecture
+- [ ] `/workspaces/loan-defenders/CLAUDE.md` - Update with two-endpoint pattern
 
 ---
 
@@ -1370,11 +1370,11 @@ const handleSubmitApplication = () => {
 
 ```bash
 # Create archive directory
-mkdir -p /workspaces/loan-avengers/archive/unified-workflow-attempt
+mkdir -p /workspaces/loan-defenders/archive/unified-workflow-attempt
 
 # Move unified workflow files to archive
-mv loan_avengers/agents/unified_workflow.py archive/unified-workflow-attempt/
-mv loan_avengers/agents/mock_unified_workflow.py archive/unified-workflow-attempt/
+mv loan_defenders/agents/unified_workflow.py archive/unified-workflow-attempt/
+mv loan_defenders/agents/mock_unified_workflow.py archive/unified-workflow-attempt/
 
 # Document why archived
 cat > archive/unified-workflow-attempt/README.md << 'EOF'
@@ -2256,7 +2256,7 @@ try {
 
 ```python
 import structlog
-from loan_avengers.utils.observability import Observability
+from loan_defenders.utils.observability import Observability
 
 logger = Observability.get_logger("api")
 
@@ -2328,31 +2328,31 @@ from prometheus_client import Counter, Histogram, Gauge
 
 # Define metrics
 chat_requests_total = Counter(
-    'loan_avengers_chat_requests_total',
+    'loan_defenders_chat_requests_total',
     'Total chat requests',
     ['status']
 )
 
 chat_request_duration = Histogram(
-    'loan_avengers_chat_request_duration_seconds',
+    'loan_defenders_chat_request_duration_seconds',
     'Chat request duration',
     buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0]
 )
 
 processing_requests_total = Counter(
-    'loan_avengers_processing_requests_total',
+    'loan_defenders_processing_requests_total',
     'Total processing requests',
     ['status']
 )
 
 processing_duration = Histogram(
-    'loan_avengers_processing_duration_seconds',
+    'loan_defenders_processing_duration_seconds',
     'Processing duration',
     buckets=[5.0, 10.0, 30.0, 60.0, 120.0]
 )
 
 active_sessions = Gauge(
-    'loan_avengers_active_sessions',
+    'loan_defenders_active_sessions',
     'Number of active sessions'
 )
 
@@ -2425,17 +2425,17 @@ async def handle_processing(request: ProcessingRequest):
 
 ```promql
 # Average chat response time
-rate(loan_avengers_chat_request_duration_seconds_sum[5m])
+rate(loan_defenders_chat_request_duration_seconds_sum[5m])
   /
-rate(loan_avengers_chat_request_duration_seconds_count[5m])
+rate(loan_defenders_chat_request_duration_seconds_count[5m])
 
 # Processing success rate
-sum(rate(loan_avengers_processing_requests_total{status="success"}[5m]))
+sum(rate(loan_defenders_processing_requests_total{status="success"}[5m]))
   /
-sum(rate(loan_avengers_processing_requests_total[5m]))
+sum(rate(loan_defenders_processing_requests_total[5m]))
 
 # Active sessions
-loan_avengers_active_sessions
+loan_defenders_active_sessions
 ```
 
 **Observability Best Practices**:

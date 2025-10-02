@@ -22,8 +22,8 @@ except ImportError:
     AgentThread = None
     ThreadMessage = None
 
-from loan_avengers.models.application import EmploymentStatus, LoanApplication, LoanPurpose
-from loan_avengers.models.responses import IntakeAssessment
+from loan_defenders.models.application import EmploymentStatus, LoanApplication, LoanPurpose
+from loan_defenders.models.responses import IntakeAssessment
 
 
 @pytest.fixture(scope="session", autouse=True)

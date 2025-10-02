@@ -71,7 +71,7 @@ def run_tests_with_coverage():
             "pytest",
             "tests/unit/",  # Only unit tests for reliable coverage
             "-v",
-            "--cov=loan_avengers",
+            "--cov=loan_defenders",
             "--cov-branch",
             "--cov-report=term-missing",
             "--cov-report=html:htmlcov",

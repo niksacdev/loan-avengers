@@ -19,10 +19,10 @@ Based on analysis of the existing codebase and documentation, this feature focus
    → Chat API for conversational interactions
    → Agent workflow orchestration patterns
 2. Analyze current implementation:
-   → API layer: `/loan_avengers/api/` (exists)
-   → UI foundation: `/loan_avengers/ui/src/` (exists)
-   → Agent framework: `/loan_avengers/agents/` (exists)
-   → Cap-ital America coordinator: `/loan_avengers/agents/riley_coordinator.py` (exists)
+   → API layer: `/loan_defenders/api/` (exists)
+   → UI foundation: `/loan_defenders/ui/src/` (exists)
+   → Agent framework: `/loan_defenders/agents/` (exists)
+   → Cap-ital America coordinator: `/loan_defenders/agents/riley_coordinator.py` (exists)
 3. Generate tasks by category:
    → API Integration: Complete streaming endpoints
    → Real-time UI: WebSocket/SSE components
@@ -42,46 +42,46 @@ Based on analysis of the existing codebase and documentation, this feature focus
 
 ## Phase 1: API Integration Foundation
 
-- [ ] T001 [P] Complete FastAPI streaming endpoint implementation in `/workspaces/loan-avengers/loan_avengers/api/streaming.py`
-- [ ] T002 [P] Implement chat message handling in `/workspaces/loan-avengers/loan_avengers/api/chat.py`
-- [ ] T003 [P] Add application status endpoints in `/workspaces/loan-avengers/loan_avengers/api/applications.py`
-- [ ] T004 Create unified API router in `/workspaces/loan-avengers/loan_avengers/api/main.py`
+- [ ] T001 [P] Complete FastAPI streaming endpoint implementation in `/workspaces/loan-defenders/loan_defenders/api/streaming.py`
+- [ ] T002 [P] Implement chat message handling in `/workspaces/loan-defenders/loan_defenders/api/chat.py`
+- [ ] T003 [P] Add application status endpoints in `/workspaces/loan-defenders/loan_defenders/api/applications.py`
+- [ ] T004 Create unified API router in `/workspaces/loan-defenders/loan_defenders/api/main.py`
 
 ## Phase 2: Real-Time UI Components ⚠️ REQUIRES Phase 1 Complete
 
-- [ ] T005 [P] Create WebSocket/SSE client service in `/workspaces/loan-avengers/loan_avengers/ui/src/services/streaming.ts`
-- [ ] T006 [P] Implement agent progress components in `/workspaces/loan-avengers/loan_avengers/ui/src/components/agent-progress/`
-- [ ] T007 [P] Create chat interface components in `/workspaces/loan-avengers/loan_avengers/ui/src/components/chat/ChatInterface.tsx`
-- [ ] T008 [P] Build real-time status updates in `/workspaces/loan-avengers/loan_avengers/ui/src/components/status/LiveStatus.tsx`
+- [ ] T005 [P] Create WebSocket/SSE client service in `/workspaces/loan-defenders/loan_defenders/ui/src/services/streaming.ts`
+- [ ] T006 [P] Implement agent progress components in `/workspaces/loan-defenders/loan_defenders/ui/src/components/agent-progress/`
+- [ ] T007 [P] Create chat interface components in `/workspaces/loan-defenders/loan_defenders/ui/src/components/chat/ChatInterface.tsx`
+- [ ] T008 [P] Build real-time status updates in `/workspaces/loan-defenders/loan_defenders/ui/src/components/status/LiveStatus.tsx`
 
 ## Phase 3: Cap-ital America Agent Integration
 
-- [ ] T009 Complete Cap-ital America coordinator persona in `/workspaces/loan-avengers/loan_avengers/agents/agent-persona/riley-coordinator-persona.md`
-- [ ] T010 Integrate Cap-ital America with unified workflow in `/workspaces/loan-avengers/loan_avengers/agents/unified_workflow.py`
-- [ ] T011 Connect Cap-ital America to streaming API in `/workspaces/loan-avengers/loan_avengers/api/agent_handlers.py`
+- [ ] T009 Complete Cap-ital America coordinator persona in `/workspaces/loan-defenders/loan_defenders/agents/agent-persona/riley-coordinator-persona.md`
+- [ ] T010 Integrate Cap-ital America with unified workflow in `/workspaces/loan-defenders/loan_defenders/agents/unified_workflow.py`
+- [ ] T011 Connect Cap-ital America to streaming API in `/workspaces/loan-defenders/loan_defenders/api/agent_handlers.py`
 - [ ] T012 Add celebration and decision delivery to Cap-ital America responses
 
 ## Phase 4: Conversational UI Pipeline
 
-- [ ] T013 Implement conversational data collection in `/workspaces/loan-avengers/loan_avengers/ui/src/pages/application/ConversationalForm.tsx`
-- [ ] T014 Create agent handoff animations in `/workspaces/loan-avengers/loan_avengers/ui/src/components/animations/AgentTransitions.tsx`
-- [ ] T015 Build celebration components in `/workspaces/loan-avengers/loan_avengers/ui/src/components/celebration/SuccessAnimation.tsx`
-- [ ] T016 Integrate voice input handling in `/workspaces/loan-avengers/loan_avengers/ui/src/components/voice/VoiceInput.tsx`
+- [ ] T013 Implement conversational data collection in `/workspaces/loan-defenders/loan_defenders/ui/src/pages/application/ConversationalForm.tsx`
+- [ ] T014 Create agent handoff animations in `/workspaces/loan-defenders/loan_defenders/ui/src/components/animations/AgentTransitions.tsx`
+- [ ] T015 Build celebration components in `/workspaces/loan-defenders/loan_defenders/ui/src/components/celebration/SuccessAnimation.tsx`
+- [ ] T016 Integrate voice input handling in `/workspaces/loan-defenders/loan_defenders/ui/src/components/voice/VoiceInput.tsx`
 
 ## Phase 5: Integration & State Management
 
-- [ ] T017 Create application state management in `/workspaces/loan-avengers/loan_avengers/ui/src/store/applicationStore.ts`
-- [ ] T018 Implement agent thread persistence in `/workspaces/loan-avengers/loan_avengers/api/persistence/thread_store.py`
-- [ ] T019 Add error handling and recovery in `/workspaces/loan-avengers/loan_avengers/ui/src/services/errorHandling.ts`
-- [ ] T020 Connect UI routing to agent workflow states in `/workspaces/loan-avengers/loan_avengers/ui/src/routing/workflowRoutes.tsx`
+- [ ] T017 Create application state management in `/workspaces/loan-defenders/loan_defenders/ui/src/store/applicationStore.ts`
+- [ ] T018 Implement agent thread persistence in `/workspaces/loan-defenders/loan_defenders/api/persistence/thread_store.py`
+- [ ] T019 Add error handling and recovery in `/workspaces/loan-defenders/loan_defenders/ui/src/services/errorHandling.ts`
+- [ ] T020 Connect UI routing to agent workflow states in `/workspaces/loan-defenders/loan_defenders/ui/src/routing/workflowRoutes.tsx`
 
 ## Phase 6: Testing & Polish
 
-- [ ] T021 [P] Write API integration tests in `/workspaces/loan-avengers/tests/api/test_streaming_integration.py`
-- [ ] T022 [P] Create UI component tests in `/workspaces/loan-avengers/tests/ui/components/test_chat_interface.spec.ts`
-- [ ] T023 [P] Build end-to-end workflow tests in `/workspaces/loan-avengers/tests/e2e/test_riley_integration.py`
-- [ ] T024 [P] Add performance tests for streaming in `/workspaces/loan-avengers/tests/performance/test_stream_latency.py`
-- [ ] T025 Update API documentation in `/workspaces/loan-avengers/docs/api/api-endpoints.md`
+- [ ] T021 [P] Write API integration tests in `/workspaces/loan-defenders/tests/api/test_streaming_integration.py`
+- [ ] T022 [P] Create UI component tests in `/workspaces/loan-defenders/tests/ui/components/test_chat_interface.spec.ts`
+- [ ] T023 [P] Build end-to-end workflow tests in `/workspaces/loan-defenders/tests/e2e/test_riley_integration.py`
+- [ ] T024 [P] Add performance tests for streaming in `/workspaces/loan-defenders/tests/performance/test_stream_latency.py`
+- [ ] T025 Update API documentation in `/workspaces/loan-defenders/docs/api/api-endpoints.md`
 
 ## Dependencies
 
@@ -104,19 +104,19 @@ Based on analysis of the existing codebase and documentation, this feature focus
 
 ```bash
 # Phase 1: API Foundation (can run together)
-Task: "Complete FastAPI streaming endpoint in /workspaces/loan-avengers/loan_avengers/api/streaming.py"
-Task: "Implement chat message handling in /workspaces/loan-avengers/loan_avengers/api/chat.py"
-Task: "Add application status endpoints in /workspaces/loan-avengers/loan_avengers/api/applications.py"
+Task: "Complete FastAPI streaming endpoint in /workspaces/loan-defenders/loan_defenders/api/streaming.py"
+Task: "Implement chat message handling in /workspaces/loan-defenders/loan_defenders/api/chat.py"
+Task: "Add application status endpoints in /workspaces/loan-defenders/loan_defenders/api/applications.py"
 
 # Phase 2: UI Components (can run together after Phase 1)
-Task: "Create WebSocket/SSE client in /workspaces/loan-avengers/loan_avengers/ui/src/services/streaming.ts"
-Task: "Implement agent progress components in /workspaces/loan-avengers/loan_avengers/ui/src/components/agent-progress/"
-Task: "Create chat interface in /workspaces/loan-avengers/loan_avengers/ui/src/components/chat/ChatInterface.tsx"
+Task: "Create WebSocket/SSE client in /workspaces/loan-defenders/loan_defenders/ui/src/services/streaming.ts"
+Task: "Implement agent progress components in /workspaces/loan-defenders/loan_defenders/ui/src/components/agent-progress/"
+Task: "Create chat interface in /workspaces/loan-defenders/loan_defenders/ui/src/components/chat/ChatInterface.tsx"
 
 # Phase 6: Testing (can run together after implementation)
-Task: "Write API integration tests in /workspaces/loan-avengers/tests/api/test_streaming_integration.py"
-Task: "Create UI component tests in /workspaces/loan-avengers/tests/ui/components/test_chat_interface.spec.ts"
-Task: "Build end-to-end tests in /workspaces/loan-avengers/tests/e2e/test_riley_integration.py"
+Task: "Write API integration tests in /workspaces/loan-defenders/tests/api/test_streaming_integration.py"
+Task: "Create UI component tests in /workspaces/loan-defenders/tests/ui/components/test_chat_interface.spec.ts"
+Task: "Build end-to-end tests in /workspaces/loan-defenders/tests/e2e/test_riley_integration.py"
 ```
 
 ## Implementation Notes

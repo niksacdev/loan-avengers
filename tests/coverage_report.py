@@ -24,15 +24,15 @@ class CoverageAnalyzer:
         # Module-specific coverage targets
         self.coverage_targets = {
             # Core business logic - high coverage required
-            "loan_avengers/agents/": 90.0,
-            "loan_avengers/models/": 95.0,
-            "loan_avengers/tools/services/": 85.0,
+            "loan_defenders/agents/": 90.0,
+            "loan_defenders/models/": 95.0,
+            "loan_defenders/tools/services/": 85.0,
             # MCP servers - medium coverage (has external dependencies)
-            "loan_avengers/tools/mcp_servers/": 75.0,
+            "loan_defenders/tools/mcp_servers/": 75.0,
             # Utilities - medium coverage
-            "loan_avengers/utils/": 80.0,
+            "loan_defenders/utils/": 80.0,
             # Configuration - lower coverage acceptable
-            "loan_avengers/config/": 70.0,
+            "loan_defenders/config/": 70.0,
         }
 
     def run_coverage_tests(self, test_path: str = "tests/unit/") -> bool:
@@ -44,7 +44,7 @@ class CoverageAnalyzer:
             "run",
             "pytest",
             test_path,
-            "--cov=loan_avengers",
+            "--cov=loan_defenders",
             "--cov-branch",
             f"--cov-report=html:{self.html_dir}",
             f"--cov-report=json:{self.json_file}",
@@ -78,8 +78,8 @@ class CoverageAnalyzer:
 
         for file_path, file_data in files.items():
             # Group by module directory
-            if "loan_avengers/" in file_path:
-                # Extract module path (e.g., "loan_avengers/agents/")
+            if "loan_defenders/" in file_path:
+                # Extract module path (e.g., "loan_defenders/agents/")
                 parts = Path(file_path).parts
                 if len(parts) >= 2:
                     module_path = "/".join(parts[:2]) + "/"

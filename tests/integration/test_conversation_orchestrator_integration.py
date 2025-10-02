@@ -8,8 +8,8 @@ from decimal import Decimal
 
 import pytest
 
-from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
-from loan_avengers.models.application import LoanApplication
+from loan_defenders.agents.conversation_orchestrator import ConversationOrchestrator
+from loan_defenders.models.application import LoanApplication
 
 
 class TestConversationOrchestratorIntegration:

@@ -221,7 +221,7 @@ export function ApplicationPage() {
               </h1>
 
               <p className="text-lg lg:text-xl text-gray-600 dark:text-dark-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed transition-colors duration-300">
-                I can do this all day... approve loans! Let's have a natural conversation instead of filling out boring forms. My Avengers team will guide you every step of the way.
+                I can do this all day... approve loans! Let's have a natural conversation instead of filling out boring forms. My AI Dream Team will guide you every step of the way.
               </p>
 
               {/* Simplified 3-column layout */}
@@ -582,11 +582,11 @@ export function ApplicationPage() {
                   </div>
                 )}
 
-                {/* Compiling Results Animation - Avengers Theme */}
+                {/* Compiling Results Animation - Loan Defenders Theme */}
                 {showCompilingAnimation && (
                   <div className="mt-10 text-center animate-fade-in-up">
                     <div className="mb-6">
-                      {/* Avengers Heroes Loop Animation */}
+                      {/* Loan Defenders Heroes Loop Animation */}
                       <div className="relative inline-flex items-center justify-center w-24 h-24 mb-4">
                         {/* Central shield/circle */}
                         <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-accent-600 rounded-full shadow-xl opacity-20 animate-pulse"></div>
@@ -628,7 +628,7 @@ export function ApplicationPage() {
 
                       <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
                         <span className="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                          Avengers Assembling Your Results...
+                          Loan Defenders Assembling Your Results...
                         </span>
                       </h3>
                       <p className="text-gray-600 dark:text-dark-text-secondary text-lg">

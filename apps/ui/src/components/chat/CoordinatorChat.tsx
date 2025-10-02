@@ -156,9 +156,9 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
       'Peter Parker', 'Wanda Maximoff', 'Vision Android', 'Scott Lang', 'Hope van Dyne'
     ];
     const dummyEmails = [
-      'ironman@avengers.com', 'cap@avengers.com', 'blackwidow@avengers.com', 'hulk@avengers.com',
-      'thor@asgard.com', 'spidey@avengers.com', 'scarlet@avengers.com', 'vision@avengers.com',
-      'antman@avengers.com', 'wasp@avengers.com'
+      'ironman@defenders.com', 'cap@defenders.com', 'blackwidow@defenders.com', 'hulk@defenders.com',
+      'thor@asgard.com', 'spidey@defenders.com', 'scarlet@defenders.com', 'vision@defenders.com',
+      'antman@defenders.com', 'wasp@defenders.com'
     ];
 
     const randomIndex = Math.floor(Math.random() * dummyNames.length);
@@ -396,7 +396,7 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
                   type="email"
                   value={personalInfo.email}
                   onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
-                  placeholder="e.g., ironman@avengers.com"
+                  placeholder="e.g., ironman@defenders.com"
                   className="w-full px-4 py-3 border-2 border-brand-300 dark:border-brand-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 bg-white dark:bg-dark-bg-tertiary text-gray-900 dark:text-dark-text-primary placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-colors duration-300 text-base"
                 />
               </div>

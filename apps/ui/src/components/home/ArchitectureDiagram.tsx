@@ -220,7 +220,7 @@ export function ArchitectureDiagram() {
         {/* Link to Full Documentation */}
         <div className="mt-16 text-center">
           <a
-            href="https://github.com/niksacdev/loan-defenders/blob/main/docs/architecture/system-architecture.md"
+            href="https://github.com/niksacdev/loan-avengers/blob/main/docs/architecture/system-architecture.md"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-semibold group transition-colors duration-300"

@@ -76,7 +76,7 @@ Since no employment verification is available, assess based on:
 - Income adequacy determination for requested loan
 
 **Escalation Required:**
-- Stated income > $500k annually (unusually high)
+- Stated income > $750k annually (unusually high)
 - Income-to-loan ratio < 1.5x (unusually low income)
 - Loan amounts > $1M (require additional verification)
 - Obvious fraud indicators in stated data

@@ -10,7 +10,25 @@ This API provides endpoints for:
 
 from __future__ import annotations
 
+# Load environment variables FIRST before any other imports
 import os
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+
+    # Load .env from project root directory
+    # Path goes from app.py -> api -> loan_avengers -> apps -> api -> root
+    env_path = Path(__file__).parent.parent.parent.parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
+        print(f"[INFO] Loaded environment variables from {env_path}")
+    else:
+        load_dotenv()  # Fallback to default search
+        print("[INFO] Using default .env search")
+except ImportError:
+    print("[WARN] python-dotenv not installed - environment variables must be set manually")
+
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException, Request, status

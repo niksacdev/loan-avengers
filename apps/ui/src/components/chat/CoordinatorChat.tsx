@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ChatMessage, CoordinatorResponse, QuickReplyOption } from '../../types';
 import { config } from '../../utils/config';
-import { LogViewer } from './LogViewer';
 
 interface CoordinatorChatProps {
   onApplicationComplete: (applicationData: Record<string, any>, sessionId: string) => void;
@@ -18,7 +17,6 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [showLogs, setShowLogs] = useState(false);
   const [quickReplies, setQuickReplies] = useState<QuickReplyOption[]>([]);
   const [showPersonalInfoForm, setShowPersonalInfoForm] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({ name: '', email: '', idLast4: '' });
@@ -289,20 +287,6 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
             <p className="text-base text-white/95 font-medium">Your Loan Coordinator • Ready to Assemble!</p>
           </div>
         </div>
-
-        {/* Geek Mode Toggle Button */}
-        <button
-          onClick={() => setShowLogs(!showLogs)}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-            showLogs
-              ? 'bg-green-500 text-white shadow-lg'
-              : 'bg-white/20 hover:bg-white/30 text-white'
-          }`}
-          title="Toggle Geek Mode (System Logs)"
-        >
-          <span className="text-xl">{showLogs ? '🤓' : '👨‍💻'}</span>
-          <span className="text-sm font-semibold">{showLogs ? 'Hide' : 'Geek Mode'}</span>
-        </button>
       </div>
 
       {/* Messages Area */}
@@ -450,9 +434,6 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
           </div>
         </div>
       )}
-
-      {/* Log Viewer */}
-      <LogViewer isOpen={showLogs} onClose={() => setShowLogs(false)} sessionId={sessionId} />
     </div>
   );
 }

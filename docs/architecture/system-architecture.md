@@ -6,8 +6,8 @@
 graph TB
     %% User Layer
     subgraph "👤 User Experience Layer"
-        User[👤 User<br/>"I need a $250K loan"]
-        Browser[🌐 Web Browser<br/>React 19 + TypeScript]
+        User["👤 User<br/>I need a $250K loan"]
+        Browser["🌐 Web Browser<br/>React 19 + TypeScript"]
     end
 
     %% UI Layer
@@ -28,32 +28,32 @@ graph TB
     end
 
     %% Agent Orchestration
-    subgraph "🦸‍♂️ Microsoft Agent Framework - Sequential Workflow"
+    subgraph AgentFramework["🦸‍♂️ Microsoft Agent Framework - Sequential Workflow"]
         direction LR
 
-        subgraph "🦅 Intake Agent "The Eagle Eye" Validator"
-            Intake Agent[👁️ Intake Agent "The Eagle Eye"<br/>Lightning Validation<br/>&lt;5 seconds]
-            JohnPersona[📋 Persona: intake-agent-persona.md<br/>🎯 Mission: Validate & Route<br/>⚡ Tools: None (Speed optimized)]
+        subgraph IntakeGroup["🦅 Intake Agent - The Eagle Eye Validator"]
+            IntakeAgent["👁️ Intake Agent - The Eagle Eye<br/>Lightning Validation<br/>Less than 5 seconds"]
+            JohnPersona["📋 Persona: intake-agent-persona.md<br/>🎯 Mission: Validate & Route<br/>⚡ Tools: None - Speed optimized"]
         end
 
-        subgraph "💼 Hawk-Income - Income Specialist"
-            Hawk-Income[💼 Hawk-Income - Income Specialist<br/>Employment Verification<br/>&lt;30 seconds]
-            SarahPersona[📋 Persona: income-agent-persona.md<br/>🎯 Mission: Income Analysis<br/>🔧 Tools: Document + Financial]
+        subgraph IncomeGroup["💼 Hawk-Income - Income Specialist"]
+            HawkIncome["💼 Hawk-Income - Income Specialist<br/>Employment Verification<br/>Less than 30 seconds"]
+            SarahPersona["📋 Persona: income-agent-persona.md<br/>🎯 Mission: Income Analysis<br/>🔧 Tools: Document + Financial"]
         end
 
-        subgraph "📊 Scarlet Witch-Credit - Credit Analyst"
-            Scarlet Witch-Credit[📊 Scarlet Witch-Credit - Credit Analyst<br/>Credit Assessment<br/>&lt;60 seconds]
-            MarcusPersona[📋 Persona: credit-agent-persona.md<br/>🎯 Mission: Credit Evaluation<br/>🔧 Tools: Application + Financial]
+        subgraph CreditGroup["📊 Scarlet Witch-Credit - Credit Analyst"]
+            ScarletCredit["📊 Scarlet Witch-Credit - Credit Analyst<br/>Credit Assessment<br/>Less than 60 seconds"]
+            MarcusPersona["📋 Persona: credit-agent-persona.md<br/>🎯 Mission: Credit Evaluation<br/>🔧 Tools: Application + Financial"]
         end
 
-        subgraph "🛡️ Doctor Strange-Risk - Risk Assessor"
-            Doctor Strange-Risk[🛡️ Doctor Strange-Risk - Risk Assessor<br/>Final Decision<br/>&lt;90 seconds]
-            AlexPersona[📋 Persona: risk-agent-persona.md<br/>🎯 Mission: Risk Analysis<br/>🔧 Tools: All MCP Servers]
+        subgraph RiskGroup["🛡️ Doctor Strange-Risk - Risk Assessor"]
+            DoctorRisk["🛡️ Doctor Strange-Risk - Risk Assessor<br/>Final Decision<br/>Less than 90 seconds"]
+            AlexPersona["📋 Persona: risk-agent-persona.md<br/>🎯 Mission: Risk Analysis<br/>🔧 Tools: All MCP Servers"]
         end
 
-        Intake Agent --> Hawk-Income
-        Hawk-Income --> Scarlet Witch-Credit
-        Scarlet Witch-Credit --> Doctor Strange-Risk
+        IntakeAgent --> HawkIncome
+        HawkIncome --> ScarletCredit
+        ScarletCredit --> DoctorRisk
     end
 
     %% MCP Tool Layer
@@ -108,19 +108,19 @@ graph TB
     FastAPI --> Stream
     FastAPI --> ThreadMgr
 
-    ThreadMgr --> Intake Agent
-    Intake Agent --> Hawk-Income
-    Hawk-Income --> Scarlet Witch-Credit
-    Scarlet Witch-Credit --> Doctor Strange-Risk
+    ThreadMgr --> IntakeAgent
+    IntakeAgent --> HawkIncome
+    HawkIncome --> ScarletCredit
+    ScarletCredit --> DoctorRisk
 
     %% Agent to MCP connections
-    Hawk-Income --> MCP2
-    Hawk-Income --> MCP3
-    Scarlet Witch-Credit --> MCP1
-    Scarlet Witch-Credit --> MCP3
-    Doctor Strange-Risk --> MCP1
-    Doctor Strange-Risk --> MCP2
-    Doctor Strange-Risk --> MCP3
+    HawkIncome --> MCP2
+    HawkIncome --> MCP3
+    ScarletCredit --> MCP1
+    ScarletCredit --> MCP3
+    DoctorRisk --> MCP1
+    DoctorRisk --> MCP2
+    DoctorRisk --> MCP3
 
     %% MCP to External Services
     MCP1 --> CreditAPI
@@ -133,13 +133,13 @@ graph TB
     ThreadMgr --> AgentThread
     AgentThread --> Cache
     FastAPI --> LoanApp
-    Intake Agent --> Assessment
-    Hawk-Income --> Assessment
-    Scarlet Witch-Credit --> Assessment
-    Doctor Strange-Risk --> Decision
+    IntakeAgent --> Assessment
+    HawkIncome --> Assessment
+    ScarletCredit --> Assessment
+    DoctorRisk --> Decision
 
     %% Real-time Updates
-    Doctor Strange-Risk --> Stream
+    DoctorRisk --> Stream
     Stream --> Progress
     Decision --> Confetti
 
@@ -155,7 +155,7 @@ graph TB
     class User,Browser userLayer
     class UI,ThemeToggle,Progress,Confetti uiLayer
     class FastAPI,Stream,ThreadMgr apiLayer
-    class Intake Agent,Hawk-Income,Scarlet Witch-Credit,Doctor Strange-Risk,JohnPersona,SarahPersona,MarcusPersona,AlexPersona agentLayer
+    class IntakeAgent,HawkIncome,ScarletCredit,DoctorRisk,JohnPersona,SarahPersona,MarcusPersona,AlexPersona agentLayer
     class MCP1,MCP2,MCP3,Tools1,Tools2,Tools3 mcpLayer
     class LoanApp,Assessment,Decision,AgentThread,Cache dataLayer
     class AOAI,CreditAPI,BankAPI,DocStorage externalLayer

@@ -23,6 +23,65 @@ from pathlib import Path
 from agent_framework.observability import setup_observability
 
 
+class JsonExtraFormatter(logging.Formatter):
+    """
+    Custom formatter that includes extra data as JSON in log output.
+
+    Standard formatter only outputs: asctime, name, levelname, message
+    This formatter appends extra data as JSON for debugging and observability.
+    """
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Format log record with extra data as JSON."""
+        import json
+
+        # Format base message using standard formatter
+        base_message = super().format(record)
+
+        # Extract extra fields (everything not in standard LogRecord attributes)
+        standard_attrs = {
+            "name",
+            "msg",
+            "args",
+            "created",
+            "filename",
+            "funcName",
+            "levelname",
+            "levelno",
+            "lineno",
+            "module",
+            "msecs",
+            "message",
+            "pathname",
+            "process",
+            "processName",
+            "relativeCreated",
+            "thread",
+            "threadName",
+            "exc_info",
+            "exc_text",
+            "stack_info",
+            "asctime",
+        }
+
+        extra_data = {
+            key: value
+            for key, value in record.__dict__.items()
+            if key not in standard_attrs and not key.startswith("_")
+        }
+
+        # If there's extra data, append it as JSON
+        if extra_data:
+            try:
+                extra_json = json.dumps(extra_data, default=str, indent=None)
+                return f"{base_message} | extra={extra_json}"
+            except (TypeError, ValueError) as e:
+                # If JSON serialization fails, append raw representation
+                return f"{base_message} | extra={extra_data} [serialization_error: {e}]"
+
+        return base_message
+
+
 class Observability:
     """
     Centralized observability configuration for all agents.
@@ -62,8 +121,8 @@ class Observability:
         # Create log filename with timestamp
         log_filename = log_dir / f"loan_avengers_{datetime.now().strftime('%Y%m%d')}.log"
 
-        # Configure formatters
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        # Configure formatters with extra data support
+        formatter = JsonExtraFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         # Configure root logger
         root_logger = logging.getLogger()
@@ -204,6 +263,60 @@ class Observability:
             return f"{app_id}***" if app_id else "***"
         return f"{app_id[:8]}***"
 
+    @staticmethod
+    def mask_pii(value: str | None, field_type: str = "name") -> str:
+        """
+        Mask personally identifiable information (PII) for secure logging.
+
+        Implements privacy-preserving masking for different PII types:
+        - Names: Shows first letter + last initial (e.g., "J*** D***")
+        - Emails: Shows first 2 chars + domain (e.g., "jo***@example.com")
+        - Generic: Shows first 3 chars (e.g., "abc***")
+
+        Args:
+            value: The PII value to mask
+            field_type: Type of PII - "name", "email", or "generic" (default: "name")
+
+        Returns:
+            str: Masked value with sensitive portions replaced by ***
+
+        Examples:
+            >>> Observability.mask_pii("John Doe", "name")
+            "J*** D***"
+            >>> Observability.mask_pii("john.doe@example.com", "email")
+            "jo***@example.com"
+            >>> Observability.mask_pii("sensitive-data", "generic")
+            "sen***"
+        """
+        if not value:
+            return "***"
+
+        if field_type == "name":
+            # Split name into parts
+            parts = value.strip().split()
+            if len(parts) == 0:
+                return "***"
+            elif len(parts) == 1:
+                # Single name: show first letter
+                return f"{parts[0][0]}***" if parts[0] else "***"
+            else:
+                # Multiple parts: show first letter of each part
+                masked_parts = [f"{part[0]}***" if part else "***" for part in parts]
+                return " ".join(masked_parts)
+
+        elif field_type == "email":
+            # Email: show first 2 chars + domain
+            if "@" in value:
+                local, domain = value.rsplit("@", 1)
+                masked_local = f"{local[:2]}***" if len(local) >= 2 else "***"
+                return f"{masked_local}@{domain}"
+            else:
+                return f"{value[:2]}***" if len(value) >= 2 else "***"
+
+        else:  # generic
+            # Generic: show first 3 characters
+            return f"{value[:3]}***" if len(value) >= 3 else "***"
+
     @classmethod
     def set_correlation_id(cls, correlation_id: str | None = None) -> str:
         """
@@ -312,4 +425,4 @@ class Observability:
         )
 
 
-__all__ = ["Observability"]
+__all__ = ["Observability", "JsonExtraFormatter"]

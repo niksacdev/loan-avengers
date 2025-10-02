@@ -15,6 +15,7 @@ will be added in the future for comparison.
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncGenerator
 
 from agent_framework import SequentialBuilder
@@ -117,7 +118,7 @@ class SequentialPipeline:
                 extra={
                     "correlation_id": Observability.get_correlation_id(),
                     "application_id": Observability.mask_application_id(application.application_id),
-                    "applicant_name": application.applicant_name,
+                    "applicant_name": Observability.mask_pii(application.applicant_name, "name"),
                     "loan_amount": application.loan_amount,
                     "annual_income": application.annual_income,
                     "workflow": "sequential",
@@ -174,74 +175,139 @@ Please assess this application and provide your recommendation."""
             final_response = None
             all_risk_events = []  # Track all Risk_Analyzer events for debugging
 
-            # Stream workflow events and convert to ProcessingUpdate
-            async for event in workflow.run_stream(application_input):
-                # Extract agent information from workflow event
-                event_type = type(event).__name__
+            # Track which agents have started to avoid duplicate "starting" messages
+            agents_started = set()
 
-                # Capture final response from Risk_Analyzer
-                if hasattr(event, "executor_id") and str(event.executor_id) == "Risk_Analyzer":
-                    all_risk_events.append(event)
+            # Stream workflow events with timeout protection (300s = 5 minutes)
+            # Prevents DoS from long-running operations
+            try:
+                async with asyncio.timeout(300):
+                    async for event in workflow.run_stream(application_input):
+                        # Extract agent information from workflow event
+                        event_type = type(event).__name__
 
-                    # Log detailed event information
-                    event_attrs = {k: v for k, v in vars(event).items() if not k.startswith("_")}
-                    logger.info(
-                        "Risk_Analyzer event captured",
-                        extra={
-                            "event_type": event_type,
-                            "event_attributes": list(event_attrs.keys()),
-                            "has_content": hasattr(event, "content"),
-                            "has_delta": hasattr(event, "delta"),
-                            "has_data": hasattr(event, "data"),
-                        },
-                    )
+                        # Send "starting" message when agent first appears (only once per agent)
+                        if hasattr(event, "executor_id"):
+                            executor_id = str(event.executor_id)
+                            if executor_id in agent_names and executor_id not in agents_started:
+                                phase, phase_name, completion = agent_names[executor_id]
+                                agents_started.add(executor_id)
 
-                    # Try to capture the agent's output from various possible fields
-                    # AgentRunResponseUpdate objects have a 'data' field with text content
-                    if hasattr(event, "data") and event.data:
-                        # Check if data is AgentRunResponseUpdate with text/delta
-                        if hasattr(event.data, "text"):
-                            if not final_response:
-                                final_response = ""
-                            text_chunk = event.data.text
-                            final_response += text_chunk
-                            # Print to stdout for debugging (bypasses log formatter)
-                            print(f"[RISK TEXT CHUNK]: {text_chunk[:100]}")
-                            logger.info("Accumulating text from event.data.text")
-                        elif hasattr(event.data, "delta"):
-                            if not final_response:
-                                final_response = ""
-                            final_response += str(event.data.delta)
-                            logger.info("Accumulating delta from event.data.delta")
-                        else:
+                                # Calculate previous step's completion for starting message
+                                previous_completion = completion - 25 if completion > 25 else 0
+
+                                # Send "starting" update with previous step's completion
+                                # Map agent-specific icons
+                                agent_emoji = {
+                                    "Intake_Agent": "🦸‍♂️",
+                                    "Credit_Assessor": "🦸‍♀️",
+                                    "Income_Verifier": "🦸",
+                                    "Risk_Analyzer": "🦹‍♂️",
+                                }.get(executor_id, "⚡")
+
+                                agent_display_name = executor_id.replace("_", " ")
+                                yield ProcessingUpdate(
+                                    agent_name=executor_id,
+                                    message=f"{agent_emoji} {agent_display_name} is analyzing your application...",
+                                    phase=phase_name,
+                                    completion_percentage=previous_completion,
+                                    status="in_progress",
+                                    assessment_data={"application_id": application.application_id},
+                                    metadata={"event_type": "agent_starting", "executor_id": executor_id},
+                                )
+
+                        # Capture final response from Risk_Analyzer
+                        if hasattr(event, "executor_id") and str(event.executor_id) == "Risk_Analyzer":
+                            all_risk_events.append(event)
+
+                            # Log detailed event information
+                            event_attrs = {k: v for k, v in vars(event).items() if not k.startswith("_")}
                             logger.info(
-                                "event.data has no text or delta field",
-                                extra={"data_type": type(event.data).__name__},
+                                "Risk_Analyzer event captured",
+                                extra={
+                                    "event_type": event_type,
+                                    "event_attributes": list(event_attrs.keys()),
+                                    "has_content": hasattr(event, "content"),
+                                    "has_delta": hasattr(event, "delta"),
+                                    "has_data": hasattr(event, "data"),
+                                },
                             )
-                    elif hasattr(event, "content") and event.content:
-                        final_response = event.content
-                        logger.info("Captured content from event.content")
-                    elif hasattr(event, "delta") and event.delta:
-                        if not final_response:
-                            final_response = ""
-                        final_response += str(event.delta)
-                        logger.info("Accumulating delta content")
 
-                # Convert workflow events to ProcessingUpdate for UI
-                if hasattr(event, "executor_id"):
-                    executor_id = str(event.executor_id)
-                    if executor_id in agent_names:
-                        phase, phase_name, completion = agent_names[executor_id]
+                            # Try to capture the agent's output from various possible fields
+                            # AgentRunResponseUpdate objects have a 'data' field with text content
+                            if hasattr(event, "data") and event.data:
+                                # Check if data is AgentRunResponseUpdate with text/delta
+                                if hasattr(event.data, "text"):
+                                    if not final_response:
+                                        final_response = ""
+                                    text_chunk = event.data.text
+                                    final_response += text_chunk
+                                    # Print to stdout for debugging (bypasses log formatter)
+                                    print(f"[RISK TEXT CHUNK]: {text_chunk[:100]}")
+                                    logger.info("Accumulating text from event.data.text")
+                                elif hasattr(event.data, "delta"):
+                                    if not final_response:
+                                        final_response = ""
+                                    final_response += str(event.data.delta)
+                                    logger.info("Accumulating delta from event.data.delta")
+                                else:
+                                    logger.info(
+                                        "event.data has no text or delta field",
+                                        extra={"data_type": type(event.data).__name__},
+                                    )
+                            elif hasattr(event, "content") and event.content:
+                                final_response = event.content
+                                logger.info("Captured content from event.content")
+                            elif hasattr(event, "delta") and event.delta:
+                                if not final_response:
+                                    final_response = ""
+                                final_response += str(event.delta)
+                                logger.info("Accumulating delta content")
 
-                        yield ProcessingUpdate(
-                            agent_name=executor_id,
-                            message=f"🔄 {executor_id.replace('_', ' ')} is analyzing your application...",
-                            phase=phase_name,
-                            completion_percentage=completion,
-                            status="in_progress",
-                            assessment_data={"application_id": application.application_id},
-                            metadata={"event_type": event_type, "executor_id": executor_id},
-                        )
+                        # Send completion updates when agent finishes (detect by checking if it's a final event)
+                        # We identify completion by the event having content/data and being from a known agent
+                        if hasattr(event, "executor_id"):
+                            executor_id = str(event.executor_id)
+                            if executor_id in agent_names and executor_id in agents_started:
+                                # Only send completion if this event has actual content (not just starting)
+                                has_content = (
+                                    (hasattr(event, "data") and event.data)
+                                    or (hasattr(event, "content") and event.content)
+                                    or (hasattr(event, "delta") and event.delta)
+                                )
+
+                                if has_content:
+                                    phase, phase_name, completion = agent_names[executor_id]
+
+                                    yield ProcessingUpdate(
+                                        agent_name=executor_id,
+                                        message=f"✅ {executor_id.replace('_', ' ')} completed assessment",
+                                        phase=phase_name,
+                                        completion_percentage=completion,
+                                        status="completed",
+                                        assessment_data={"application_id": application.application_id},
+                                        metadata={"event_type": event_type, "executor_id": executor_id},
+                                    )
+
+            except TimeoutError:
+                logger.error(
+                    "Workflow execution timed out after 300 seconds",
+                    extra={
+                        "application_id": Observability.mask_application_id(application.application_id),
+                        "timeout_seconds": 300,
+                    },
+                )
+                # Yield error update to UI
+                yield ProcessingUpdate(
+                    agent_name="System",
+                    message="⏱️ Processing timed out. Please try again or contact support.",
+                    phase="error",
+                    completion_percentage=0,
+                    status="error",
+                    assessment_data={"application_id": application.application_id},
+                    metadata={"error": "Workflow timeout after 300 seconds"},
+                )
+                return
 
             # Log workflow completion
             logger.info(

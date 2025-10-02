@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../../components/layout/Layout';
 import { ExperimentalDisclaimer } from '../../components/ui/ExperimentalDisclaimer';
 import { Confetti } from '../../components/ui/Confetti';
@@ -9,9 +9,20 @@ import { Confetti } from '../../components/ui/Confetti';
  * Shows the final outcome of the AI team's assessment.
  */
 export function ResultsPage() {
+  const navigate = useNavigate();
+
   // Get real decision data from session storage (set by ApplicationPage)
   const [decision, setDecision] = React.useState<any>(null);
   const [loadAttempted, setLoadAttempted] = React.useState(false);
+
+  // Helper function to navigate to home and scroll to top
+  const goToHome = () => {
+    navigate('/');
+    // Scroll to top after navigation
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+  };
 
   // Load decision from sessionStorage on mount
   React.useEffect(() => {
@@ -323,8 +334,8 @@ export function ResultsPage() {
                     </svg>
                   </button>
 
-                  <Link
-                    to="/"
+                  <button
+                    onClick={goToHome}
                     className="btn-success w-full sm:w-auto px-8 py-4 text-lg shadow-lg hover:shadow-xl group"
                   >
                     <span className="text-xl mr-2">🏠</span>
@@ -332,7 +343,7 @@ export function ResultsPage() {
                     <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                  </Link>
+                  </button>
                 </div>
               </>
             ) : (
@@ -363,8 +374,8 @@ export function ResultsPage() {
                     </Link>
                   )}
 
-                  <Link
-                    to="/"
+                  <button
+                    onClick={goToHome}
                     className="btn-secondary w-full sm:w-auto px-8 py-4 text-lg shadow-lg hover:shadow-xl group"
                   >
                     <span className="text-xl mr-2">🏠</span>
@@ -372,7 +383,7 @@ export function ResultsPage() {
                     <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                  </Link>
+                  </button>
                 </div>
               </>
             )}

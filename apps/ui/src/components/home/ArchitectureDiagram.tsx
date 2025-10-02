@@ -41,8 +41,34 @@ export function ArchitectureDiagram() {
             </div>
           </div>
 
-          {/* Layer 2: Agent Framework + AI Foundry (Side by Side with Bidirectional) */}
+          {/* Layer 2: FastAPI Gateway */}
           <div className="animate-fade-in-up animate-stagger-2">
+            <div className="flex justify-center">
+              <div className="bg-white dark:bg-dark-bg-card rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 w-full max-w-md bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg">
+                    <span className="text-xl">⚡</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-dark-text-primary">FastAPI Gateway</h3>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-dark-text-secondary mb-2">Async API + Server-Sent Events (SSE)</p>
+                <div className="text-center">
+                  <span className="inline-flex items-center gap-2 px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">
+                    Real-time Streaming
+                  </span>
+                </div>
+              </div>
+            </div>
+            {/* Down arrow */}
+            <div className="flex justify-center mt-4">
+              <svg className="w-6 h-6 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Layer 3: Agent Framework + AI Foundry (Side by Side with Bidirectional) */}
+          <div className="animate-fade-in-up animate-stagger-3">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
               {/* Microsoft Agent Framework */}
@@ -121,8 +147,8 @@ export function ArchitectureDiagram() {
             </div>
           </div>
 
-          {/* Layer 3: MCP Tool Servers */}
-          <div className="animate-fade-in-up animate-stagger-3">
+          {/* Layer 4: MCP Tool Servers */}
+          <div className="animate-fade-in-up animate-stagger-4">
             <div className="bg-white dark:bg-dark-bg-card rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 bg-gradient-to-br from-accent-50 to-success-50 dark:from-dark-bg-tertiary dark:to-dark-bg-tertiary">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-accent-500 to-success-500 rounded-xl">
@@ -161,8 +187,8 @@ export function ArchitectureDiagram() {
             </div>
           </div>
 
-          {/* Layer 4: Azure Foundation + GitHub DevOps */}
-          <div className="animate-fade-in-up animate-stagger-4">
+          {/* Layer 5: Azure Foundation + GitHub DevOps */}
+          <div className="animate-fade-in-up animate-stagger-5">
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-2xl shadow-lg border border-blue-200/50 dark:border-blue-700/50 p-6">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center gap-2 mb-2">
@@ -194,7 +220,7 @@ export function ArchitectureDiagram() {
         {/* Link to Full Documentation */}
         <div className="mt-16 text-center">
           <a
-            href="https://github.com/niksacdev/loan-avengers/blob/main/docs/diagrams/system-architecture-diagram.md"
+            href="https://github.com/niksacdev/loan-avengers/blob/main/docs/architecture/system-architecture.md"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-semibold group transition-colors duration-300"

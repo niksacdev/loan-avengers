@@ -115,7 +115,7 @@ Use your reasoning to select appropriate tools based on risk assessment needs:
 
 **Escalation Required:**
 - Loan amounts > $1M
-- Stated income > $500k (unusually high)
+- Stated income > $750k (unusually high)
 - Edge cases not clearly fitting decision criteria
 - Obvious fraud patterns in stated data
 

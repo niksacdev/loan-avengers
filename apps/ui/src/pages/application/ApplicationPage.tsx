@@ -22,7 +22,7 @@ export function ApplicationPage() {
     state: 'PROCESSING' | 'COMPLETE' | 'TRANSITION';
     progress: number;
   } | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+  // Removed unused isAnimating state
   const [finalDecision, setFinalDecision] = useState<any>(null); // Store final decision from SSE
   const [showCompilingAnimation, setShowCompilingAnimation] = useState(false); // Show compiling animation after Risk Analyzer
 
@@ -543,7 +543,7 @@ export function ApplicationPage() {
                       </span>
                     </h3>
                     <div
-                      className={`min-h-[100px] sm:min-h-[120px] ${isAnimating ? 'message-fade-out' : 'message-fade-in'}`}
+                      className="min-h-[100px] sm:min-h-[120px] message-fade-in"
                       role="status"
                       aria-live="polite"
                       aria-atomic="true"
@@ -582,20 +582,57 @@ export function ApplicationPage() {
                   </div>
                 )}
 
-                {/* Compiling Results Animation - Show immediately after completion */}
+                {/* Compiling Results Animation - Avengers Theme */}
                 {showCompilingAnimation && (
                   <div className="mt-10 text-center animate-fade-in-up">
                     <div className="mb-6">
-                      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-xl mb-4">
-                        <span className="text-4xl animate-spin">⚙️</span>
+                      {/* Avengers Heroes Loop Animation */}
+                      <div className="relative inline-flex items-center justify-center w-24 h-24 mb-4">
+                        {/* Central shield/circle */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-brand-500 to-accent-600 rounded-full shadow-xl opacity-20 animate-pulse"></div>
+
+                        {/* Rotating heroes */}
+                        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s' }}>
+                          {/* Hero 1 - Cap-ital America */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+                            <span className="text-3xl animate-bounce" style={{ animationDelay: '0s', animationDuration: '1s' }}>🦸‍♂️</span>
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s', animationDelay: '0.75s' }}>
+                          {/* Hero 2 - Credit Assessor */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+                            <span className="text-3xl animate-bounce" style={{ animationDelay: '0.25s', animationDuration: '1s' }}>🦸‍♀️</span>
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s', animationDelay: '1.5s' }}>
+                          {/* Hero 3 - Income Verifier */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+                            <span className="text-3xl animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '1s' }}>🦸</span>
+                          </div>
+                        </div>
+
+                        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s', animationDelay: '2.25s' }}>
+                          {/* Hero 4 - Risk Analyzer */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+                            <span className="text-3xl animate-bounce" style={{ animationDelay: '0.75s', animationDuration: '1s' }}>🦹‍♂️</span>
+                          </div>
+                        </div>
+
+                        {/* Center icon */}
+                        <div className="relative z-10 w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full flex items-center justify-center shadow-lg">
+                          <span className="text-2xl">⚡</span>
+                        </div>
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-dark-text-primary mb-2">
                         <span className="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                          Compiling Your Results...
+                          Avengers Assembling Your Results...
                         </span>
                       </h3>
-                      <p className="text-gray-600 text-lg">
-                        Finalizing your loan decision
+                      <p className="text-gray-600 dark:text-dark-text-secondary text-lg">
+                        Our team is finalizing your loan decision
                       </p>
                     </div>
                   </div>

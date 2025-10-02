@@ -15,7 +15,14 @@ import yaml
 try:
     from dotenv import load_dotenv
 
-    load_dotenv()
+    # Find .env file in project root
+    # Path goes from settings.py -> config -> loan_avengers -> apps -> api -> root
+    env_path = Path(__file__).parent.parent.parent.parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
+    else:
+        # Fallback to default search
+        load_dotenv()
 except ImportError:
     # dotenv is optional
     pass

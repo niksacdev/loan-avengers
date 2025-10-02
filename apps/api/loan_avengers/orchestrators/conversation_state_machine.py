@@ -102,6 +102,8 @@ class ConversationStateMachine:
         Transition: INITIAL → HOME_PRICE
         Completion: 0%
         """
+        import random
+
         self.state = ConversationState.HOME_PRICE
 
         return ConversationResponse(
@@ -118,11 +120,11 @@ class ConversationStateMachine:
             next_step="Collecting home purchase price",
             completion_percentage=0,
             quick_replies=[
-                {"label": "Under $200K", "value": "150000", "icon": "🏠"},
-                {"label": "$200K - $400K", "value": "300000", "icon": "🏡"},
-                {"label": "$400K - $600K", "value": "500000", "icon": "🏘️"},
-                {"label": "$600K - $1M", "value": "800000", "icon": "🏰"},
-                {"label": "Over $1M", "value": "1200000", "icon": "🏛️"},
+                {"label": "Under $200K", "value": str(random.randint(100000, 200000)), "icon": "🏠"},
+                {"label": "$200K - $400K", "value": str(random.randint(200000, 400000)), "icon": "🏡"},
+                {"label": "$400K - $600K", "value": str(random.randint(400000, 600000)), "icon": "🏘️"},
+                {"label": "$600K - $1M", "value": str(random.randint(600000, 1000000)), "icon": "🏰"},
+                {"label": "Over $1M", "value": "1000000", "icon": "🏛️"},
             ],
         )
 
@@ -134,7 +136,9 @@ class ConversationStateMachine:
         Completion: 25%
         """
         try:
-            loan_amount = int(user_input)
+            # Strip currency formatting ($, commas) before converting to int
+            clean_input = user_input.strip().replace("$", "").replace(",", "")
+            loan_amount = int(clean_input)
             self.collected_data["loan_amount"] = loan_amount
             self.state = ConversationState.DOWN_PAYMENT
 
@@ -210,6 +214,8 @@ class ConversationStateMachine:
                     f"every journey starts with a first step! Let's keep moving forward!"
                 )
 
+            import random
+
             return ConversationResponse(
                 agent_name="Cap-ital America",
                 message=(
@@ -222,10 +228,10 @@ class ConversationStateMachine:
                 next_step="Collecting annual income",
                 completion_percentage=50,
                 quick_replies=[
-                    {"label": "$50K - $100K", "value": "75000", "icon": "💵"},
-                    {"label": "$100K - $250K", "value": "175000", "icon": "💰"},
-                    {"label": "$250K - $500K", "value": "375000", "icon": "💸"},
-                    {"label": "> $500K", "value": "600000", "icon": "💎"},
+                    {"label": "$50K - $100K", "value": str(random.randint(50000, 100000)), "icon": "💵"},
+                    {"label": "$100K - $250K", "value": str(random.randint(100000, 250000)), "icon": "💰"},
+                    {"label": "$250K - $500K", "value": str(random.randint(250000, 500000)), "icon": "💸"},
+                    {"label": "> $500K", "value": str(random.randint(500000, 750000)), "icon": "💎"},
                 ],
             )
 
@@ -241,7 +247,9 @@ class ConversationStateMachine:
         Completion: 75% (triggers form display in UI)
         """
         try:
-            annual_income = int(user_input)
+            # Strip currency formatting ($, commas) before converting to int
+            clean_input = user_input.strip().replace("$", "").replace(",", "")
+            annual_income = int(clean_input)
             self.collected_data["annual_income"] = annual_income
             self.state = ConversationState.PERSONAL_INFO
 

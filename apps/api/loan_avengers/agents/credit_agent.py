@@ -1,7 +1,7 @@
 """
-Intake Agent - Application Validator using Microsoft Agent Framework.
+Credit Agent - Creditworthiness Analysis using Microsoft Agent Framework.
 
-Performs lightning-fast application validation and routing with precision.
+Performs comprehensive credit analysis, risk scoring, and debt-to-income calculations.
 Personality and display name are defined in the persona file for UI flexibility.
 """
 
@@ -14,26 +14,27 @@ from agent_framework._mcp import MCPStreamableHTTPTool
 from agent_framework_azure_ai import AzureAIAgentClient
 from azure.identity.aio import DefaultAzureCredential
 
-from loan_avengers.models.responses import IntakeAssessment
+from loan_avengers.models.responses import CreditAssessment
 from loan_avengers.utils.observability import Observability
 from loan_avengers.utils.persona_loader import PersonaLoader
 
-logger = Observability.get_logger("intake_agent")
+logger = Observability.get_logger("credit_agent")
 
 
-class IntakeAgent:
+class CreditAgent:
     """
-    Intake Agent - Application Validator for the Loan Processing System.
+    Credit Agent - Creditworthiness Analyst for the Loan Processing System.
 
     Responsibilities:
-    - Lightning-fast application data validation
-    - Smart routing to optimal specialist workflow
-    - Quality assurance setup for downstream specialists
-    - MCP tool integration for verification services
+    - Comprehensive credit history analysis and risk categorization
+    - Credit score validation and interpretation
+    - Debt-to-income ratio calculations and affordability assessment
+    - Identity verification through credit bureau integration
+    - MCP tool integration for credit reports and financial calculations
 
     Architecture:
     - Uses Azure AI Foundry with DefaultAzureCredential (Entra ID)
-    - MCP tools passed at agent creation (framework manages lifecycle)
+    - Two MCP tools: application_verification and financial_calculations
     - Used with SequentialBuilder for workflow orchestration
     - Structured logging with masked sensitive data
 
@@ -43,20 +44,21 @@ class IntakeAgent:
     def __init__(
         self,
         chat_client: AzureAIAgentClient | None = None,
-        temperature: float = 0.1,
-        max_tokens: int = 500,
+        temperature: float = 0.2,
+        max_tokens: int = 600,
     ):
         """
-        Initialize the Intake Agent.
+        Initialize the Credit Agent.
 
         Args:
             chat_client: Azure AI Agent client. If None, creates with
                 DefaultAzureCredential for Entra ID authentication.
             temperature: Sampling temperature for the model (low for consistency)
-            max_tokens: Maximum tokens for response (small for speed)
+            max_tokens: Maximum tokens for response
 
         Environment:
-            MCP_APPLICATION_VERIFICATION_URL: MCP server URL
+            MCP_APPLICATION_VERIFICATION_URL: MCP verification server URL
+            MCP_FINANCIAL_CALCULATIONS_URL: MCP calculations server URL
             AZURE_AI_PROJECT_ENDPOINT: Azure AI project endpoint
             AZURE_AI_MODEL_DEPLOYMENT_NAME: Model deployment name
         """
@@ -66,18 +68,31 @@ class IntakeAgent:
             self.chat_client = AzureAIAgentClient(async_credential=DefaultAzureCredential())
 
         # Load persona instructions from markdown file
-        self.instructions = PersonaLoader.load_persona("intake")
+        self.instructions = PersonaLoader.load_persona("credit")
 
-        # Create MCP tool for application verification server
-        mcp_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
-        if not mcp_url:
+        # Create MCP tools for credit assessment
+        verification_url = os.getenv("MCP_APPLICATION_VERIFICATION_URL")
+        if not verification_url:
             msg = "MCP_APPLICATION_VERIFICATION_URL environment variable not set"
             raise ValueError(msg)
 
-        self.mcp_tool = MCPStreamableHTTPTool(
+        self.verification_tool = MCPStreamableHTTPTool(
             name="application-verification",
-            url=mcp_url,
-            description="Application verification service for basic parameter validation",
+            url=verification_url,
+            description="Credit report and identity verification services",
+            load_tools=True,
+            load_prompts=False,
+        )
+
+        calculations_url = os.getenv("MCP_FINANCIAL_CALCULATIONS_URL")
+        if not calculations_url:
+            msg = "MCP_FINANCIAL_CALCULATIONS_URL environment variable not set"
+            raise ValueError(msg)
+
+        self.calculations_tool = MCPStreamableHTTPTool(
+            name="financial-calculations",
+            url=calculations_url,
+            description="Financial calculations for credit analysis",
             load_tools=True,
             load_prompts=False,
         )
@@ -86,7 +101,10 @@ class IntakeAgent:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        logger.info("IntakeAgent initialized", extra={"agent": "intake"})
+        logger.info(
+            "CreditAgent initialized",
+            extra={"agent": "credit", "mcp_servers": ["application_verification", "financial_calculations"]},
+        )
 
     def create_agent(self) -> ChatAgent:
         """
@@ -99,16 +117,16 @@ class IntakeAgent:
             Framework manages MCP tool lifecycle automatically.
         """
         return self.chat_client.create_agent(
-            name="Intake_Agent",
+            name="Credit_Assessor",
             instructions=self.instructions,
-            description="Sharp-eyed application validator with efficient humor",
+            description="Expert credit analyst with celebratory personality",
             model_config={
                 "temperature": self.temperature,
                 "max_tokens": self.max_tokens,
             },
-            response_format=IntakeAssessment,
-            tools=self.mcp_tool,
+            response_format=CreditAssessment,
+            tools=[self.verification_tool, self.calculations_tool],
         )
 
 
-__all__ = ["IntakeAgent"]
+__all__ = ["CreditAgent"]

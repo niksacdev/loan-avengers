@@ -16,15 +16,11 @@ import logging
 import os
 import uuid
 from contextvars import ContextVar
+from datetime import datetime
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
-try:
-    from agent_framework import get_logger
-    from agent_framework.observability import setup_observability
-
-    AGENT_FRAMEWORK_AVAILABLE = True
-except ImportError:
-    # Fallback to standard logging when agent_framework is not available
-    AGENT_FRAMEWORK_AVAILABLE = False
+from agent_framework.observability import setup_observability
 
 
 class Observability:
@@ -59,29 +55,52 @@ class Observability:
         enable_sensitive_data = os.getenv("ENABLE_SENSITIVE_DATA", "false").lower() == "true"
         log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 
-        # Configure basic Python logging first
-        logging.basicConfig(
-            level=getattr(logging, log_level),
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            force=True,  # Override any existing configuration
+        # Setup log directory and file
+        log_dir = Path(__file__).parent.parent.parent / "logs"
+        log_dir.mkdir(exist_ok=True)
+
+        # Create log filename with timestamp
+        log_filename = log_dir / f"loan_avengers_{datetime.now().strftime('%Y%m%d')}.log"
+
+        # Configure formatters
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+        # Configure root logger
+        root_logger = logging.getLogger()
+        root_logger.setLevel(getattr(logging, log_level))
+
+        # Remove existing handlers
+        root_logger.handlers.clear()
+
+        # Add console handler (stdout)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(getattr(logging, log_level))
+        console_handler.setFormatter(formatter)
+        root_logger.addHandler(console_handler)
+
+        # Add file handler with rotation (10MB per file, keep 5 backups)
+        file_handler = RotatingFileHandler(
+            log_filename,
+            maxBytes=10 * 1024 * 1024,  # 10MB
+            backupCount=5,
         )
+        file_handler.setLevel(getattr(logging, log_level))
+        file_handler.setFormatter(formatter)
+        root_logger.addHandler(file_handler)
 
-        # Initialize Agent Framework observability if enabled and available
-        enable_otel = os.getenv("ENABLE_OTEL", "false").lower() == "true"
+        # Log to file and stdio
+        logging.info(f"Logging to file: {log_filename}")
+        logging.info(f"Log level: {log_level}")
 
-        if AGENT_FRAMEWORK_AVAILABLE and enable_otel and app_insights_connection_string:
+        # Initialize Agent Framework observability if Application Insights is configured
+        if app_insights_connection_string:
             setup_observability(
                 applicationinsights_connection_string=app_insights_connection_string,
                 enable_sensitive_data=enable_sensitive_data,
-                enable_live_metrics=True,  # Enable live metrics for real-time monitoring
             )
-            logging.info("Agent Framework observability initialized with Application Insights (OTEL enabled)")
-        elif AGENT_FRAMEWORK_AVAILABLE and enable_otel:
-            logging.info("Agent Framework observability enabled but no Application Insights connection string")
-        elif AGENT_FRAMEWORK_AVAILABLE:
-            logging.info("Agent Framework observability disabled (ENABLE_OTEL=false)")
+            logging.info("Observability initialized with Application Insights and OpenTelemetry")
         else:
-            logging.info("Using standard Python logging (agent_framework not available)")
+            logging.info("Application Insights not configured - using stdio and file logging only")
 
         cls._initialized = True
 
@@ -99,17 +118,10 @@ class Observability:
         # Ensure observability is initialized
         cls.initialize()
 
-        if AGENT_FRAMEWORK_AVAILABLE:
-            # Agent Framework REQUIRES 'agent_framework' prefix (unit test verified)
-            # See test_logger_requirements.py - get_logger('test') raises error:
-            # "Logger name must start with 'agent_framework'"
-            # PR reviewer suggestion to remove prefix is INCORRECT
-            framework_logger_name = f"agent_framework.{name}"
-            return get_logger(framework_logger_name)
-        else:
-            # Fallback to standard logging when agent framework is not available
-            logger_name = f"loan_avengers.{name}"
-            return logging.getLogger(logger_name)
+        # Use loan_avengers prefix to distinguish our application logs
+        # from agent_framework's internal logs in Application Insights
+        logger_name = f"loan_avengers.{name}"
+        return logging.getLogger(logger_name)
 
     @classmethod
     def is_application_insights_enabled(cls) -> bool:
@@ -161,12 +173,12 @@ class Observability:
 
                     except (AttributeError, TypeError) as e:
                         # Log parsing issues at debug level but don't fail
-                        logging.debug(f"Failed to parse content for tool calls: {e}")
+                        logging.debug("Failed to parse content for tool calls: %s", e)
                         continue
 
         except (AttributeError, TypeError) as e:
             # Log response parsing issues but don't fail
-            logging.debug(f"Failed to extract tool calls from response: {e}")
+            logging.debug("Failed to extract tool calls from response: %s", e)
 
         return tool_calls
 
@@ -284,7 +296,9 @@ class Observability:
         total_tokens = input_tokens + output_tokens
 
         logger.info(
-            f"Token usage: {agent_name} ({total_tokens} tokens)",
+            "Token usage: %s (%d tokens)",
+            agent_name,
+            total_tokens,
             extra={
                 "event_type": "token_usage",
                 "agent_name": agent_name,

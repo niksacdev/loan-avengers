@@ -23,16 +23,19 @@ export function ApplicationPage() {
     progress: number;
   } | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [finalDecision, setFinalDecision] = useState<any>(null); // Store final decision from SSE
+  const [showCompilingAnimation, setShowCompilingAnimation] = useState(false); // Show compiling animation after Risk Analyzer
 
   const handleStartApplication = () => {
     setCurrentStep('conversation');
   };
 
-  const handleApplicationComplete = (applicationData: Record<string, any>, _session_id: string) => {
+  const handleApplicationComplete = (applicationData: Record<string, any>, session_id: string) => {
     console.log('Application completed by Cap-ital America:', applicationData);
+    console.log('Session ID:', session_id);
+
     // Convert Cap-ital America's collected data to LoanApplication format
-    setApplication(prev => ({
-      ...prev,
+    const fullApplication = {
       applicantName: applicationData.applicant_name,
       email: applicationData.email,
       phone: applicationData.phone,
@@ -41,9 +44,13 @@ export function ApplicationPage() {
       annualIncome: applicationData.annual_income,
       employmentStatus: applicationData.employment_status,
       status: 'submitted',
-    }));
+      session_id: session_id,  // Include session_id for SSE endpoint
+      ...applicationData,  // Include all collected data for API
+    };
 
-    // Move to processing step - the workflow will auto-progress
+    setApplication(fullApplication);
+
+    // Move to processing step - the SSE workflow will start automatically
     setCurrentStep('processing');
   };
 
@@ -51,57 +58,142 @@ export function ApplicationPage() {
     setConversationProgress(percentage);
   };
 
-  // Auto-progress through workflow stages when processing starts
-  // Total workflow: ~15 seconds (deliberate friction for better UX)
+  // Connect to SSE stream when processing starts
   useEffect(() => {
-    if (currentStep !== 'processing') {
+    if (currentStep !== 'processing' || !_application) {
+      console.log('SSE not starting:', { currentStep, hasApplication: !!_application });
       return;
     }
 
-    const messageSequence = [
-      // Cap-ital America - Complete (show for 2.5 seconds)
-      { delay: 0, message: { agentName: 'Cap-ital America', icon: '🦸‍♂️', text: '🛡️ Mission Complete! Your application data is validated and secure. Everything checks out!', state: 'COMPLETE' as const, progress: 25 } },
-      // Handoff to Scarlet Witch-Credit (1s transition with same agent name)
-      { delay: 2500, message: { agentName: 'Cap-ital America', icon: '🤝', text: '⚡ Assembling the team... Scarlet Witch-Credit is ready to analyze your credit magic!', state: 'TRANSITION' as const, progress: 25 } },
-      // Scarlet Witch-Credit - Processing (show for 2.5s)
-      { delay: 3500, message: { agentName: 'Scarlet Witch-Credit', icon: '🦸‍♀️', text: '✨ Channeling my powers to scan your credit reality... detecting financial patterns...', state: 'PROCESSING' as const, progress: 25 } },
-      // Scarlet Witch-Credit - Complete (show for 2.5s)
-      { delay: 6000, message: { agentName: 'Scarlet Witch-Credit', icon: '🦸‍♀️', text: '💫 Incredible! Your credit profile radiates strength. Payment history is powerful!', state: 'COMPLETE' as const, progress: 50 } },
-      // Handoff to Hawk-Income (1s transition)
-      { delay: 8500, message: { agentName: 'Scarlet Witch-Credit', icon: '🤝', text: '🎯 Passing the baton to Hawk-Income for precision income targeting...', state: 'TRANSITION' as const, progress: 50 } },
-      // Hawk-Income - Processing (show for 2.5s)
-      { delay: 9500, message: { agentName: 'Hawk-Income', icon: '🦸', text: '🏹 Eyes on target! Scanning income streams with hawk-eye precision...', state: 'PROCESSING' as const, progress: 50 } },
-      // Hawk-Income - Complete (show for 2.5s)
-      { delay: 12000, message: { agentName: 'Hawk-Income', icon: '🦸', text: '🎯 Bulls-eye! Income verified and locked on. Your debt-to-income ratio hits the mark!', state: 'COMPLETE' as const, progress: 75 } },
-      // Handoff to Doctor Strange-Risk (1s transition)
-      { delay: 14500, message: { agentName: 'Hawk-Income', icon: '🤝', text: '🔮 Calling in the Sorcerer Supreme for the final mystical risk assessment...', state: 'TRANSITION' as const, progress: 75 } },
-      // Doctor Strange-Risk - Processing (show for 2.5s)
-      { delay: 15500, message: { agentName: 'Doctor Strange-Risk', icon: '🦹‍♂️', text: '🌀 By the Vishanti! Peering through 14 million financial futures...', state: 'PROCESSING' as const, progress: 75 } },
-      // Doctor Strange-Risk - Complete (final message stays)
-      { delay: 18000, message: { agentName: 'Doctor Strange-Risk', icon: '🦹‍♂️', text: '✨ The Eye of Agamotto reveals success! All dimensions align perfectly. 🎉 APPROVED!', state: 'COMPLETE' as const, progress: 100 } },
-    ];
+    console.log('Starting SSE connection with application:', _application);
 
-    const updateMessage = (newMessage: typeof currentMessage) => {
-      // Trigger fade-out animation
-      setIsAnimating(true);
+    const connectToSSE = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+        const sseEndpoint = `${apiUrl}/api/workflow/stream`;
 
-      // After fade-out completes, update message and trigger fade-in
-      setTimeout(() => {
-        setCurrentMessage(newMessage);
-        setIsAnimating(false);
-      }, 200); // 200ms fade-out duration
+        console.log('Connecting to SSE endpoint:', sseEndpoint);
+        console.log('Sending data:', {
+          application_data: _application,
+          session_id: _application.session_id || 'unknown',
+        });
+
+        // Call API to start SSE workflow stream
+        const response = await fetch(sseEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            application_data: _application,
+            session_id: _application.session_id || 'unknown',
+          }),
+        });
+
+        console.log('SSE Response status:', response.status);
+
+        if (!response.ok) {
+          throw new Error(`SSE connection failed: ${response.status}`);
+        }
+
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (!reader) {
+          throw new Error('Response body is not readable');
+        }
+
+        // Read SSE stream
+        while (true) {
+          const { done, value } = await reader.read();
+
+          if (done) {
+            break;
+          }
+
+          // Decode chunk and parse SSE events
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const eventData = JSON.parse(line.substring(6));
+
+                // Map agent names to icons
+                const agentIcons: Record<string, string> = {
+                  'Intake_Agent': '🦸‍♂️',
+                  'Credit_Assessor': '🦸‍♀️',
+                  'Income_Verifier': '🦸',
+                  'Risk_Analyzer': '🦹‍♂️',
+                  'System': '⚠️',
+                };
+
+                // Map status to display state
+                const displayState = eventData.status === 'completed' ? 'COMPLETE' :
+                                   eventData.status === 'error' ? 'TRANSITION' :
+                                   'PROCESSING';
+
+                // Update message with real agent data
+                setCurrentMessage({
+                  agentName: eventData.agent_name,
+                  icon: agentIcons[eventData.agent_name] || '🤖',
+                  text: eventData.message,
+                  state: displayState as 'PROCESSING' | 'COMPLETE' | 'TRANSITION',
+                  progress: eventData.completion_percentage,
+                });
+
+                // Update progress bar
+                setProcessingProgress(eventData.completion_percentage);
+
+                // Show compiling animation when progress hits 100%
+                if (eventData.completion_percentage === 100 && !showCompilingAnimation && !finalDecision) {
+                  setShowCompilingAnimation(true);
+                }
+
+                // Store decision and navigate when completed
+                if (eventData.status === 'completed' && eventData.completion_percentage === 100) {
+                  // Store final decision from SSE event in session storage for ResultsPage
+                  if (eventData.assessment_data?.decision) {
+                    const decision = eventData.assessment_data.decision;
+                    sessionStorage.setItem('loanDecision', JSON.stringify(decision));
+                    console.log('Decision received:', decision);
+                    console.log('Decision reasoning field:', decision.reasoning);
+
+                    // After 2 seconds (compiling already showing), hide compiling and show the final decision
+                    setTimeout(() => {
+                      setShowCompilingAnimation(false);
+                      setFinalDecision(decision); // Store in component state for dynamic message
+                    }, 2000);
+
+                    // Navigate to results page after 7 seconds total (2s compiling + 5s viewing decision)
+                    setTimeout(() => {
+                      window.location.href = '/results';
+                    }, 7000);
+                  } else {
+                    console.error('No decision data in final event:', eventData);
+                  }
+                }
+              } catch (e) {
+                console.error('Failed to parse SSE event:', e);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('SSE connection error:', error);
+        setCurrentMessage({
+          agentName: 'System',
+          icon: '⚠️',
+          text: `Connection error: ${error}. Please refresh and try again.`,
+          state: 'TRANSITION',
+          progress: 0,
+        });
+      }
     };
 
-    const timers = messageSequence.map(({ delay, message }) =>
-      setTimeout(() => {
-        updateMessage(message);
-        // Update progress bar smoothly
-        setProcessingProgress(message.progress);
-      }, delay)
-    );
-
-    return () => timers.forEach(clearTimeout);
-  }, [currentStep]);
+    connectToSSE();
+  }, [currentStep, _application]);
 
   if (currentStep === 'intro') {
     return (
@@ -490,24 +582,81 @@ export function ApplicationPage() {
                   </div>
                 )}
 
-                {/* View Results Button - Show when workflow completes */}
-                {processingProgress === 100 && (
+                {/* Compiling Results Animation - Show immediately after completion */}
+                {showCompilingAnimation && (
                   <div className="mt-10 text-center animate-fade-in-up">
                     <div className="mb-6">
-                      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-success-500 to-success-600 rounded-full shadow-xl mb-4 animate-bounce-gentle">
-                        <span className="text-4xl">🎉</span>
+                      <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-xl mb-4">
+                        <span className="text-4xl animate-spin">⚙️</span>
                       </div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        <span className="bg-gradient-to-r from-success-600 to-success-700 bg-clip-text text-transparent">
-                          Application Approved!
+                        <span className="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                          Compiling Your Results...
                         </span>
                       </h3>
                       <p className="text-gray-600 text-lg">
-                        Your loan has been approved. View your results below!
+                        Finalizing your loan decision
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* View Results Button - Show when workflow completes */}
+                {processingProgress === 100 && finalDecision && (
+                  <div className="mt-10 text-center animate-fade-in-up">
+                    <div className="mb-6">
+                      {/* Dynamic icon based on decision status */}
+                      <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full shadow-xl mb-4 animate-bounce-gentle ${
+                        finalDecision.status === 'approved'
+                          ? 'bg-gradient-to-br from-success-500 to-success-600'
+                          : finalDecision.status === 'manual_review'
+                          ? 'bg-gradient-to-br from-warning-500 to-warning-600'
+                          : finalDecision.status === 'conditional'
+                          ? 'bg-gradient-to-br from-info-500 to-info-600'
+                          : 'bg-gradient-to-br from-error-500 to-error-600'
+                      }`}>
+                        <span className="text-4xl">
+                          {finalDecision.status === 'approved' ? '🎉' :
+                           finalDecision.status === 'manual_review' ? '🔍' :
+                           finalDecision.status === 'conditional' ? '✅' : '📋'}
+                        </span>
+                      </div>
+                      {/* Dynamic title based on decision status */}
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        <span className={`bg-gradient-to-r bg-clip-text text-transparent ${
+                          finalDecision.status === 'approved'
+                            ? 'from-success-600 to-success-700'
+                            : finalDecision.status === 'manual_review'
+                            ? 'from-warning-600 to-warning-700'
+                            : finalDecision.status === 'conditional'
+                            ? 'from-info-600 to-info-700'
+                            : 'from-gray-600 to-gray-700'
+                        }`}>
+                          {finalDecision.status === 'approved' ? 'Application Approved!' :
+                           finalDecision.status === 'manual_review' ? 'Manual Review Required' :
+                           finalDecision.status === 'conditional' ? 'Conditional Approval' :
+                           'Application Decision Ready'}
+                        </span>
+                      </h3>
+                      {/* Dynamic description based on decision status */}
+                      <p className="text-gray-600 text-lg">
+                        {finalDecision.status === 'approved'
+                          ? 'Your loan has been approved. View your results below!'
+                          : finalDecision.status === 'manual_review'
+                          ? 'Your application requires additional review. See details below.'
+                          : finalDecision.status === 'conditional'
+                          ? 'Your loan is conditionally approved. View conditions below.'
+                          : 'Your application has been processed. View details below.'}
                       </p>
                     </div>
                     <button
-                      onClick={() => window.location.href = '/results'}
+                      onClick={() => {
+                        // Ensure decision is in sessionStorage before navigating
+                        if (finalDecision) {
+                          sessionStorage.setItem('loanDecision', JSON.stringify(finalDecision));
+                          window.location.href = '/results';
+                        }
+                      }}
                       className="btn-primary text-lg px-10 py-5 shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300"
                     >
                       <span>View Your Results</span>

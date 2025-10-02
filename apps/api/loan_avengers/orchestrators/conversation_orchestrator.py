@@ -20,9 +20,9 @@ from collections.abc import AsyncGenerator
 from datetime import datetime
 from typing import Any
 
-from loan_avengers.agents.conversation_state_machine import ConversationStateMachine
 from loan_avengers.models.application import LoanApplication
 from loan_avengers.models.responses import ConversationResponse
+from loan_avengers.orchestrators.conversation_state_machine import ConversationStateMachine
 from loan_avengers.utils.observability import Observability
 
 logger = Observability.get_logger("conversation_orchestrator")

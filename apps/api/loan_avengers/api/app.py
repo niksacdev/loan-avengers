@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
 # OpenTelemetry auto-instrumentation for Azure Monitor
 try:
@@ -26,29 +27,22 @@ except ImportError:
     OTEL_AVAILABLE = False
     print("[WARN] OpenTelemetry packages not available - observability features limited")
 
-try:
-    from loan_avengers.agents.conversation_orchestrator import ConversationOrchestrator
-    from loan_avengers.agents.sequential_pipeline import SequentialPipeline
-
-    AGENT_FRAMEWORK_AVAILABLE = True
-    print("[DEBUG] ✅ Successfully imported real ConversationOrchestrator and SequentialPipeline")
-except ImportError as e:
-    # Use mock implementation when agent_framework is not available
-    print(f"[DEBUG] ❌ ImportError loading real implementations: {e}")
-    from loan_avengers.agents.mock_sequential_workflow import MockSequentialLoanWorkflow as ConversationOrchestrator
-    from loan_avengers.agents.mock_sequential_workflow import SequentialPipeline
-
-    AGENT_FRAMEWORK_AVAILABLE = False
-    print("[DEBUG] 📦 Loaded mock implementations")
 from loan_avengers.api.config import settings
 from loan_avengers.api.models import (
     ConversationRequest,
     ConversationResponse,
     HealthResponse,
+    ProcessingRequest,
     SessionInfo,
 )
 from loan_avengers.api.session_manager import session_manager
+from loan_avengers.orchestrators.conversation_orchestrator import ConversationOrchestrator
+from loan_avengers.orchestrators.sequential_pipeline import SequentialPipeline
 from loan_avengers.utils.observability import Observability
+
+# Initialize observability FIRST (before getting logger)
+# This sets up agent_framework observability + Application Insights
+Observability.initialize()
 
 logger = Observability.get_logger("api")
 
@@ -149,7 +143,7 @@ async def health_check() -> HealthResponse:
             "conversation_orchestrator": "available",
             "sequential_pipeline": "available",
             "session_manager": "available",
-            "agent_framework": "available" if AGENT_FRAMEWORK_AVAILABLE else "mock",
+            "agent_framework": "available",
         },
         timestamp=datetime.now(timezone.utc).isoformat(),
     )
@@ -184,7 +178,7 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
 
         # Get or create state machine for this session
         if session.state_machine is None:
-            from loan_avengers.agents.conversation_state_machine import ConversationStateMachine
+            from loan_avengers.orchestrators.conversation_state_machine import ConversationStateMachine
 
             session.state_machine = ConversationStateMachine()
             logger.info(f"Created new state machine for session {session.session_id[:8]}***")
@@ -210,55 +204,12 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
         # Update session with conversation data
         session.update_data(conversation_response.collected_data, conversation_response.completion_percentage)
 
-        # Phase 2: If ready for processing, trigger pipeline
+        # Phase 2: If ready for processing, return to UI to trigger SSE workflow
         if conversation_response.action == "ready_for_processing":
-            logger.info("Conversation complete, starting processing pipeline")
-
-            # Mark session as processing
-            session.mark_processing()
-
-            # Create LoanApplication from collected data
-            application = conversation_orchestrator.create_loan_application(conversation_response.collected_data)
-
-            # Process through automated sequential pipeline (streaming agent updates)
-            async for processing_update in sequential_pipeline.process_application(application):
-                # Update session processing status for adaptive timing
-                session.update_processing_status(
-                    agent_name=processing_update.agent_name,
-                    phase=processing_update.phase,
-                    message=processing_update.message,
-                    status=processing_update.status,
-                )
-
-                # Transform processing updates to conversation responses for UI
-                agent_update_response = ConversationResponse(
-                    agent_name=processing_update.agent_name,
-                    message=processing_update.message,
-                    action="processing",
-                    collected_data=conversation_response.collected_data,
-                    next_step=processing_update.phase,
-                    completion_percentage=100,  # Already at 100%, now processing
-                    metadata={
-                        "processing_phase": processing_update.phase,
-                        "agent": processing_update.agent_name,
-                    },
-                    session_id=session.session_id,
-                )
-
-                # Append to responses so UI receives all updates
-                conversation_responses.append(agent_update_response)
-
-                logger.info(
-                    "Processing update streamed to UI",
-                    extra={
-                        "phase": processing_update.phase,
-                        "agent": processing_update.agent_name,
-                        "message_preview": processing_update.message[:100],
-                    },
-                )
-
-                if processing_update.status == "completed":
-                    session.mark_completed()
+            logger.info(
+                "Conversation complete - UI will trigger workflow via SSE", extra={"session_id": session.session_id}
+            )
+            # Don't run workflow here - let UI call /api/workflow/stream for real-time updates
 
         # Get the latest response for the API response
         if conversation_responses:
@@ -271,14 +222,19 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
                     "session_id": session.session_id[:8] + "***",
                     "completion_percentage": latest_response.completion_percentage,
                     "agent": latest_response.agent_name,
+                    "collected_data_fields": (
+                        list(latest_response.collected_data.keys()) if latest_response.collected_data else []
+                    ),
                 },
             )
 
+            # Convert from models.responses.ConversationResponse to api.models.ConversationResponse
+            # Must explicitly pass collected_data to avoid Pydantic validation issues
             return ConversationResponse(
                 agent_name=latest_response.agent_name,
                 message=latest_response.message,
                 action=latest_response.action,
-                collected_data=latest_response.collected_data,
+                collected_data=dict(latest_response.collected_data),  # Explicitly convert to dict
                 next_step=latest_response.next_step,
                 completion_percentage=latest_response.completion_percentage,
                 quick_replies=latest_response.quick_replies if hasattr(latest_response, "quick_replies") else [],
@@ -314,6 +270,128 @@ async def handle_unified_chat(request: ConversationRequest) -> ConversationRespo
 
 
 # Old processing endpoint removed - unified workflow handles entire journey in /api/chat
+
+
+@app.post("/api/workflow/stream")
+async def stream_workflow_processing(request: ProcessingRequest):
+    """
+    Stream real-time agent updates via Server-Sent Events (SSE).
+
+    This endpoint triggers the SequentialPipeline workflow and streams
+    ProcessingUpdate events as each agent completes its assessment.
+
+    Pattern: Server-Sent Events (SSE)
+    - Client opens persistent connection
+    - Server streams updates in real-time
+    - Updates formatted as SSE: "data: {json}\n\n"
+
+    Args:
+        request: ProcessingRequest with application_data and session_id
+
+    Returns:
+        StreamingResponse: text/event-stream with real-time updates
+
+    Raises:
+        HTTPException: If processing fails or session not found
+
+    Example SSE format:
+        data: {"agent_name": "Intake_Agent", "message": "...", "phase": "validating", ...}
+
+        data: {"agent_name": "Credit_Assessor", "message": "...", "phase": "assessing_credit", ...}
+
+        data: {"agent_name": "Risk_Analyzer", "message": "...", "phase": "completed", ...}
+    """
+    try:
+        # Get session
+        session = session_manager.get_session(request.session_id)
+        if not session:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Session {request.session_id} not found")
+
+        # Mark session as processing
+        session.mark_processing()
+
+        # Create LoanApplication from collected data using orchestrator
+        # (same method as /api/chat endpoint uses)
+        application = conversation_orchestrator.create_loan_application(request.application_data)
+
+        logger.info(
+            "Starting SSE workflow stream",
+            extra={
+                "session_id": request.session_id,
+                "application_id": application.application_id,
+            },
+        )
+
+        async def event_generator():
+            """Generate SSE events from SequentialPipeline updates."""
+            try:
+                # Stream processing updates from SequentialPipeline
+                async for processing_update in sequential_pipeline.process_application(application):
+                    # Update session processing status
+                    session.update_processing_status(
+                        agent_name=processing_update.agent_name,
+                        phase=processing_update.phase,
+                        message=processing_update.message,
+                        status=processing_update.status,
+                    )
+
+                    # Format as SSE event
+                    event_data = processing_update.model_dump_json()
+                    yield f"data: {event_data}\n\n"
+
+                    logger.debug(
+                        "SSE event streamed",
+                        extra={
+                            "agent": processing_update.agent_name,
+                            "phase": processing_update.phase,
+                            "status": processing_update.status,
+                        },
+                    )
+
+                    # Mark session as completed if final update
+                    if processing_update.status == "completed":
+                        session.mark_completed()
+
+            except Exception as e:
+                logger.error(
+                    "Error in SSE event generator",
+                    extra={"error": str(e), "session_id": request.session_id},
+                    exc_info=True,
+                )
+                # Send error event
+                error_event = {
+                    "agent_name": "System",
+                    "message": f"Processing error: {str(e)}",
+                    "phase": "error",
+                    "completion_percentage": 0,
+                    "status": "error",
+                    "assessment_data": {},
+                    "metadata": {"error": str(e)},
+                }
+                yield f"data: {error_event}\n\n"
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",  # Disable nginx buffering
+            },
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            "Failed to start workflow stream",
+            extra={"error": str(e), "session_id": request.session_id},
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to start workflow stream: {str(e)}",
+        ) from e
 
 
 @app.get("/api/sessions/{session_id}", response_model=SessionInfo)

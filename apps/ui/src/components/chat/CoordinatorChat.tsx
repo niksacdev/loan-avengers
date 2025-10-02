@@ -43,13 +43,13 @@ export function CoordinatorChat({ onApplicationComplete, onProgressUpdate }: Coo
     };
     setMessages([welcomeMessage]);
 
-    // Set initial quick replies for home price
+    // Set initial quick replies for home price with randomization
     setQuickReplies([
-      {label: "Under $200K", value: "150000", icon: "🏠"},
-      {label: "$200K - $400K", value: "300000", icon: "🏡"},
-      {label: "$400K - $600K", value: "500000", icon: "🏘️"},
-      {label: "$600K - $1M", value: "800000", icon: "🏰"},
-      {label: "Over $1M", value: "1200000", icon: "🏛️"}
+      {label: "Under $200K", value: String(Math.floor(Math.random() * (200000 - 100000) + 100000)), icon: "🏠"},
+      {label: "$200K - $400K", value: String(Math.floor(Math.random() * (400000 - 200000) + 200000)), icon: "🏡"},
+      {label: "$400K - $600K", value: String(Math.floor(Math.random() * (600000 - 400000) + 400000)), icon: "🏘️"},
+      {label: "$600K - $1M", value: String(Math.floor(Math.random() * (1000000 - 600000) + 600000)), icon: "🏰"},
+      {label: "Over $1M", value: "1000000", icon: "🏛️"}
     ]);
   }, []);
 

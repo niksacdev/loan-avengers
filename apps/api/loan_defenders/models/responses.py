@@ -255,7 +255,7 @@ class FinalDecisionResponse(BaseModel):
     ProcessingWorkflow to communicate final decision to the UI.
     """
 
-    agent_name: str = Field(default="Loan Avengers Team", description="Name representing the decision-making entity")
+    agent_name: str = Field(default="Loan defenders Team", description="Name representing the decision-making entity")
     message: str = Field(..., description="Human-readable decision message")
     decision: str = Field(..., description="Final decision: APPROVED, REJECTED, NEEDS_MORE_INFO")
     loan_amount: float = Field(..., gt=0, description="Approved loan amount (if approved)")

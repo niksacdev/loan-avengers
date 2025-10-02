@@ -102,7 +102,7 @@ uv sync
 cp .env.example .env
 # Add your Azure OpenAI credentials
 
-# Test the Avengers
+# Test the defenders
 uv run test_intake_agent.py
 ```
 ## 📚 **Documentation**

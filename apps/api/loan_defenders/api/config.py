@@ -33,7 +33,7 @@ class APISettings(BaseSettings):
     )
 
     # API Server Settings
-    title: str = "Loan Avengers API"
+    title: str = "Loan defenders API"
     description: str = "Multi-agent loan processing system"
     version: str = "1.0.0"
     debug: bool = False

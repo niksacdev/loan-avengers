@@ -13,8 +13,8 @@ agentService:
 
 # Container Registry
 containerRegistry:
-  name: loandefendersprodacr
-  loginServer: loandefendersprodacr.azurecr.io
+  name: loandefenderssprodacr
+  loginServer: loandefenderssprodacr.azurecr.io
   replication:
     enabled: true
     regions: [eastus, westus, westeurope]

@@ -1,5 +1,5 @@
 """
-API layer for the Loan Avengers multi-agent system.
+API layer for the Loan defenders multi-agent system.
 
 This module provides FastAPI endpoints for:
 - Coordinator conversation handling

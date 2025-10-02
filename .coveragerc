@@ -2,13 +2,13 @@
 # This file provides additional coverage configuration beyond pyproject.toml
 
 [run]
-source = loan_avengers
+source = loan_defenders
 branch = True
 parallel = True
 concurrency = multiprocessing
 
 # Omit these files from coverage
-omit = 
+omit =
     */tests/*
     */test_*.py
     */__pycache__/*
@@ -44,10 +44,10 @@ exclude_lines =
 
 [html]
 directory = htmlcov
-title = Loan Avengers - Test Coverage Report
+title = Loan defenders - Test Coverage Report
 
 [xml]
 output = coverage.xml
 
-[json] 
+[json]
 output = coverage.json

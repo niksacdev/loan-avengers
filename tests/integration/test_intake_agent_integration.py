@@ -26,7 +26,7 @@ class TestIntakeAgentMCPIntegration:
         # Start the MCP server process
         process = subprocess.Popen(
             ["uv", "run", "python", "-m", "loan_defenders.tools.mcp_servers.application_verification.server"],
-            cwd="/Users/niksac/github/loan-avengers",
+            cwd="/Users/niksac/github/loan-defenders",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )

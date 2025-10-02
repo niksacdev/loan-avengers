@@ -1,5 +1,5 @@
 """
-API models for the Loan Avengers FastAPI endpoints.
+API models for the Loan defenders FastAPI endpoints.
 
 These models define the request/response schemas for the unified
 chat API that handles the complete loan application workflow.

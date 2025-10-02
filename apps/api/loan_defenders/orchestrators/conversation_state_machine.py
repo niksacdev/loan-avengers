@@ -152,7 +152,7 @@ class ConversationStateMachine:
             elif loan_amount < 1000000:
                 price_reaction = "Whoa! $600K-$1M? Someone's bringing out the big guns! 🏰💥"
             else:
-                price_reaction = "Holy shield! Over $1M? You're going for the Avengers Tower! 🏛️🌟"
+                price_reaction = "Holy shield! Over $1M? You're going for the defenders Tower! 🏛️🌟"
 
             return ConversationResponse(
                 agent_name="Cap-ital America",
@@ -255,7 +255,7 @@ class ConversationStateMachine:
 
             # Dynamic message based on income
             if annual_income >= 500000:
-                income_reaction = "💎 WOW! > $500K income? You're definitely Avengers-level! 🌟"
+                income_reaction = "💎 WOW! > $500K income? You're definitely defenders-level! 🌟"
             elif annual_income >= 250000:
                 income_reaction = "💸 Fantastic! $250K-$500K - you're locked and loaded! 🎯"
             elif annual_income >= 100000:
@@ -272,7 +272,7 @@ class ConversationStateMachine:
                     f"• Your full name\n"
                     f"• Email address\n"
                     f"• Last 4 digits of your ID\n\n"
-                    f"✨ **Testing?** Use the 'Generate Dummy Data' button for instant Avengers-themed test data!"
+                    f"✨ **Testing?** Use the 'Generate Dummy Data' button for instant defenders-themed test data!"
                 ),
                 action="collect_info",
                 collected_data=self.collected_data,

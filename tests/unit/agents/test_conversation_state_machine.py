@@ -8,7 +8,7 @@ Tests cover:
 - Response generation
 """
 
-from loan_defenders.agents.conversation_state_machine import (
+from loan_defenders.orchestrators.conversation_state_machine import (
     ConversationState,
     ConversationStateMachine,
 )

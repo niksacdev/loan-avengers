@@ -1,5 +1,5 @@
 """
-FastAPI application for the Loan Avengers multi-agent system.
+FastAPI application for the Loan defenders multi-agent system.
 
 This API provides endpoints for:
 - Coordinator conversation handling with AgentThread persistence

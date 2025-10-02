@@ -156,7 +156,7 @@ This guide explains how to perform end-to-end testing of the Loan Defenders UI a
 **Steps**:
 1. Complete conversation to personal info form
 2. Click "Generate Dummy Data" button
-3. Verify form fields are populated with Avengers-themed data
+3. Verify form fields are populated with defenders-themed data
 4. Submit form
 5. Verify processing works with generated data
 

@@ -12,8 +12,8 @@ agentService:
 
 # Container Registry
 containerRegistry:
-  name: loandefenderssdevacr
-  loginServer: loandefenderssdevacr.azurecr.io
+  name: loandefendersdevacr
+  loginServer: loandefendersdevacr.azurecr.io
 
 # API Backend connection
 apiBackend:

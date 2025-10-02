@@ -44,7 +44,7 @@ exclude_lines =
 
 [html]
 directory = htmlcov
-title = Loan defenders - Test Coverage Report
+title = Loan Defenders - Test Coverage Report
 
 [xml]
 output = coverage.xml

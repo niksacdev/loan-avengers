@@ -200,17 +200,17 @@ log_info ""
 log_info "Deploying $DEPLOYMENT_STAGE stage... (this may take 5-15 minutes)"
 log_info ""
 
-# Use --output none to avoid response consumption issues
-# Deployment status will be checked afterward
+# Suppress stderr to avoid Azure CLI bug with Bicep warnings
+# The deployment will still run and errors will be captured
 az deployment group create \
     --name "$DEPLOYMENT_NAME" \
     --resource-group "$RESOURCE_GROUP" \
     --template-file "$TEMPLATE_FILE" \
     --parameters "@$PARAMETERS_FILE" \
     --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --output none
+    --only-show-errors 2>&1 | grep -v "Warning" | grep -v "InsecureRequestWarning" | grep -v "urllib3" || true
 
-DEPLOYMENT_EXIT_CODE=$?
+DEPLOYMENT_EXIT_CODE=${PIPESTATUS[0]}
 
 if [ $DEPLOYMENT_EXIT_CODE -eq 0 ]; then
     log_success "Deployment completed successfully!"

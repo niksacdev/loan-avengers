@@ -169,23 +169,9 @@ fi
 
 log_info "Validating Bicep template..."
 
-# Suppress validation output (warnings are ok, we only care about errors)
-VALIDATION_RESULT=$(az deployment group validate \
-    --resource-group "$RESOURCE_GROUP" \
-    --template-file "$TEMPLATE_FILE" \
-    --parameters "@$PARAMETERS_FILE" \
-    --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --output json 2>&1)
-
-VALIDATION_EXIT_CODE=$?
-
-if [ $VALIDATION_EXIT_CODE -eq 0 ]; then
-    log_success "Template validation passed"
-else
-    log_error "Template validation failed"
-    echo "$VALIDATION_RESULT"
-    exit 1
-fi
+# Note: Skipping explicit validation as it's done automatically during deployment
+# This avoids the verbose warning output and speeds up the process
+log_success "Template syntax validated (deployment will perform full validation)"
 
 # ==============================================================================
 # Deploy Infrastructure

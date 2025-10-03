@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus2"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "vnetName": {
+      "value": "loan-defenders-dev-vnet"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "containerAppsSubnetPrefix": {
+      "value": "10.0.1.0/23"
+    },
+    "apimSubnetPrefix": {
+      "value": "10.0.3.0/24"
+    },
+    "privateEndpointsSubnetPrefix": {
+      "value": "10.0.4.0/24"
+    },
+    "deployPrivateEndpoints": {
+      "value": false
+    }
+  }
+}

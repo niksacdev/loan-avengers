@@ -55,9 +55,10 @@ resource monitorDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   tags: tags
 }
 
-// Azure OpenAI Private DNS Zone
-resource openaiDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.openai.azure.com'
+// Azure AI Foundry (Projects) Private DNS Zone
+// Note: AI Foundry uses Azure ML infrastructure for project endpoints
+resource aiFoundryDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.api.azureml.ms'
   location: 'global'
   tags: tags
 }
@@ -118,9 +119,9 @@ resource monitorDnsLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2
   }
 }
 
-resource openaiDnsLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: openaiDnsZone
-  name: '${vnetName}-openai-link'
+resource aiFoundryDnsLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: aiFoundryDnsZone
+  name: '${vnetName}-aifoundry-link'
   location: 'global'
   tags: tags
   properties: {
@@ -147,8 +148,8 @@ output aiServicesDnsZoneId string = aiServicesDnsZone.id
 @description('Monitor DNS Zone resource ID')
 output monitorDnsZoneId string = monitorDnsZone.id
 
-@description('OpenAI DNS Zone resource ID')
-output openaiDnsZoneId string = openaiDnsZone.id
+@description('Azure AI Foundry DNS Zone resource ID')
+output aiFoundryDnsZoneId string = aiFoundryDnsZone.id
 
 @description('Key Vault DNS Zone name')
 output keyVaultDnsZoneName string = keyVaultDnsZone.name
@@ -162,5 +163,5 @@ output aiServicesDnsZoneName string = aiServicesDnsZone.name
 @description('Monitor DNS Zone name')
 output monitorDnsZoneName string = monitorDnsZone.name
 
-@description('OpenAI DNS Zone name')
-output openaiDnsZoneName string = openaiDnsZone.name
+@description('Azure AI Foundry DNS Zone name')
+output aiFoundryDnsZoneName string = aiFoundryDnsZone.name

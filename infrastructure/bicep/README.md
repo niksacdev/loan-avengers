@@ -115,7 +115,7 @@ Container App connects to Key Vault via private IP ✅
 | **Blob Storage** | `*.blob.core.windows.net` | `privatelink.blob.core.windows.net` | Document storage |
 | **Azure AI** | `*.cognitiveservices.azure.com` | `privatelink.cognitiveservices.azure.com` | Content Safety, AI services |
 | **App Insights** | `*.monitor.azure.com` | `privatelink.monitor.azure.com` | Telemetry, logs |
-| **Azure OpenAI** | `*.openai.azure.com` | `privatelink.openai.azure.com` | LLM inference |
+| **Azure AI Foundry** | `*.api.azureml.ms` | `privatelink.api.azureml.ms` | AI Projects, GPT-4 inference |
 
 **Why pre-create DNS zones?**
 - ✅ **Ready for private endpoints**: When you deploy private endpoints later, DNS just works

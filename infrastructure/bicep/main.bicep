@@ -54,8 +54,8 @@ param aiServicesId string = ''
 @description('Application Insights resource ID (optional, leave empty if not yet created)')
 param appInsightsId string = ''
 
-@description('Azure OpenAI resource ID (optional, leave empty if not yet created)')
-param openAIId string = ''
+@description('Azure AI Foundry Project resource ID (optional, leave empty if not yet created)')
+param aiFoundryProjectId string = ''
 
 @description('Deploy private endpoints (set to false if Azure resources don\'t exist yet)')
 param deployPrivateEndpoints bool = false
@@ -113,12 +113,12 @@ module privateEndpoints 'modules/private-endpoints.bicep' = if (deployPrivateEnd
     storageAccountId: storageAccountId
     aiServicesId: aiServicesId
     appInsightsId: appInsightsId
-    openAIId: openAIId
+    aiFoundryProjectId: aiFoundryProjectId
     keyVaultDnsZoneId: privateDns.outputs.keyVaultDnsZoneId
     blobDnsZoneId: privateDns.outputs.blobDnsZoneId
     aiServicesDnsZoneId: privateDns.outputs.aiServicesDnsZoneId
     monitorDnsZoneId: privateDns.outputs.monitorDnsZoneId
-    openaiDnsZoneId: privateDns.outputs.openaiDnsZoneId
+    aiFoundryDnsZoneId: privateDns.outputs.aiFoundryDnsZoneId
     tags: commonTags
   }
 }
@@ -154,8 +154,8 @@ output aiServicesDnsZoneId string = privateDns.outputs.aiServicesDnsZoneId
 @description('Monitor DNS Zone ID')
 output monitorDnsZoneId string = privateDns.outputs.monitorDnsZoneId
 
-@description('OpenAI DNS Zone ID')
-output openaiDnsZoneId string = privateDns.outputs.openaiDnsZoneId
+@description('Azure AI Foundry DNS Zone ID')
+output aiFoundryDnsZoneId string = privateDns.outputs.aiFoundryDnsZoneId
 
 @description('Deployment completed successfully')
 output deploymentComplete bool = true

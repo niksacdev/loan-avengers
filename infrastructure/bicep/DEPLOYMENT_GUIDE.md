@@ -209,7 +209,7 @@ After Phase 1 deployment succeeds, you'll deploy:
 2. **Storage Account** (for documents)
 3. **Azure AI Services** (for Content Safety)
 4. **Application Insights** (for monitoring)
-5. **Azure OpenAI** (for agents)
+5. **Azure AI Foundry Projects** (for GPT-4 and agent AI models)
 
 ### Issue #58 - Container Apps
 1. **Container Apps Environment** (in VNet)

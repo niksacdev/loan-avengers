@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.5.1644",
-      "templateHash": "9387662855836006551"
+      "templateHash": "13709963842388150217"
     }
   },
   "parameters": {
@@ -91,11 +91,11 @@
         "description": "Application Insights resource ID (optional, leave empty if not yet created)"
       }
     },
-    "openAIId": {
+    "aiFoundryProjectId": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Azure OpenAI resource ID (optional, leave empty if not yet created)"
+        "description": "Azure AI Foundry Project resource ID (optional, leave empty if not yet created)"
       }
     },
     "deployPrivateEndpoints": {
@@ -597,7 +597,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.38.5.1644",
-              "templateHash": "16281124219084296880"
+              "templateHash": "1004000666444166716"
             }
           },
           "parameters": {
@@ -657,7 +657,7 @@
             {
               "type": "Microsoft.Network/privateDnsZones",
               "apiVersion": "2020-06-01",
-              "name": "privatelink.openai.azure.com",
+              "name": "privatelink.api.azureml.ms",
               "location": "global",
               "tags": "[parameters('tags')]"
             },
@@ -728,7 +728,7 @@
             {
               "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
               "apiVersion": "2020-06-01",
-              "name": "[format('{0}/{1}', 'privatelink.openai.azure.com', format('{0}-openai-link', parameters('vnetName')))]",
+              "name": "[format('{0}/{1}', 'privatelink.api.azureml.ms', format('{0}-aifoundry-link', parameters('vnetName')))]",
               "location": "global",
               "tags": "[parameters('tags')]",
               "properties": {
@@ -738,7 +738,7 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.openai.azure.com')]"
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.api.azureml.ms')]"
               ]
             }
           ],
@@ -771,12 +771,12 @@
               },
               "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.monitor.azure.com')]"
             },
-            "openaiDnsZoneId": {
+            "aiFoundryDnsZoneId": {
               "type": "string",
               "metadata": {
-                "description": "OpenAI DNS Zone resource ID"
+                "description": "Azure AI Foundry DNS Zone resource ID"
               },
-              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.openai.azure.com')]"
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.api.azureml.ms')]"
             },
             "keyVaultDnsZoneName": {
               "type": "string",
@@ -806,12 +806,12 @@
               },
               "value": "privatelink.monitor.azure.com"
             },
-            "openaiDnsZoneName": {
+            "aiFoundryDnsZoneName": {
               "type": "string",
               "metadata": {
-                "description": "OpenAI DNS Zone name"
+                "description": "Azure AI Foundry DNS Zone name"
               },
-              "value": "privatelink.openai.azure.com"
+              "value": "privatelink.api.azureml.ms"
             }
           }
         }
@@ -849,8 +849,8 @@
           "appInsightsId": {
             "value": "[parameters('appInsightsId')]"
           },
-          "openAIId": {
-            "value": "[parameters('openAIId')]"
+          "aiFoundryProjectId": {
+            "value": "[parameters('aiFoundryProjectId')]"
           },
           "keyVaultDnsZoneId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.keyVaultDnsZoneId.value]"
@@ -864,8 +864,8 @@
           "monitorDnsZoneId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.monitorDnsZoneId.value]"
           },
-          "openaiDnsZoneId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.openaiDnsZoneId.value]"
+          "aiFoundryDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.aiFoundryDnsZoneId.value]"
           },
           "tags": {
             "value": "[variables('commonTags')]"
@@ -878,7 +878,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.38.5.1644",
-              "templateHash": "707616459842325040"
+              "templateHash": "13311437667238631633"
             }
           },
           "parameters": {
@@ -923,11 +923,11 @@
                 "description": "Application Insights resource ID (if exists)"
               }
             },
-            "openAIId": {
+            "aiFoundryProjectId": {
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "Azure OpenAI resource ID (if exists)"
+                "description": "Azure AI Foundry Project resource ID (if exists)"
               }
             },
             "keyVaultDnsZoneId": {
@@ -954,10 +954,10 @@
                 "description": "Monitor DNS Zone ID"
               }
             },
-            "openaiDnsZoneId": {
+            "aiFoundryDnsZoneId": {
               "type": "string",
               "metadata": {
-                "description": "OpenAI DNS Zone ID"
+                "description": "Azure AI Foundry DNS Zone ID"
               }
             },
             "tags": {
@@ -1146,10 +1146,10 @@
               ]
             },
             {
-              "condition": "[not(empty(parameters('openAIId')))]",
+              "condition": "[not(empty(parameters('aiFoundryProjectId')))]",
               "type": "Microsoft.Network/privateEndpoints",
               "apiVersion": "2023-05-01",
-              "name": "loan-defenders-openai-pe",
+              "name": "loan-defenders-aifoundry-pe",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
               "properties": {
@@ -1158,11 +1158,11 @@
                 },
                 "privateLinkServiceConnections": [
                   {
-                    "name": "openai-pe-connection",
+                    "name": "aifoundry-pe-connection",
                     "properties": {
-                      "privateLinkServiceId": "[parameters('openAIId')]",
+                      "privateLinkServiceId": "[parameters('aiFoundryProjectId')]",
                       "groupIds": [
-                        "account"
+                        "amlworkspace"
                       ]
                     }
                   }
@@ -1170,22 +1170,22 @@
               }
             },
             {
-              "condition": "[not(empty(parameters('openAIId')))]",
+              "condition": "[not(empty(parameters('aiFoundryProjectId')))]",
               "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
               "apiVersion": "2023-05-01",
-              "name": "[format('{0}/{1}', 'loan-defenders-openai-pe', 'default')]",
+              "name": "[format('{0}/{1}', 'loan-defenders-aifoundry-pe', 'default')]",
               "properties": {
                 "privateDnsZoneConfigs": [
                   {
-                    "name": "privatelink-openai-azure-com",
+                    "name": "privatelink-api-azureml-ms",
                     "properties": {
-                      "privateDnsZoneId": "[parameters('openaiDnsZoneId')]"
+                      "privateDnsZoneId": "[parameters('aiFoundryDnsZoneId')]"
                     }
                   }
                 ]
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-openai-pe')]"
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-aifoundry-pe')]"
               ]
             }
           ],
@@ -1218,12 +1218,12 @@
               },
               "value": "[if(not(empty(parameters('appInsightsId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-appinsights-pe'), '')]"
             },
-            "openAIPrivateEndpointId": {
+            "aiFoundryPrivateEndpointId": {
               "type": "string",
               "metadata": {
-                "description": "Azure OpenAI Private Endpoint ID"
+                "description": "Azure AI Foundry Project Private Endpoint ID"
               },
-              "value": "[if(not(empty(parameters('openAIId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-openai-pe'), '')]"
+              "value": "[if(not(empty(parameters('aiFoundryProjectId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-aifoundry-pe'), '')]"
             }
           }
         }
@@ -1298,12 +1298,12 @@
       },
       "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.monitorDnsZoneId.value]"
     },
-    "openaiDnsZoneId": {
+    "aiFoundryDnsZoneId": {
       "type": "string",
       "metadata": {
-        "description": "OpenAI DNS Zone ID"
+        "description": "Azure AI Foundry DNS Zone ID"
       },
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.openaiDnsZoneId.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.aiFoundryDnsZoneId.value]"
     },
     "deploymentComplete": {
       "type": "bool",

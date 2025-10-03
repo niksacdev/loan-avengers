@@ -23,8 +23,8 @@ param aiServicesId string = ''
 @description('Application Insights resource ID (if exists)')
 param appInsightsId string = ''
 
-@description('Azure OpenAI resource ID (if exists)')
-param openAIId string = ''
+@description('Azure AI Foundry Project resource ID (if exists)')
+param aiFoundryProjectId string = ''
 
 @description('Key Vault DNS Zone ID')
 param keyVaultDnsZoneId string
@@ -38,8 +38,8 @@ param aiServicesDnsZoneId string
 @description('Monitor DNS Zone ID')
 param monitorDnsZoneId string
 
-@description('OpenAI DNS Zone ID')
-param openaiDnsZoneId string
+@description('Azure AI Foundry DNS Zone ID')
+param aiFoundryDnsZoneId string
 
 @description('Tags for resources')
 param tags object = {
@@ -208,9 +208,9 @@ resource appInsightsDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZ
   }
 }
 
-// Azure OpenAI Private Endpoint (only if OpenAI exists)
-resource openAIPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = if (!empty(openAIId)) {
-  name: 'loan-defenders-openai-pe'
+// Azure AI Foundry Project Private Endpoint (only if AI Foundry Project exists)
+resource aiFoundryPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = if (!empty(aiFoundryProjectId)) {
+  name: 'loan-defenders-aifoundry-pe'
   location: location
   tags: tags
   properties: {
@@ -219,11 +219,11 @@ resource openAIPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' =
     }
     privateLinkServiceConnections: [
       {
-        name: 'openai-pe-connection'
+        name: 'aifoundry-pe-connection'
         properties: {
-          privateLinkServiceId: openAIId
+          privateLinkServiceId: aiFoundryProjectId
           groupIds: [
-            'account'
+            'amlworkspace'
           ]
         }
       }
@@ -231,16 +231,16 @@ resource openAIPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-05-01' =
   }
 }
 
-// Azure OpenAI Private DNS Zone Group
-resource openAIDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = if (!empty(openAIId)) {
-  parent: openAIPrivateEndpoint
+// Azure AI Foundry Private DNS Zone Group
+resource aiFoundryDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = if (!empty(aiFoundryProjectId)) {
+  parent: aiFoundryPrivateEndpoint
   name: 'default'
   properties: {
     privateDnsZoneConfigs: [
       {
-        name: 'privatelink-openai-azure-com'
+        name: 'privatelink-api-azureml-ms'
         properties: {
-          privateDnsZoneId: openaiDnsZoneId
+          privateDnsZoneId: aiFoundryDnsZoneId
         }
       }
     ]
@@ -263,5 +263,5 @@ output aiServicesPrivateEndpointId string = !empty(aiServicesId) ? aiServicesPri
 @description('Application Insights Private Endpoint ID')
 output appInsightsPrivateEndpointId string = !empty(appInsightsId) ? appInsightsPrivateEndpoint.id : ''
 
-@description('Azure OpenAI Private Endpoint ID')
-output openAIPrivateEndpointId string = !empty(openAIId) ? openAIPrivateEndpoint.id : ''
+@description('Azure AI Foundry Project Private Endpoint ID')
+output aiFoundryPrivateEndpointId string = !empty(aiFoundryProjectId) ? aiFoundryPrivateEndpoint.id : ''

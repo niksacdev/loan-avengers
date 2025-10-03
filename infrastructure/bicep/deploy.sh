@@ -197,20 +197,36 @@ DEPLOYMENT_NAME="${DEPLOYMENT_STAGE}-deployment-$(date +%Y%m%d-%H%M%S)"
 
 log_info "Deployment name: $DEPLOYMENT_NAME"
 log_info ""
+
+# Workaround for Azure CLI "content already consumed" bug:
+# Compile Bicep to ARM JSON first, then deploy JSON (no warnings)
+log_info "Compiling Bicep to ARM template..."
+COMPILED_TEMPLATE="/tmp/${DEPLOYMENT_NAME}.json"
+az bicep build --file "$TEMPLATE_FILE" --outfile "$COMPILED_TEMPLATE" 2>&1 | grep -v "Warning" | grep -v "InsecureRequestWarning" || true
+
+if [ ! -f "$COMPILED_TEMPLATE" ]; then
+    log_error "Failed to compile Bicep template"
+    exit 1
+fi
+
+log_success "Bicep compiled to ARM JSON"
+log_info ""
 log_info "Deploying $DEPLOYMENT_STAGE stage... (this may take 5-15 minutes)"
 log_info ""
 
-# Suppress stderr to avoid Azure CLI bug with Bicep warnings
-# The deployment will still run and errors will be captured
+# Deploy the compiled ARM JSON template (no Bicep warnings)
 az deployment group create \
     --name "$DEPLOYMENT_NAME" \
     --resource-group "$RESOURCE_GROUP" \
-    --template-file "$TEMPLATE_FILE" \
+    --template-file "$COMPILED_TEMPLATE" \
     --parameters "@$PARAMETERS_FILE" \
     --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --only-show-errors 2>&1 | grep -v "Warning" | grep -v "InsecureRequestWarning" | grep -v "urllib3" || true
+    --only-show-errors
 
-DEPLOYMENT_EXIT_CODE=${PIPESTATUS[0]}
+DEPLOYMENT_EXIT_CODE=$?
+
+# Clean up compiled template
+rm -f "$COMPILED_TEMPLATE"
 
 if [ $DEPLOYMENT_EXIT_CODE -eq 0 ]; then
     log_success "Deployment completed successfully!"

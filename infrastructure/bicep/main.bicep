@@ -1,13 +1,21 @@
 // ==============================================================================
 // Main Infrastructure Deployment - Loan Defenders
 // ==============================================================================
-// Deploys enterprise VNet infrastructure with private endpoints
+// CI/CD-ready staged deployment with conditional execution
+//
+// Stages:
+//   - foundation: VNet, NSGs, Private DNS zones
+//   - security: Key Vault, Storage, Managed Identity
+//   - ai: AI Services, AI Foundry Project, Monitoring
+//   - apps: Container Apps Environment + Apps
+//   - all: Deploy everything (default)
 //
 // Usage:
-//   az deployment group create \
-//     --resource-group loan-defenders-rg \
-//     --template-file main.bicep \
-//     --parameters main.parameters.json
+//   # Deploy specific stage
+//   ./deploy.sh dev loan-defenders-dev-rg --stage foundation
+//
+//   # Deploy everything (default)
+//   ./deploy.sh dev loan-defenders-dev-rg
 // ==============================================================================
 
 targetScope = 'resourceGroup'
@@ -27,8 +35,18 @@ param location string = resourceGroup().location
 ])
 param environment string = 'dev'
 
+@description('Deployment stage (foundation, security, ai, apps, all)')
+@allowed([
+  'foundation'
+  'security'
+  'ai'
+  'apps'
+  'all'
+])
+param deploymentStage string = 'all'
+
 @description('VNet name')
-param vnetName string = 'loan-defenders-vnet'
+param vnetName string = 'loan-defenders-${environment}-vnet'
 
 @description('VNet address space')
 param vnetAddressPrefix string = '10.0.0.0/16'
@@ -42,24 +60,6 @@ param apimSubnetPrefix string = '10.0.3.0/24'
 @description('Private Endpoints subnet prefix')
 param privateEndpointsSubnetPrefix string = '10.0.4.0/24'
 
-@description('Key Vault resource ID (optional, leave empty if not yet created)')
-param keyVaultId string = ''
-
-@description('Storage Account resource ID (optional, leave empty if not yet created)')
-param storageAccountId string = ''
-
-@description('AI Services resource ID (optional, leave empty if not yet created)')
-param aiServicesId string = ''
-
-@description('Application Insights resource ID (optional, leave empty if not yet created)')
-param appInsightsId string = ''
-
-@description('Azure AI Foundry Project resource ID (optional, leave empty if not yet created)')
-param aiFoundryProjectId string = ''
-
-@description('Deploy private endpoints (set to false if Azure resources don\'t exist yet)')
-param deployPrivateEndpoints bool = false
-
 // ==============================================================================
 // Variables
 // ==============================================================================
@@ -68,57 +68,121 @@ var commonTags = {
   environment: environment
   project: 'loan-defenders'
   managedBy: 'bicep'
+  deploymentStage: deploymentStage
 }
 
+// Stage enablement flags
+var deployFoundation = deploymentStage == 'foundation' || deploymentStage == 'all'
+var deploySecurity = deploymentStage == 'security' || deploymentStage == 'all'
+var deployAI = deploymentStage == 'ai' || deploymentStage == 'all'
+var deployApps = deploymentStage == 'apps' || deploymentStage == 'all'
+
 // ==============================================================================
-// Module: VNet with Subnets and NSGs
+// Stage 1: Foundation (VNet, NSGs, Private DNS zones)
 // ==============================================================================
 
-module vnet 'modules/vnet.bicep' = {
-  name: 'vnet-deployment'
+module foundation 'modules/foundation.bicep' = if (deployFoundation) {
+  name: 'foundation-deployment'
   params: {
     location: location
+    environment: environment
     vnetName: vnetName
     vnetAddressPrefix: vnetAddressPrefix
     containerAppsSubnetPrefix: containerAppsSubnetPrefix
     apimSubnetPrefix: apimSubnetPrefix
     privateEndpointsSubnetPrefix: privateEndpointsSubnetPrefix
+    deployPrivateEndpoints: false // Private endpoints created by security/ai stages
     tags: commonTags
   }
 }
 
 // ==============================================================================
-// Module: Private DNS Zones
+// Stage 2: Security (Key Vault, Storage, Managed Identity)
 // ==============================================================================
 
-module privateDns 'modules/private-dns.bicep' = {
-  name: 'private-dns-deployment'
-  params: {
-    vnetId: vnet.outputs.vnetId
-    vnetName: vnet.outputs.vnetName
-    tags: commonTags
-  }
+// Reference existing VNet for security stage (if foundation not deployed)
+resource existingVnet 'Microsoft.Network/virtualNetworks@2023-05-01' existing = if (!deployFoundation && deploySecurity) {
+  name: vnetName
 }
 
-// ==============================================================================
-// Module: Private Endpoints (optional, deploy after Azure resources exist)
-// ==============================================================================
-
-module privateEndpoints 'modules/private-endpoints.bicep' = if (deployPrivateEndpoints) {
-  name: 'private-endpoints-deployment'
+module security 'modules/security.bicep' = if (deploySecurity) {
+  name: 'security-deployment'
   params: {
-    privateEndpointsSubnetId: vnet.outputs.privateEndpointsSubnetId
     location: location
-    keyVaultId: keyVaultId
-    storageAccountId: storageAccountId
-    aiServicesId: aiServicesId
-    appInsightsId: appInsightsId
-    aiFoundryProjectId: aiFoundryProjectId
-    keyVaultDnsZoneId: privateDns.outputs.keyVaultDnsZoneId
-    blobDnsZoneId: privateDns.outputs.blobDnsZoneId
-    aiServicesDnsZoneId: privateDns.outputs.aiServicesDnsZoneId
-    monitorDnsZoneId: privateDns.outputs.monitorDnsZoneId
-    aiFoundryDnsZoneId: privateDns.outputs.aiFoundryDnsZoneId
+    environment: environment
+    vnetId: deployFoundation ? foundation.outputs.vnetId : existingVnet.id
+    privateEndpointsSubnetId: deployFoundation ? foundation.outputs.privateEndpointsSubnetId : existingVnet.properties.subnets[2].id
+    keyVaultDnsZoneId: deployFoundation ? foundation.outputs.keyVaultDnsZoneId : resourceId('Microsoft.Network/privateDnsZones', 'privatelink.vaultcore.azure.net')
+    blobDnsZoneId: deployFoundation ? foundation.outputs.blobDnsZoneId : resourceId('Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')
+    tags: commonTags
+  }
+}
+
+// ==============================================================================
+// Stage 3: AI Services (Azure AI Services, AI Foundry, Monitoring)
+// ==============================================================================
+
+resource existingVnetForAI 'Microsoft.Network/virtualNetworks@2023-05-01' existing = if (!deployFoundation && deployAI) {
+  name: vnetName
+}
+
+resource existingManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!deploySecurity && deployAI) {
+  name: 'loan-defenders-${environment}-id'
+}
+
+module ai 'modules/ai.bicep' = if (deployAI) {
+  name: 'ai-deployment'
+  params: {
+    location: location
+    environment: environment
+    privateEndpointsSubnetId: deployFoundation ? foundation.outputs.privateEndpointsSubnetId : existingVnetForAI.properties.subnets[2].id
+    aiServicesDnsZoneId: deployFoundation ? foundation.outputs.aiServicesDnsZoneId : resourceId('Microsoft.Network/privateDnsZones', 'privatelink.cognitiveservices.azure.com')
+    monitorDnsZoneId: deployFoundation ? foundation.outputs.monitorDnsZoneId : resourceId('Microsoft.Network/privateDnsZones', 'privatelink.monitor.azure.com')
+    aiFoundryDnsZoneId: deployFoundation ? foundation.outputs.aiFoundryDnsZoneId : resourceId('Microsoft.Network/privateDnsZones', 'privatelink.api.azureml.ms')
+    managedIdentityPrincipalId: deploySecurity ? security.outputs.managedIdentityPrincipalId : existingManagedIdentity.properties.principalId
+    tags: commonTags
+  }
+}
+
+// ==============================================================================
+// Stage 4: Container Apps (Environment + Apps)
+// ==============================================================================
+
+resource existingVnetForApps 'Microsoft.Network/virtualNetworks@2023-05-01' existing = if (!deployFoundation && deployApps) {
+  name: vnetName
+}
+
+resource existingLogAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = if (!deployAI && deployApps) {
+  name: 'loan-defenders-${environment}-logs'
+}
+
+resource existingAppInsights 'Microsoft.Insights/components@2020-02-02' existing = if (!deployAI && deployApps) {
+  name: 'loan-defenders-${environment}-appinsights'
+}
+
+resource existingManagedIdentityForApps 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (!deploySecurity && deployApps) {
+  name: 'loan-defenders-${environment}-id'
+}
+
+resource existingKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = if (!deploySecurity && deployApps) {
+  name: 'loan-defenders-${environment}-kv'
+}
+
+resource existingAIProject 'Microsoft.MachineLearningServices/workspaces@2024-04-01' existing = if (!deployAI && deployApps) {
+  name: 'loan-defenders-${environment}-aiproject'
+}
+
+module apps 'modules/apps.bicep' = if (deployApps) {
+  name: 'apps-deployment'
+  params: {
+    location: location
+    environment: environment
+    containerAppsSubnetId: deployFoundation ? foundation.outputs.containerAppsSubnetId : existingVnetForApps.properties.subnets[0].id
+    logAnalyticsId: deployAI ? ai.outputs.logAnalyticsId : existingLogAnalytics.id
+    appInsightsConnectionString: deployAI ? ai.outputs.appInsightsConnectionString : existingAppInsights.properties.ConnectionString
+    managedIdentityId: deploySecurity ? security.outputs.managedIdentityId : existingManagedIdentityForApps.id
+    keyVaultUri: deploySecurity ? security.outputs.keyVaultUri : existingKeyVault.properties.vaultUri
+    aiFoundryProjectEndpoint: deployAI ? 'https://${ai.outputs.aiFoundryProjectName}.api.azureml.ms' : 'https://${existingAIProject.name}.api.azureml.ms'
     tags: commonTags
   }
 }
@@ -127,38 +191,40 @@ module privateEndpoints 'modules/private-endpoints.bicep' = if (deployPrivateEnd
 // Outputs
 // ==============================================================================
 
+@description('Deployment stage executed')
+output deploymentStage string = deploymentStage
+
+@description('Environment deployed')
+output environment string = environment
+
+// Foundation outputs
 @description('VNet resource ID')
-output vnetId string = vnet.outputs.vnetId
+output vnetId string = deployFoundation ? foundation.outputs.vnetId : ''
 
 @description('VNet name')
-output vnetName string = vnet.outputs.vnetName
+output vnetName string = deployFoundation ? foundation.outputs.vnetName : vnetName
 
-@description('Container Apps subnet ID')
-output containerAppsSubnetId string = vnet.outputs.containerAppsSubnetId
+// Security outputs
+@description('Key Vault URI')
+output keyVaultUri string = deploySecurity ? security.outputs.keyVaultUri : ''
 
-@description('APIM subnet ID')
-output apimSubnetId string = vnet.outputs.apimSubnetId
+@description('Managed Identity client ID')
+output managedIdentityClientId string = deploySecurity ? security.outputs.managedIdentityClientId : ''
 
-@description('Private Endpoints subnet ID')
-output privateEndpointsSubnetId string = vnet.outputs.privateEndpointsSubnetId
+// AI outputs
+@description('Application Insights connection string')
+@secure()
+output appInsightsConnectionString string = deployAI ? ai.outputs.appInsightsConnectionString : ''
 
-@description('Key Vault DNS Zone ID')
-output keyVaultDnsZoneId string = privateDns.outputs.keyVaultDnsZoneId
+@description('AI Foundry Project name')
+output aiFoundryProjectName string = deployAI ? ai.outputs.aiFoundryProjectName : ''
 
-@description('Blob Storage DNS Zone ID')
-output blobDnsZoneId string = privateDns.outputs.blobDnsZoneId
+// Apps outputs
+@description('API app FQDN')
+output apiAppFqdn string = deployApps ? apps.outputs.apiAppFqdn : ''
 
-@description('AI Services DNS Zone ID')
-output aiServicesDnsZoneId string = privateDns.outputs.aiServicesDnsZoneId
+@description('UI app FQDN')
+output uiAppFqdn string = deployApps ? apps.outputs.uiAppFqdn : ''
 
-@description('Monitor DNS Zone ID')
-output monitorDnsZoneId string = privateDns.outputs.monitorDnsZoneId
-
-@description('Azure AI Foundry DNS Zone ID')
-output aiFoundryDnsZoneId string = privateDns.outputs.aiFoundryDnsZoneId
-
-@description('Deployment completed successfully')
+@description('Deployment complete')
 output deploymentComplete bool = true
-
-@description('Private endpoints deployed')
-output privateEndpointsDeployed bool = deployPrivateEndpoints

@@ -1,0 +1,123 @@
+name: Deploy Azure Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+      stage:
+        description: 'Deployment stage'
+        required: true
+        type: choice
+        options:
+          - foundation
+          - security
+          - ai
+          - apps
+          - all
+        default: 'foundation'
+
+permissions:
+  id-token: write   # Required for OIDC authentication
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.stage }} to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set resource group name
+        id: vars
+        run: |
+          echo "RESOURCE_GROUP=loan-defenders-${{ inputs.environment }}-rg" >> $GITHUB_ENV
+          echo "DEPLOYMENT_NAME=${{ inputs.stage }}-deployment-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
+      - name: Create resource group if needed
+        run: |
+          if ! az group show --name ${{ env.RESOURCE_GROUP }} &>/dev/null; then
+            echo "Creating resource group: ${{ env.RESOURCE_GROUP }}"
+            az group create \
+              --name ${{ env.RESOURCE_GROUP }} \
+              --location eastus2 \
+              --tags environment=${{ inputs.environment }} project=loan-defenders
+          else
+            echo "Resource group exists: ${{ env.RESOURCE_GROUP }}"
+          fi
+
+      - name: Deploy ${{ inputs.stage }} stage
+        run: |
+          echo "Deploying stage: ${{ inputs.stage }}"
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Resource Group: ${{ env.RESOURCE_GROUP }}"
+          echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
+
+          az deployment group create \
+            --name ${{ env.DEPLOYMENT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --template-file infrastructure/bicep/main.bicep \
+            --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
+            --parameters deploymentStage=${{ inputs.stage }} \
+            --verbose
+
+      - name: Show deployment outputs
+        if: success()
+        run: |
+          echo "Deployment completed successfully!"
+          echo ""
+          echo "Deployment outputs:"
+          az deployment group show \
+            --name ${{ env.DEPLOYMENT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query properties.outputs \
+            --output table
+
+      - name: Show deployment errors
+        if: failure()
+        run: |
+          echo "Deployment failed. Error details:"
+          az deployment group show \
+            --name ${{ env.DEPLOYMENT_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query properties.error \
+            --output json || echo "Could not retrieve error details"
+
+      - name: Post deployment summary
+        if: always()
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Stage**: ${{ inputs.stage }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Resource Group**: ${{ env.RESOURCE_GROUP }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment Name**: ${{ env.DEPLOYMENT_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ inputs.stage }}" = "foundation" ]; then
+            echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+            echo "Deploy security stage: Run this workflow with stage=security" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ inputs.stage }}" = "security" ]; then
+            echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+            echo "Deploy AI stage: Run this workflow with stage=ai" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ inputs.stage }}" = "ai" ]; then
+            echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+            echo "Deploy apps stage: Run this workflow with stage=apps" >> $GITHUB_STEP_SUMMARY
+          fi

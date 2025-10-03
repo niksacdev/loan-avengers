@@ -1,0 +1,1323 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.38.5.1644",
+      "templateHash": "9387662855836006551"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region for resources"
+      }
+    },
+    "environment": {
+      "type": "string",
+      "defaultValue": "dev",
+      "allowedValues": [
+        "dev",
+        "staging",
+        "prod"
+      ],
+      "metadata": {
+        "description": "Environment name (dev, staging, prod)"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "loan-defenders-vnet",
+      "metadata": {
+        "description": "VNet name"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "VNet address space"
+      }
+    },
+    "containerAppsSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/23",
+      "metadata": {
+        "description": "Container Apps subnet prefix"
+      }
+    },
+    "apimSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.3.0/24",
+      "metadata": {
+        "description": "APIM subnet prefix"
+      }
+    },
+    "privateEndpointsSubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.4.0/24",
+      "metadata": {
+        "description": "Private Endpoints subnet prefix"
+      }
+    },
+    "keyVaultId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Key Vault resource ID (optional, leave empty if not yet created)"
+      }
+    },
+    "storageAccountId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Storage Account resource ID (optional, leave empty if not yet created)"
+      }
+    },
+    "aiServicesId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "AI Services resource ID (optional, leave empty if not yet created)"
+      }
+    },
+    "appInsightsId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Application Insights resource ID (optional, leave empty if not yet created)"
+      }
+    },
+    "openAIId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Azure OpenAI resource ID (optional, leave empty if not yet created)"
+      }
+    },
+    "deployPrivateEndpoints": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Deploy private endpoints (set to false if Azure resources don't exist yet)"
+      }
+    }
+  },
+  "variables": {
+    "commonTags": {
+      "environment": "[parameters('environment')]",
+      "project": "loan-defenders",
+      "managedBy": "bicep"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "vnet-deployment",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "vnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetAddressPrefix": {
+            "value": "[parameters('vnetAddressPrefix')]"
+          },
+          "containerAppsSubnetPrefix": {
+            "value": "[parameters('containerAppsSubnetPrefix')]"
+          },
+          "apimSubnetPrefix": {
+            "value": "[parameters('apimSubnetPrefix')]"
+          },
+          "privateEndpointsSubnetPrefix": {
+            "value": "[parameters('privateEndpointsSubnetPrefix')]"
+          },
+          "tags": {
+            "value": "[variables('commonTags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.38.5.1644",
+              "templateHash": "2787428142022774963"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Azure region for resources"
+              }
+            },
+            "vnetName": {
+              "type": "string",
+              "defaultValue": "loan-defenders-vnet",
+              "metadata": {
+                "description": "VNet name"
+              }
+            },
+            "vnetAddressPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.0.0/16",
+              "metadata": {
+                "description": "VNet address space"
+              }
+            },
+            "containerAppsSubnetPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.1.0/23",
+              "metadata": {
+                "description": "Container Apps subnet address prefix"
+              }
+            },
+            "apimSubnetPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.3.0/24",
+              "metadata": {
+                "description": "APIM subnet address prefix"
+              }
+            },
+            "privateEndpointsSubnetPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.4.0/24",
+              "metadata": {
+                "description": "Private Endpoints subnet address prefix"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {
+                "environment": "production",
+                "project": "loan-defenders",
+                "managedBy": "bicep"
+              },
+              "metadata": {
+                "description": "Tags for resources"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}-container-apps-nsg', parameters('vnetName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "securityRules": [
+                  {
+                    "name": "AllowAPIMInbound",
+                    "properties": {
+                      "description": "Allow inbound traffic from APIM subnet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "destinationAddressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 100,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAzureLoadBalancerInbound",
+                    "properties": {
+                      "description": "Allow Azure Load Balancer health probes",
+                      "protocol": "*",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "*",
+                      "sourceAddressPrefix": "AzureLoadBalancer",
+                      "destinationAddressPrefix": "*",
+                      "access": "Allow",
+                      "priority": 110,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "DenyAllInbound",
+                    "properties": {
+                      "description": "Deny all other inbound traffic",
+                      "protocol": "*",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "*",
+                      "sourceAddressPrefix": "*",
+                      "destinationAddressPrefix": "*",
+                      "access": "Deny",
+                      "priority": 4096,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAzureServicesOutbound",
+                    "properties": {
+                      "description": "Allow outbound to Azure services (KeyVault, Storage, AI Services)",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "destinationAddressPrefix": "AzureCloud",
+                      "access": "Allow",
+                      "priority": 100,
+                      "direction": "Outbound"
+                    }
+                  },
+                  {
+                    "name": "AllowPrivateEndpointsOutbound",
+                    "properties": {
+                      "description": "Allow outbound to private endpoints subnet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "destinationAddressPrefix": "[parameters('privateEndpointsSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 110,
+                      "direction": "Outbound"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}-apim-nsg', parameters('vnetName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "securityRules": [
+                  {
+                    "name": "AllowHTTPSInbound",
+                    "properties": {
+                      "description": "Allow HTTPS from Internet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "Internet",
+                      "destinationAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 100,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAPIMManagementInbound",
+                    "properties": {
+                      "description": "Allow APIM management endpoint",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "3443",
+                      "sourceAddressPrefix": "ApiManagement",
+                      "destinationAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 110,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAzureLoadBalancerInbound",
+                    "properties": {
+                      "description": "Allow Azure Load Balancer",
+                      "protocol": "*",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "*",
+                      "sourceAddressPrefix": "AzureLoadBalancer",
+                      "destinationAddressPrefix": "*",
+                      "access": "Allow",
+                      "priority": 120,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "DenyAllInbound",
+                    "properties": {
+                      "description": "Deny all other inbound traffic",
+                      "protocol": "*",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "*",
+                      "sourceAddressPrefix": "*",
+                      "destinationAddressPrefix": "*",
+                      "access": "Deny",
+                      "priority": 4096,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowContainerAppsOutbound",
+                    "properties": {
+                      "description": "Allow outbound to Container Apps subnet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "destinationAddressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 100,
+                      "direction": "Outbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAzureServicesOutbound",
+                    "properties": {
+                      "description": "Allow outbound to Azure services",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "destinationAddressPrefix": "AzureCloud",
+                      "access": "Allow",
+                      "priority": 110,
+                      "direction": "Outbound"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}-private-endpoints-nsg', parameters('vnetName'))]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "securityRules": [
+                  {
+                    "name": "AllowContainerAppsInbound",
+                    "properties": {
+                      "description": "Allow inbound from Container Apps subnet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "destinationAddressPrefix": "[parameters('privateEndpointsSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 100,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "AllowAPIMInbound",
+                    "properties": {
+                      "description": "Allow inbound from APIM subnet",
+                      "protocol": "Tcp",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "443",
+                      "sourceAddressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "destinationAddressPrefix": "[parameters('privateEndpointsSubnetPrefix')]",
+                      "access": "Allow",
+                      "priority": 110,
+                      "direction": "Inbound"
+                    }
+                  },
+                  {
+                    "name": "DenyAllInbound",
+                    "properties": {
+                      "description": "Deny all other inbound traffic",
+                      "protocol": "*",
+                      "sourcePortRange": "*",
+                      "destinationPortRange": "*",
+                      "sourceAddressPrefix": "*",
+                      "destinationAddressPrefix": "*",
+                      "access": "Deny",
+                      "priority": 4096,
+                      "direction": "Inbound"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2023-05-01",
+              "name": "[parameters('vnetName')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": [
+                    "[parameters('vnetAddressPrefix')]"
+                  ]
+                },
+                "subnets": [
+                  {
+                    "name": "container-apps-subnet",
+                    "properties": {
+                      "addressPrefix": "[parameters('containerAppsSubnetPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-container-apps-nsg', parameters('vnetName')))]"
+                      },
+                      "delegations": [
+                        {
+                          "name": "Microsoft.App.environments",
+                          "properties": {
+                            "serviceName": "Microsoft.App/environments"
+                          }
+                        }
+                      ],
+                      "serviceEndpoints": [],
+                      "privateEndpointNetworkPolicies": "Enabled",
+                      "privateLinkServiceNetworkPolicies": "Enabled"
+                    }
+                  },
+                  {
+                    "name": "apim-subnet",
+                    "properties": {
+                      "addressPrefix": "[parameters('apimSubnetPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-apim-nsg', parameters('vnetName')))]"
+                      },
+                      "delegations": [],
+                      "serviceEndpoints": [],
+                      "privateEndpointNetworkPolicies": "Enabled",
+                      "privateLinkServiceNetworkPolicies": "Enabled"
+                    }
+                  },
+                  {
+                    "name": "private-endpoints-subnet",
+                    "properties": {
+                      "addressPrefix": "[parameters('privateEndpointsSubnetPrefix')]",
+                      "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-private-endpoints-nsg', parameters('vnetName')))]"
+                      },
+                      "delegations": [],
+                      "serviceEndpoints": [],
+                      "privateEndpointNetworkPolicies": "Disabled",
+                      "privateLinkServiceNetworkPolicies": "Enabled"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-apim-nsg', parameters('vnetName')))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-container-apps-nsg', parameters('vnetName')))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', format('{0}-private-endpoints-nsg', parameters('vnetName')))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "vnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "VNet resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+            },
+            "vnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "VNet name"
+              },
+              "value": "[parameters('vnetName')]"
+            },
+            "containerAppsSubnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "Container Apps subnet ID"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[0].id]"
+            },
+            "apimSubnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "APIM subnet ID"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[1].id]"
+            },
+            "privateEndpointsSubnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "Private Endpoints subnet ID"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[2].id]"
+            },
+            "containerAppsSubnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "Container Apps subnet name"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[0].name]"
+            },
+            "apimSubnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "APIM subnet name"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[1].name]"
+            },
+            "privateEndpointsSubnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "Private Endpoints subnet name"
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '2023-05-01').subnets[2].name]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "private-dns-deployment",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "vnetId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.vnetId.value]"
+          },
+          "vnetName": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.vnetName.value]"
+          },
+          "tags": {
+            "value": "[variables('commonTags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.38.5.1644",
+              "templateHash": "16281124219084296880"
+            }
+          },
+          "parameters": {
+            "vnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "VNet resource ID to link DNS zones to"
+              }
+            },
+            "vnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "VNet name for link naming"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {
+                "environment": "production",
+                "project": "loan-defenders",
+                "managedBy": "bicep"
+              },
+              "metadata": {
+                "description": "Tags for resources"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "privatelink.vaultcore.azure.net",
+              "location": "global",
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "privatelink.blob.core.windows.net",
+              "location": "global",
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "privatelink.cognitiveservices.azure.com",
+              "location": "global",
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "privatelink.monitor.azure.com",
+              "location": "global",
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones",
+              "apiVersion": "2020-06-01",
+              "name": "privatelink.openai.azure.com",
+              "location": "global",
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', 'privatelink.vaultcore.azure.net', format('{0}-keyvault-link', parameters('vnetName')))]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                  "id": "[parameters('vnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.vaultcore.azure.net')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', 'privatelink.blob.core.windows.net', format('{0}-blob-link', parameters('vnetName')))]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                  "id": "[parameters('vnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', 'privatelink.cognitiveservices.azure.com', format('{0}-aiservices-link', parameters('vnetName')))]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                  "id": "[parameters('vnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.cognitiveservices.azure.com')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', 'privatelink.monitor.azure.com', format('{0}-monitor-link', parameters('vnetName')))]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                  "id": "[parameters('vnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.monitor.azure.com')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+              "apiVersion": "2020-06-01",
+              "name": "[format('{0}/{1}', 'privatelink.openai.azure.com', format('{0}-openai-link', parameters('vnetName')))]",
+              "location": "global",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                  "id": "[parameters('vnetId')]"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.openai.azure.com')]"
+              ]
+            }
+          ],
+          "outputs": {
+            "keyVaultDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault DNS Zone resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.vaultcore.azure.net')]"
+            },
+            "blobDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Blob Storage DNS Zone resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.blob.core.windows.net')]"
+            },
+            "aiServicesDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "AI Services DNS Zone resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.cognitiveservices.azure.com')]"
+            },
+            "monitorDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Monitor DNS Zone resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.monitor.azure.com')]"
+            },
+            "openaiDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "OpenAI DNS Zone resource ID"
+              },
+              "value": "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.openai.azure.com')]"
+            },
+            "keyVaultDnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault DNS Zone name"
+              },
+              "value": "privatelink.vaultcore.azure.net"
+            },
+            "blobDnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Blob Storage DNS Zone name"
+              },
+              "value": "privatelink.blob.core.windows.net"
+            },
+            "aiServicesDnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "AI Services DNS Zone name"
+              },
+              "value": "privatelink.cognitiveservices.azure.com"
+            },
+            "monitorDnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "Monitor DNS Zone name"
+              },
+              "value": "privatelink.monitor.azure.com"
+            },
+            "openaiDnsZoneName": {
+              "type": "string",
+              "metadata": {
+                "description": "OpenAI DNS Zone name"
+              },
+              "value": "privatelink.openai.azure.com"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'vnet-deployment')]"
+      ]
+    },
+    {
+      "condition": "[parameters('deployPrivateEndpoints')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "private-endpoints-deployment",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "privateEndpointsSubnetId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.privateEndpointsSubnetId.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "keyVaultId": {
+            "value": "[parameters('keyVaultId')]"
+          },
+          "storageAccountId": {
+            "value": "[parameters('storageAccountId')]"
+          },
+          "aiServicesId": {
+            "value": "[parameters('aiServicesId')]"
+          },
+          "appInsightsId": {
+            "value": "[parameters('appInsightsId')]"
+          },
+          "openAIId": {
+            "value": "[parameters('openAIId')]"
+          },
+          "keyVaultDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.keyVaultDnsZoneId.value]"
+          },
+          "blobDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.blobDnsZoneId.value]"
+          },
+          "aiServicesDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.aiServicesDnsZoneId.value]"
+          },
+          "monitorDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.monitorDnsZoneId.value]"
+          },
+          "openaiDnsZoneId": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.openaiDnsZoneId.value]"
+          },
+          "tags": {
+            "value": "[variables('commonTags')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.38.5.1644",
+              "templateHash": "707616459842325040"
+            }
+          },
+          "parameters": {
+            "privateEndpointsSubnetId": {
+              "type": "string",
+              "metadata": {
+                "description": "Private Endpoints subnet ID"
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Azure region for resources"
+              }
+            },
+            "keyVaultId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Key Vault resource ID (if exists)"
+              }
+            },
+            "storageAccountId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Storage Account resource ID (if exists)"
+              }
+            },
+            "aiServicesId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "AI Services resource ID (if exists)"
+              }
+            },
+            "appInsightsId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Application Insights resource ID (if exists)"
+              }
+            },
+            "openAIId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Azure OpenAI resource ID (if exists)"
+              }
+            },
+            "keyVaultDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault DNS Zone ID"
+              }
+            },
+            "blobDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Blob Storage DNS Zone ID"
+              }
+            },
+            "aiServicesDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "AI Services DNS Zone ID"
+              }
+            },
+            "monitorDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "Monitor DNS Zone ID"
+              }
+            },
+            "openaiDnsZoneId": {
+              "type": "string",
+              "metadata": {
+                "description": "OpenAI DNS Zone ID"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {
+                "environment": "production",
+                "project": "loan-defenders",
+                "managedBy": "bicep"
+              },
+              "metadata": {
+                "description": "Tags for resources"
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[not(empty(parameters('keyVaultId')))]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2023-05-01",
+              "name": "loan-defenders-kv-pe",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "subnet": {
+                  "id": "[parameters('privateEndpointsSubnetId')]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "kv-pe-connection",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('keyVaultId')]",
+                      "groupIds": [
+                        "vault"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('keyVaultId')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', 'loan-defenders-kv-pe', 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "privatelink-vaultcore-azure-net",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('keyVaultDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-kv-pe')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('storageAccountId')))]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2023-05-01",
+              "name": "loan-defenders-blob-pe",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "subnet": {
+                  "id": "[parameters('privateEndpointsSubnetId')]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "blob-pe-connection",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('storageAccountId')]",
+                      "groupIds": [
+                        "blob"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('storageAccountId')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', 'loan-defenders-blob-pe', 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "privatelink-blob-core-windows-net",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('blobDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-blob-pe')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('aiServicesId')))]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2023-05-01",
+              "name": "loan-defenders-ai-pe",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "subnet": {
+                  "id": "[parameters('privateEndpointsSubnetId')]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "ai-pe-connection",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('aiServicesId')]",
+                      "groupIds": [
+                        "account"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('aiServicesId')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', 'loan-defenders-ai-pe', 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "privatelink-cognitiveservices-azure-com",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('aiServicesDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-ai-pe')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('appInsightsId')))]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2023-05-01",
+              "name": "loan-defenders-appinsights-pe",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "subnet": {
+                  "id": "[parameters('privateEndpointsSubnetId')]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "appinsights-pe-connection",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('appInsightsId')]",
+                      "groupIds": [
+                        "azuremonitor"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('appInsightsId')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', 'loan-defenders-appinsights-pe', 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "privatelink-monitor-azure-com",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('monitorDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-appinsights-pe')]"
+              ]
+            },
+            {
+              "condition": "[not(empty(parameters('openAIId')))]",
+              "type": "Microsoft.Network/privateEndpoints",
+              "apiVersion": "2023-05-01",
+              "name": "loan-defenders-openai-pe",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {
+                "subnet": {
+                  "id": "[parameters('privateEndpointsSubnetId')]"
+                },
+                "privateLinkServiceConnections": [
+                  {
+                    "name": "openai-pe-connection",
+                    "properties": {
+                      "privateLinkServiceId": "[parameters('openAIId')]",
+                      "groupIds": [
+                        "account"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('openAIId')))]",
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "apiVersion": "2023-05-01",
+              "name": "[format('{0}/{1}', 'loan-defenders-openai-pe', 'default')]",
+              "properties": {
+                "privateDnsZoneConfigs": [
+                  {
+                    "name": "privatelink-openai-azure-com",
+                    "properties": {
+                      "privateDnsZoneId": "[parameters('openaiDnsZoneId')]"
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-openai-pe')]"
+              ]
+            }
+          ],
+          "outputs": {
+            "keyVaultPrivateEndpointId": {
+              "type": "string",
+              "metadata": {
+                "description": "Key Vault Private Endpoint ID"
+              },
+              "value": "[if(not(empty(parameters('keyVaultId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-kv-pe'), '')]"
+            },
+            "blobPrivateEndpointId": {
+              "type": "string",
+              "metadata": {
+                "description": "Blob Storage Private Endpoint ID"
+              },
+              "value": "[if(not(empty(parameters('storageAccountId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-blob-pe'), '')]"
+            },
+            "aiServicesPrivateEndpointId": {
+              "type": "string",
+              "metadata": {
+                "description": "AI Services Private Endpoint ID"
+              },
+              "value": "[if(not(empty(parameters('aiServicesId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-ai-pe'), '')]"
+            },
+            "appInsightsPrivateEndpointId": {
+              "type": "string",
+              "metadata": {
+                "description": "Application Insights Private Endpoint ID"
+              },
+              "value": "[if(not(empty(parameters('appInsightsId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-appinsights-pe'), '')]"
+            },
+            "openAIPrivateEndpointId": {
+              "type": "string",
+              "metadata": {
+                "description": "Azure OpenAI Private Endpoint ID"
+              },
+              "value": "[if(not(empty(parameters('openAIId'))), resourceId('Microsoft.Network/privateEndpoints', 'loan-defenders-openai-pe'), '')]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'private-dns-deployment')]",
+        "[resourceId('Microsoft.Resources/deployments', 'vnet-deployment')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "vnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "VNet resource ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.vnetId.value]"
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "VNet name"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.vnetName.value]"
+    },
+    "containerAppsSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Container Apps subnet ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.containerAppsSubnetId.value]"
+    },
+    "apimSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "APIM subnet ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.apimSubnetId.value]"
+    },
+    "privateEndpointsSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Private Endpoints subnet ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'vnet-deployment'), '2025-04-01').outputs.privateEndpointsSubnetId.value]"
+    },
+    "keyVaultDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "Key Vault DNS Zone ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.keyVaultDnsZoneId.value]"
+    },
+    "blobDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "Blob Storage DNS Zone ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.blobDnsZoneId.value]"
+    },
+    "aiServicesDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "AI Services DNS Zone ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.aiServicesDnsZoneId.value]"
+    },
+    "monitorDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "Monitor DNS Zone ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.monitorDnsZoneId.value]"
+    },
+    "openaiDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "OpenAI DNS Zone ID"
+      },
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'private-dns-deployment'), '2025-04-01').outputs.openaiDnsZoneId.value]"
+    },
+    "deploymentComplete": {
+      "type": "bool",
+      "metadata": {
+        "description": "Deployment completed successfully"
+      },
+      "value": true
+    },
+    "privateEndpointsDeployed": {
+      "type": "bool",
+      "metadata": {
+        "description": "Private endpoints deployed"
+      },
+      "value": "[parameters('deployPrivateEndpoints')]"
+    }
+  }
+}

@@ -33,7 +33,7 @@ ENVIRONMENT=${1:-dev}
 RESOURCE_GROUP=${2:-loan-defenders-${ENVIRONMENT}-rg}
 DEPLOYMENT_STAGE="all"  # Default to all stages
 SUBSCRIPTION_ID=""
-LOCATION="eastus"
+LOCATION="eastus2"
 
 # Parse optional --stage and subscription-id arguments
 shift 2  # Remove first two positional arguments

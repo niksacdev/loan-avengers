@@ -198,26 +198,42 @@ DEPLOYMENT_NAME="${DEPLOYMENT_STAGE}-deployment-$(date +%Y%m%d-%H%M%S)"
 log_info "Deployment name: $DEPLOYMENT_NAME"
 log_info ""
 log_info "Deploying $DEPLOYMENT_STAGE stage... (this may take 5-15 minutes)"
+log_info ""
 
+# Use --output none to avoid response consumption issues
+# Deployment status will be checked afterward
 az deployment group create \
     --name "$DEPLOYMENT_NAME" \
     --resource-group "$RESOURCE_GROUP" \
     --template-file "$TEMPLATE_FILE" \
     --parameters "@$PARAMETERS_FILE" \
     --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --output table
+    --output none
 
-if [ $? -eq 0 ]; then
+DEPLOYMENT_EXIT_CODE=$?
+
+if [ $DEPLOYMENT_EXIT_CODE -eq 0 ]; then
     log_success "Deployment completed successfully!"
+
+    # Get deployment status separately to avoid response consumption
     log_info ""
     log_info "Deployment outputs:"
     az deployment group show \
         --name "$DEPLOYMENT_NAME" \
         --resource-group "$RESOURCE_GROUP" \
         --query properties.outputs \
-        --output table
+        --output table 2>/dev/null || log_info "No outputs to display"
 else
-    log_error "Deployment failed"
+    log_error "Deployment failed (exit code: $DEPLOYMENT_EXIT_CODE)"
+
+    # Try to get error details
+    log_info "Fetching deployment error details..."
+    az deployment group show \
+        --name "$DEPLOYMENT_NAME" \
+        --resource-group "$RESOURCE_GROUP" \
+        --query properties.error \
+        --output json 2>/dev/null || log_error "Could not retrieve error details"
+
     exit 1
 fi
 

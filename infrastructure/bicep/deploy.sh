@@ -169,17 +169,21 @@ fi
 
 log_info "Validating Bicep template..."
 
-az deployment group validate \
+# Suppress validation output (warnings are ok, we only care about errors)
+VALIDATION_RESULT=$(az deployment group validate \
     --resource-group "$RESOURCE_GROUP" \
     --template-file "$TEMPLATE_FILE" \
     --parameters "@$PARAMETERS_FILE" \
     --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --output none
+    --output json 2>&1)
 
-if [ $? -eq 0 ]; then
+VALIDATION_EXIT_CODE=$?
+
+if [ $VALIDATION_EXIT_CODE -eq 0 ]; then
     log_success "Template validation passed"
 else
     log_error "Template validation failed"
+    echo "$VALIDATION_RESULT"
     exit 1
 fi
 

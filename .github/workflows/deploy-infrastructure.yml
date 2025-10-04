@@ -62,17 +62,18 @@ jobs:
             echo "Resource group exists: ${{ env.RESOURCE_GROUP }}"
           fi
 
-      - name: Deploy ${{ inputs.stage }} stage
+      - name: Deploy ${{ inputs.stage }} stage (Azure Verified Modules)
         run: |
           echo "Deploying stage: ${{ inputs.stage }}"
           echo "Environment: ${{ inputs.environment }}"
           echo "Resource Group: ${{ env.RESOURCE_GROUP }}"
           echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
+          echo "Using Azure Verified Modules (AVM)"
 
           az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --template-file infrastructure/bicep/main.bicep \
+            --template-file infrastructure/bicep/main-avm.bicep \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
             --verbose

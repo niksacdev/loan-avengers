@@ -1,12 +1,12 @@
 #!/bin/bash
 # ==============================================================================
-# Deployment Script - Loan Defenders Infrastructure
+# Deployment Script - Loan Defenders Infrastructure (Azure Verified Modules)
 # ==============================================================================
 # CI/CD-ready staged deployment with support for:
-#   - foundation: VNet, NSGs, Private DNS zones
-#   - security: Key Vault, Storage, Managed Identity
-#   - ai: AI Services, AI Foundry Project, Monitoring
-#   - apps: Container Apps Environment + Apps
+#   - foundation: VNet, NSGs, Subnets (AVM)
+#   - security: Key Vault, Storage, Managed Identity (AVM)
+#   - ai: AI Services, Log Analytics, App Insights (AVM)
+#   - apps: Container Apps Environment (AVM)
 #   - all: Deploy everything (default)
 #
 # Usage:
@@ -53,7 +53,7 @@ done
 
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATE_FILE="${SCRIPT_DIR}/main.bicep"
+TEMPLATE_FILE="${SCRIPT_DIR}/main-avm.bicep"
 PARAMETERS_FILE="${SCRIPT_DIR}/environments/${ENVIRONMENT}.parameters.json"
 
 # ==============================================================================
@@ -272,7 +272,7 @@ log_info ""
 case $DEPLOYMENT_STAGE in
   foundation)
     log_info "Next steps:"
-    log_info "1. Review VNet, NSGs, and DNS zones in Azure Portal"
+    log_info "1. Review VNet, NSGs, and Subnets in Azure Portal"
     log_info "2. Deploy security stage: ./deploy.sh $ENVIRONMENT $RESOURCE_GROUP --stage security"
     ;;
   security)
@@ -282,21 +282,21 @@ case $DEPLOYMENT_STAGE in
     ;;
   ai)
     log_info "Next steps:"
-    log_info "1. Review AI Services, AI Foundry Project, and App Insights in Azure Portal"
+    log_info "1. Review AI Services, Log Analytics, and App Insights in Azure Portal"
     log_info "2. Deploy apps stage: ./deploy.sh $ENVIRONMENT $RESOURCE_GROUP --stage apps"
     ;;
   apps)
     log_info "Next steps:"
-    log_info "1. Review Container Apps in Azure Portal"
+    log_info "1. Review Container Apps Environment in Azure Portal"
     log_info "2. Build and push container images (Issue #58)"
     log_info "3. Deploy APIM (Issue #95)"
     ;;
   all)
     log_info "Next steps:"
     log_info "1. Review all resources in Azure Portal"
-    log_info "2. Build and push container images (Issue #58)"
-    log_info "3. Deploy APIM (Issue #95)"
-    log_info "4. Set up GitHub Actions CI/CD (Issue #61)"
+    log_info "2. Verify RBAC permissions for Azure AI Foundry"
+    log_info "3. Build and push container images (Issue #58)"
+    log_info "4. Deploy APIM (Issue #95)"
     ;;
 esac
 

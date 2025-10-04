@@ -1,0 +1,45 @@
+# GitHub Actions OIDC Configuration
+# Generated: Fri Oct  3 23:15:58 UTC 2025
+# Repository: niksacdev/loan-defenders
+
+Azure AD App Registration:
+  Name: loan-defenders-github-actions
+  Application (Client) ID: fc0a7fd1-cd6b-4049-a710-39bf31ed6936
+
+Service Principal:
+  Object ID: 59d5784a-fe27-4abb-9d9c-9fd097fef9fd
+  Role: Contributor
+  Scope: /subscriptions/928d2daf-3728-43c2-9eab-0e714ee87f08
+
+Azure Subscription:
+  Name: ME-MngEnvMCAP691287-niksac-1
+  Subscription ID: 928d2daf-3728-43c2-9eab-0e714ee87f08
+  Tenant ID: fb86188a-1d07-476a-ad68-557c6b60f268
+
+GitHub Secrets (add these to GitHub):
+  AZURE_CLIENT_ID: fc0a7fd1-cd6b-4049-a710-39bf31ed6936
+  AZURE_TENANT_ID: fb86188a-1d07-476a-ad68-557c6b60f268
+  AZURE_SUBSCRIPTION_ID: 928d2daf-3728-43c2-9eab-0e714ee87f08
+
+Federated Credentials:
+  - loan-defenders-main (main branch deployments)
+  - loan-defenders-pr (pull request deployments)
+  - loan-defenders-all-branches (all branch deployments)
+
+GitHub Actions Workflow:
+  Location: .github/workflows/deploy-infrastructure.yml
+  Trigger: workflow_dispatch (manual)
+
+Next Steps:
+  1. Add secrets to GitHub: https://github.com/niksacdev/loan-defenders/settings/secrets/actions
+  2. Run workflow: https://github.com/niksacdev/loan-defenders/actions
+  3. Select environment (dev/staging/prod) and stage (foundation/security/ai/apps/all)
+
+Security:
+  - OIDC authentication (no passwords stored)
+  - Short-lived tokens (expire in minutes)
+  - Repository-scoped (only niksacdev/loan-defenders can authenticate)
+  - Audit trail in Azure AD and GitHub Actions
+
+To delete this setup:
+  az ad app delete --id fc0a7fd1-cd6b-4049-a710-39bf31ed6936

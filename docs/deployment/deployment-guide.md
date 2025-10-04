@@ -1,6 +1,6 @@
-# Deployment Guide - Manual Azure Deployment
+# Deployment Guide - Azure Infrastructure
 
-Step-by-step guide to deploy Loan Defenders infrastructure to your Azure subscription.
+Step-by-step guide to deploy Loan Defenders infrastructure to Azure using Azure Verified Modules (AVM).
 
 ## 📋 Prerequisites
 
@@ -74,7 +74,7 @@ cd infrastructure/bicep
 
 # Verify you're in the right place
 ls -la
-# Should see: main.bicep, deploy.sh, environments/, modules/
+# Should see: main-avm.bicep, deploy.sh, environments/, modules/
 ```
 
 ### Step 3: Review Parameters (Optional)
@@ -89,25 +89,40 @@ code environments/${ENV}.parameters.json  # or vi/nano
 
 **Default parameters are fine for first deployment!**
 
-### Step 4: Deploy Infrastructure (Phase 1)
+### Step 4: Deploy Infrastructure
 
-```bash
-# Make deploy script executable (if not already)
-chmod +x deploy.sh
+Choose your deployment method:
 
-# Run deployment
-./deploy.sh ${ENV} ${RG_NAME}
+=== "All Stages (Recommended)"
+    Deploy everything in one command:
+    ```bash
+    ./deploy.sh ${ENV} ${RG_NAME}
+    # or explicitly:
+    ./deploy.sh ${ENV} ${RG_NAME} --stage all
+    ```
 
-# Example:
-# ./deploy.sh dev loan-defenders-dev-rg
-```
+=== "Staged Deployment"
+    Deploy in stages for more control:
+    ```bash
+    # Stage 1: Networking (VNet, NSGs, Subnets)
+    ./deploy.sh ${ENV} ${RG_NAME} --stage foundation
+
+    # Stage 2: Security (Key Vault, Storage, Identity)
+    ./deploy.sh ${ENV} ${RG_NAME} --stage security
+
+    # Stage 3: AI Services (AI, Log Analytics, App Insights)
+    ./deploy.sh ${ENV} ${RG_NAME} --stage ai
+
+    # Stage 4: Container Apps (Environment)
+    ./deploy.sh ${ENV} ${RG_NAME} --stage apps
+    ```
 
 **What happens:**
 - Script checks Azure CLI login ✅
 - Creates resource group if it doesn't exist ✅
-- Validates Bicep template ✅
-- Deploys VNet, NSGs, DNS zones ✅
-- Takes ~5-10 minutes ⏱️
+- Compiles Bicep to ARM JSON ✅
+- Deploys resources using Azure Verified Modules ✅
+- Takes ~10-15 minutes (all stages) ⏱️
 
 **Expected output:**
 ```
@@ -148,41 +163,82 @@ az resource list --resource-group ${RG_NAME} --output table
 
 ## 🎯 What You've Deployed
 
-After Step 4 completes, you have:
+After deployment completes, you have:
 
+### Foundation Stage
 ✅ **VNet** with 3 subnets:
-- Container Apps: 10.0.1.0/23
+- Container Apps: 10.0.1.0/23 (delegated to Microsoft.App/environments)
 - APIM: 10.0.3.0/24
 - Private Endpoints: 10.0.4.0/24
 
 ✅ **Network Security Groups** (3):
-- Least privilege rules
-- Ready for services
+- Container Apps NSG (platform communication rules)
+- APIM NSG (HTTP/HTTPS, health probe rules)
+- Private Endpoints NSG (minimal rules)
 
-✅ **Private DNS Zones** (5):
-- VNet links configured
-- Ready for private endpoints
+### Security Stage
+✅ **Managed Identity** (User-Assigned):
+- For application authentication
+- RBAC roles pre-configured
 
-❌ **Private Endpoints**: Not yet (services don't exist)
+✅ **Key Vault**:
+- RBAC-enabled (no access policies)
+- Soft delete + purge protection
+- Private network access only
+
+✅ **Storage Account**:
+- StorageV2, Hot tier
+- Private network access only
+- TLS 1.2+ enforced
+
+### AI Stage
+✅ **AI Services** (Cognitive Services):
+- Multi-service account (GPT-4, embeddings, etc.)
+- Private network access only
+- Custom subdomain configured
+
+✅ **Log Analytics Workspace**:
+- 30-day retention
+- PerGB2018 pricing tier
+
+✅ **Application Insights**:
+- Workspace-based
+- Connected to Log Analytics
+
+✅ **RBAC Permissions**:
+- Managed Identity → AI Services (Cognitive Services User)
+- Managed Identity → Key Vault (Secrets User)
+- Managed Identity → Storage (Blob Data Contributor)
+
+### Apps Stage
+✅ **Container Apps Environment**:
+- VNet-integrated (internal)
+- Connected to Log Analytics
+- Ready for container apps
 
 ---
 
-## 💰 Cost Check
+## 💰 Cost Estimate
 
-```bash
-# View estimated costs in Azure Portal
-az portal show --resource-group ${RG_NAME}
-
-# Or use Azure Cost Management
-az consumption usage list --start-date 2025-01-01 --end-date 2025-01-31
-```
-
-**Current cost: ~$0/month**
+**Foundation Stage: ~$0/month**
 - VNet: Free
 - NSGs: Free
-- DNS Zones: Free (first 25)
 
-**After adding private endpoints: ~$30-38/month**
+**Security Stage: ~$5-10/month**
+- Key Vault: ~$0.03/10k operations
+- Storage Account: ~$5/month (100GB)
+- Managed Identity: Free
+
+**AI Stage: ~$0 (pay-per-use)**
+- AI Services: Pay per API call (no base cost)
+- Log Analytics: ~$2.30/GB ingested
+- Application Insights: Free tier (first 5GB/month)
+
+**Apps Stage: ~$20-30/month**
+- Container Apps Environment: ~$0
+- Container Apps: ~$20-30/month (consumption-based)
+
+**Total Estimated: ~$25-40/month** (dev environment)
 
 ---
 
@@ -200,51 +256,32 @@ az group show --name ${RG_NAME} --query 'id' -o tsv | \
 
 ---
 
-## 🔄 Next Steps (Phase 2 - Coming Soon)
+## 🔄 Next Steps
 
-After Phase 1 deployment succeeds, you'll deploy:
+After infrastructure deployment succeeds:
 
-### Issue #57 - Security & Azure Services
-1. **Azure Key Vault** (for secrets)
-2. **Storage Account** (for documents)
-3. **Azure AI Services** (for Content Safety)
-4. **Application Insights** (for monitoring)
-5. **Azure AI Foundry Projects** (for GPT-4 and agent AI models)
+### 1. Deploy Container Apps
+Build and deploy your applications to Container Apps:
 
-### Issue #58 - Container Apps
-1. **Container Apps Environment** (in VNet)
-2. **API App** (FastAPI backend)
-3. **UI App** (React frontend)
-4. **MCP Servers** (3 apps)
+- **API App** (FastAPI backend) - See [Container Apps Guide](../deployment/cicd.md)
+- **UI App** (React frontend)
+- **MCP Servers** (3 microservices)
 
-### Issue #95 - API Management
-1. **APIM Standard v2** (in VNet)
-2. **Rate limiting policies**
-3. **JWT validation**
+### 2. Add New Services (Future)
+To add additional Azure services (e.g., AI Search, Cosmos DB):
 
-### Phase 2: Add Private Endpoints
+1. Create new Bicep module: `infrastructure/bicep/modules/service-name.bicep`
+2. Add module reference in `main-avm.bicep`
+3. Redeploy: `./deploy.sh dev loan-defenders-dev-rg --stage <stage>`
 
-After deploying Azure services:
+See [ADR-021](../architecture/decisions/adr-021-azure-verified-modules-adoption.md) for details.
 
-```bash
-# 1. Get resource IDs
-KEYVAULT_ID=$(az keyvault show --name loan-defenders-kv --query id -o tsv)
-STORAGE_ID=$(az storage account show --name loandefenderssa --query id -o tsv)
-AI_ID=$(az cognitiveservices account show --name loan-defenders-ai --query id -o tsv)
-
-# 2. Update parameters file
-cat > environments/${ENV}.parameters.json <<EOF
-{
-  "deployPrivateEndpoints": { "value": true },
-  "keyVaultId": { "value": "${KEYVAULT_ID}" },
-  "storageAccountId": { "value": "${STORAGE_ID}" },
-  "aiServicesId": { "value": "${AI_ID}" }
-}
-EOF
-
-# 3. Re-deploy (adds private endpoints)
-./deploy.sh ${ENV} ${RG_NAME}
-```
+### 3. API Management (Optional)
+Deploy APIM for advanced API features:
+- Rate limiting and throttling
+- JWT validation
+- API versioning
+- See Issue #95
 
 ---
 
@@ -309,13 +346,13 @@ az account set --subscription "SUBSCRIPTION_NAME_OR_ID"
 
 ## 📖 Additional Resources
 
+- **Azure Verified Modules**: https://azure.github.io/Azure-Verified-Modules/
 - **Azure Bicep Docs**: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/
 - **Azure CLI Docs**: https://learn.microsoft.com/en-us/cli/azure/
 - **Cost Calculator**: https://azure.microsoft.com/en-us/pricing/calculator/
-- **GitHub Issues**:
-  - [#94 - VNet Infrastructure](https://github.com/niksacdev/loan-defenders/issues/94) (current)
-  - [#57 - Security](https://github.com/niksacdev/loan-defenders/issues/57) (next)
-  - [#58 - Container Apps](https://github.com/niksacdev/loan-defenders/issues/58) (next)
+- **Architecture Decisions**:
+  - [ADR-021: Azure Verified Modules Adoption](../architecture/decisions/adr-021-azure-verified-modules-adoption.md)
+  - [ADR-016: GitHub Actions Security](../architecture/decisions/adr-016-github-actions-security.md)
 
 ---
 
@@ -325,9 +362,20 @@ You've successfully deployed when:
 
 - ✅ Deploy script completes without errors
 - ✅ Resource group exists in Azure Portal
-- ✅ VNet shows 3 subnets
-- ✅ 3 NSGs are created
-- ✅ 5 Private DNS Zones exist
-- ✅ Cost shows ~$0/month (no private endpoints yet)
+- ✅ All stages deployed (foundation, security, ai, apps)
+- ✅ VNet shows 3 subnets with NSGs
+- ✅ Key Vault, Storage Account, and Managed Identity created
+- ✅ AI Services, Log Analytics, and App Insights configured
+- ✅ Container Apps Environment ready
+- ✅ RBAC permissions assigned
 
-**Next**: Proceed to Issue #57 or #58 to deploy services!
+**Verification commands**:
+```bash
+# Check all resources
+az resource list --resource-group ${RG_NAME} --output table
+
+# Verify RBAC assignments
+az role assignment list --resource-group ${RG_NAME} --output table
+```
+
+**Next**: Build and deploy container apps to the environment!

@@ -194,3 +194,6 @@ coverage/
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Infrastructure - Generated files
+infrastructure/scripts/github-actions-config.txt

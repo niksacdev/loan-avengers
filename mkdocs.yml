@@ -120,6 +120,7 @@ nav:
 
   - Deployment:
       - Overview: deployment/index.md
+      - Deployment Guide: deployment/deployment-guide.md
       - Azure Deployment: deployment/azure-deployment.md
       - Infrastructure as Code: deployment/infrastructure.md
       - CI/CD Pipeline: deployment/cicd.md

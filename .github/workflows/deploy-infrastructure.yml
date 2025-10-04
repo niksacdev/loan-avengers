@@ -62,20 +62,67 @@ jobs:
             echo "Resource group exists: ${{ env.RESOURCE_GROUP }}"
           fi
 
-      - name: Deploy ${{ inputs.stage }} stage
+      - name: Compile Bicep to ARM template
+        run: |
+          echo "Compiling Bicep to ARM JSON (best practice for CI/CD)..."
+          az bicep build \
+            --file infrastructure/bicep/main-avm.bicep \
+            --outfile /tmp/main-avm.json
+          echo "✓ Bicep compiled successfully"
+
+      - name: Deploy ${{ inputs.stage }} stage (Azure Verified Modules)
         run: |
           echo "Deploying stage: ${{ inputs.stage }}"
           echo "Environment: ${{ inputs.environment }}"
           echo "Resource Group: ${{ env.RESOURCE_GROUP }}"
           echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
+          echo "Using Azure Verified Modules (AVM)"
 
-          az deployment group create \
+          # Start deployment asynchronously
+          # Capture output but check if deployment was accepted
+          echo "Starting deployment..."
+          DEPLOY_OUTPUT=$(az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --template-file infrastructure/bicep/main.bicep \
+            --template-file /tmp/main-avm.json \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
-            --verbose
+            --no-wait 2>&1) || DEPLOY_EXIT_CODE=$?
+
+          if [ ! -z "$DEPLOY_OUTPUT" ]; then
+            echo "Deployment output: $DEPLOY_OUTPUT"
+          fi
+
+          if [ ! -z "$DEPLOY_EXIT_CODE" ] && [ "$DEPLOY_EXIT_CODE" != "0" ]; then
+            echo "Deployment command exited with code: $DEPLOY_EXIT_CODE"
+            # Check if deployment was actually created despite the error
+            echo "Checking if deployment exists..."
+          fi
+
+          echo "Waiting for deployment to appear in Azure..."
+          sleep 10  # Give Azure time to register the deployment
+
+          # Poll for completion
+          while true; do
+            STATE=$(az deployment group show \
+              --name ${{ env.DEPLOYMENT_NAME }} \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --query properties.provisioningState -o tsv 2>/dev/null || echo "NotFound")
+
+            echo "Current state: $STATE"
+
+            if [ "$STATE" == "Succeeded" ]; then
+              echo "✓ Deployment succeeded!"
+              break
+            elif [ "$STATE" == "Failed" ] || [ "$STATE" == "Canceled" ]; then
+              echo "✗ Deployment failed with state: $STATE"
+              exit 1
+            elif [ "$STATE" == "NotFound" ]; then
+              echo "Waiting for deployment to register..."
+            fi
+
+            sleep 10
+          done
 
       - name: Show deployment outputs
         if: success()

@@ -37,15 +37,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Azure CLI 2.72.0 (workaround for bug #32149)
-        run: |
-          # Downgrade to last working version before "content already consumed" bug
-          # See: https://github.com/Azure/azure-cli/issues/32149
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          sudo apt-get update
-          sudo apt-get install azure-cli=2.72.0-1~jammy --allow-downgrades -y
-          az version
-
       - name: Log in to Azure using OIDC
         uses: azure/login@v2
         with:
@@ -71,6 +62,14 @@ jobs:
             echo "Resource group exists: ${{ env.RESOURCE_GROUP }}"
           fi
 
+      - name: Compile Bicep to ARM template
+        run: |
+          echo "Compiling Bicep to ARM JSON (best practice for CI/CD)..."
+          az bicep build \
+            --file infrastructure/bicep/main-avm.bicep \
+            --outfile /tmp/main-avm.json
+          echo "✓ Bicep compiled successfully"
+
       - name: Deploy ${{ inputs.stage }} stage (Azure Verified Modules)
         run: |
           echo "Deploying stage: ${{ inputs.stage }}"
@@ -82,10 +81,10 @@ jobs:
           az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --template-file infrastructure/bicep/main-avm.bicep \
+            --template-file /tmp/main-avm.json \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
-            --verbose
+            --only-show-errors
 
       - name: Show deployment outputs
         if: success()

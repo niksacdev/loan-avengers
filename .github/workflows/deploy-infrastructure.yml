@@ -78,18 +78,29 @@ jobs:
           echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
           echo "Using Azure Verified Modules (AVM)"
 
-          # Start deployment asynchronously (workaround for Azure CLI bug #32149)
-          # Redirect ALL output to avoid "content already consumed" error
-          az deployment group create \
+          # Start deployment asynchronously
+          # Capture output but check if deployment was accepted
+          echo "Starting deployment..."
+          DEPLOY_OUTPUT=$(az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --template-file /tmp/main-avm.json \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
-            --no-wait > /dev/null 2>&1 || true
+            --no-wait 2>&1) || DEPLOY_EXIT_CODE=$?
 
-          echo "✓ Deployment initiated. Waiting for Azure to register it..."
-          sleep 5  # Give Azure a moment to register the deployment
+          if [ ! -z "$DEPLOY_OUTPUT" ]; then
+            echo "Deployment output: $DEPLOY_OUTPUT"
+          fi
+
+          if [ ! -z "$DEPLOY_EXIT_CODE" ] && [ "$DEPLOY_EXIT_CODE" != "0" ]; then
+            echo "Deployment command exited with code: $DEPLOY_EXIT_CODE"
+            # Check if deployment was actually created despite the error
+            echo "Checking if deployment exists..."
+          fi
+
+          echo "Waiting for deployment to appear in Azure..."
+          sleep 10  # Give Azure time to register the deployment
 
           # Poll for completion
           while true; do

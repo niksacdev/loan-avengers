@@ -78,13 +78,38 @@ jobs:
           echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
           echo "Using Azure Verified Modules (AVM)"
 
+          # Start deployment asynchronously (workaround for Azure CLI bug #32149)
           az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --template-file /tmp/main-avm.json \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
-            --only-show-errors
+            --no-wait
+
+          echo "Deployment started. Waiting for completion..."
+
+          # Poll for completion
+          while true; do
+            STATE=$(az deployment group show \
+              --name ${{ env.DEPLOYMENT_NAME }} \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --query properties.provisioningState -o tsv 2>/dev/null || echo "NotFound")
+
+            echo "Current state: $STATE"
+
+            if [ "$STATE" == "Succeeded" ]; then
+              echo "✓ Deployment succeeded!"
+              break
+            elif [ "$STATE" == "Failed" ] || [ "$STATE" == "Canceled" ]; then
+              echo "✗ Deployment failed with state: $STATE"
+              exit 1
+            elif [ "$STATE" == "NotFound" ]; then
+              echo "Waiting for deployment to register..."
+            fi
+
+            sleep 10
+          done
 
       - name: Show deployment outputs
         if: success()

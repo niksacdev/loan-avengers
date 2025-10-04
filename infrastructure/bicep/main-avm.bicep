@@ -52,22 +52,13 @@ param apimSubnetPrefix string = '10.0.3.0/24'
 @description('Private endpoints subnet prefix')
 param privateEndpointsSubnetPrefix string = '10.0.4.0/24'
 
-@description('Deploy private endpoints (false for Phase 1)')
-param deployPrivateEndpoints bool = false
-
-@description('Container image for API app')
-param apiImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-
-@description('Container image for frontend app')
-param frontendImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-
 // ==============================================================================
 // Variables
 // ==============================================================================
 
 var vnetName = 'loan-defenders-${environment}-vnet'
-var keyVaultName = 'kv-loan-def-${environment}-${uniqueString(resourceGroup().id)}'
-var storageAccountName = 'stloandef${environment}${uniqueString(resourceGroup().id)}'
+var keyVaultName = 'kv-ldf-${environment}-${take(uniqueString(resourceGroup().id), 6)}'
+var storageAccountName = 'stldf${environment}${take(uniqueString(resourceGroup().id), 10)}'
 var managedIdentityName = 'loan-defenders-${environment}-identity'
 var aiServicesName = 'loan-defenders-${environment}-ai'
 var logAnalyticsName = 'loan-defenders-${environment}-logs'
@@ -88,44 +79,11 @@ var deployAI = deploymentStage == 'ai' || deploymentStage == 'all'
 var deployApps = deploymentStage == 'apps' || deploymentStage == 'all'
 
 // ==============================================================================
-// Stage 1: Foundation - VNet, NSGs, Subnets
+// Stage 1: Foundation - NSGs (must be created before VNet)
 // ==============================================================================
 
-module vnet 'br/public:avm/res/network/virtual-network:0.7.1' = if (deployFoundation) {
-  name: 'vnet-deployment-${deploymentStage}'
-  params: {
-    name: vnetName
-    location: location
-    addressPrefixes: [vnetAddressPrefix]
-    tags: commonTags
-
-    subnets: [
-      // Container Apps Subnet
-      {
-        name: 'container-apps-subnet'
-        addressPrefix: containerAppsSubnetPrefix
-        delegation: 'Microsoft.App/environments'
-        networkSecurityGroupResourceId: nsgContainerApps.outputs.resourceId
-      }
-      // APIM Subnet
-      {
-        name: 'apim-subnet'
-        addressPrefix: apimSubnetPrefix
-        networkSecurityGroupResourceId: nsgApim.outputs.resourceId
-      }
-      // Private Endpoints Subnet
-      {
-        name: 'private-endpoints-subnet'
-        addressPrefix: privateEndpointsSubnetPrefix
-        privateEndpointNetworkPolicies: 'Disabled'
-        networkSecurityGroupResourceId: nsgPrivateEndpoints.outputs.resourceId
-      }
-    ]
-  }
-}
-
 // NSG for Container Apps
-module nsgContainerApps 'br/public:avm/res/network/network-security-group:0.6.0' = if (deployFoundation) {
+module nsgContainerApps 'br/public:avm/res/network/network-security-group:0.5.1' = if (deployFoundation) {
   name: 'nsg-container-apps-${deploymentStage}'
   params: {
     name: '${vnetName}-container-apps-nsg'
@@ -252,7 +210,7 @@ module nsgContainerApps 'br/public:avm/res/network/network-security-group:0.6.0'
 }
 
 // NSG for APIM
-module nsgApim 'br/public:avm/res/network/network-security-group:0.6.0' = if (deployFoundation) {
+module nsgApim 'br/public:avm/res/network/network-security-group:0.5.1' = if (deployFoundation) {
   name: 'nsg-apim-${deploymentStage}'
   params: {
     name: '${vnetName}-apim-nsg'
@@ -379,7 +337,7 @@ module nsgApim 'br/public:avm/res/network/network-security-group:0.6.0' = if (de
 }
 
 // NSG for Private Endpoints
-module nsgPrivateEndpoints 'br/public:avm/res/network/network-security-group:0.6.0' = if (deployFoundation) {
+module nsgPrivateEndpoints 'br/public:avm/res/network/network-security-group:0.5.1' = if (deployFoundation) {
   name: 'nsg-private-endpoints-${deploymentStage}'
   params: {
     name: '${vnetName}-private-endpoints-nsg'
@@ -417,6 +375,48 @@ module nsgPrivateEndpoints 'br/public:avm/res/network/network-security-group:0.6
       }
     ]
   }
+}
+
+// ==============================================================================
+// Stage 1: Foundation - VNet with Subnets
+// ==============================================================================
+
+module vnet 'br/public:avm/res/network/virtual-network:0.7.1' = if (deployFoundation) {
+  name: 'vnet-deployment-${deploymentStage}'
+  params: {
+    name: vnetName
+    location: location
+    addressPrefixes: [vnetAddressPrefix]
+    tags: commonTags
+
+    subnets: [
+      // Container Apps Subnet
+      {
+        name: 'container-apps-subnet'
+        addressPrefix: containerAppsSubnetPrefix
+        delegation: 'Microsoft.App/environments'
+        networkSecurityGroupResourceId: deployFoundation ? nsgContainerApps.outputs.resourceId : ''
+      }
+      // APIM Subnet
+      {
+        name: 'apim-subnet'
+        addressPrefix: apimSubnetPrefix
+        networkSecurityGroupResourceId: deployFoundation ? nsgApim.outputs.resourceId : ''
+      }
+      // Private Endpoints Subnet
+      {
+        name: 'private-endpoints-subnet'
+        addressPrefix: privateEndpointsSubnetPrefix
+        privateEndpointNetworkPolicies: 'Disabled'
+        networkSecurityGroupResourceId: deployFoundation ? nsgPrivateEndpoints.outputs.resourceId : ''
+      }
+    ]
+  }
+  dependsOn: [
+    nsgContainerApps
+    nsgApim
+    nsgPrivateEndpoints
+  ]
 }
 
 // ==============================================================================
@@ -538,11 +538,15 @@ resource containerAppsEnv 'Microsoft.App/managedEnvironments@2024-03-01' = if (d
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: deployAI ? logAnalytics.outputs.customerId : ''
+        customerId: deployAI ? reference(logAnalytics.outputs.resourceId, '2023-09-01').customerId : ''
         sharedKey: deployAI ? logAnalytics.outputs.primarySharedKey : ''
       }
     }
   }
+  dependsOn: [
+    vnet
+    logAnalytics
+  ]
 }
 
 // ==============================================================================

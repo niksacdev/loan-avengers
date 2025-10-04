@@ -138,15 +138,15 @@ module aiServices 'modules/ai-services.bicep' = if (deployAI) {
 // Stage 4: Apps - Container Apps Environment
 // ==============================================================================
 
-module containerApps 'modules/container-apps.bicep' = if (deployApps) {
+module containerApps 'modules/container-apps.bicep' = if (deployApps && deployFoundation && deployAI) {
   name: 'container-apps-deployment-${deploymentStage}'
   params: {
     location: location
     environment: environment
     containerAppsEnvName: containerAppsEnvName
-    containerAppsSubnetId: deployFoundation ? networking.outputs.containerAppsSubnetId : ''
-    logAnalyticsCustomerId: deployAI ? aiServices.outputs.logAnalyticsCustomerId : ''
-    logAnalyticsPrimarySharedKey: deployAI ? aiServices.outputs.logAnalyticsPrimarySharedKey : ''
+    containerAppsSubnetId: networking!.outputs.containerAppsSubnetId
+    logAnalyticsCustomerId: aiServices!.outputs.logAnalyticsCustomerId
+    logAnalyticsPrimarySharedKey: aiServices!.outputs.logAnalyticsPrimarySharedKey
     tags: commonTags
   }
 }
@@ -155,13 +155,14 @@ module containerApps 'modules/container-apps.bicep' = if (deployApps) {
 // Stage 5: RBAC - Role Assignments for Azure AI Foundry
 // ==============================================================================
 
+// RBAC can only be deployed when both security and AI modules exist
 module rbac 'modules/rbac.bicep' = if (deploySecurity && deployAI) {
   name: 'rbac-deployment-${deploymentStage}'
   params: {
-    managedIdentityPrincipalId: security.outputs.managedIdentityPrincipalId
-    aiServicesId: aiServices.outputs.aiServicesId
-    keyVaultId: security.outputs.keyVaultId
-    storageAccountId: security.outputs.storageAccountId
+    managedIdentityPrincipalId: security!.outputs.managedIdentityPrincipalId
+    aiServicesId: aiServices!.outputs.aiServicesId
+    keyVaultId: security!.outputs.keyVaultId
+    storageAccountId: security!.outputs.storageAccountId
   }
 }
 
@@ -169,42 +170,42 @@ module rbac 'modules/rbac.bicep' = if (deploySecurity && deployAI) {
 // Outputs
 // ==============================================================================
 
-// Networking Outputs
+// Networking Outputs (only if foundation was deployed)
 @description('VNet resource ID')
-output vnetId string = deployFoundation ? networking.outputs.vnetId : ''
+output vnetId string = deployFoundation ? networking!.outputs.vnetId : ''
 
 @description('Container Apps subnet ID')
-output containerAppsSubnetId string = deployFoundation ? networking.outputs.containerAppsSubnetId : ''
+output containerAppsSubnetId string = deployFoundation ? networking!.outputs.containerAppsSubnetId : ''
 
 @description('APIM subnet ID')
-output apimSubnetId string = deployFoundation ? networking.outputs.apimSubnetId : ''
+output apimSubnetId string = deployFoundation ? networking!.outputs.apimSubnetId : ''
 
 @description('Private endpoints subnet ID')
-output privateEndpointsSubnetId string = deployFoundation ? networking.outputs.privateEndpointsSubnetId : ''
+output privateEndpointsSubnetId string = deployFoundation ? networking!.outputs.privateEndpointsSubnetId : ''
 
-// Security Outputs
+// Security Outputs (only if security was deployed)
 @description('Key Vault resource ID')
-output keyVaultId string = deploySecurity ? security.outputs.keyVaultId : ''
+output keyVaultId string = deploySecurity ? security!.outputs.keyVaultId : ''
 
 @description('Storage Account resource ID')
-output storageAccountId string = deploySecurity ? security.outputs.storageAccountId : ''
+output storageAccountId string = deploySecurity ? security!.outputs.storageAccountId : ''
 
 @description('Managed Identity resource ID')
-output managedIdentityId string = deploySecurity ? security.outputs.managedIdentityId : ''
+output managedIdentityId string = deploySecurity ? security!.outputs.managedIdentityId : ''
 
 @description('Managed Identity client ID')
-output managedIdentityClientId string = deploySecurity ? security.outputs.managedIdentityClientId : ''
+output managedIdentityClientId string = deploySecurity ? security!.outputs.managedIdentityClientId : ''
 
-// AI Services Outputs
+// AI Services Outputs (only if AI was deployed)
 @description('Log Analytics Workspace resource ID')
-output logAnalyticsId string = deployAI ? aiServices.outputs.logAnalyticsId : ''
+output logAnalyticsId string = deployAI ? aiServices!.outputs.logAnalyticsId : ''
 
 @description('Application Insights resource ID')
-output appInsightsId string = deployAI ? aiServices.outputs.appInsightsId : ''
+output appInsightsId string = deployAI ? aiServices!.outputs.appInsightsId : ''
 
 @description('AI Services resource ID')
-output aiServicesId string = deployAI ? aiServices.outputs.aiServicesId : ''
+output aiServicesId string = deployAI ? aiServices!.outputs.aiServicesId : ''
 
-// Container Apps Outputs
+// Container Apps Outputs (only if apps was deployed)
 @description('Container Apps Environment resource ID')
-output containerAppsEnvId string = deployApps ? containerApps.outputs.containerAppsEnvId : ''
+output containerAppsEnvId string = (deployApps && deployFoundation && deployAI) ? containerApps!.outputs.containerAppsEnvId : ''

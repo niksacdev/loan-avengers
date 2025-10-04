@@ -198,8 +198,8 @@ DEPLOYMENT_NAME="${DEPLOYMENT_STAGE}-deployment-$(date +%Y%m%d-%H%M%S)"
 log_info "Deployment name: $DEPLOYMENT_NAME"
 log_info ""
 
-# Workaround for Azure CLI "content already consumed" bug:
-# Compile Bicep to ARM JSON first, then deploy JSON (no warnings)
+# Fix for Azure CLI "content already consumed" bug (issue #32149):
+# Use Azure REST API directly instead of az deployment group create
 log_info "Compiling Bicep to ARM template..."
 COMPILED_TEMPLATE="/tmp/${DEPLOYMENT_NAME}.json"
 az bicep build --file "$TEMPLATE_FILE" --outfile "$COMPILED_TEMPLATE" 2>&1 | grep -v "Warning" | grep -v "InsecureRequestWarning" || true
@@ -214,42 +214,98 @@ log_info ""
 log_info "Deploying $DEPLOYMENT_STAGE stage... (this may take 5-15 minutes)"
 log_info ""
 
-# Deploy the compiled ARM JSON template (no Bicep warnings)
-az deployment group create \
-    --name "$DEPLOYMENT_NAME" \
-    --resource-group "$RESOURCE_GROUP" \
-    --template-file "$COMPILED_TEMPLATE" \
-    --parameters "@$PARAMETERS_FILE" \
-    --parameters deploymentStage="$DEPLOYMENT_STAGE" \
-    --only-show-errors
+# Read parameters from file and merge with deploymentStage parameter
+PARAMS_JSON=$(cat "$PARAMETERS_FILE" | jq '.parameters')
+DEPLOYMENT_STAGE_PARAM=$(echo '{"deploymentStage": {"value": "'"$DEPLOYMENT_STAGE"'"}}' | jq '.')
+MERGED_PARAMS=$(echo "$PARAMS_JSON $DEPLOYMENT_STAGE_PARAM" | jq -s '.[0] * .[1]')
+
+# Read the ARM template
+TEMPLATE_CONTENT=$(cat "$COMPILED_TEMPLATE")
+
+# Create deployment request body
+DEPLOYMENT_BODY=$(jq -n \
+  --argjson template "$TEMPLATE_CONTENT" \
+  --argjson parameters "$MERGED_PARAMS" \
+  '{
+    properties: {
+      template: $template,
+      parameters: $parameters,
+      mode: "Incremental"
+    }
+  }')
+
+# Deploy using Azure REST API (bypasses CLI bug)
+log_info "Initiating deployment via Azure REST API..."
+DEPLOY_RESPONSE=$(az rest \
+  --method PUT \
+  --uri "https://management.azure.com/subscriptions/$CURRENT_SUB_ID/resourcegroups/$RESOURCE_GROUP/providers/Microsoft.Resources/deployments/$DEPLOYMENT_NAME?api-version=2021-04-01" \
+  --body "$DEPLOYMENT_BODY" \
+  --headers "Content-Type=application/json" 2>&1)
 
 DEPLOYMENT_EXIT_CODE=$?
 
 # Clean up compiled template
 rm -f "$COMPILED_TEMPLATE"
 
-if [ $DEPLOYMENT_EXIT_CODE -eq 0 ]; then
-    log_success "Deployment completed successfully!"
+if [ $DEPLOYMENT_EXIT_CODE -ne 0 ]; then
+    log_error "Failed to initiate deployment"
+    log_error "$DEPLOY_RESPONSE"
+    exit 1
+fi
 
-    # Get deployment status separately to avoid response consumption
-    log_info ""
-    log_info "Deployment outputs:"
-    az deployment group show \
-        --name "$DEPLOYMENT_NAME" \
-        --resource-group "$RESOURCE_GROUP" \
-        --query properties.outputs \
-        --output table 2>/dev/null || log_info "No outputs to display"
-else
-    log_error "Deployment failed (exit code: $DEPLOYMENT_EXIT_CODE)"
+log_success "Deployment initiated successfully"
+log_info "Deployment ID: $DEPLOYMENT_NAME"
+log_info ""
 
-    # Try to get error details
-    log_info "Fetching deployment error details..."
-    az deployment group show \
-        --name "$DEPLOYMENT_NAME" \
-        --resource-group "$RESOURCE_GROUP" \
-        --query properties.error \
-        --output json 2>/dev/null || log_error "Could not retrieve error details"
+# Poll for deployment completion using REST API
+log_info "Polling deployment status..."
+MAX_RETRIES=90  # 15 minutes (90 * 10 seconds)
+RETRY_COUNT=0
 
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    # Get deployment status via REST API
+    STATUS_RESPONSE=$(az rest \
+      --method GET \
+      --uri "https://management.azure.com/subscriptions/$CURRENT_SUB_ID/resourcegroups/$RESOURCE_GROUP/providers/Microsoft.Resources/deployments/$DEPLOYMENT_NAME?api-version=2021-04-01" \
+      2>/dev/null)
+    
+    if [ $? -eq 0 ]; then
+        PROVISIONING_STATE=$(echo "$STATUS_RESPONSE" | jq -r '.properties.provisioningState // "Unknown"')
+        
+        log_info "Current state: $PROVISIONING_STATE"
+        
+        if [ "$PROVISIONING_STATE" == "Succeeded" ]; then
+            log_success "Deployment completed successfully!"
+            
+            # Display outputs if available
+            OUTPUTS=$(echo "$STATUS_RESPONSE" | jq -r '.properties.outputs // {}')
+            if [ "$OUTPUTS" != "{}" ]; then
+                log_info ""
+                log_info "Deployment outputs:"
+                echo "$OUTPUTS" | jq '.'
+            fi
+            
+            break
+        elif [ "$PROVISIONING_STATE" == "Failed" ] || [ "$PROVISIONING_STATE" == "Canceled" ]; then
+            log_error "Deployment failed with state: $PROVISIONING_STATE"
+            
+            # Get error details
+            ERROR_DETAILS=$(echo "$STATUS_RESPONSE" | jq -r '.properties.error // {}')
+            if [ "$ERROR_DETAILS" != "{}" ]; then
+                log_error "Error details:"
+                echo "$ERROR_DETAILS" | jq '.'
+            fi
+            
+            exit 1
+        fi
+    fi
+    
+    sleep 10
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    log_error "Deployment timed out after 15 minutes"
     exit 1
 fi
 

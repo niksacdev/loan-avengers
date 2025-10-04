@@ -238,7 +238,31 @@ vi environments/dev.parameters.json
    az login
    ```
 
-2. **Azure Subscription** with Contributor/Owner permissions
+2. **jq** (JSON processor, required for REST API deployments):
+   ```bash
+   # macOS
+   brew install jq
+   
+   # Windows
+   winget install jqlang.jq
+   
+   # Linux
+   sudo apt-get install jq
+   ```
+
+3. **Azure Subscription** with Contributor/Owner permissions
+
+### Deployment Method: Azure REST API
+
+This deployment uses **Azure REST API** directly instead of `az deployment group create` to avoid a known Azure CLI bug that causes "content already consumed" errors.
+
+**Why REST API?**
+- ✅ Bypasses Azure CLI bug (Azure/azure-cli#32149)
+- ✅ Better error messages from Azure Resource Manager
+- ✅ More reliable in CI/CD pipelines
+- ✅ Direct control over HTTP requests/responses
+
+**For technical details**, see [ADR-022: Azure REST API for Bicep Deployments](../../docs/architecture/decisions/adr-022-azure-rest-api-deployment.md)
 
 ### Deployment
 

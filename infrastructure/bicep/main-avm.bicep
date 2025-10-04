@@ -12,7 +12,7 @@
 // Deployment Stages:
 //   - foundation: Networking (VNet, NSGs, subnets)
 //   - security:   Security services (Key Vault, Storage, Identity)
-//   - ai:         AI and monitoring services
+//   - ai:         AI and monitoring services + RBAC permissions
 //   - apps:       Container Apps Environment
 //   - all:        Deploy everything (default)
 //
@@ -148,6 +148,20 @@ module containerApps 'modules/container-apps.bicep' = if (deployApps) {
     logAnalyticsCustomerId: deployAI ? aiServices.outputs.logAnalyticsCustomerId : ''
     logAnalyticsPrimarySharedKey: deployAI ? aiServices.outputs.logAnalyticsPrimarySharedKey : ''
     tags: commonTags
+  }
+}
+
+// ==============================================================================
+// Stage 5: RBAC - Role Assignments for Azure AI Foundry
+// ==============================================================================
+
+module rbac 'modules/rbac.bicep' = if (deploySecurity && deployAI) {
+  name: 'rbac-deployment-${deploymentStage}'
+  params: {
+    managedIdentityPrincipalId: security.outputs.managedIdentityPrincipalId
+    aiServicesId: aiServices.outputs.aiServicesId
+    keyVaultId: security.outputs.keyVaultId
+    storageAccountId: security.outputs.storageAccountId
   }
 }
 

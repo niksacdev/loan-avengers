@@ -79,15 +79,17 @@ jobs:
           echo "Using Azure Verified Modules (AVM)"
 
           # Start deployment asynchronously (workaround for Azure CLI bug #32149)
+          # Redirect ALL output to avoid "content already consumed" error
           az deployment group create \
             --name ${{ env.DEPLOYMENT_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --template-file /tmp/main-avm.json \
             --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
             --parameters deploymentStage=${{ inputs.stage }} \
-            --no-wait
+            --no-wait > /dev/null 2>&1 || true
 
-          echo "Deployment started. Waiting for completion..."
+          echo "✓ Deployment initiated. Waiting for Azure to register it..."
+          sleep 5  # Give Azure a moment to register the deployment
 
           # Poll for completion
           while true; do

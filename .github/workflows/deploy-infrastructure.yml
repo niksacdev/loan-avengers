@@ -89,20 +89,25 @@ jobs:
           DEPLOYMENT_STAGE_PARAM=$(echo '{"deploymentStage": {"value": "${{ inputs.stage }}"}}' | jq '.')
           MERGED_PARAMS=$(echo "$PARAMS_JSON $DEPLOYMENT_STAGE_PARAM" | jq -s '.[0] * .[1]')
 
-          # Read the ARM template
-          TEMPLATE_CONTENT=$(cat /tmp/main-avm.json)
+          # Write template and parameters to temp files to avoid argument length limits
+          echo "Writing template and parameters to temp files..."
+          cat /tmp/main-avm.json > /tmp/template.json
+          echo "$MERGED_PARAMS" > /tmp/parameters.json
 
-          # Create deployment request body
+          # Create deployment request body using file inputs (avoids "Argument list too long" error)
           DEPLOYMENT_BODY=$(jq -n \
-            --argjson template "$TEMPLATE_CONTENT" \
-            --argjson parameters "$MERGED_PARAMS" \
+            --slurpfile template /tmp/template.json \
+            --slurpfile parameters /tmp/parameters.json \
             '{
               properties: {
-                template: $template,
-                parameters: $parameters,
+                template: $template[0],
+                parameters: $parameters[0],
                 mode: "Incremental"
               }
             }')
+
+          # Clean up temp files
+          rm -f /tmp/template.json /tmp/parameters.json
 
           # Deploy using Azure REST API (bypasses CLI bug)
           echo "Initiating deployment via Azure REST API..."

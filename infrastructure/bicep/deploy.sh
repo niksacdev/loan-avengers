@@ -219,20 +219,28 @@ PARAMS_JSON=$(cat "$PARAMETERS_FILE" | jq '.parameters')
 DEPLOYMENT_STAGE_PARAM=$(echo '{"deploymentStage": {"value": "'"$DEPLOYMENT_STAGE"'"}}' | jq '.')
 MERGED_PARAMS=$(echo "$PARAMS_JSON $DEPLOYMENT_STAGE_PARAM" | jq -s '.[0] * .[1]')
 
-# Read the ARM template
-TEMPLATE_CONTENT=$(cat "$COMPILED_TEMPLATE")
+# Write template and parameters to temp files to avoid argument length limits
+TEMP_TEMPLATE="/tmp/template-${DEPLOYMENT_NAME}.json"
+TEMP_PARAMS="/tmp/params-${DEPLOYMENT_NAME}.json"
 
-# Create deployment request body
+log_info "Writing template and parameters to temp files..."
+cat "$COMPILED_TEMPLATE" > "$TEMP_TEMPLATE"
+echo "$MERGED_PARAMS" > "$TEMP_PARAMS"
+
+# Create deployment request body using file inputs (avoids "Argument list too long" error)
 DEPLOYMENT_BODY=$(jq -n \
-  --argjson template "$TEMPLATE_CONTENT" \
-  --argjson parameters "$MERGED_PARAMS" \
+  --slurpfile template "$TEMP_TEMPLATE" \
+  --slurpfile parameters "$TEMP_PARAMS" \
   '{
     properties: {
-      template: $template,
-      parameters: $parameters,
+      template: $template[0],
+      parameters: $parameters[0],
       mode: "Incremental"
     }
   }')
+
+# Clean up temp files
+rm -f "$TEMP_TEMPLATE" "$TEMP_PARAMS"
 
 # Deploy using Azure REST API (bypasses CLI bug)
 log_info "Initiating deployment via Azure REST API..."

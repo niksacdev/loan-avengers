@@ -20,7 +20,20 @@ az --version
 # Linux: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
-### 3. Login to Azure
+### 3. jq Installed (for JSON processing)
+```bash
+# Check if installed
+jq --version
+
+# If not installed:
+# macOS: brew install jq
+# Windows: winget install jqlang.jq
+# Linux: sudo apt-get install jq
+```
+
+**Note**: `jq` is required for REST API deployment approach (see ADR-022)
+
+### 4. Login to Azure
 ```bash
 # Interactive login
 az login
@@ -32,7 +45,7 @@ az login --tenant YOUR_TENANT_ID
 az account show
 ```
 
-### 4. Set the Correct Subscription
+### 5. Set the Correct Subscription
 ```bash
 # List all subscriptions
 az account list --output table
@@ -300,12 +313,52 @@ az group exists --name ${RG_NAME}
 
 ---
 
+## 🔧 Technical Details
+
+### Deployment Method: Azure REST API
+
+The deployment script uses Azure REST API directly instead of `az deployment group create` to avoid a known Azure CLI bug that causes "content already consumed" errors.
+
+**Why REST API?**
+- ✅ Bypasses Azure CLI bug (Azure/azure-cli#32149)
+- ✅ Better error messages from Azure Resource Manager
+- ✅ More reliable in CI/CD pipelines
+- ✅ Direct control over HTTP requests/responses
+
+**Technical Implementation:**
+```bash
+# 1. Compile Bicep to ARM JSON
+az bicep build --file main-avm.bicep --outfile /tmp/deployment.json
+
+# 2. Deploy via REST API
+az rest --method PUT \
+  --uri "https://management.azure.com/subscriptions/$SUB_ID/resourcegroups/$RG/providers/Microsoft.Resources/deployments/$NAME?api-version=2021-04-01" \
+  --body "$DEPLOYMENT_BODY" \
+  --headers "Content-Type=application/json"
+
+# 3. Poll for completion
+az rest --method GET \
+  --uri "https://management.azure.com/subscriptions/$SUB_ID/resourcegroups/$RG/providers/Microsoft.Resources/deployments/$NAME?api-version=2021-04-01"
+```
+
+**For more details**, see [ADR-022: Azure REST API for Bicep Deployments](../architecture/decisions/adr-022-azure-rest-api-deployment.md)
+
+---
+
 ## 🐛 Troubleshooting
 
 ### Issue: "az: command not found"
 ```bash
 # Azure CLI not installed
 # Install: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+```
+
+### Issue: "jq: command not found"
+```bash
+# jq not installed (required for REST API JSON processing)
+# macOS: brew install jq
+# Windows: winget install jqlang.jq
+# Linux: sudo apt-get install jq
 ```
 
 ### Issue: "ERROR: Please run 'az login' to setup account"
@@ -317,7 +370,7 @@ az account set --subscription "YOUR_SUBSCRIPTION_NAME"
 ### Issue: "Deployment validation failed"
 ```bash
 # Check Bicep syntax
-az bicep build --file main.bicep
+az bicep build --file main-avm.bicep
 
 # View detailed errors
 az deployment group validate \

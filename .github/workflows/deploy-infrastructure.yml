@@ -77,52 +77,97 @@ jobs:
           echo "Resource Group: ${{ env.RESOURCE_GROUP }}"
           echo "Deployment Name: ${{ env.DEPLOYMENT_NAME }}"
           echo "Using Azure Verified Modules (AVM)"
+          echo ""
 
-          # Start deployment asynchronously
-          # Capture output but check if deployment was accepted
-          echo "Starting deployment..."
-          DEPLOY_OUTPUT=$(az deployment group create \
-            --name ${{ env.DEPLOYMENT_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --template-file /tmp/main-avm.json \
-            --parameters @infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json \
-            --parameters deploymentStage=${{ inputs.stage }} \
-            --no-wait 2>&1) || DEPLOY_EXIT_CODE=$?
+          # Get subscription ID for REST API calls
+          SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          echo "Subscription ID: $SUBSCRIPTION_ID"
 
-          if [ ! -z "$DEPLOY_OUTPUT" ]; then
-            echo "Deployment output: $DEPLOY_OUTPUT"
+          # Read and merge parameters
+          echo "Preparing deployment parameters..."
+          PARAMS_JSON=$(cat infrastructure/bicep/environments/${{ inputs.environment }}.parameters.json | jq '.parameters')
+          DEPLOYMENT_STAGE_PARAM=$(echo '{"deploymentStage": {"value": "${{ inputs.stage }}"}}' | jq '.')
+          MERGED_PARAMS=$(echo "$PARAMS_JSON $DEPLOYMENT_STAGE_PARAM" | jq -s '.[0] * .[1]')
+
+          # Write template and parameters to temp files to avoid argument length limits
+          echo "Writing template and parameters to temp files..."
+          cat /tmp/main-avm.json > /tmp/template.json
+          echo "$MERGED_PARAMS" > /tmp/parameters.json
+
+          # Create deployment request body using file inputs (avoids "Argument list too long" error)
+          DEPLOYMENT_BODY=$(jq -n \
+            --slurpfile template /tmp/template.json \
+            --slurpfile parameters /tmp/parameters.json \
+            '{
+              properties: {
+                template: $template[0],
+                parameters: $parameters[0],
+                mode: "Incremental"
+              }
+            }')
+
+          # Clean up temp files
+          rm -f /tmp/template.json /tmp/parameters.json
+
+          # Deploy using Azure REST API (bypasses CLI bug)
+          echo "Initiating deployment via Azure REST API..."
+          DEPLOY_RESPONSE=$(az rest \
+            --method PUT \
+            --uri "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourcegroups/${{ env.RESOURCE_GROUP }}/providers/Microsoft.Resources/deployments/${{ env.DEPLOYMENT_NAME }}?api-version=2021-04-01" \
+            --body "$DEPLOYMENT_BODY" \
+            --headers "Content-Type=application/json" 2>&1)
+
+          if [ $? -ne 0 ]; then
+            echo "✗ Failed to initiate deployment"
+            echo "$DEPLOY_RESPONSE"
+            exit 1
           fi
 
-          if [ ! -z "$DEPLOY_EXIT_CODE" ] && [ "$DEPLOY_EXIT_CODE" != "0" ]; then
-            echo "Deployment command exited with code: $DEPLOY_EXIT_CODE"
-            # Check if deployment was actually created despite the error
-            echo "Checking if deployment exists..."
-          fi
+          echo "✓ Deployment initiated successfully"
+          echo "Deployment ID: ${{ env.DEPLOYMENT_NAME }}"
+          echo ""
 
-          echo "Waiting for deployment to appear in Azure..."
-          sleep 10  # Give Azure time to register the deployment
+          # Poll for deployment completion using REST API
+          echo "Polling deployment status..."
+          MAX_RETRIES=90  # 15 minutes
+          RETRY_COUNT=0
 
-          # Poll for completion
-          while true; do
-            STATE=$(az deployment group show \
-              --name ${{ env.DEPLOYMENT_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --query properties.provisioningState -o tsv 2>/dev/null || echo "NotFound")
-
-            echo "Current state: $STATE"
-
-            if [ "$STATE" == "Succeeded" ]; then
-              echo "✓ Deployment succeeded!"
-              break
-            elif [ "$STATE" == "Failed" ] || [ "$STATE" == "Canceled" ]; then
-              echo "✗ Deployment failed with state: $STATE"
-              exit 1
-            elif [ "$STATE" == "NotFound" ]; then
-              echo "Waiting for deployment to register..."
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            STATUS_RESPONSE=$(az rest \
+              --method GET \
+              --uri "https://management.azure.com/subscriptions/$SUBSCRIPTION_ID/resourcegroups/${{ env.RESOURCE_GROUP }}/providers/Microsoft.Resources/deployments/${{ env.DEPLOYMENT_NAME }}?api-version=2021-04-01" \
+              2>/dev/null)
+            
+            if [ $? -eq 0 ]; then
+              PROVISIONING_STATE=$(echo "$STATUS_RESPONSE" | jq -r '.properties.provisioningState // "Unknown"')
+              
+              echo "Current state: $PROVISIONING_STATE"
+              
+              if [ "$PROVISIONING_STATE" == "Succeeded" ]; then
+                echo "✓ Deployment succeeded!"
+                
+                # Save outputs for later display
+                echo "$STATUS_RESPONSE" | jq -r '.properties.outputs // {}' > /tmp/deployment-outputs.json
+                
+                break
+              elif [ "$PROVISIONING_STATE" == "Failed" ] || [ "$PROVISIONING_STATE" == "Canceled" ]; then
+                echo "✗ Deployment failed with state: $PROVISIONING_STATE"
+                
+                # Save error details for later display
+                echo "$STATUS_RESPONSE" | jq -r '.properties.error // {}' > /tmp/deployment-error.json
+                
+                exit 1
+              fi
             fi
-
+            
             sleep 10
+            RETRY_COUNT=$((RETRY_COUNT + 1))
           done
+
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "✗ Deployment timed out after 15 minutes"
+            exit 1
+          fi
 
       - name: Show deployment outputs
         if: success()
@@ -130,21 +175,21 @@ jobs:
           echo "Deployment completed successfully!"
           echo ""
           echo "Deployment outputs:"
-          az deployment group show \
-            --name ${{ env.DEPLOYMENT_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query properties.outputs \
-            --output table
+          if [ -f /tmp/deployment-outputs.json ]; then
+            cat /tmp/deployment-outputs.json | jq '.'
+          else
+            echo "No outputs available"
+          fi
 
       - name: Show deployment errors
         if: failure()
         run: |
           echo "Deployment failed. Error details:"
-          az deployment group show \
-            --name ${{ env.DEPLOYMENT_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query properties.error \
-            --output json || echo "Could not retrieve error details"
+          if [ -f /tmp/deployment-error.json ]; then
+            cat /tmp/deployment-error.json | jq '.'
+          else
+            echo "Could not retrieve error details"
+          fi
 
       - name: Post deployment summary
         if: always()
